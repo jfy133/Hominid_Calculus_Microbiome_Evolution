@@ -1,0 +1,13 @@
+Database	Taxonomic_Level	Min_Support	Test	Term	Degrees of Freedom	Sum of Squares	Mean of Squares	Test Statistic	R Squared	p value
+nt	genus	0.07	adonis	ind_groups	3	6067420	2022473	3.3775	0.10651	0.002
+nt	genus	0.07	adonis	Residuals	85	50899238	598815	0.89349	NA	NA
+nt	genus	0.07	adonis	Total	88	56966658	1	NA	NA	NA
+nt	species	0.04	adonis	ind_groups	3	6659045	2219682	4.4985	0.13702	0.001
+nt	species	0.04	adonis	Residuals	85	41940880	493422	0.86298	NA	NA
+nt	species	0.04	adonis	Total	88	48599925	1	NA	NA	NA
+refseq	genus	0.07	adonis	ind_groups	3	7553528	2517843	2.5456	0.09471	0.007
+refseq	genus	0.07	adonis	Residuals	73	72204707	989106	0.90529	NA	NA
+refseq	genus	0.07	adonis	Total	76	79758235	1	NA	NA	NA
+refseq	species	0.04	adonis	ind_groups	3	6434342	2144781	2.6265	0.09742	0.003
+refseq	species	0.04	adonis	Residuals	73	59610720	816585	0.90258	NA	NA
+refseq	species	0.04	adonis	Total	76	66045062	1	NA	NA	NA

@@ -1,0 +1,4070 @@
+Loading MEGAN File: ABM006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,931,778
+With hits:           1,931,778 
+Alignments:         18,951,132
+Assig. Taxonomy:     1,931,239
+MinSupport set to: 193
+Min-supp. changes:       6,883
+Numb. Tax. classes:      1,103
+Class. Taxonomy:         1,103
+Num. of queries:    8057367
+Aligned queries:    1931778
+Num. alignments:   18951132
+Loading MEGAN File: BAN001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          990,656
+With hits:             990,656 
+Alignments:         17,047,981
+Assig. Taxonomy:       990,641
+MinSupport set to: 99
+Min-supp. changes:       6,206
+Numb. Tax. classes:      1,215
+Class. Taxonomy:         1,215
+Num. of queries:   10106625
+Aligned queries:     990656
+Num. alignments:   17047981
+Loading MEGAN File: CDC005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          733,987
+With hits:             733,987 
+Alignments:         10,855,675
+Assig. Taxonomy:       733,867
+MinSupport set to: 73
+Min-supp. changes:       5,746
+Numb. Tax. classes:      1,414
+Class. Taxonomy:         1,414
+Num. of queries:    4526782
+Aligned queries:     733987
+Num. alignments:   10855675
+Loading MEGAN File: CDC006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,121,654
+With hits:           3,121,654 
+Alignments:         28,409,112
+Assig. Taxonomy:     3,119,762
+MinSupport set to: 312
+Min-supp. changes:       8,742
+Numb. Tax. classes:      1,164
+Class. Taxonomy:         1,164
+Num. of queries:   15120313
+Aligned queries:    3121654
+Num. alignments:   28409112
+Loading MEGAN File: CDC007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,631,302
+With hits:           2,631,302 
+Alignments:         37,091,522
+Assig. Taxonomy:     2,630,318
+MinSupport set to: 263
+Min-supp. changes:       9,143
+Numb. Tax. classes:      1,415
+Class. Taxonomy:         1,415
+Num. of queries:   15878673
+Aligned queries:    2631302
+Num. alignments:   37091522
+Loading MEGAN File: CDC008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,921,372
+With hits:           1,921,372 
+Alignments:         14,625,912
+Assig. Taxonomy:     1,921,344
+MinSupport set to: 192
+Min-supp. changes:       9,168
+Numb. Tax. classes:      1,015
+Class. Taxonomy:         1,015
+Num. of queries:   15094966
+Aligned queries:    1921372
+Num. alignments:   14625912
+Loading MEGAN File: CDC009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,575,480
+With hits:           1,575,480 
+Alignments:          9,958,632
+Assig. Taxonomy:     1,575,454
+MinSupport set to: 157
+Min-supp. changes:       7,357
+Numb. Tax. classes:        885
+Class. Taxonomy:           885
+Num. of queries:   14286106
+Aligned queries:    1575480
+Num. alignments:    9958632
+Loading MEGAN File: CDC010.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,446,153
+With hits:           2,446,153 
+Alignments:         14,172,298
+Assig. Taxonomy:     2,446,120
+MinSupport set to: 244
+Min-supp. changes:       7,994
+Numb. Tax. classes:        791
+Class. Taxonomy:           791
+Num. of queries:   15031925
+Aligned queries:    2446153
+Num. alignments:   14172298
+Loading MEGAN File: CDC011.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,636,711
+With hits:           1,636,711 
+Alignments:         15,234,657
+Assig. Taxonomy:     1,636,690
+MinSupport set to: 163
+Min-supp. changes:       6,887
+Numb. Tax. classes:        921
+Class. Taxonomy:           921
+Num. of queries:    9141614
+Aligned queries:    1636711
+Num. alignments:   15234657
+Loading MEGAN File: DAN021.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,117,644
+With hits:           2,117,644 
+Alignments:         19,484,440
+Assig. Taxonomy:     2,117,632
+MinSupport set to: 211
+Min-supp. changes:       5,013
+Numb. Tax. classes:        541
+Class. Taxonomy:           541
+Num. of queries:    5939762
+Aligned queries:    2117644
+Num. alignments:   19484440
+Loading MEGAN File: DAN023.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       33,122,197
+With hits:          33,122,197 
+Alignments:        520,400,019
+Assig. Taxonomy:    33,122,112
+MinSupport set to: 3312
+Min-supp. changes:       5,785
+Numb. Tax. classes:        381
+Class. Taxonomy:           381
+Num. of queries:   60930703
+Aligned queries:   33122197
+Num. alignments:  520400019
+Loading MEGAN File: DAN024.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       24,421,822
+With hits:          24,421,822 
+Alignments:        332,969,285
+Assig. Taxonomy:    24,421,725
+MinSupport set to: 2442
+Min-supp. changes:       9,655
+Numb. Tax. classes:        453
+Class. Taxonomy:           453
+Num. of queries:   49928157
+Aligned queries:   24421822
+Num. alignments:  332969285
+Loading MEGAN File: DAN025.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       24,216,555
+With hits:          24,216,555 
+Alignments:        342,968,135
+Assig. Taxonomy:    24,216,442
+MinSupport set to: 2421
+Min-supp. changes:       8,953
+Numb. Tax. classes:        435
+Class. Taxonomy:           435
+Num. of queries:   40529378
+Aligned queries:   24216555
+Num. alignments:  342968135
+Loading MEGAN File: DAN027.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       17,292,698
+With hits:          17,292,698 
+Alignments:        215,017,611
+Assig. Taxonomy:    17,292,551
+MinSupport set to: 1729
+Min-supp. changes:       6,385
+Numb. Tax. classes:        476
+Class. Taxonomy:           476
+Num. of queries:   37303385
+Aligned queries:   17292698
+Num. alignments:  215017611
+Loading MEGAN File: DAN028.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       28,416,474
+With hits:          28,416,474 
+Alignments:        160,340,354
+Assig. Taxonomy:    28,416,359
+MinSupport set to: 2841
+Min-supp. changes:       9,086
+Numb. Tax. classes:        385
+Class. Taxonomy:           385
+Num. of queries:   67853494
+Aligned queries:   28416474
+Num. alignments:  160340354
+Loading MEGAN File: DAN034.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       17,388,449
+With hits:          17,388,449 
+Alignments:        113,689,626
+Assig. Taxonomy:    17,388,063
+MinSupport set to: 1738
+Min-supp. changes:       8,118
+Numb. Tax. classes:        426
+Class. Taxonomy:           426
+Num. of queries:   44082830
+Aligned queries:   17388449
+Num. alignments:  113689626
+Loading MEGAN File: DAN038.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       20,914,956
+With hits:          20,914,956 
+Alignments:        308,727,136
+Assig. Taxonomy:    20,914,861
+MinSupport set to: 2091
+Min-supp. changes:       5,984
+Numb. Tax. classes:        333
+Class. Taxonomy:           333
+Num. of queries:   33506406
+Aligned queries:   20914956
+Num. alignments:  308727136
+Loading MEGAN File: DAN039.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       30,276,712
+With hits:          30,276,712 
+Alignments:        329,661,581
+Assig. Taxonomy:    30,276,596
+MinSupport set to: 3027
+Min-supp. changes:       6,787
+Numb. Tax. classes:        373
+Class. Taxonomy:           373
+Num. of queries:   52441147
+Aligned queries:   30276712
+Num. alignments:  329661581
+Loading MEGAN File: DAN044.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       48,049,055
+With hits:          48,049,055 
+Alignments:        489,238,440
+Assig. Taxonomy:    48,048,806
+MinSupport set to: 4804
+Min-supp. changes:       8,195
+Numb. Tax. classes:        398
+Class. Taxonomy:           398
+Num. of queries:   67812319
+Aligned queries:   48049055
+Num. alignments:  489238440
+Loading MEGAN File: DAN045.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       27,484,002
+With hits:          27,484,002 
+Alignments:        251,333,368
+Assig. Taxonomy:    27,483,890
+MinSupport set to: 2748
+Min-supp. changes:       6,689
+Numb. Tax. classes:        387
+Class. Taxonomy:           387
+Num. of queries:   48862209
+Aligned queries:   27484002
+Num. alignments:  251333368
+Loading MEGAN File: DAN046.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       26,024,738
+With hits:          26,024,738 
+Alignments:        635,492,352
+Assig. Taxonomy:    26,024,686
+MinSupport set to: 2602
+Min-supp. changes:       3,565
+Numb. Tax. classes:        211
+Class. Taxonomy:           211
+Num. of queries:   32565845
+Aligned queries:   26024738
+Num. alignments:  635492352
+Loading MEGAN File: DAN048.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       18,677,082
+With hits:          18,677,082 
+Alignments:        138,578,824
+Assig. Taxonomy:    18,676,983
+MinSupport set to: 1867
+Min-supp. changes:       8,123
+Numb. Tax. classes:        454
+Class. Taxonomy:           454
+Num. of queries:   43264627
+Aligned queries:   18677082
+Num. alignments:  138578824
+Loading MEGAN File: DAN049.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:            5,213
+With hits:               5,213 
+Alignments:             40,442
+Assig. Taxonomy:         5,213
+MinSupport set to: 1
+Min-supp. changes:           0
+Numb. Tax. classes:        286
+Class. Taxonomy:           286
+Num. of queries:      10137
+Aligned queries:       5213
+Num. alignments:      40442
+Loading MEGAN File: DJA002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,097,148
+With hits:           2,097,148 
+Alignments:         17,869,133
+Assig. Taxonomy:     2,097,131
+MinSupport set to: 209
+Min-supp. changes:       7,502
+Numb. Tax. classes:        920
+Class. Taxonomy:           920
+Num. of queries:   11978137
+Aligned queries:    2097148
+Num. alignments:   17869133
+Loading MEGAN File: EBO001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,376,300
+With hits:           3,376,300 
+Alignments:         30,977,561
+Assig. Taxonomy:     3,376,240
+MinSupport set to: 337
+Min-supp. changes:       7,986
+Numb. Tax. classes:        772
+Class. Taxonomy:           772
+Num. of queries:   15767290
+Aligned queries:    3376300
+Num. alignments:   30977561
+Loading MEGAN File: EBO003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,648,883
+With hits:           3,648,883 
+Alignments:         26,274,269
+Assig. Taxonomy:     3,648,834
+MinSupport set to: 364
+Min-supp. changes:       8,026
+Numb. Tax. classes:        761
+Class. Taxonomy:           761
+Num. of queries:   20549945
+Aligned queries:    3648883
+Num. alignments:   26274269
+Loading MEGAN File: ECO002.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,654,203
+With hits:           5,654,203 
+Alignments:         30,448,609
+Assig. Taxonomy:     5,654,026
+MinSupport set to: 565
+Min-supp. changes:      10,276
+Numb. Tax. classes:        693
+Class. Taxonomy:           693
+Num. of queries:   24662284
+Aligned queries:    5654203
+Num. alignments:   30448609
+Loading MEGAN File: ECO004.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,394,541
+With hits:           4,394,541 
+Alignments:         27,392,245
+Assig. Taxonomy:     4,394,207
+MinSupport set to: 439
+Min-supp. changes:       9,935
+Numb. Tax. classes:        891
+Class. Taxonomy:           891
+Num. of queries:   20400171
+Aligned queries:    4394541
+Num. alignments:   27392245
+Loading MEGAN File: ECO006.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          839,566
+With hits:             839,566 
+Alignments:         11,025,888
+Assig. Taxonomy:       839,110
+MinSupport set to: 83
+Min-supp. changes:       6,879
+Numb. Tax. classes:      1,809
+Class. Taxonomy:         1,809
+Num. of queries:   10488914
+Aligned queries:     839566
+Num. alignments:   11025888
+Loading MEGAN File: ECO010.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,200,147
+With hits:           2,200,147 
+Alignments:          8,250,645
+Assig. Taxonomy:     2,200,121
+MinSupport set to: 220
+Min-supp. changes:       7,059
+Numb. Tax. classes:        578
+Class. Taxonomy:           578
+Num. of queries:   12246134
+Aligned queries:    2200147
+Num. alignments:    8250645
+Loading MEGAN File: EMN001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,476,475
+With hits:           2,476,475 
+Alignments:         24,797,582
+Assig. Taxonomy:     2,476,440
+MinSupport set to: 247
+Min-supp. changes:       7,748
+Numb. Tax. classes:        902
+Class. Taxonomy:           902
+Num. of queries:   12579489
+Aligned queries:    2476475
+Num. alignments:   24797582
+Loading MEGAN File: GDC002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,849,487
+With hits:           2,849,487 
+Alignments:         53,731,584
+Assig. Taxonomy:     2,849,431
+MinSupport set to: 284
+Min-supp. changes:       8,778
+Numb. Tax. classes:        964
+Class. Taxonomy:           964
+Num. of queries:   11300654
+Aligned queries:    2849487
+Num. alignments:   53731584
+Loading MEGAN File: GDC004.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        6,996,111
+With hits:           6,996,111 
+Alignments:         47,191,086
+Assig. Taxonomy:     6,996,079
+MinSupport set to: 699
+Min-supp. changes:       8,898
+Numb. Tax. classes:        458
+Class. Taxonomy:           458
+Num. of queries:   12302652
+Aligned queries:    6996111
+Num. alignments:   47191086
+Loading MEGAN File: GDC005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,049,229
+With hits:           4,049,229 
+Alignments:         80,291,879
+Assig. Taxonomy:     4,049,168
+MinSupport set to: 404
+Min-supp. changes:       8,055
+Numb. Tax. classes:        765
+Class. Taxonomy:           765
+Num. of queries:    9931068
+Aligned queries:    4049229
+Num. alignments:   80291879
+Loading MEGAN File: GDN001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        7,794,472
+With hits:           7,794,472 
+Alignments:         76,038,872
+Assig. Taxonomy:     7,794,291
+MinSupport set to: 779
+Min-supp. changes:       7,921
+Numb. Tax. classes:        652
+Class. Taxonomy:           652
+Num. of queries:   30835470
+Aligned queries:    7794472
+Num. alignments:   76038872
+Loading MEGAN File: GOY005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,947,893
+With hits:           1,947,893 
+Alignments:         25,025,675
+Assig. Taxonomy:     1,947,857
+MinSupport set to: 194
+Min-supp. changes:       7,869
+Numb. Tax. classes:      1,002
+Class. Taxonomy:         1,002
+Num. of queries:    9163118
+Aligned queries:    1947893
+Num. alignments:   25025675
+Loading MEGAN File: GOY006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          877,299
+With hits:             877,299 
+Alignments:         12,677,192
+Assig. Taxonomy:       877,265
+MinSupport set to: 87
+Min-supp. changes:       5,765
+Numb. Tax. classes:        951
+Class. Taxonomy:           951
+Num. of queries:    3799236
+Aligned queries:     877299
+Num. alignments:   12677192
+Loading MEGAN File: GUE001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          956,339
+With hits:             956,339 
+Alignments:         15,384,511
+Assig. Taxonomy:       955,913
+MinSupport set to: 95
+Min-supp. changes:       5,340
+Numb. Tax. classes:      1,638
+Class. Taxonomy:         1,638
+Num. of queries:   11156331
+Aligned queries:     956339
+Num. alignments:   15384511
+Loading MEGAN File: JAE006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Loading MEGAN File: JAE006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       60,530,165
+With hits:          60,530,165 
+Alignments:        752,947,543
+Assig. Taxonomy:    60,530,007
+MinSupport set to: 6053
+Min-supp. changes:      10,036
+Numb. Tax. classes:        315
+Class. Taxonomy:           315
+Num. of queries:   87883942
+Aligned queries:   60530165
+Num. alignments:  752947543
+Loading MEGAN File: JAE007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       49,018,126
+With hits:          49,018,126 
+Alignments:        756,375,828
+Assig. Taxonomy:    49,018,005
+MinSupport set to: 4901
+Min-supp. changes:       9,044
+Numb. Tax. classes:        331
+Class. Taxonomy:           331
+Num. of queries:   66419551
+Aligned queries:   49018126
+Num. alignments:  756375828
+Loading MEGAN File: JAE008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       33,945,834
+With hits:          33,945,834 
+Alignments:        307,286,112
+Assig. Taxonomy:    33,945,742
+MinSupport set to: 3394
+Min-supp. changes:      10,668
+Numb. Tax. classes:        413
+Class. Taxonomy:           413
+Num. of queries:   65296039
+Aligned queries:   33945834
+Num. alignments:  307286112
+Loading MEGAN File: JAE009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       29,316,590
+With hits:          29,316,590 
+Alignments:        244,803,612
+Assig. Taxonomy:    29,316,487
+MinSupport set to: 2931
+Min-supp. changes:      10,850
+Numb. Tax. classes:        493
+Class. Taxonomy:           493
+Num. of queries:   66062410
+Aligned queries:   29316590
+Num. alignments:  244803612
+Loading MEGAN File: JAE010.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       37,498,994
+With hits:          37,498,994 
+Alignments:        302,875,109
+Assig. Taxonomy:    37,498,932
+MinSupport set to: 3749
+Min-supp. changes:      10,081
+Numb. Tax. classes:        355
+Class. Taxonomy:           355
+Num. of queries:   60027336
+Aligned queries:   37498994
+Num. alignments:  302875109
+Loading MEGAN File: JAE012.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       25,702,076
+With hits:          25,702,076 
+Alignments:        316,507,223
+Assig. Taxonomy:    25,701,806
+MinSupport set to: 2570
+Min-supp. changes:       9,915
+Numb. Tax. classes:        634
+Class. Taxonomy:           634
+Num. of queries:   62752277
+Aligned queries:   25702076
+Num. alignments:  316507223
+Loading MEGAN File: JAE013.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       23,080,544
+With hits:          23,080,544 
+Alignments:        419,570,241
+Assig. Taxonomy:    23,080,470
+MinSupport set to: 2308
+Min-supp. changes:       8,389
+Numb. Tax. classes:        372
+Class. Taxonomy:           372
+Num. of queries:   38954329
+Aligned queries:   23080544
+Num. alignments:  419570241
+Loading MEGAN File: JAE014.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       27,348,695
+With hits:          27,348,695 
+Alignments:        211,848,429
+Assig. Taxonomy:    27,348,552
+MinSupport set to: 2734
+Min-supp. changes:      11,357
+Numb. Tax. classes:        535
+Class. Taxonomy:           535
+Num. of queries:   68620482
+Aligned queries:   27348695
+Num. alignments:  211848429
+Loading MEGAN File: JAE015.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       27,652,170
+With hits:          27,652,170 
+Alignments:        136,629,858
+Assig. Taxonomy:    27,652,090
+MinSupport set to: 2765
+Min-supp. changes:       9,910
+Numb. Tax. classes:        397
+Class. Taxonomy:           397
+Num. of queries:   57512281
+Aligned queries:   27652170
+Num. alignments:  136629858
+Loading MEGAN File: JAE016.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       38,392,047
+With hits:          38,392,047 
+Alignments:        187,126,412
+Assig. Taxonomy:    38,391,967
+MinSupport set to: 3839
+Min-supp. changes:      10,572
+Numb. Tax. classes:        428
+Class. Taxonomy:           428
+Num. of queries:   94564553
+Aligned queries:   38392047
+Num. alignments:  187126412
+Loading MEGAN File: LOB001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,996,879
+With hits:           1,996,879 
+Alignments:         36,154,264
+Assig. Taxonomy:     1,996,564
+MinSupport set to: 199
+Min-supp. changes:       9,636
+Numb. Tax. classes:      1,798
+Class. Taxonomy:         1,798
+Num. of queries:    8770905
+Aligned queries:    1996879
+Num. alignments:   36154264
+Loading MEGAN File: MOA001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,792,477
+With hits:           4,792,477 
+Alignments:         12,779,680
+Assig. Taxonomy:     4,792,453
+MinSupport set to: 479
+Min-supp. changes:       6,625
+Numb. Tax. classes:        380
+Class. Taxonomy:           380
+Num. of queries:   15176910
+Aligned queries:    4792477
+Num. alignments:   12779680
+Loading MEGAN File: MTK001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,144,694
+With hits:           2,144,694 
+Alignments:         33,490,141
+Assig. Taxonomy:     2,144,666
+MinSupport set to: 214
+Min-supp. changes:       6,557
+Numb. Tax. classes:        752
+Class. Taxonomy:           752
+Num. of queries:    8268804
+Aligned queries:    2144694
+Num. alignments:   33490141
+Loading MEGAN File: MTM001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          750,210
+With hits:             750,210 
+Alignments:         16,693,432
+Assig. Taxonomy:       750,194
+MinSupport set to: 75
+Min-supp. changes:       5,524
+Numb. Tax. classes:        993
+Class. Taxonomy:           993
+Num. of queries:    3486856
+Aligned queries:     750210
+Num. alignments:   16693432
+Loading MEGAN File: MTM002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,226,956
+With hits:           1,226,956 
+Alignments:         24,908,094
+Assig. Taxonomy:     1,226,953
+MinSupport set to: 122
+Min-supp. changes:       5,320
+Numb. Tax. classes:        739
+Class. Taxonomy:           739
+Num. of queries:    3065269
+Aligned queries:    1226956
+Num. alignments:   24908094
+Loading MEGAN File: MTM004.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          971,773
+With hits:             971,773 
+Alignments:         11,258,595
+Assig. Taxonomy:       971,759
+MinSupport set to: 97
+Min-supp. changes:       5,691
+Numb. Tax. classes:        865
+Class. Taxonomy:           865
+Num. of queries:    4106490
+Aligned queries:     971773
+Num. alignments:   11258595
+Loading MEGAN File: MTM005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          892,672
+With hits:             892,672 
+Alignments:         28,209,229
+Assig. Taxonomy:       892,640
+MinSupport set to: 89
+Min-supp. changes:       5,222
+Numb. Tax. classes:        895
+Class. Taxonomy:           895
+Num. of queries:    3434086
+Aligned queries:     892672
+Num. alignments:   28209229
+Loading MEGAN File: MTM006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,316,160
+With hits:           2,316,160 
+Alignments:         44,790,733
+Assig. Taxonomy:     2,316,137
+MinSupport set to: 231
+Min-supp. changes:       6,448
+Numb. Tax. classes:        919
+Class. Taxonomy:           919
+Num. of queries:    7069851
+Aligned queries:    2316160
+Num. alignments:   44790733
+Loading MEGAN File: MTM008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,310,169
+With hits:           1,310,169 
+Alignments:         33,112,681
+Assig. Taxonomy:     1,310,143
+MinSupport set to: 131
+Min-supp. changes:       5,863
+Numb. Tax. classes:        895
+Class. Taxonomy:           895
+Num. of queries:    5164298
+Aligned queries:    1310169
+Num. alignments:   33112681
+Loading MEGAN File: MTM009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          564,184
+With hits:             564,184 
+Alignments:          9,516,471
+Assig. Taxonomy:       564,176
+MinSupport set to: 56
+Min-supp. changes:       6,070
+Numb. Tax. classes:      1,090
+Class. Taxonomy:         1,090
+Num. of queries:    2385491
+Aligned queries:     564184
+Num. alignments:    9516471
+Loading MEGAN File: MTM010.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,355,428
+With hits:           2,355,428 
+Alignments:         55,653,444
+Assig. Taxonomy:     2,355,388
+MinSupport set to: 235
+Min-supp. changes:       8,255
+Numb. Tax. classes:        827
+Class. Taxonomy:           827
+Num. of queries:    9123626
+Aligned queries:    2355428
+Num. alignments:   55653444
+Loading MEGAN File: MTM011.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,601,294
+With hits:           1,601,294 
+Alignments:         39,141,901
+Assig. Taxonomy:     1,601,274
+MinSupport set to: 160
+Min-supp. changes:       7,295
+Numb. Tax. classes:        873
+Class. Taxonomy:           873
+Num. of queries:    4775010
+Aligned queries:    1601294
+Num. alignments:   39141901
+Loading MEGAN File: MTM012.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,360,805
+With hits:           5,360,805 
+Alignments:        130,422,791
+Assig. Taxonomy:     5,360,769
+MinSupport set to: 536
+Min-supp. changes:       8,479
+Numb. Tax. classes:        778
+Class. Taxonomy:           778
+Num. of queries:   10623025
+Aligned queries:    5360805
+Num. alignments:  130422791
+Loading MEGAN File: MTM013.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,016,926
+With hits:           3,016,926 
+Alignments:         76,199,428
+Assig. Taxonomy:     3,016,896
+MinSupport set to: 301
+Min-supp. changes:       8,330
+Numb. Tax. classes:        897
+Class. Taxonomy:           897
+Num. of queries:    7105486
+Aligned queries:    3016926
+Num. alignments:   76199428
+Loading MEGAN File: MTS001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,004,153
+With hits:           2,004,153 
+Alignments:         42,230,993
+Assig. Taxonomy:     2,004,129
+MinSupport set to: 200
+Min-supp. changes:       7,794
+Numb. Tax. classes:        985
+Class. Taxonomy:           985
+Num. of queries:    6540914
+Aligned queries:    2004153
+Num. alignments:   42230993
+Loading MEGAN File: MTS002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,467,960
+With hits:           2,467,960 
+Alignments:         56,818,254
+Assig. Taxonomy:     2,467,867
+MinSupport set to: 246
+Min-supp. changes:       8,339
+Numb. Tax. classes:      1,007
+Class. Taxonomy:         1,007
+Num. of queries:    6562562
+Aligned queries:    2467960
+Num. alignments:   56818254
+Loading MEGAN File: MTS003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,941,622
+With hits:           2,941,622 
+Alignments:         70,769,720
+Assig. Taxonomy:     2,941,591
+MinSupport set to: 294
+Min-supp. changes:       7,564
+Numb. Tax. classes:        974
+Class. Taxonomy:           974
+Num. of queries:    7532301
+Aligned queries:    2941622
+Num. alignments:   70769720
+Loading MEGAN File: PES001.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,616,804
+With hits:           4,616,804 
+Alignments:         44,480,238
+Assig. Taxonomy:     4,616,760
+MinSupport set to: 461
+Min-supp. changes:       6,989
+Numb. Tax. classes:        617
+Class. Taxonomy:           617
+Num. of queries:   11872279
+Aligned queries:    4616804
+Num. alignments:   44480238
+Loading MEGAN File: SPM001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,654,528
+With hits:           2,654,528 
+Alignments:         24,240,397
+Assig. Taxonomy:     2,654,291
+MinSupport set to: 265
+Min-supp. changes:       3,066
+Numb. Tax. classes:        673
+Class. Taxonomy:           673
+Num. of queries:    4576676
+Aligned queries:    2654528
+Num. alignments:   24240397
+Loading MEGAN File: SPM002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,603,885
+With hits:           1,603,885 
+Alignments:         46,631,603
+Assig. Taxonomy:     1,603,859
+MinSupport set to: 160
+Min-supp. changes:       3,697
+Numb. Tax. classes:        594
+Class. Taxonomy:           594
+Num. of queries:    2095474
+Aligned queries:    1603885
+Num. alignments:   46631603
+Loading MEGAN File: SRR059389_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       34,614,865
+With hits:          34,614,865 
+Alignments:        188,678,629
+Assig. Taxonomy:    34,614,843
+MinSupport set to: 3461
+Min-supp. changes:       4,291
+Numb. Tax. classes:        168
+Class. Taxonomy:           168
+Num. of queries:   45098888
+Aligned queries:   34614865
+Num. alignments:  188678629
+Loading MEGAN File: SRR059454_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       16,696,426
+With hits:          16,696,426 
+Alignments:         72,774,091
+Assig. Taxonomy:    16,696,373
+MinSupport set to: 1669
+Min-supp. changes:       6,599
+Numb. Tax. classes:        231
+Class. Taxonomy:           231
+Num. of queries:   35830353
+Aligned queries:   16696426
+Num. alignments:   72774091
+Loading MEGAN File: SRR059455_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       16,956,279
+With hits:          16,956,279 
+Alignments:         73,844,675
+Assig. Taxonomy:    16,956,224
+MinSupport set to: 1695
+Min-supp. changes:       6,552
+Numb. Tax. classes:        232
+Class. Taxonomy:           232
+Num. of queries:   36349527
+Aligned queries:   16956279
+Num. alignments:   73844675
+Loading MEGAN File: SRR059917_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       24,629,989
+With hits:          24,629,989 
+Alignments:        114,592,285
+Assig. Taxonomy:    24,629,979
+MinSupport set to: 2462
+Min-supp. changes:       5,283
+Numb. Tax. classes:        199
+Class. Taxonomy:           199
+Num. of queries:   41460716
+Aligned queries:   24629989
+Num. alignments:  114592285
+Loading MEGAN File: SRR060358_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       28,004,741
+With hits:          28,004,741 
+Alignments:        162,811,775
+Assig. Taxonomy:    28,004,669
+MinSupport set to: 2800
+Min-supp. changes:       3,196
+Numb. Tax. classes:        155
+Class. Taxonomy:           155
+Num. of queries:   37402539
+Aligned queries:   28004741
+Num. alignments:  162811775
+Loading MEGAN File: SRR061192_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       11,238,390
+With hits:          11,238,390 
+Alignments:        109,356,481
+Assig. Taxonomy:    11,238,352
+MinSupport set to: 1123
+Min-supp. changes:       6,183
+Numb. Tax. classes:        416
+Class. Taxonomy:           416
+Num. of queries:   21917339
+Aligned queries:   11238390
+Num. alignments:  109356481
+Loading MEGAN File: SRR061294_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,128,065
+With hits:           4,128,065 
+Alignments:         39,788,335
+Assig. Taxonomy:     4,128,052
+MinSupport set to: 412
+Min-supp. changes:       4,927
+Numb. Tax. classes:        451
+Class. Taxonomy:           451
+Num. of queries:   10375487
+Aligned queries:    4128065
+Num. alignments:   39788335
+Loading MEGAN File: SRR061365_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       15,143,565
+With hits:          15,143,565 
+Alignments:        141,600,151
+Assig. Taxonomy:    15,143,522
+MinSupport set to: 1514
+Min-supp. changes:       5,554
+Numb. Tax. classes:        307
+Class. Taxonomy:           307
+Num. of queries:   26907232
+Aligned queries:   15143565
+Num. alignments:  141600151
+Loading MEGAN File: SRR061562_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       14,219,598
+With hits:          14,219,598 
+Alignments:        195,146,678
+Assig. Taxonomy:    14,219,416
+MinSupport set to: 1421
+Min-supp. changes:       7,632
+Numb. Tax. classes:        469
+Class. Taxonomy:           469
+Num. of queries:   32958887
+Aligned queries:   14219598
+Num. alignments:  195146678
+Loading MEGAN File: SRR062083_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       19,757,564
+With hits:          19,757,564 
+Alignments:        196,495,101
+Assig. Taxonomy:    19,757,493
+MinSupport set to: 1975
+Min-supp. changes:       7,260
+Numb. Tax. classes:        356
+Class. Taxonomy:           356
+Num. of queries:   33714761
+Aligned queries:   19757564
+Num. alignments:  196495101
+Loading MEGAN File: SRR062298_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,060,273
+With hits:           5,060,273 
+Alignments:         42,021,537
+Assig. Taxonomy:     5,060,250
+MinSupport set to: 506
+Min-supp. changes:       6,251
+Numb. Tax. classes:        455
+Class. Taxonomy:           455
+Num. of queries:   13965094
+Aligned queries:    5060273
+Num. alignments:   42021537
+Loading MEGAN File: SRR062299_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,631,481
+With hits:           2,631,481 
+Alignments:         24,824,457
+Assig. Taxonomy:     2,631,458
+MinSupport set to: 263
+Min-supp. changes:       5,124
+Numb. Tax. classes:        471
+Class. Taxonomy:           471
+Num. of queries:    6689934
+Aligned queries:    2631481
+Num. alignments:   24824457
+Loading MEGAN File: SRR062477_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,796,404
+With hits:           3,796,404 
+Alignments:         55,722,840
+Assig. Taxonomy:     3,796,396
+MinSupport set to: 379
+Min-supp. changes:       5,403
+Numb. Tax. classes:        441
+Class. Taxonomy:           441
+Num. of queries:    7881687
+Aligned queries:    3796404
+Num. alignments:   55722840
+Loading MEGAN File: SRR063517_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       15,415,612
+With hits:          15,415,612 
+Alignments:        258,254,353
+Assig. Taxonomy:    15,415,559
+MinSupport set to: 1541
+Min-supp. changes:       5,786
+Numb. Tax. classes:        334
+Class. Taxonomy:           334
+Num. of queries:   25964367
+Aligned queries:   15415612
+Num. alignments:  258254353
+Loading MEGAN File: SRR1631060_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        9,533,616
+With hits:           9,533,616 
+Alignments:        176,036,655
+Assig. Taxonomy:     9,532,718
+MinSupport set to: 953
+Min-supp. changes:      16,164
+Numb. Tax. classes:      1,313
+Class. Taxonomy:         1,313
+Num. of queries:   30740601
+Aligned queries:    9533616
+Num. alignments:  176036655
+Loading MEGAN File: SRR1631061_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        9,765,728
+With hits:           9,765,728 
+Alignments:        180,150,121
+Assig. Taxonomy:     9,764,719
+MinSupport set to: 976
+Min-supp. changes:      16,559
+Numb. Tax. classes:      1,310
+Class. Taxonomy:         1,310
+Num. of queries:   31570995
+Aligned queries:    9765728
+Num. alignments:  180150121
+Loading MEGAN File: SRR1631063_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       10,801,458
+With hits:          10,801,458 
+Alignments:        198,950,377
+Assig. Taxonomy:    10,800,303
+MinSupport set to: 1080
+Min-supp. changes:      17,115
+Numb. Tax. classes:      1,314
+Class. Taxonomy:         1,314
+Num. of queries:   34647437
+Aligned queries:   10801458
+Num. alignments:  198950377
+Loading MEGAN File: SRR1631064_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       10,826,443
+With hits:          10,826,443 
+Alignments:        199,051,181
+Assig. Taxonomy:    10,825,248
+MinSupport set to: 1082
+Min-supp. changes:      17,153
+Numb. Tax. classes:      1,329
+Class. Taxonomy:         1,329
+Num. of queries:   34889698
+Aligned queries:   10826443
+Num. alignments:  199051181
+Loading MEGAN File: SRR1633008_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       11,246,425
+With hits:          11,246,425 
+Alignments:        293,773,967
+Assig. Taxonomy:    11,245,791
+MinSupport set to: 1124
+Min-supp. changes:      10,631
+Numb. Tax. classes:        946
+Class. Taxonomy:           946
+Num. of queries:   19880439
+Aligned queries:   11246425
+Num. alignments:  293773967
+Loading MEGAN File: SRR1761677_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       17,445,667
+With hits:          17,445,667 
+Alignments:        109,750,106
+Assig. Taxonomy:    17,445,540
+MinSupport set to: 1744
+Min-supp. changes:       7,557
+Numb. Tax. classes:        314
+Class. Taxonomy:           314
+Num. of queries:   37322236
+Aligned queries:   17445667
+Num. alignments:  109750106
+Loading MEGAN File: SRR1761682_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       15,735,605
+With hits:          15,735,605 
+Alignments:         67,148,700
+Assig. Taxonomy:    15,735,494
+MinSupport set to: 1573
+Min-supp. changes:       5,532
+Numb. Tax. classes:        283
+Class. Taxonomy:           283
+Num. of queries:   28773379
+Aligned queries:   15735605
+Num. alignments:   67148700
+Loading MEGAN File: SRR1761688_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       15,930,327
+With hits:          15,930,327 
+Alignments:         88,436,696
+Assig. Taxonomy:    15,930,189
+MinSupport set to: 1593
+Min-supp. changes:       5,634
+Numb. Tax. classes:        268
+Class. Taxonomy:           268
+Num. of queries:   29900649
+Aligned queries:   15930327
+Num. alignments:   88436696
+Loading MEGAN File: SRR1761692_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       14,297,963
+With hits:          14,297,963 
+Alignments:         72,854,951
+Assig. Taxonomy:    14,297,868
+MinSupport set to: 1429
+Min-supp. changes:       5,879
+Numb. Tax. classes:        305
+Class. Taxonomy:           305
+Num. of queries:   31440728
+Aligned queries:   14297963
+Num. alignments:   72854951
+Loading MEGAN File: SRR1761697_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       13,027,942
+With hits:          13,027,942 
+Alignments:         59,531,651
+Assig. Taxonomy:    13,027,854
+MinSupport set to: 1302
+Min-supp. changes:       7,165
+Numb. Tax. classes:        307
+Class. Taxonomy:           307
+Num. of queries:   35929433
+Aligned queries:   13027942
+Num. alignments:   59531651
+Loading MEGAN File: SRR1761698_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       14,506,390
+With hits:          14,506,390 
+Alignments:         77,042,186
+Assig. Taxonomy:    14,506,255
+MinSupport set to: 1450
+Min-supp. changes:       9,037
+Numb. Tax. classes:        380
+Class. Taxonomy:           380
+Num. of queries:   50124132
+Aligned queries:   14506390
+Num. alignments:   77042186
+Loading MEGAN File: SRR1761705_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        6,198,514
+With hits:           6,198,514 
+Alignments:         44,682,874
+Assig. Taxonomy:     6,198,332
+MinSupport set to: 619
+Min-supp. changes:       9,340
+Numb. Tax. classes:        589
+Class. Taxonomy:           589
+Num. of queries:   43133339
+Aligned queries:    6198514
+Num. alignments:   44682874
+Loading MEGAN File: SRR1761710_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Loading MEGAN File: SRR1761710_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        8,942,351
+With hits:           8,942,351 
+Alignments:         54,556,614
+Assig. Taxonomy:     8,942,231
+MinSupport set to: 894
+Min-supp. changes:       8,495
+Numb. Tax. classes:        445
+Class. Taxonomy:           445
+Num. of queries:   40040055
+Aligned queries:    8942351
+Num. alignments:   54556614
+Loading MEGAN File: SRR1761718_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        8,354,769
+With hits:           8,354,769 
+Alignments:         79,937,309
+Assig. Taxonomy:     8,354,549
+MinSupport set to: 835
+Min-supp. changes:       9,921
+Numb. Tax. classes:        563
+Class. Taxonomy:           563
+Num. of queries:   43877103
+Aligned queries:    8354769
+Num. alignments:   79937309
+Loading MEGAN File: SRR1761721_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        7,689,047
+With hits:           7,689,047 
+Alignments:         63,816,772
+Assig. Taxonomy:     7,688,723
+MinSupport set to: 768
+Min-supp. changes:       9,703
+Numb. Tax. classes:        553
+Class. Taxonomy:           553
+Num. of queries:   43665784
+Aligned queries:    7689047
+Num. alignments:   63816772
+Loading MEGAN File: SRR1804823_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       13,134,375
+With hits:          13,134,375 
+Alignments:        177,456,135
+Assig. Taxonomy:    13,134,300
+MinSupport set to: 1313
+Min-supp. changes:       4,673
+Numb. Tax. classes:        273
+Class. Taxonomy:           273
+Num. of queries:   19301199
+Aligned queries:   13134375
+Num. alignments:  177456135
+Loading MEGAN File: SRR1804963_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:           61,491
+With hits:              61,491 
+Alignments:          1,028,023
+Assig. Taxonomy:        61,490
+MinSupport set to: 6
+Min-supp. changes:         711
+Numb. Tax. classes:        516
+Class. Taxonomy:           516
+Num. of queries:      98354
+Aligned queries:      61491
+Num. alignments:    1028023
+Loading MEGAN File: SRR1929408_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       10,736,587
+With hits:          10,736,587 
+Alignments:        351,596,941
+Assig. Taxonomy:    10,732,241
+MinSupport set to: 1073
+Min-supp. changes:      12,350
+Numb. Tax. classes:        594
+Class. Taxonomy:           594
+Num. of queries:   59782411
+Aligned queries:   10736587
+Num. alignments:  351596941
+Loading MEGAN File: SRR1930121_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        9,109,240
+With hits:           9,109,240 
+Alignments:        127,395,231
+Assig. Taxonomy:     9,104,412
+MinSupport set to: 910
+Min-supp. changes:      10,560
+Numb. Tax. classes:        586
+Class. Taxonomy:           586
+Num. of queries:   68362509
+Aligned queries:    9109240
+Num. alignments:  127395231
+Loading MEGAN File: SRR1930123_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        8,149,772
+With hits:           8,149,772 
+Alignments:        117,141,643
+Assig. Taxonomy:     8,144,415
+MinSupport set to: 814
+Min-supp. changes:      11,062
+Numb. Tax. classes:        638
+Class. Taxonomy:           638
+Num. of queries:   73940528
+Aligned queries:    8149772
+Num. alignments:  117141643
+Loading MEGAN File: SRR1930141_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        9,281,962
+With hits:           9,281,962 
+Alignments:        139,510,087
+Assig. Taxonomy:     9,277,920
+MinSupport set to: 928
+Min-supp. changes:      10,073
+Numb. Tax. classes:        525
+Class. Taxonomy:           525
+Num. of queries:   61586289
+Aligned queries:    9281962
+Num. alignments:  139510087
+Loading MEGAN File: SRR1930145_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,752,964
+With hits:           3,752,964 
+Alignments:         34,396,036
+Assig. Taxonomy:     3,752,672
+MinSupport set to: 375
+Min-supp. changes:       8,408
+Numb. Tax. classes:        589
+Class. Taxonomy:           589
+Num. of queries:   32301173
+Aligned queries:    3752964
+Num. alignments:   34396036
+Loading MEGAN File: SRR3184100_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       16,497,186
+With hits:          16,497,186 
+Alignments:        481,960,232
+Assig. Taxonomy:    16,496,496
+MinSupport set to: 1649
+Min-supp. changes:       8,932
+Numb. Tax. classes:        621
+Class. Taxonomy:           621
+Num. of queries:   26261725
+Aligned queries:   16497186
+Num. alignments:  481960232
+Loading MEGAN File: SRR3184876_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       16,294,701
+With hits:          16,294,701 
+Alignments:        316,986,131
+Assig. Taxonomy:    16,294,511
+MinSupport set to: 1629
+Min-supp. changes:      16,843
+Numb. Tax. classes:        713
+Class. Taxonomy:           713
+Num. of queries:   40471677
+Aligned queries:   16294701
+Num. alignments:  316986131
+Loading MEGAN File: SRR3189411_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       13,566,302
+With hits:          13,566,302 
+Alignments:        260,502,641
+Assig. Taxonomy:    13,566,045
+MinSupport set to: 1356
+Min-supp. changes:       9,358
+Numb. Tax. classes:        619
+Class. Taxonomy:           619
+Num. of queries:   19815178
+Aligned queries:   13566302
+Num. alignments:  260502641
+Loading MEGAN File: SRR3189416_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       12,475,023
+With hits:          12,475,023 
+Alignments:        240,504,955
+Assig. Taxonomy:    12,474,770
+MinSupport set to: 1247
+Min-supp. changes:       8,927
+Numb. Tax. classes:        620
+Class. Taxonomy:           620
+Num. of queries:   18295439
+Aligned queries:   12475023
+Num. alignments:  240504955
+Loading MEGAN File: SRR3189418_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       11,350,286
+With hits:          11,350,286 
+Alignments:        219,009,386
+Assig. Taxonomy:    11,350,061
+MinSupport set to: 1135
+Min-supp. changes:       8,776
+Numb. Tax. classes:        611
+Class. Taxonomy:           611
+Num. of queries:   16666141
+Aligned queries:   11350286
+Num. alignments:  219009386
+Loading MEGAN File: SRR513165_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        6,651,526
+With hits:           6,651,526 
+Alignments:         64,233,224
+Assig. Taxonomy:     6,651,508
+MinSupport set to: 665
+Min-supp. changes:       5,256
+Numb. Tax. classes:        407
+Class. Taxonomy:           407
+Num. of queries:   14347143
+Aligned queries:    6651526
+Num. alignments:   64233224
+Loading MEGAN File: SRR513768_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       11,300,654
+With hits:          11,300,654 
+Alignments:        125,790,091
+Assig. Taxonomy:    11,300,620
+MinSupport set to: 1130
+Min-supp. changes:       6,041
+Numb. Tax. classes:        469
+Class. Taxonomy:           469
+Num. of queries:   27853488
+Aligned queries:   11300654
+Num. alignments:  125790091
+Loading MEGAN File: SRR513775_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       11,633,906
+With hits:          11,633,906 
+Alignments:        132,206,834
+Assig. Taxonomy:    11,633,797
+MinSupport set to: 1163
+Min-supp. changes:       5,928
+Numb. Tax. classes:        430
+Class. Taxonomy:           430
+Num. of queries:   24135024
+Aligned queries:   11633906
+Num. alignments:  132206834
+Loading MEGAN File: SRR513828_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       15,555,777
+With hits:          15,555,777 
+Alignments:        165,629,366
+Assig. Taxonomy:    15,555,707
+MinSupport set to: 1555
+Min-supp. changes:       6,968
+Numb. Tax. classes:        487
+Class. Taxonomy:           487
+Num. of queries:   46396092
+Aligned queries:   15555777
+Num. alignments:  165629366
+Loading MEGAN File: SRR514202_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        8,761,237
+With hits:           8,761,237 
+Alignments:         75,669,910
+Assig. Taxonomy:     8,761,196
+MinSupport set to: 876
+Min-supp. changes:       4,409
+Numb. Tax. classes:        306
+Class. Taxonomy:           306
+Num. of queries:   11742026
+Aligned queries:    8761237
+Num. alignments:   75669910
+Loading MEGAN File: SRR514239_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        6,899,793
+With hits:           6,899,793 
+Alignments:         72,254,511
+Assig. Taxonomy:     6,899,748
+MinSupport set to: 689
+Min-supp. changes:       5,840
+Numb. Tax. classes:        476
+Class. Taxonomy:           476
+Num. of queries:   16633965
+Aligned queries:    6899793
+Num. alignments:   72254511
+Loading MEGAN File: SRR514261_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       41,812,839
+With hits:          41,812,839 
+Alignments:        780,579,980
+Assig. Taxonomy:    41,812,770
+MinSupport set to: 4181
+Min-supp. changes:       6,411
+Numb. Tax. classes:        306
+Class. Taxonomy:           306
+Num. of queries:   71755296
+Aligned queries:   41812839
+Num. alignments:  780579980
+Loading MEGAN File: SRR514329_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       16,333,925
+With hits:          16,333,925 
+Alignments:        300,643,396
+Assig. Taxonomy:    16,333,812
+MinSupport set to: 1633
+Min-supp. changes:       7,009
+Numb. Tax. classes:        443
+Class. Taxonomy:           443
+Num. of queries:   28140094
+Aligned queries:   16333925
+Num. alignments:  300643396
+Loading MEGAN File: SRR514844_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       63,467,842
+With hits:          63,467,842 
+Alignments:        615,221,383
+Assig. Taxonomy:    63,467,578
+MinSupport set to: 6346
+Min-supp. changes:       8,926
+Numb. Tax. classes:        429
+Class. Taxonomy:           429
+Num. of queries:  121423147
+Aligned queries:   63467842
+Num. alignments:  615221383
+Loading MEGAN File: VLD001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,140,174
+With hits:           2,140,174 
+Alignments:         19,073,676
+Assig. Taxonomy:     2,140,107
+MinSupport set to: 214
+Min-supp. changes:       7,304
+Numb. Tax. classes:        854
+Class. Taxonomy:           854
+Num. of queries:    9040714
+Aligned queries:    2140174
+Num. alignments:   19073676
+Loading MEGAN File: ZAF001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,316,391
+With hits:           1,316,391 
+Alignments:         23,727,003
+Assig. Taxonomy:     1,316,190
+MinSupport set to: 131
+Min-supp. changes:       6,832
+Numb. Tax. classes:      1,392
+Class. Taxonomy:         1,392
+Num. of queries:    8749845
+Aligned queries:    1316391
+Num. alignments:   23727003
+Loading MEGAN File: ERR1022692_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,427,922
+With hits:           2,427,922 
+Alignments:         68,143,787
+Assig. Taxonomy:     2,425,910
+MinSupport set to: 242
+Min-supp. changes:       9,510
+Numb. Tax. classes:      1,472
+Class. Taxonomy:         1,472
+Num. of queries:   93223106
+Aligned queries:    2427922
+Num. alignments:   68143787
+Loading MEGAN File: ERR1035437_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,437,426
+With hits:           4,437,426 
+Alignments:         58,968,342
+Assig. Taxonomy:     4,433,378
+MinSupport set to: 443
+Min-supp. changes:      13,695
+Numb. Tax. classes:      1,678
+Class. Taxonomy:         1,678
+Num. of queries:  168696126
+Aligned queries:    4437426
+Num. alignments:   58968342
+Loading MEGAN File: ERR1035438_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,736,093
+With hits:           3,736,093 
+Alignments:         67,604,971
+Assig. Taxonomy:     3,733,912
+MinSupport set to: 373
+Min-supp. changes:      12,986
+Numb. Tax. classes:      1,584
+Class. Taxonomy:         1,584
+Num. of queries:  157684040
+Aligned queries:    3736093
+Num. alignments:   67604971
+Loading MEGAN File: ERR1039457_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,402,198
+With hits:           3,402,198 
+Alignments:        106,665,299
+Assig. Taxonomy:     3,399,973
+MinSupport set to: 340
+Min-supp. changes:      11,130
+Numb. Tax. classes:      1,473
+Class. Taxonomy:         1,473
+Num. of queries:  112992201
+Aligned queries:    3402198
+Num. alignments:  106665299
+Loading MEGAN File: ERR1039458_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,356,819
+With hits:           4,356,819 
+Alignments:        103,005,298
+Assig. Taxonomy:     4,353,021
+MinSupport set to: 435
+Min-supp. changes:      11,568
+Numb. Tax. classes:      1,464
+Class. Taxonomy:         1,464
+Num. of queries:  179179315
+Aligned queries:    4356819
+Num. alignments:  103005298
+Loading MEGAN File: ERR1043166_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,484,963
+With hits:           4,484,963 
+Alignments:         75,069,855
+Assig. Taxonomy:     4,465,947
+MinSupport set to: 448
+Min-supp. changes:      16,774
+Numb. Tax. classes:      1,936
+Class. Taxonomy:         1,936
+Num. of queries:  156576310
+Aligned queries:    4484963
+Num. alignments:   75069855
+Loading MEGAN File: ERR1044071_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        7,048,623
+With hits:           7,048,623 
+Alignments:        118,466,532
+Assig. Taxonomy:     7,026,037
+MinSupport set to: 704
+Min-supp. changes:      22,717
+Numb. Tax. classes:      2,160
+Class. Taxonomy:         2,160
+Num. of queries:  185489567
+Aligned queries:    7048623
+Num. alignments:  118466532
+Loading MEGAN File: ERR1044072_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       11,995,027
+With hits:          11,995,027 
+Alignments:        211,479,447
+Assig. Taxonomy:    11,967,742
+MinSupport set to: 1199
+Min-supp. changes:      24,435
+Numb. Tax. classes:      1,889
+Class. Taxonomy:         1,889
+Num. of queries:  198500515
+Aligned queries:   11995027
+Num. alignments:  211479447
+Loading MEGAN File: ERR1051325_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        6,901,320
+With hits:           6,901,320 
+Alignments:        115,039,989
+Assig. Taxonomy:     6,883,818
+MinSupport set to: 690
+Min-supp. changes:      21,582
+Numb. Tax. classes:      2,150
+Class. Taxonomy:         2,150
+Num. of queries:  194991142
+Aligned queries:    6901320
+Num. alignments:  115039989
+Loading MEGAN File: ERR1051326_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,602,113
+With hits:           3,602,113 
+Alignments:         62,021,064
+Assig. Taxonomy:     3,589,360
+MinSupport set to: 360
+Min-supp. changes:      16,036
+Numb. Tax. classes:      2,077
+Class. Taxonomy:         2,077
+Num. of queries:  155011806
+Aligned queries:    3602113
+Num. alignments:   62021064
+Loading MEGAN File: ABM007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          655,045
+With hits:             655,045 
+Alignments:          3,780,280
+Assig. Taxonomy:       655,018
+MinSupport set to: 65
+Min-supp. changes:       5,001
+Numb. Tax. classes:        774
+Class. Taxonomy:           774
+Num. of queries:    4239292
+Aligned queries:     655045
+Num. alignments:    3780280
+Loading MEGAN File: ABM008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          381,814
+With hits:             381,814 
+Alignments:          2,317,035
+Assig. Taxonomy:       381,809
+MinSupport set to: 38
+Min-supp. changes:       4,123
+Numb. Tax. classes:        774
+Class. Taxonomy:           774
+Num. of queries:    2508884
+Aligned queries:     381814
+Num. alignments:    2317035
+Loading MEGAN File: BAN001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          990,656
+With hits:             990,656 
+Alignments:         17,047,981
+Assig. Taxonomy:       990,641
+MinSupport set to: 99
+Min-supp. changes:       6,206
+Numb. Tax. classes:      1,215
+Class. Taxonomy:         1,215
+Num. of queries:   10106625
+Aligned queries:     990656
+Num. alignments:   17047981
+Loading MEGAN File: BSQ001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,458,054
+With hits:           1,458,054 
+Alignments:         15,156,697
+Assig. Taxonomy:     1,457,996
+MinSupport set to: 145
+Min-supp. changes:       8,072
+Numb. Tax. classes:      1,115
+Class. Taxonomy:         1,115
+Num. of queries:   10866912
+Aligned queries:    1458054
+Num. alignments:   15156697
+Loading MEGAN File: DJA006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          635,681
+With hits:             635,681 
+Alignments:          4,129,425
+Assig. Taxonomy:       635,668
+MinSupport set to: 63
+Min-supp. changes:       4,767
+Numb. Tax. classes:        910
+Class. Taxonomy:           910
+Num. of queries:    3653404
+Aligned queries:     635681
+Num. alignments:    4129425
+Loading MEGAN File: DJA007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          968,390
+With hits:             968,390 
+Alignments:          5,622,552
+Assig. Taxonomy:       968,361
+MinSupport set to: 96
+Min-supp. changes:       5,846
+Numb. Tax. classes:        795
+Class. Taxonomy:           795
+Num. of queries:    5759759
+Aligned queries:     968390
+Num. alignments:    5622552
+Loading MEGAN File: EBO008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          795,058
+With hits:             795,058 
+Alignments:          6,295,939
+Assig. Taxonomy:       795,048
+MinSupport set to: 79
+Min-supp. changes:       5,007
+Numb. Tax. classes:        673
+Class. Taxonomy:           673
+Num. of queries:    3681373
+Aligned queries:     795058
+Num. alignments:    6295939
+Loading MEGAN File: EBO009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          333,183
+With hits:             333,183 
+Alignments:          2,393,065
+Assig. Taxonomy:       333,180
+MinSupport set to: 33
+Min-supp. changes:       3,717
+Numb. Tax. classes:        700
+Class. Taxonomy:           700
+Num. of queries:    1774899
+Aligned queries:     333183
+Num. alignments:    2393065
+Loading MEGAN File: ESA003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,030,062
+With hits:           4,030,062 
+Alignments:         32,101,330
+Assig. Taxonomy:     4,030,036
+MinSupport set to: 403
+Min-supp. changes:       7,662
+Numb. Tax. classes:        524
+Class. Taxonomy:           524
+Num. of queries:   10129501
+Aligned queries:    4030062
+Num. alignments:   32101330
+Loading MEGAN File: ESA004.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,661,758
+With hits:           2,661,758 
+Alignments:         15,682,495
+Assig. Taxonomy:     2,661,711
+MinSupport set to: 266
+Min-supp. changes:       7,201
+Numb. Tax. classes:        580
+Class. Taxonomy:           580
+Num. of queries:    7824141
+Aligned queries:    2661758
+Num. alignments:   15682495
+Loading MEGAN File: ESA006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,799,854
+With hits:           3,799,854 
+Alignments:         19,999,757
+Assig. Taxonomy:     3,799,701
+MinSupport set to: 379
+Min-supp. changes:       8,178
+Numb. Tax. classes:        645
+Class. Taxonomy:           645
+Num. of queries:   11233426
+Aligned queries:    3799854
+Num. alignments:   19999757
+Loading MEGAN File: ESA007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,310,655
+With hits:           3,310,655 
+Alignments:         16,136,433
+Assig. Taxonomy:     3,310,599
+MinSupport set to: 331
+Min-supp. changes:       7,645
+Numb. Tax. classes:        655
+Class. Taxonomy:           655
+Num. of queries:    9903431
+Aligned queries:    3310655
+Num. alignments:   16136433
+Loading MEGAN File: ESA008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,848,491
+With hits:           2,848,491 
+Alignments:         14,897,090
+Assig. Taxonomy:     2,848,460
+MinSupport set to: 284
+Min-supp. changes:       7,281
+Numb. Tax. classes:        541
+Class. Taxonomy:           541
+Num. of queries:    9119930
+Aligned queries:    2848491
+Num. alignments:   14897090
+Loading MEGAN File: FDM001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          781,273
+With hits:             781,273 
+Alignments:          7,257,552
+Assig. Taxonomy:       781,241
+MinSupport set to: 78
+Min-supp. changes:       4,885
+Numb. Tax. classes:        803
+Class. Taxonomy:           803
+Num. of queries:    2429706
+Aligned queries:     781273
+Num. alignments:    7257552
+Loading MEGAN File: IBA001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          769,473
+With hits:             769,473 
+Alignments:         10,796,314
+Assig. Taxonomy:       769,419
+MinSupport set to: 76
+Min-supp. changes:       6,646
+Numb. Tax. classes:      1,261
+Class. Taxonomy:         1,261
+Num. of queries:    4124522
+Aligned queries:     769473
+Num. alignments:   10796314
+Loading MEGAN File: IBA002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,574,912
+With hits:           3,574,912 
+Alignments:         76,615,206
+Assig. Taxonomy:     3,574,884
+MinSupport set to: 357
+Min-supp. changes:       6,430
+Numb. Tax. classes:        613
+Class. Taxonomy:           613
+Num. of queries:    6947309
+Aligned queries:    3574912
+Num. alignments:   76615206
+Loading MEGAN File: KNP001.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,730,587
+With hits:           2,730,587 
+Alignments:         19,314,854
+Assig. Taxonomy:     2,730,545
+MinSupport set to: 273
+Min-supp. changes:       8,193
+Numb. Tax. classes:        747
+Class. Taxonomy:           747
+Num. of queries:   16260023
+Aligned queries:    2730587
+Num. alignments:   19314854
+Loading MEGAN File: KNP003.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,097,007
+With hits:           2,097,007 
+Alignments:         13,991,795
+Assig. Taxonomy:     2,096,988
+MinSupport set to: 209
+Min-supp. changes:       6,708
+Numb. Tax. classes:        662
+Class. Taxonomy:           662
+Num. of queries:   10394445
+Aligned queries:    2097007
+Num. alignments:   13991795
+Loading MEGAN File: KNP004.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:           34,968
+With hits:              34,968 
+Alignments:            225,056
+Assig. Taxonomy:        34,963
+MinSupport set to: 3
+Min-supp. changes:         838
+Numb. Tax. classes:        696
+Class. Taxonomy:           696
+Num. of queries:     184494
+Aligned queries:      34968
+Num. alignments:     225056
+Loading MEGAN File: KNP005.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,778,517
+With hits:           1,778,517 
+Alignments:         10,143,068
+Assig. Taxonomy:     1,778,473
+MinSupport set to: 177
+Min-supp. changes:       6,787
+Numb. Tax. classes:        666
+Class. Taxonomy:           666
+Num. of queries:   11095033
+Aligned queries:    1778517
+Num. alignments:   10143068
+Loading MEGAN File: KNP006.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,417,609
+With hits:           2,417,609 
+Alignments:         13,896,644
+Assig. Taxonomy:     2,417,583
+MinSupport set to: 241
+Min-supp. changes:       6,932
+Numb. Tax. classes:        642
+Class. Taxonomy:           642
+Num. of queries:   11159677
+Aligned queries:    2417609
+Num. alignments:   13896644
+Loading MEGAN File: KNP007.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,731,983
+With hits:           1,731,983 
+Alignments:         11,435,378
+Assig. Taxonomy:     1,731,957
+MinSupport set to: 173
+Min-supp. changes:       6,165
+Numb. Tax. classes:        647
+Class. Taxonomy:           647
+Num. of queries:    9160659
+Aligned queries:    1731983
+Num. alignments:   11435378
+Loading MEGAN File: KNP009.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,314,538
+With hits:           2,314,538 
+Alignments:         13,671,475
+Assig. Taxonomy:     2,314,504
+MinSupport set to: 231
+Min-supp. changes:       6,885
+Numb. Tax. classes:        585
+Class. Taxonomy:           585
+Num. of queries:   11345038
+Aligned queries:    2314538
+Num. alignments:   13671475
+Loading MEGAN File: LIS001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,547,342
+With hits:           3,547,342 
+Alignments:         17,917,023
+Assig. Taxonomy:     3,547,318
+MinSupport set to: 354
+Min-supp. changes:       7,530
+Numb. Tax. classes:        518
+Class. Taxonomy:           518
+Num. of queries:   10615930
+Aligned queries:    3547342
+Num. alignments:   17917023
+Loading MEGAN File: LIS002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,357,847
+With hits:           3,357,847 
+Alignments:         15,673,555
+Assig. Taxonomy:     3,357,826
+MinSupport set to: 335
+Min-supp. changes:       7,813
+Numb. Tax. classes:        499
+Class. Taxonomy:           499
+Num. of queries:   11561710
+Aligned queries:    3357847
+Num. alignments:   15673555
+Loading MEGAN File: LIS003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,293,600
+With hits:           3,293,600 
+Alignments:         27,939,310
+Assig. Taxonomy:     3,293,578
+MinSupport set to: 329
+Min-supp. changes:       8,093
+Numb. Tax. classes:        596
+Class. Taxonomy:           596
+Num. of queries:   10417160
+Aligned queries:    3293600
+Num. alignments:   27939310
+Loading MEGAN File: OME002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,519,983
+With hits:           2,519,983 
+Alignments:         39,796,742
+Assig. Taxonomy:     2,519,573
+MinSupport set to: 251
+Min-supp. changes:       9,049
+Numb. Tax. classes:      1,174
+Class. Taxonomy:         1,174
+Num. of queries:   13994463
+Aligned queries:    2519983
+Num. alignments:   39796742
+Loading MEGAN File: OME003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,332,820
+With hits:           2,332,820 
+Alignments:         39,959,784
+Assig. Taxonomy:     2,332,732
+MinSupport set to: 233
+Min-supp. changes:       9,574
+Numb. Tax. classes:      1,056
+Class. Taxonomy:         1,056
+Num. of queries:   13956736
+Aligned queries:    2332820
+Num. alignments:   39959784
+Loading MEGAN File: OME005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,700,752
+With hits:           1,700,752 
+Alignments:         32,327,966
+Assig. Taxonomy:     1,700,351
+MinSupport set to: 170
+Min-supp. changes:       7,134
+Numb. Tax. classes:      1,024
+Class. Taxonomy:         1,024
+Num. of queries:    9470819
+Aligned queries:    1700752
+Num. alignments:   32327966
+Loading MEGAN File: OME007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,470,073
+With hits:           2,470,073 
+Alignments:         46,943,844
+Assig. Taxonomy:     2,469,415
+MinSupport set to: 247
+Min-supp. changes:       7,402
+Numb. Tax. classes:        855
+Class. Taxonomy:           855
+Num. of queries:   11490181
+Aligned queries:    2470073
+Num. alignments:   46943844
+Loading MEGAN File: OME009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,441,832
+With hits:           1,441,832 
+Alignments:         23,140,656
+Assig. Taxonomy:     1,441,629
+MinSupport set to: 144
+Min-supp. changes:       7,222
+Numb. Tax. classes:      1,140
+Class. Taxonomy:         1,140
+Num. of queries:    7422246
+Aligned queries:    1441832
+Num. alignments:   23140656
+Loading MEGAN File: TAF008.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,623,032
+With hits:           3,623,032 
+Alignments:         13,427,583
+Assig. Taxonomy:     3,623,007
+MinSupport set to: 362
+Min-supp. changes:       6,742
+Numb. Tax. classes:        508
+Class. Taxonomy:           508
+Num. of queries:   11524885
+Aligned queries:    3623032
+Num. alignments:   13427583
+Loading MEGAN File: TAF016.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,149,923
+With hits:           1,149,923 
+Alignments:         10,827,702
+Assig. Taxonomy:     1,149,820
+MinSupport set to: 114
+Min-supp. changes:       3,066
+Numb. Tax. classes:        750
+Class. Taxonomy:           750
+Num. of queries:    4769590
+Aligned queries:    1149923
+Num. alignments:   10827702
+Loading MEGAN File: TAF017.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,449,042
+With hits:           2,449,042 
+Alignments:         15,481,940
+Assig. Taxonomy:     2,448,912
+MinSupport set to: 244
+Min-supp. changes:       5,310
+Numb. Tax. classes:        804
+Class. Taxonomy:           804
+Num. of queries:    8336717
+Aligned queries:    2449042
+Num. alignments:   15481940
+Loading MEGAN File: TAF018.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,748,372
+With hits:           3,748,372 
+Alignments:         33,215,548
+Assig. Taxonomy:     3,748,290
+MinSupport set to: 374
+Min-supp. changes:       7,578
+Numb. Tax. classes:        773
+Class. Taxonomy:           773
+Num. of queries:   14681780
+Aligned queries:    3748372
+Num. alignments:   33215548
+Loading MEGAN File: WAL001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          917,110
+With hits:             917,110 
+Alignments:         16,300,927
+Assig. Taxonomy:       917,085
+MinSupport set to: 91
+Min-supp. changes:       7,256
+Numb. Tax. classes:      1,357
+Class. Taxonomy:         1,357
+Num. of queries:    4737493
+Aligned queries:     917110
+Num. alignments:   16300927
+Loading MEGAN File: EXB002.A1101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:           70,954
+With hits:              70,954 
+Alignments:          4,568,431
+Assig. Taxonomy:        70,953
+MinSupport set to: 7
+Min-supp. changes:       1,191
+Numb. Tax. classes:        921
+Class. Taxonomy:           921
+Num. of queries:     280225
+Aligned queries:      70954
+Num. alignments:    4568431
+Loading MEGAN File: EXB015.A1701_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          149,563
+With hits:             149,563 
+Alignments:          4,803,846
+Assig. Taxonomy:       149,562
+MinSupport set to: 14
+Min-supp. changes:       1,272
+Numb. Tax. classes:        523
+Class. Taxonomy:           523
+Num. of queries:     238443
+Aligned queries:     149563
+Num. alignments:    4803846
+Loading MEGAN File: EXB015.A1901_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          188,745
+With hits:             188,745 
+Alignments:          4,672,568
+Assig. Taxonomy:       188,741
+MinSupport set to: 18
+Min-supp. changes:       1,331
+Numb. Tax. classes:        506
+Class. Taxonomy:           506
+Num. of queries:     277964
+Aligned queries:     188745
+Num. alignments:    4672568
+Loading MEGAN File: EXB015.A2001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          215,728
+With hits:             215,728 
+Alignments:          7,133,586
+Assig. Taxonomy:       215,726
+MinSupport set to: 21
+Min-supp. changes:       1,528
+Numb. Tax. classes:        520
+Class. Taxonomy:           520
+Num. of queries:     309131
+Aligned queries:     215728
+Num. alignments:    7133586
+Loading MEGAN File: EXB015.A2101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          330,362
+With hits:             330,362 
+Alignments:          8,676,895
+Assig. Taxonomy:       330,359
+MinSupport set to: 33
+Min-supp. changes:       1,545
+Numb. Tax. classes:        410
+Class. Taxonomy:           410
+Num. of queries:     448340
+Aligned queries:     330362
+Num. alignments:    8676895
+Loading MEGAN File: EXB015.A2201_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          336,864
+With hits:             336,864 
+Alignments:         23,996,549
+Assig. Taxonomy:       336,852
+MinSupport set to: 33
+Min-supp. changes:       1,718
+Numb. Tax. classes:        539
+Class. Taxonomy:           539
+Num. of queries:     505402
+Aligned queries:     336864
+Num. alignments:   23996549
+Loading MEGAN File: EXB015.A2301_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          109,691
+With hits:             109,691 
+Alignments:          3,395,743
+Assig. Taxonomy:       109,690
+MinSupport set to: 10
+Min-supp. changes:         844
+Numb. Tax. classes:        459
+Class. Taxonomy:           459
+Num. of queries:     172075
+Aligned queries:     109691
+Num. alignments:    3395743
+Loading MEGAN File: EXB020.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:           38,681
+With hits:              38,681 
+Alignments:          1,210,478
+Assig. Taxonomy:        38,678
+MinSupport set to: 3
+Min-supp. changes:         700
+Numb. Tax. classes:        902
+Class. Taxonomy:           902
+Num. of queries:      81784
+Aligned queries:      38681
+Num. alignments:    1210478
+Loading MEGAN File: EXB020.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          173,786
+With hits:             173,786 
+Alignments:          4,091,407
+Assig. Taxonomy:       173,760
+MinSupport set to: 17
+Min-supp. changes:       1,773
+Numb. Tax. classes:        730
+Class. Taxonomy:           730
+Num. of queries:     326164
+Aligned queries:     173786
+Num. alignments:    4091407
+Loading MEGAN File: EXB021.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:           39,789
+With hits:              39,789 
+Alignments:          1,374,272
+Assig. Taxonomy:        39,788
+MinSupport set to: 3
+Min-supp. changes:         651
+Numb. Tax. classes:        713
+Class. Taxonomy:           713
+Num. of queries:      73597
+Aligned queries:      39789
+Num. alignments:    1374272
+Loading MEGAN File: EXB021.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          215,587
+With hits:             215,587 
+Alignments:          4,651,336
+Assig. Taxonomy:       215,565
+MinSupport set to: 21
+Min-supp. changes:       1,880
+Numb. Tax. classes:        832
+Class. Taxonomy:           832
+Num. of queries:     405936
+Aligned queries:     215587
+Num. alignments:    4651336
+Loading MEGAN File: EXB022.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          974,181
+With hits:             974,181 
+Alignments:         31,486,008
+Assig. Taxonomy:       974,166
+MinSupport set to: 97
+Min-supp. changes:       3,721
+Numb. Tax. classes:        750
+Class. Taxonomy:           750
+Num. of queries:    1767632
+Aligned queries:     974181
+Num. alignments:   31486008
+Loading MEGAN File: EXB022.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          483,639
+With hits:             483,639 
+Alignments:         23,338,538
+Assig. Taxonomy:       483,629
+MinSupport set to: 48
+Min-supp. changes:       2,599
+Numb. Tax. classes:        645
+Class. Taxonomy:           645
+Num. of queries:     746848
+Aligned queries:     483639
+Num. alignments:   23338538
+Loading MEGAN File: EXB023.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          924,304
+With hits:             924,304 
+Alignments:         31,660,751
+Assig. Taxonomy:       924,278
+MinSupport set to: 92
+Min-supp. changes:       3,726
+Numb. Tax. classes:        870
+Class. Taxonomy:           870
+Num. of queries:    1731519
+Aligned queries:     924304
+Num. alignments:   31660751
+Loading MEGAN File: EXB023.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          260,387
+With hits:             260,387 
+Alignments:          7,362,107
+Assig. Taxonomy:       260,374
+MinSupport set to: 26
+Min-supp. changes:       1,991
+Numb. Tax. classes:        739
+Class. Taxonomy:           739
+Num. of queries:     458936
+Aligned queries:     260387
+Num. alignments:    7362107
+Loading MEGAN File: EXB033.A0401_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          193,406
+With hits:             193,406 
+Alignments:          6,793,942
+Assig. Taxonomy:       193,386
+MinSupport set to: 19
+Min-supp. changes:       2,500
+Numb. Tax. classes:      1,343
+Class. Taxonomy:         1,343
+Num. of queries:     891364
+Aligned queries:     193406
+Num. alignments:    6793942
+Loading MEGAN File: EXB033.A0801_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          488,268
+With hits:             488,268 
+Alignments:         25,011,463
+Assig. Taxonomy:       488,229
+MinSupport set to: 48
+Min-supp. changes:       1,613
+Numb. Tax. classes:        848
+Class. Taxonomy:           848
+Num. of queries:     940295
+Aligned queries:     488268
+Num. alignments:   25011463
+Loading MEGAN File: EXB033.A0802_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          418,391
+With hits:             418,391 
+Alignments:          9,727,647
+Assig. Taxonomy:       418,350
+MinSupport set to: 41
+Min-supp. changes:       2,491
+Numb. Tax. classes:        948
+Class. Taxonomy:           948
+Num. of queries:     861868
+Aligned queries:     418391
+Num. alignments:    9727647
+Loading MEGAN File: LIB007.A0115_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          125,585
+With hits:             125,585 
+Alignments:          5,974,716
+Assig. Taxonomy:       125,585
+MinSupport set to: 12
+Min-supp. changes:         667
+Numb. Tax. classes:        311
+Class. Taxonomy:           311
+Num. of queries:     260469
+Aligned queries:     125585
+Num. alignments:    5974716
+Loading MEGAN File: LIB007.A0116_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          114,852
+With hits:             114,852 
+Alignments:          6,309,110
+Assig. Taxonomy:       114,851
+MinSupport set to: 11
+Min-supp. changes:         665
+Numb. Tax. classes:        332
+Class. Taxonomy:           332
+Num. of queries:     152313
+Aligned queries:     114852
+Num. alignments:    6309110
+Loading MEGAN File: LIB007.A0117_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:           37,351
+With hits:              37,351 
+Alignments:          3,109,655
+Assig. Taxonomy:        37,350
+MinSupport set to: 3
+Min-supp. changes:         244
+Numb. Tax. classes:        236
+Class. Taxonomy:           236
+Num. of queries:      45330
+Aligned queries:      37351
+Num. alignments:    3109655
+Loading MEGAN File: LIB007.A0118_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          313,023
+With hits:             313,023 
+Alignments:         12,317,906
+Assig. Taxonomy:       313,019
+MinSupport set to: 31
+Min-supp. changes:         978
+Numb. Tax. classes:        317
+Class. Taxonomy:           317
+Num. of queries:     413954
+Aligned queries:     313023
+Num. alignments:   12317906
+Loading MEGAN File: LIB007.A0119_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          192,364
+With hits:             192,364 
+Alignments:         10,227,675
+Assig. Taxonomy:       192,363
+MinSupport set to: 19
+Min-supp. changes:         584
+Numb. Tax. classes:        296
+Class. Taxonomy:           296
+Num. of queries:     295765
+Aligned queries:     192364
+Num. alignments:   10227675
+Loading MEGAN File: LIB009.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:           73,801
+With hits:              73,801 
+Alignments:          2,845,062
+Assig. Taxonomy:        73,785
+MinSupport set to: 7
+Min-supp. changes:       1,282
+Numb. Tax. classes:        972
+Class. Taxonomy:           972
+Num. of queries:     204414
+Aligned queries:      73801
+Num. alignments:    2845062
+Loading MEGAN File: LIB012.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:           47,604
+With hits:              47,604 
+Alignments:          1,232,631
+Assig. Taxonomy:        47,604
+MinSupport set to: 4
+Min-supp. changes:         680
+Numb. Tax. classes:        576
+Class. Taxonomy:           576
+Num. of queries:      84134
+Aligned queries:      47604
+Num. alignments:    1232631
+Loading MEGAN File: LIB013.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:              117
+With hits:                 117 
+Alignments:              1,282
+Assig. Taxonomy:           117
+MinSupport set to: 1
+Min-supp. changes:           0
+Numb. Tax. classes:         30
+Class. Taxonomy:            30
+Num. of queries:        334
+Aligned queries:        117
+Num. alignments:       1282
+Loading MEGAN File: LIB014.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          516,734
+With hits:             516,734 
+Alignments:         16,945,573
+Assig. Taxonomy:       516,690
+MinSupport set to: 51
+Min-supp. changes:       3,032
+Numb. Tax. classes:        773
+Class. Taxonomy:           773
+Num. of queries:     991883
+Aligned queries:     516734
+Num. alignments:   16945573
+Loading MEGAN File: LIB015.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          579,583
+With hits:             579,583 
+Alignments:         17,049,800
+Assig. Taxonomy:       579,572
+MinSupport set to: 57
+Min-supp. changes:       3,618
+Numb. Tax. classes:      1,096
+Class. Taxonomy:         1,096
+Num. of queries:    1451516
+Aligned queries:     579583
+Num. alignments:   17049800
+Loading MEGAN File: LIB017.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          469,849
+With hits:             469,849 
+Alignments:         29,310,730
+Assig. Taxonomy:       469,827
+MinSupport set to: 46
+Min-supp. changes:       1,579
+Numb. Tax. classes:        629
+Class. Taxonomy:           629
+Num. of queries:     936003
+Aligned queries:     469849
+Num. alignments:   29310730
+Loading MEGAN File: LIB017.A0102_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          415,577
+With hits:             415,577 
+Alignments:         31,567,435
+Assig. Taxonomy:       415,575
+MinSupport set to: 41
+Min-supp. changes:       1,165
+Numb. Tax. classes:        356
+Class. Taxonomy:           356
+Num. of queries:     670043
+Aligned queries:     415577
+Num. alignments:   31567435
+Loading MEGAN File: LIB025.A0301_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          122,816
+With hits:             122,816 
+Alignments:          4,817,986
+Assig. Taxonomy:       122,785
+MinSupport set to: 12
+Min-supp. changes:       2,763
+Numb. Tax. classes:      1,568
+Class. Taxonomy:         1,568
+Num. of queries:     712751
+Aligned queries:     122816
+Num. alignments:    4817986
+Loading MEGAN File: LIB025.A0601_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          450,419
+With hits:             450,419 
+Alignments:          8,551,762
+Assig. Taxonomy:       450,419
+MinSupport set to: 45
+Min-supp. changes:       1,114
+Numb. Tax. classes:        414
+Class. Taxonomy:           414
+Num. of queries:     718323
+Aligned queries:     450419
+Num. alignments:    8551762
+Loading MEGAN File: LIB025.A0701_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          403,799
+With hits:             403,799 
+Alignments:          2,424,481
+Assig. Taxonomy:       403,787
+MinSupport set to: 40
+Min-supp. changes:       1,042
+Numb. Tax. classes:        512
+Class. Taxonomy:           512
+Num. of queries:     830044
+Aligned queries:     403799
+Num. alignments:    2424481
+Loading MEGAN File: LIB025.A1001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          391,608
+With hits:             391,608 
+Alignments:          5,768,629
+Assig. Taxonomy:       391,583
+MinSupport set to: 39
+Min-supp. changes:       2,163
+Numb. Tax. classes:        709
+Class. Taxonomy:           709
+Num. of queries:    1009329
+Aligned queries:     391608
+Num. alignments:    5768629
+Loading MEGAN File: LIB025.A1301_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          187,923
+With hits:             187,923 
+Alignments:          6,759,782
+Assig. Taxonomy:       187,916
+MinSupport set to: 18
+Min-supp. changes:       1,607
+Numb. Tax. classes:        727
+Class. Taxonomy:           727
+Num. of queries:     364668
+Aligned queries:     187923
+Num. alignments:    6759782
+Loading MEGAN File: BIT001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,113,738
+With hits:           1,113,738 
+Alignments:         21,280,433
+Assig. Taxonomy:     1,113,041
+MinSupport set to: 111
+Min-supp. changes:       9,147
+Numb. Tax. classes:      1,800
+Class. Taxonomy:         1,800
+Num. of queries:    7460523
+Aligned queries:    1113738
+Num. alignments:   21280433
+Loading MEGAN File: SRR061320_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       12,144,092
+With hits:          12,144,092 
+Alignments:        105,956,032
+Assig. Taxonomy:    12,144,052
+MinSupport set to: 1214
+Min-supp. changes:       6,808
+Numb. Tax. classes:        433
+Class. Taxonomy:           433
+Num. of queries:   23527394
+Aligned queries:   12144092
+Num. alignments:  105956032
+Loading MEGAN File: SRR1804664_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       10,947,012
+With hits:          10,947,012 
+Alignments:        109,268,162
+Assig. Taxonomy:    10,947,005
+MinSupport set to: 1094
+Min-supp. changes:       5,592
+Numb. Tax. classes:        394
+Class. Taxonomy:           394
+Num. of queries:   27544110
+Aligned queries:   10947012
+Num. alignments:  109268162
+Loading MEGAN File: SRR512767_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       37,433,590
+With hits:          37,433,590 
+Alignments:        347,312,054
+Assig. Taxonomy:    37,433,566
+MinSupport set to: 3743
+Min-supp. changes:       5,865
+Numb. Tax. classes:        309
+Class. Taxonomy:           309
+Num. of queries:   66555322
+Aligned queries:   37433590
+Num. alignments:  347312054
+Loading MEGAN File: SRR513449_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,352,031
+With hits:           1,352,031 
+Alignments:         19,464,066
+Assig. Taxonomy:     1,351,998
+MinSupport set to: 135
+Min-supp. changes:       3,207
+Numb. Tax. classes:        497
+Class. Taxonomy:           497
+Num. of queries:    2420814
+Aligned queries:    1352031
+Num. alignments:   19464066
+Loading MEGAN File: MTM003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       15,043,355
+With hits:          15,043,355 
+Alignments:        304,806,340
+Assig. Taxonomy:    15,043,255
+MinSupport set to: 1504
+Min-supp. changes:      13,411
+Numb. Tax. classes:        811
+Class. Taxonomy:           811
+Num. of queries:   34546048
+Aligned queries:   15043355
+Num. alignments:  304806340
+Loading MEGAN File: FUM003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,561,236
+With hits:           3,561,236 
+Alignments:         66,703,972
+Assig. Taxonomy:     3,561,021
+MinSupport set to: 356
+Min-supp. changes:       7,598
+Numb. Tax. classes:      1,160
+Class. Taxonomy:         1,160
+Num. of queries:   15708618
+Aligned queries:    3561236
+Num. alignments:   66703972
+Loading MEGAN File: FUM001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,467,865
+With hits:           3,467,865 
+Alignments:         63,038,209
+Assig. Taxonomy:     3,467,704
+MinSupport set to: 346
+Min-supp. changes:       5,947
+Numb. Tax. classes:        978
+Class. Taxonomy:           978
+Num. of queries:   10808498
+Aligned queries:    3467865
+Num. alignments:   63038209
+Loading MEGAN File: FUM002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,572,582
+With hits:           3,572,582 
+Alignments:         29,233,704
+Assig. Taxonomy:     3,572,551
+MinSupport set to: 357
+Min-supp. changes:       8,072
+Numb. Tax. classes:        643
+Class. Taxonomy:           643
+Num. of queries:   17157534
+Aligned queries:    3572582
+Num. alignments:   29233704
+Loading MEGAN File: GDN001.C0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,264,243
+With hits:           1,264,243 
+Alignments:         29,927,313
+Assig. Taxonomy:     1,263,026
+MinSupport set to: 126
+Min-supp. changes:       5,810
+Numb. Tax. classes:      1,879
+Class. Taxonomy:         1,879
+Num. of queries:   20505644
+Aligned queries:    1264243
+Num. alignments:   29927313
+Loading MEGAN File: BIT001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,457,266
+With hits:           3,457,266 
+Alignments:         66,140,247
+Assig. Taxonomy:     3,455,001
+MinSupport set to: 345
+Min-supp. changes:      14,875
+Numb. Tax. classes:      1,875
+Class. Taxonomy:         1,875
+Num. of queries:   23239961
+Aligned queries:    3457266
+Num. alignments:   66140247
+Loading MEGAN File: FDM001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,567,851
+With hits:           1,567,851 
+Alignments:         14,519,329
+Assig. Taxonomy:     1,567,780
+MinSupport set to: 156
+Min-supp. changes:       6,294
+Numb. Tax. classes:        813
+Class. Taxonomy:           813
+Num. of queries:    4889751
+Aligned queries:    1567851
+Num. alignments:   14519329
+Loading MEGAN File: IBA002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        9,756,356
+With hits:           9,756,356 
+Alignments:        208,443,788
+Assig. Taxonomy:     9,756,287
+MinSupport set to: 975
+Min-supp. changes:       8,920
+Numb. Tax. classes:        646
+Class. Taxonomy:           646
+Num. of queries:   19022015
+Aligned queries:    9756356
+Num. alignments:  208443788
+Loading MEGAN File: IBA001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,414,846
+With hits:           2,414,846 
+Alignments:         33,929,211
+Assig. Taxonomy:     2,414,666
+MinSupport set to: 241
+Min-supp. changes:       9,974
+Numb. Tax. classes:      1,313
+Class. Taxonomy:         1,313
+Num. of queries:   12987664
+Aligned queries:    2414846
+Num. alignments:   33929211
+Loading MEGAN File: WAL001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,878,233
+With hits:           2,878,233 
+Alignments:         51,115,751
+Assig. Taxonomy:     2,878,163
+MinSupport set to: 287
+Min-supp. changes:      11,571
+Numb. Tax. classes:      1,396
+Class. Taxonomy:         1,396
+Num. of queries:   14881423
+Aligned queries:    2878233
+Num. alignments:   51115751
+Loading MEGAN File: ABM008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          762,840
+With hits:             762,840 
+Alignments:          4,631,547
+Assig. Taxonomy:       762,829
+MinSupport set to: 76
+Min-supp. changes:       5,374
+Numb. Tax. classes:        810
+Class. Taxonomy:           810
+Num. of queries:    5032357
+Aligned queries:     762840
+Num. alignments:    4631547
+Loading MEGAN File: ABM007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,996,480
+With hits:           1,996,480 
+Alignments:         11,516,594
+Assig. Taxonomy:     1,996,393
+MinSupport set to: 199
+Min-supp. changes:       7,264
+Numb. Tax. classes:        795
+Class. Taxonomy:           795
+Num. of queries:   12981357
+Aligned queries:    1996480
+Num. alignments:   11516594
+Loading MEGAN File: DJA006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,387,719
+With hits:           2,387,719 
+Alignments:         15,519,033
+Assig. Taxonomy:     2,387,666
+MinSupport set to: 238
+Min-supp. changes:       7,688
+Numb. Tax. classes:        962
+Class. Taxonomy:           962
+Num. of queries:   13754707
+Aligned queries:    2387719
+Num. alignments:   15519033
+Loading MEGAN File: DJA007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,911,148
+With hits:           2,911,148 
+Alignments:         16,932,719
+Assig. Taxonomy:     2,911,065
+MinSupport set to: 291
+Min-supp. changes:       8,348
+Numb. Tax. classes:        812
+Class. Taxonomy:           812
+Num. of queries:   17395667
+Aligned queries:    2911148
+Num. alignments:   16932719
+Loading MEGAN File: EBO009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          686,459
+With hits:             686,459 
+Alignments:          4,972,144
+Assig. Taxonomy:       686,453
+MinSupport set to: 68
+Min-supp. changes:       4,898
+Numb. Tax. classes:        745
+Class. Taxonomy:           745
+Num. of queries:    3668406
+Aligned queries:     686459
+Num. alignments:    4972144
+Loading MEGAN File: EBO008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,490,833
+With hits:           2,490,833 
+Alignments:         19,785,809
+Assig. Taxonomy:     2,490,808
+MinSupport set to: 249
+Min-supp. changes:       7,363
+Numb. Tax. classes:        683
+Class. Taxonomy:           683
+Num. of queries:   11592824
+Aligned queries:    2490833
+Num. alignments:   19785809
+Loading MEGAN File: TAF017.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,287,869
+With hits:           5,287,869 
+Alignments:         34,471,091
+Assig. Taxonomy:     5,287,598
+MinSupport set to: 528
+Min-supp. changes:       6,081
+Numb. Tax. classes:        828
+Class. Taxonomy:           828
+Num. of queries:   19456044
+Aligned queries:    5287869
+Num. alignments:   34471091
+Loading MEGAN File: OAK001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,633,369
+With hits:           1,633,369 
+Alignments:         14,406,722
+Assig. Taxonomy:     1,633,216
+MinSupport set to: 163
+Min-supp. changes:       6,965
+Numb. Tax. classes:      1,049
+Class. Taxonomy:         1,049
+Num. of queries:   11211671
+Aligned queries:    1633369
+Num. alignments:   14406722
+Loading MEGAN File: OAK002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,186,707
+With hits:           4,186,707 
+Alignments:         39,769,834
+Assig. Taxonomy:     4,186,666
+MinSupport set to: 418
+Min-supp. changes:       8,220
+Numb. Tax. classes:        629
+Class. Taxonomy:           629
+Num. of queries:   14005970
+Aligned queries:    4186707
+Num. alignments:   39769834
+Loading MEGAN File: OAK003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,099,220
+With hits:           5,099,220 
+Alignments:         19,980,333
+Assig. Taxonomy:     5,099,162
+MinSupport set to: 509
+Min-supp. changes:       8,038
+Numb. Tax. classes:        447
+Class. Taxonomy:           447
+Num. of queries:   17189509
+Aligned queries:    5099220
+Num. alignments:   19980333
+Loading MEGAN File: OAK004.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,183,900
+With hits:           4,183,900 
+Alignments:         29,565,301
+Assig. Taxonomy:     4,183,850
+MinSupport set to: 418
+Min-supp. changes:       8,128
+Numb. Tax. classes:        584
+Class. Taxonomy:           584
+Num. of queries:   13488774
+Aligned queries:    4183900
+Num. alignments:   29565301
+Loading MEGAN File: OAK005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,769,317
+With hits:           5,769,317 
+Alignments:         26,056,354
+Assig. Taxonomy:     5,769,289
+MinSupport set to: 576
+Min-supp. changes:       7,827
+Numb. Tax. classes:        417
+Class. Taxonomy:           417
+Num. of queries:   16940328
+Aligned queries:    5769317
+Num. alignments:   26056354
+Loading MEGAN File: PYK001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,113,187
+With hits:           3,113,187 
+Alignments:         24,643,858
+Assig. Taxonomy:     3,111,456
+MinSupport set to: 311
+Min-supp. changes:       8,137
+Numb. Tax. classes:      1,067
+Class. Taxonomy:         1,067
+Num. of queries:   15248245
+Aligned queries:    3113187
+Num. alignments:   24643858
+Loading MEGAN File: PYK002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,508,217
+With hits:           4,508,217 
+Alignments:         25,161,484
+Assig. Taxonomy:     4,507,749
+MinSupport set to: 450
+Min-supp. changes:       8,605
+Numb. Tax. classes:        621
+Class. Taxonomy:           621
+Num. of queries:   17218978
+Aligned queries:    4508217
+Num. alignments:   25161484
+Loading MEGAN File: PYK003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,661,304
+With hits:           3,661,304 
+Alignments:         19,008,950
+Assig. Taxonomy:     3,661,136
+MinSupport set to: 366
+Min-supp. changes:       7,955
+Numb. Tax. classes:        542
+Class. Taxonomy:           542
+Num. of queries:   14732223
+Aligned queries:    3661304
+Num. alignments:   19008950
+Loading MEGAN File: PYK004.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,982,408
+With hits:           5,982,408 
+Alignments:         37,640,219
+Assig. Taxonomy:     5,982,336
+MinSupport set to: 598
+Min-supp. changes:       8,434
+Numb. Tax. classes:        526
+Class. Taxonomy:           526
+Num. of queries:   16708305
+Aligned queries:    5982408
+Num. alignments:   37640219
+Loading MEGAN File: PYK005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,110,255
+With hits:           5,110,255 
+Alignments:         27,321,781
+Assig. Taxonomy:     5,110,188
+MinSupport set to: 511
+Min-supp. changes:       8,139
+Numb. Tax. classes:        535
+Class. Taxonomy:           535
+Num. of queries:   21468513
+Aligned queries:    5110255
+Num. alignments:   27321781
+Loading MEGAN File: ABM007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,996,480
+With hits:           1,996,480 
+Alignments:         11,516,594
+Assig. Taxonomy:     1,996,393
+MinSupport set to: 199
+Min-supp. changes:       7,264
+Numb. Tax. classes:        795
+Class. Taxonomy:           795
+Num. of queries:   12981357
+Aligned queries:    1996480
+Num. alignments:   11516594
+Loading MEGAN File: BAN001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          990,656
+With hits:             990,656 
+Alignments:         17,047,981
+Assig. Taxonomy:       990,641
+MinSupport set to: 99
+Min-supp. changes:       6,206
+Numb. Tax. classes:      1,215
+Class. Taxonomy:         1,215
+Num. of queries:   10106625
+Aligned queries:     990656
+Num. alignments:   17047981
+Loading MEGAN File: BIT001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,457,266
+With hits:           3,457,266 
+Alignments:         66,140,247
+Assig. Taxonomy:     3,455,001
+MinSupport set to: 345
+Min-supp. changes:      14,875
+Numb. Tax. classes:      1,875
+Class. Taxonomy:         1,875
+Num. of queries:   23239961
+Aligned queries:    3457266
+Num. alignments:   66140247
+Loading MEGAN File: BSQ001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,458,054
+With hits:           1,458,054 
+Alignments:         15,156,697
+Assig. Taxonomy:     1,457,996
+MinSupport set to: 145
+Min-supp. changes:       8,072
+Numb. Tax. classes:      1,115
+Class. Taxonomy:         1,115
+Num. of queries:   10866912
+Aligned queries:    1458054
+Num. alignments:   15156697
+Loading MEGAN File: CDC005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          733,987
+With hits:             733,987 
+Alignments:         10,855,675
+Assig. Taxonomy:       733,867
+MinSupport set to: 73
+Min-supp. changes:       5,746
+Numb. Tax. classes:      1,414
+Class. Taxonomy:         1,414
+Num. of queries:    4526782
+Aligned queries:     733987
+Num. alignments:   10855675
+Loading MEGAN File: CDC006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,121,654
+With hits:           3,121,654 
+Alignments:         28,409,112
+Assig. Taxonomy:     3,119,762
+MinSupport set to: 312
+Min-supp. changes:       8,742
+Numb. Tax. classes:      1,164
+Class. Taxonomy:         1,164
+Num. of queries:   15120313
+Aligned queries:    3121654
+Num. alignments:   28409112
+Loading MEGAN File: CDC007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,631,302
+With hits:           2,631,302 
+Alignments:         37,091,522
+Assig. Taxonomy:     2,630,318
+MinSupport set to: 263
+Min-supp. changes:       9,143
+Numb. Tax. classes:      1,415
+Class. Taxonomy:         1,415
+Num. of queries:   15878673
+Aligned queries:    2631302
+Num. alignments:   37091522
+Loading MEGAN File: CDC009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,575,480
+With hits:           1,575,480 
+Alignments:          9,958,632
+Assig. Taxonomy:     1,575,454
+MinSupport set to: 157
+Min-supp. changes:       7,357
+Numb. Tax. classes:        885
+Class. Taxonomy:           885
+Num. of queries:   14286106
+Aligned queries:    1575480
+Num. alignments:    9958632
+Loading MEGAN File: CDC011.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,636,711
+With hits:           1,636,711 
+Alignments:         15,234,657
+Assig. Taxonomy:     1,636,690
+MinSupport set to: 163
+Min-supp. changes:       6,887
+Numb. Tax. classes:        921
+Class. Taxonomy:           921
+Num. of queries:    9141614
+Aligned queries:    1636711
+Num. alignments:   15234657
+Loading MEGAN File: DJA006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,387,719
+With hits:           2,387,719 
+Alignments:         15,519,033
+Assig. Taxonomy:     2,387,666
+MinSupport set to: 238
+Min-supp. changes:       7,688
+Numb. Tax. classes:        962
+Class. Taxonomy:           962
+Num. of queries:   13754707
+Aligned queries:    2387719
+Num. alignments:   15519033
+Loading MEGAN File: EBO001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,376,300
+With hits:           3,376,300 
+Alignments:         30,977,561
+Assig. Taxonomy:     3,376,240
+MinSupport set to: 337
+Min-supp. changes:       7,986
+Numb. Tax. classes:        772
+Class. Taxonomy:           772
+Num. of queries:   15767290
+Aligned queries:    3376300
+Num. alignments:   30977561
+Loading MEGAN File: EBO008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,490,833
+With hits:           2,490,833 
+Alignments:         19,785,809
+Assig. Taxonomy:     2,490,808
+MinSupport set to: 249
+Min-supp. changes:       7,363
+Numb. Tax. classes:        683
+Class. Taxonomy:           683
+Num. of queries:   11592824
+Aligned queries:    2490833
+Num. alignments:   19785809
+Loading MEGAN File: ECO002.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,654,203
+With hits:           5,654,203 
+Alignments:         30,448,609
+Assig. Taxonomy:     5,654,026
+MinSupport set to: 565
+Min-supp. changes:      10,276
+Numb. Tax. classes:        693
+Class. Taxonomy:           693
+Num. of queries:   24662284
+Aligned queries:    5654203
+Num. alignments:   30448609
+Loading MEGAN File: ECO004.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,394,541
+With hits:           4,394,541 
+Alignments:         27,392,245
+Assig. Taxonomy:     4,394,207
+MinSupport set to: 439
+Min-supp. changes:       9,935
+Numb. Tax. classes:        891
+Class. Taxonomy:           891
+Num. of queries:   20400171
+Aligned queries:    4394541
+Num. alignments:   27392245
+Loading MEGAN File: ECO006.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          839,566
+With hits:             839,566 
+Alignments:         11,025,888
+Assig. Taxonomy:       839,110
+MinSupport set to: 83
+Min-supp. changes:       6,879
+Numb. Tax. classes:      1,809
+Class. Taxonomy:         1,809
+Num. of queries:   10488914
+Aligned queries:     839566
+Num. alignments:   11025888
+Loading MEGAN File: ECO010.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,200,147
+With hits:           2,200,147 
+Alignments:          8,250,645
+Assig. Taxonomy:     2,200,121
+MinSupport set to: 220
+Min-supp. changes:       7,059
+Numb. Tax. classes:        578
+Class. Taxonomy:           578
+Num. of queries:   12246134
+Aligned queries:    2200147
+Num. alignments:    8250645
+Loading MEGAN File: EMN001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,476,475
+With hits:           2,476,475 
+Alignments:         24,797,582
+Assig. Taxonomy:     2,476,440
+MinSupport set to: 247
+Min-supp. changes:       7,748
+Numb. Tax. classes:        902
+Class. Taxonomy:           902
+Num. of queries:   12579489
+Aligned queries:    2476475
+Num. alignments:   24797582
+Loading MEGAN File: ABM007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,996,480
+With hits:           1,996,480 
+Alignments:         11,516,594
+Assig. Taxonomy:     1,996,393
+MinSupport set to: 199
+Min-supp. changes:       7,264
+Numb. Tax. classes:        795
+Class. Taxonomy:           795
+Num. of queries:   12981357
+Aligned queries:    1996480
+Num. alignments:   11516594
+Loading MEGAN File: BAN001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          990,656
+With hits:             990,656 
+Alignments:         17,047,981
+Assig. Taxonomy:       990,641
+MinSupport set to: 99
+Min-supp. changes:       6,206
+Numb. Tax. classes:      1,215
+Class. Taxonomy:         1,215
+Num. of queries:   10106625
+Aligned queries:     990656
+Num. alignments:   17047981
+Loading MEGAN File: BIT001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,457,266
+With hits:           3,457,266 
+Alignments:         66,140,247
+Assig. Taxonomy:     3,455,001
+MinSupport set to: 345
+Min-supp. changes:      14,875
+Numb. Tax. classes:      1,875
+Class. Taxonomy:         1,875
+Num. of queries:   23239961
+Aligned queries:    3457266
+Num. alignments:   66140247
+Loading MEGAN File: BSQ001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,458,054
+With hits:           1,458,054 
+Alignments:         15,156,697
+Assig. Taxonomy:     1,457,996
+MinSupport set to: 145
+Min-supp. changes:       8,072
+Numb. Tax. classes:      1,115
+Class. Taxonomy:         1,115
+Num. of queries:   10866912
+Aligned queries:    1458054
+Num. alignments:   15156697
+Loading MEGAN File: CDC005.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          733,987
+With hits:             733,987 
+Alignments:         10,855,675
+Assig. Taxonomy:       733,867
+MinSupport set to: 73
+Min-supp. changes:       5,746
+Numb. Tax. classes:      1,414
+Class. Taxonomy:         1,414
+Num. of queries:    4526782
+Aligned queries:     733987
+Num. alignments:   10855675
+Loading MEGAN File: CDC006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,121,654
+With hits:           3,121,654 
+Alignments:         28,409,112
+Assig. Taxonomy:     3,119,762
+MinSupport set to: 312
+Min-supp. changes:       8,742
+Numb. Tax. classes:      1,164
+Class. Taxonomy:         1,164
+Num. of queries:   15120313
+Aligned queries:    3121654
+Num. alignments:   28409112
+Loading MEGAN File: CDC007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,631,302
+With hits:           2,631,302 
+Alignments:         37,091,522
+Assig. Taxonomy:     2,630,318
+MinSupport set to: 263
+Min-supp. changes:       9,143
+Numb. Tax. classes:      1,415
+Class. Taxonomy:         1,415
+Num. of queries:   15878673
+Aligned queries:    2631302
+Num. alignments:   37091522
+Loading MEGAN File: CDC009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,575,480
+With hits:           1,575,480 
+Alignments:          9,958,632
+Assig. Taxonomy:     1,575,454
+MinSupport set to: 157
+Min-supp. changes:       7,357
+Numb. Tax. classes:        885
+Class. Taxonomy:           885
+Num. of queries:   14286106
+Aligned queries:    1575480
+Num. alignments:    9958632
+Loading MEGAN File: CDC011.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,636,711
+With hits:           1,636,711 
+Alignments:         15,234,657
+Assig. Taxonomy:     1,636,690
+MinSupport set to: 163
+Min-supp. changes:       6,887
+Numb. Tax. classes:        921
+Class. Taxonomy:           921
+Num. of queries:    9141614
+Aligned queries:    1636711
+Num. alignments:   15234657
+Loading MEGAN File: DJA006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,387,719
+With hits:           2,387,719 
+Alignments:         15,519,033
+Assig. Taxonomy:     2,387,666
+MinSupport set to: 238
+Min-supp. changes:       7,688
+Numb. Tax. classes:        962
+Class. Taxonomy:           962
+Num. of queries:   13754707
+Aligned queries:    2387719
+Num. alignments:   15519033
+Loading MEGAN File: EBO001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,376,300
+With hits:           3,376,300 
+Alignments:         30,977,561
+Assig. Taxonomy:     3,376,240
+MinSupport set to: 337
+Min-supp. changes:       7,986
+Numb. Tax. classes:        772
+Class. Taxonomy:           772
+Num. of queries:   15767290
+Aligned queries:    3376300
+Num. alignments:   30977561
+Loading MEGAN File: EBO008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,490,833
+With hits:           2,490,833 
+Alignments:         19,785,809
+Assig. Taxonomy:     2,490,808
+MinSupport set to: 249
+Min-supp. changes:       7,363
+Numb. Tax. classes:        683
+Class. Taxonomy:           683
+Num. of queries:   11592824
+Aligned queries:    2490833
+Num. alignments:   19785809
+Loading MEGAN File: ECO002.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        5,654,203
+With hits:           5,654,203 
+Alignments:         30,448,609
+Assig. Taxonomy:     5,654,026
+MinSupport set to: 565
+Min-supp. changes:      10,276
+Numb. Tax. classes:        693
+Class. Taxonomy:           693
+Num. of queries:   24662284
+Aligned queries:    5654203
+Num. alignments:   30448609
+Loading MEGAN File: ECO004.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,394,541
+With hits:           4,394,541 
+Alignments:         27,392,245
+Assig. Taxonomy:     4,394,207
+MinSupport set to: 439
+Min-supp. changes:       9,935
+Numb. Tax. classes:        891
+Class. Taxonomy:           891
+Num. of queries:   20400171
+Aligned queries:    4394541
+Num. alignments:   27392245
+Loading MEGAN File: ECO006.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          839,566
+With hits:             839,566 
+Alignments:         11,025,888
+Assig. Taxonomy:       839,110
+MinSupport set to: 83
+Min-supp. changes:       6,879
+Numb. Tax. classes:      1,809
+Class. Taxonomy:         1,809
+Num. of queries:   10488914
+Aligned queries:     839566
+Num. alignments:   11025888
+Loading MEGAN File: ECO010.B0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,200,147
+With hits:           2,200,147 
+Alignments:          8,250,645
+Assig. Taxonomy:     2,200,121
+MinSupport set to: 220
+Min-supp. changes:       7,059
+Numb. Tax. classes:        578
+Class. Taxonomy:           578
+Num. of queries:   12246134
+Aligned queries:    2200147
+Num. alignments:    8250645
+Loading MEGAN File: EMN001.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,476,475
+With hits:           2,476,475 
+Alignments:         24,797,582
+Assig. Taxonomy:     2,476,440
+MinSupport set to: 247
+Min-supp. changes:       7,748
+Numb. Tax. classes:        902
+Class. Taxonomy:           902
+Num. of queries:   12579489
+Aligned queries:    2476475
+Num. alignments:   24797582
+Loading MEGAN File: ERR1035437_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        4,437,426
+With hits:           4,437,426 
+Alignments:         58,968,342
+Assig. Taxonomy:     4,433,378
+MinSupport set to: 443
+Min-supp. changes:      13,695
+Numb. Tax. classes:      1,678
+Class. Taxonomy:         1,678
+Num. of queries:  168696126
+Aligned queries:    4437426
+Num. alignments:   58968342
+Loading MEGAN File: ERR753910_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       10,552,254
+With hits:          10,552,254 
+Alignments:        174,779,772
+Assig. Taxonomy:    10,535,340
+MinSupport set to: 1055
+Min-supp. changes:      17,447
+Numb. Tax. classes:      1,649
+Class. Taxonomy:         1,649
+Num. of queries:  127316829
+Aligned queries:   10552254
+Num. alignments:  174779772
+Loading MEGAN File: ERR753911_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        9,316,773
+With hits:           9,316,773 
+Alignments:        149,061,374
+Assig. Taxonomy:     9,301,807
+MinSupport set to: 931
+Min-supp. changes:      16,128
+Numb. Tax. classes:      1,569
+Class. Taxonomy:         1,569
+Num. of queries:  113930975
+Aligned queries:    9316773
+Num. alignments:  149061374
+Loading MEGAN File: ERR753912_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       10,520,641
+With hits:          10,520,641 
+Alignments:        165,358,113
+Assig. Taxonomy:    10,503,967
+MinSupport set to: 1052
+Min-supp. changes:      16,415
+Numb. Tax. classes:      1,532
+Class. Taxonomy:         1,532
+Num. of queries:  117796900
+Aligned queries:   10520641
+Num. alignments:  165358113
+Loading MEGAN File: SRR059425_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       12,138,849
+With hits:          12,138,849 
+Alignments:         66,018,686
+Assig. Taxonomy:    12,138,818
+MinSupport set to: 1213
+Min-supp. changes:       6,290
+Numb. Tax. classes:        265
+Class. Taxonomy:           265
+Num. of queries:   36488576
+Aligned queries:   12138849
+Num. alignments:   66018686
+Loading MEGAN File: SRR514306_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       14,683,701
+With hits:          14,683,701 
+Alignments:        119,894,693
+Assig. Taxonomy:    14,683,661
+MinSupport set to: 1468
+Min-supp. changes:       6,040
+Numb. Tax. classes:        415
+Class. Taxonomy:           415
+Num. of queries:   37919535
+Aligned queries:   14683701
+Num. alignments:  119894693
+Loading MEGAN File: ABM006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,931,778
+With hits:           1,931,778 
+Alignments:         18,951,132
+Assig. Taxonomy:     1,931,239
+MinSupport set to: 193
+Min-supp. changes:       6,883
+Numb. Tax. classes:      1,103
+Class. Taxonomy:         1,103
+Num. of queries:    8057367
+Aligned queries:    1931778
+Num. alignments:   18951132
+Loading MEGAN File: ABM008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          762,840
+With hits:             762,840 
+Alignments:          4,631,547
+Assig. Taxonomy:       762,829
+MinSupport set to: 76
+Min-supp. changes:       5,374
+Numb. Tax. classes:        810
+Class. Taxonomy:           810
+Num. of queries:    5032357
+Aligned queries:     762840
+Num. alignments:    4631547
+Loading MEGAN File: CDC008.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,921,372
+With hits:           1,921,372 
+Alignments:         14,625,912
+Assig. Taxonomy:     1,921,344
+MinSupport set to: 192
+Min-supp. changes:       9,168
+Numb. Tax. classes:      1,015
+Class. Taxonomy:         1,015
+Num. of queries:   15094966
+Aligned queries:    1921372
+Num. alignments:   14625912
+Loading MEGAN File: CDC010.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,446,153
+With hits:           2,446,153 
+Alignments:         14,172,298
+Assig. Taxonomy:     2,446,120
+MinSupport set to: 244
+Min-supp. changes:       7,994
+Numb. Tax. classes:        791
+Class. Taxonomy:           791
+Num. of queries:   15031925
+Aligned queries:    2446153
+Num. alignments:   14172298
+Loading MEGAN File: DJA002.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,097,148
+With hits:           2,097,148 
+Alignments:         17,869,133
+Assig. Taxonomy:     2,097,131
+MinSupport set to: 209
+Min-supp. changes:       7,502
+Numb. Tax. classes:        920
+Class. Taxonomy:           920
+Num. of queries:   11978137
+Aligned queries:    2097148
+Num. alignments:   17869133
+Loading MEGAN File: DJA007.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,911,148
+With hits:           2,911,148 
+Alignments:         16,932,719
+Assig. Taxonomy:     2,911,065
+MinSupport set to: 291
+Min-supp. changes:       8,348
+Numb. Tax. classes:        812
+Class. Taxonomy:           812
+Num. of queries:   17395667
+Aligned queries:    2911148
+Num. alignments:   16932719
+Loading MEGAN File: EBO003.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,648,883
+With hits:           3,648,883 
+Alignments:         26,274,269
+Assig. Taxonomy:     3,648,834
+MinSupport set to: 364
+Min-supp. changes:       8,026
+Numb. Tax. classes:        761
+Class. Taxonomy:           761
+Num. of queries:   20549945
+Aligned queries:    3648883
+Num. alignments:   26274269
+Loading MEGAN File: EBO009.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          686,459
+With hits:             686,459 
+Alignments:          4,972,144
+Assig. Taxonomy:       686,453
+MinSupport set to: 68
+Min-supp. changes:       4,898
+Numb. Tax. classes:        745
+Class. Taxonomy:           745
+Num. of queries:    3668406
+Aligned queries:     686459
+Num. alignments:    4972144
+Loading MEGAN File: ABM006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,931,778
+With hits:           1,931,778 
+Alignments:         18,951,132
+Assig. Taxonomy:     1,931,239
+MinSupport set to: 193
+Min-supp. changes:       6,883
+Numb. Tax. classes:      1,103
+Class. Taxonomy:         1,103
+Num. of queries:    8057367
+Aligned queries:    1931778
+Num. alignments:   18951132
+Loading MEGAN File: ABM006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,931,778
+With hits:           1,931,778 
+Alignments:         18,951,132
+Assig. Taxonomy:     1,931,239
+MinSupport set to: 193
+Min-supp. changes:       6,883
+Numb. Tax. classes:      1,103
+Class. Taxonomy:         1,103
+Num. of queries:    8057367
+Aligned queries:    1931778
+Num. alignments:   18951132
+Loading MEGAN File: ABM006.A0101_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,931,778
+With hits:           1,931,778 
+Alignments:         18,951,132
+Assig. Taxonomy:     1,931,239
+MinSupport set to: 193
+Min-supp. changes:       6,883
+Numb. Tax. classes:      1,103
+Class. Taxonomy:         1,103
+Num. of queries:    8057367
+Aligned queries:    1931778
+Num. alignments:   18951132
+Loading MEGAN File: ERR1883418_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,620,669
+With hits:           1,620,669 
+Alignments:         34,386,814
+Assig. Taxonomy:     1,620,520
+MinSupport set to: 162
+Min-supp. changes:      10,895
+Numb. Tax. classes:      1,586
+Class. Taxonomy:         1,586
+Num. of queries:   15313919
+Aligned queries:    1620669
+Num. alignments:   34386814
+Loading MEGAN File: ERR1883419_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,849,661
+With hits:           1,849,661 
+Alignments:         44,267,435
+Assig. Taxonomy:     1,849,563
+MinSupport set to: 184
+Min-supp. changes:      10,503
+Numb. Tax. classes:      1,336
+Class. Taxonomy:         1,336
+Num. of queries:   14971987
+Aligned queries:    1849661
+Num. alignments:   44267435
+Loading MEGAN File: ERR1883420_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,734,445
+With hits:           1,734,445 
+Alignments:         35,842,815
+Assig. Taxonomy:     1,734,264
+MinSupport set to: 173
+Min-supp. changes:      11,285
+Numb. Tax. classes:      1,678
+Class. Taxonomy:         1,678
+Num. of queries:   17128621
+Aligned queries:    1734445
+Num. alignments:   35842815
+Loading MEGAN File: ERR1883421_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,128,809
+With hits:           1,128,809 
+Alignments:         23,441,907
+Assig. Taxonomy:     1,128,488
+MinSupport set to: 112
+Min-supp. changes:      10,067
+Numb. Tax. classes:      1,996
+Class. Taxonomy:         1,996
+Num. of queries:   15512230
+Aligned queries:    1128809
+Num. alignments:   23441907
+Loading MEGAN File: ERR1883422_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,035,952
+With hits:           1,035,952 
+Alignments:         30,039,144
+Assig. Taxonomy:     1,035,648
+MinSupport set to: 103
+Min-supp. changes:       8,014
+Numb. Tax. classes:      1,626
+Class. Taxonomy:         1,626
+Num. of queries:   16579390
+Aligned queries:    1035952
+Num. alignments:   30039144
+Loading MEGAN File: ERR1883423_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,552,388
+With hits:           1,552,388 
+Alignments:         35,534,001
+Assig. Taxonomy:     1,552,001
+MinSupport set to: 155
+Min-supp. changes:       8,959
+Numb. Tax. classes:      1,627
+Class. Taxonomy:         1,627
+Num. of queries:   14450910
+Aligned queries:    1552388
+Num. alignments:   35534001
+Loading MEGAN File: ERR1883424_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          877,398
+With hits:             877,398 
+Alignments:         21,877,732
+Assig. Taxonomy:       875,870
+MinSupport set to: 87
+Min-supp. changes:       8,700
+Numb. Tax. classes:      2,074
+Class. Taxonomy:         2,074
+Num. of queries:   17758233
+Aligned queries:     877398
+Num. alignments:   21877732
+Loading MEGAN File: ERR1883430_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,385,888
+With hits:           1,385,888 
+Alignments:         27,396,570
+Assig. Taxonomy:     1,385,630
+MinSupport set to: 138
+Min-supp. changes:      10,103
+Numb. Tax. classes:      1,759
+Class. Taxonomy:         1,759
+Num. of queries:   14823024
+Aligned queries:    1385888
+Num. alignments:   27396570
+Loading MEGAN File: ERR1883436_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,282,676
+With hits:           2,282,676 
+Alignments:         49,300,588
+Assig. Taxonomy:     2,282,424
+MinSupport set to: 228
+Min-supp. changes:      12,023
+Numb. Tax. classes:      1,732
+Class. Taxonomy:         1,732
+Num. of queries:   20645139
+Aligned queries:    2282676
+Num. alignments:   49300588
+Loading MEGAN File: ERR1883438_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,106,158
+With hits:           1,106,158 
+Alignments:         23,889,080
+Assig. Taxonomy:     1,103,872
+MinSupport set to: 110
+Min-supp. changes:       9,605
+Numb. Tax. classes:      2,004
+Class. Taxonomy:         2,004
+Num. of queries:   17270876
+Aligned queries:    1106158
+Num. alignments:   23889080
+Loading MEGAN File: ERR1883477_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          861,648
+With hits:             861,648 
+Alignments:         21,259,748
+Assig. Taxonomy:       861,183
+MinSupport set to: 86
+Min-supp. changes:       8,926
+Numb. Tax. classes:      2,160
+Class. Taxonomy:         2,160
+Num. of queries:   17025393
+Aligned queries:     861648
+Num. alignments:   21259748
+Loading MEGAN File: ERR1883478_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,325,621
+With hits:           1,325,621 
+Alignments:         44,070,451
+Assig. Taxonomy:     1,325,192
+MinSupport set to: 132
+Min-supp. changes:       9,246
+Numb. Tax. classes:      1,502
+Class. Taxonomy:         1,502
+Num. of queries:   16104761
+Aligned queries:    1325621
+Num. alignments:   44070451
+Loading MEGAN File: ERR1883479_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          972,582
+With hits:             972,582 
+Alignments:         23,904,072
+Assig. Taxonomy:       972,053
+MinSupport set to: 97
+Min-supp. changes:       9,493
+Numb. Tax. classes:      2,165
+Class. Taxonomy:         2,165
+Num. of queries:   18337687
+Aligned queries:     972582
+Num. alignments:   23904072
+Loading MEGAN File: ERR1883480_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          878,086
+With hits:             878,086 
+Alignments:         21,972,366
+Assig. Taxonomy:       877,612
+MinSupport set to: 87
+Min-supp. changes:       8,302
+Numb. Tax. classes:      2,045
+Class. Taxonomy:         2,045
+Num. of queries:   13413730
+Aligned queries:     878086
+Num. alignments:   21972366
+Loading MEGAN File: ERR1883486_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        1,355,826
+With hits:           1,355,826 
+Alignments:         36,685,825
+Assig. Taxonomy:     1,355,525
+MinSupport set to: 135
+Min-supp. changes:      10,778
+Numb. Tax. classes:      1,785
+Class. Taxonomy:         1,785
+Num. of queries:   17191205
+Aligned queries:    1355826
+Num. alignments:   36685825
+Loading MEGAN File: EXB015.A2401_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          251,015
+With hits:             251,015 
+Alignments:         19,705,682
+Assig. Taxonomy:       250,998
+MinSupport set to: 25
+Min-supp. changes:       1,251
+Numb. Tax. classes:        355
+Class. Taxonomy:           355
+Num. of queries:     490275
+Aligned queries:     251015
+Num. alignments:   19705682
+Loading MEGAN File: EXB015.A2501_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          616,901
+With hits:             616,901 
+Alignments:         48,008,175
+Assig. Taxonomy:       616,864
+MinSupport set to: 61
+Min-supp. changes:       1,977
+Numb. Tax. classes:        527
+Class. Taxonomy:           527
+Num. of queries:    1622112
+Aligned queries:     616901
+Num. alignments:   48008175
+Loading MEGAN File: EXB015.A2601_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          547,545
+With hits:             547,545 
+Alignments:         44,076,608
+Assig. Taxonomy:       547,484
+MinSupport set to: 54
+Min-supp. changes:       2,089
+Numb. Tax. classes:        523
+Class. Taxonomy:           523
+Num. of queries:    1535271
+Aligned queries:     547545
+Num. alignments:   44076608
+Loading MEGAN File: EXB015.A2801_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          770,885
+With hits:             770,885 
+Alignments:         40,189,103
+Assig. Taxonomy:       770,809
+MinSupport set to: 77
+Min-supp. changes:       2,377
+Numb. Tax. classes:        542
+Class. Taxonomy:           542
+Num. of queries:    2086131
+Aligned queries:     770885
+Num. alignments:   40189103
+Loading MEGAN File: EXB015.A2901_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          222,658
+With hits:             222,658 
+Alignments:         17,546,788
+Assig. Taxonomy:       222,648
+MinSupport set to: 22
+Min-supp. changes:       1,117
+Numb. Tax. classes:        427
+Class. Taxonomy:           427
+Num. of queries:     490977
+Aligned queries:     222658
+Num. alignments:   17546788
+Loading MEGAN File: EXB033.A1401_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:           31,616
+With hits:              31,616 
+Alignments:            957,484
+Assig. Taxonomy:        31,610
+MinSupport set to: 3
+Min-supp. changes:       1,315
+Numb. Tax. classes:      1,571
+Class. Taxonomy:         1,571
+Num. of queries:     223573
+Aligned queries:      31616
+Num. alignments:     957484
+Loading MEGAN File: LIB007.A0120_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          647,750
+With hits:             647,750 
+Alignments:         53,552,645
+Assig. Taxonomy:       647,705
+MinSupport set to: 64
+Min-supp. changes:       1,023
+Numb. Tax. classes:        224
+Class. Taxonomy:           224
+Num. of queries:    1296344
+Aligned queries:     647750
+Num. alignments:   53552645
+Loading MEGAN File: LIB007.A0121_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          302,171
+With hits:             302,171 
+Alignments:         26,488,347
+Assig. Taxonomy:       302,162
+MinSupport set to: 30
+Min-supp. changes:         990
+Numb. Tax. classes:        236
+Class. Taxonomy:           236
+Num. of queries:     609317
+Aligned queries:     302171
+Num. alignments:   26488347
+Loading MEGAN File: LIB007.A0122_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          794,037
+With hits:             794,037 
+Alignments:         62,254,671
+Assig. Taxonomy:       793,983
+MinSupport set to: 79
+Min-supp. changes:       1,742
+Numb. Tax. classes:        369
+Class. Taxonomy:           369
+Num. of queries:    1957237
+Aligned queries:     794037
+Num. alignments:   62254671
+Loading MEGAN File: LIB007.A0123_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          597,008
+With hits:             597,008 
+Alignments:         48,309,931
+Assig. Taxonomy:       596,951
+MinSupport set to: 59
+Min-supp. changes:       1,497
+Numb. Tax. classes:        344
+Class. Taxonomy:           344
+Num. of queries:    1446460
+Aligned queries:     597008
+Num. alignments:   48309931
+Loading MEGAN File: LIB007.A0124_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          351,431
+With hits:             351,431 
+Alignments:         27,919,822
+Assig. Taxonomy:       351,419
+MinSupport set to: 35
+Min-supp. changes:       1,030
+Numb. Tax. classes:        365
+Class. Taxonomy:           365
+Num. of queries:     776026
+Aligned queries:     351431
+Num. alignments:   27919822
+Loading MEGAN File: VLC001.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:       18,760,289
+With hits:          18,760,289 
+Alignments:        177,665,288
+Assig. Taxonomy:    18,760,207
+MinSupport set to: 1876
+Min-supp. changes:       8,960
+Numb. Tax. classes:        500
+Class. Taxonomy:           500
+Num. of queries:   34450702
+Aligned queries:   18760289
+Num. alignments:  177665288
+Loading MEGAN File: VLC002.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:        8,070,463
+With hits:           8,070,463 
+Alignments:         60,178,334
+Assig. Taxonomy:     8,070,433
+MinSupport set to: 807
+Min-supp. changes:       7,204
+Numb. Tax. classes:        405
+Class. Taxonomy:           405
+Num. of queries:   15733227
+Aligned queries:    8070463
+Num. alignments:   60178334
+Loading MEGAN File: VLC003.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:       14,773,730
+With hits:          14,773,730 
+Alignments:        149,212,634
+Assig. Taxonomy:    14,773,613
+MinSupport set to: 1477
+Min-supp. changes:       7,835
+Numb. Tax. classes:        416
+Class. Taxonomy:           416
+Num. of queries:   26094614
+Aligned queries:   14773730
+Num. alignments:  149212634
+Loading MEGAN File: VLC004.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:       16,977,016
+With hits:          16,977,016 
+Alignments:        140,685,179
+Assig. Taxonomy:    16,976,937
+MinSupport set to: 1697
+Min-supp. changes:       9,937
+Numb. Tax. classes:        533
+Class. Taxonomy:           533
+Num. of queries:   43315114
+Aligned queries:   16977016
+Num. alignments:  140685179
+Loading MEGAN File: VLC005.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:       23,581,685
+With hits:          23,581,685 
+Alignments:        194,312,076
+Assig. Taxonomy:    23,581,575
+MinSupport set to: 2358
+Min-supp. changes:      10,226
+Numb. Tax. classes:        432
+Class. Taxonomy:           432
+Num. of queries:   44131346
+Aligned queries:   23581685
+Num. alignments:  194312076
+Loading MEGAN File: VLC008.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:       20,655,039
+With hits:          20,655,039 
+Alignments:        484,395,221
+Assig. Taxonomy:    20,654,941
+MinSupport set to: 2065
+Min-supp. changes:       7,972
+Numb. Tax. classes:        406
+Class. Taxonomy:           406
+Num. of queries:   35776120
+Aligned queries:   20655039
+Num. alignments:  484395221
+Loading MEGAN File: VLC009.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:       16,177,856
+With hits:          16,177,856 
+Alignments:        158,900,578
+Assig. Taxonomy:    16,177,824
+MinSupport set to: 1617
+Min-supp. changes:       8,113
+Numb. Tax. classes:        425
+Class. Taxonomy:           425
+Num. of queries:   33664784
+Aligned queries:   16177856
+Num. alignments:  158900578
+Loading MEGAN File: VLC010.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:        8,493,577
+With hits:           8,493,577 
+Alignments:         50,334,442
+Assig. Taxonomy:     8,493,560
+MinSupport set to: 849
+Min-supp. changes:       6,570
+Numb. Tax. classes:        408
+Class. Taxonomy:           408
+Num. of queries:   19113086
+Aligned queries:    8493577
+Num. alignments:   50334442
+Loading MEGAN File: Chimp.150519_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        3,157,802
+With hits:           3,157,802 
+Alignments:         23,572,770
+Assig. Taxonomy:     3,157,711
+MinSupport set to: 315
+Min-supp. changes:       2,555
+Numb. Tax. classes:        701
+Class. Taxonomy:           701
+Num. of queries:   17319354
+Aligned queries:    3157802
+Num. alignments:   23572770
+Loading MEGAN File: ElSidron1_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        8,189,841
+With hits:           8,189,841 
+Alignments:         59,888,676
+Assig. Taxonomy:     8,189,501
+MinSupport set to: 818
+Min-supp. changes:      10,648
+Numb. Tax. classes:        827
+Class. Taxonomy:           827
+Num. of queries:   50263252
+Aligned queries:    8189841
+Num. alignments:   59888676
+Loading MEGAN File: ElSidron2_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:       10,103,990
+With hits:          10,103,990 
+Alignments:         92,993,743
+Assig. Taxonomy:    10,103,837
+MinSupport set to: 1010
+Min-supp. changes:       6,569
+Numb. Tax. classes:        772
+Class. Taxonomy:           772
+Num. of queries:   48199813
+Aligned queries:   10103990
+Num. alignments:   92993743
+Loading MEGAN File: SpyNew_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:          740,228
+With hits:             740,228 
+Alignments:         12,402,137
+Assig. Taxonomy:       740,228
+MinSupport set to: 74
+Min-supp. changes:         865
+Numb. Tax. classes:        713
+Class. Taxonomy:           713
+Num. of queries:    4024112
+Aligned queries:     740228
+Num. alignments:   12402137
+Loading MEGAN File: SpyOld_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6
+Total reads:        2,265,858
+With hits:           2,265,858 
+Alignments:         43,237,004
+Assig. Taxonomy:     2,265,120
+MinSupport set to: 226
+Min-supp. changes:       8,035
+Numb. Tax. classes:      1,676
+Class. Taxonomy:         1,676
+Num. of queries:   17175527
+Aligned queries:    2265858
+Num. alignments:   43237004
+Loading MEGAN File: ARS001.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        3,032,737
+With hits:           3,032,737 
+Alignments:         64,096,022
+Assig. Taxonomy:     3,031,013
+MinSupport set to: 303
+Min-supp. changes:       7,819
+Numb. Tax. classes:      1,452
+Class. Taxonomy:         1,452
+Num. of queries:   24581425
+Aligned queries:    3032737
+Num. alignments:   64096022
+Loading MEGAN File: ARS004.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        1,519,826
+With hits:           1,519,826 
+Alignments:         29,837,922
+Assig. Taxonomy:     1,516,290
+MinSupport set to: 151
+Min-supp. changes:       7,171
+Numb. Tax. classes:      1,738
+Class. Taxonomy:         1,738
+Num. of queries:   17580777
+Aligned queries:    1519826
+Num. alignments:   29837922
+Loading MEGAN File: ARS005.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        1,704,943
+With hits:           1,704,943 
+Alignments:         33,000,657
+Assig. Taxonomy:     1,703,386
+MinSupport set to: 170
+Min-supp. changes:       7,181
+Numb. Tax. classes:      1,602
+Class. Taxonomy:         1,602
+Num. of queries:   18356344
+Aligned queries:    1704943
+Num. alignments:   33000657
+Loading MEGAN File: ARS006.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        2,921,413
+With hits:           2,921,413 
+Alignments:         57,803,168
+Assig. Taxonomy:     2,920,598
+MinSupport set to: 292
+Min-supp. changes:       7,940
+Numb. Tax. classes:      1,399
+Class. Taxonomy:         1,399
+Num. of queries:   23748322
+Aligned queries:    2921413
+Num. alignments:   57803168
+Loading MEGAN File: ARS010.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        1,421,854
+With hits:           1,421,854 
+Alignments:         27,677,684
+Assig. Taxonomy:     1,419,725
+MinSupport set to: 142
+Min-supp. changes:       6,937
+Numb. Tax. classes:      1,768
+Class. Taxonomy:         1,768
+Num. of queries:   20255669
+Aligned queries:    1421854
+Num. alignments:   27677684
+Loading MEGAN File: ARS011.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        1,570,649
+With hits:           1,570,649 
+Alignments:         30,555,902
+Assig. Taxonomy:     1,568,923
+MinSupport set to: 157
+Min-supp. changes:       6,973
+Numb. Tax. classes:      1,625
+Class. Taxonomy:         1,625
+Num. of queries:   18240292
+Aligned queries:    1570649
+Num. alignments:   30555902
+Loading MEGAN File: ARS012.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        2,085,348
+With hits:           2,085,348 
+Alignments:         39,654,001
+Assig. Taxonomy:     2,084,158
+MinSupport set to: 208
+Min-supp. changes:       7,075
+Numb. Tax. classes:      1,470
+Class. Taxonomy:         1,470
+Num. of queries:   20433089
+Aligned queries:    2085348
+Num. alignments:   39654001
+Loading MEGAN File: ARS013.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        1,910,587
+With hits:           1,910,587 
+Alignments:         39,240,329
+Assig. Taxonomy:     1,908,838
+MinSupport set to: 191
+Min-supp. changes:       7,406
+Numb. Tax. classes:      1,678
+Class. Taxonomy:         1,678
+Num. of queries:   21043480
+Aligned queries:    1910587
+Num. alignments:   39240329
+Loading MEGAN File: ARS015.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        3,041,130
+With hits:           3,041,130 
+Alignments:         63,343,368
+Assig. Taxonomy:     3,037,196
+MinSupport set to: 304
+Min-supp. changes:       8,589
+Numb. Tax. classes:      1,653
+Class. Taxonomy:         1,653
+Num. of queries:   29902940
+Aligned queries:    3041130
+Num. alignments:   63343368
+Loading MEGAN File: ARS017.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        3,704,021
+With hits:           3,704,021 
+Alignments:         71,600,676
+Assig. Taxonomy:     3,701,296
+MinSupport set to: 370
+Min-supp. changes:       8,677
+Numb. Tax. classes:      1,639
+Class. Taxonomy:         1,639
+Num. of queries:   38493800
+Aligned queries:    3704021
+Num. alignments:   71600676
+Loading MEGAN File: ARS020.A0101.SG1.2_S0_L003_R1_001.sorted.bam.unmapped.rma6
+Total reads:        1,929,645
+With hits:           1,929,645 
+Alignments:         36,427,087
+Assig. Taxonomy:     1,927,846
+MinSupport set to: 192
+Min-supp. changes:       7,557
+Numb. Tax. classes:      1,584
+Class. Taxonomy:         1,584
+Num. of queries:   21129699
+Aligned queries:    1929645
+Num. alignments:   36427087
+Loading MEGAN File: DLV001.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:          548,794
+With hits:             548,794 
+Alignments:         11,642,377
+Assig. Taxonomy:       548,781
+MinSupport set to: 54
+Min-supp. changes:       3,867
+Numb. Tax. classes:        774
+Class. Taxonomy:           774
+Num. of queries:     986675
+Aligned queries:     548794
+Num. alignments:   11642377
+Loading MEGAN File: DLV002.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:           10,644
+With hits:              10,644 
+Alignments:            193,506
+Assig. Taxonomy:        10,633
+MinSupport set to: 1
+Min-supp. changes:           0
+Numb. Tax. classes:      1,309
+Class. Taxonomy:         1,309
+Num. of queries:      83056
+Aligned queries:      10644
+Num. alignments:     193506
+Loading MEGAN File: OFN001.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:        3,535,840
+With hits:           3,535,840 
+Alignments:         20,364,490
+Assig. Taxonomy:     3,535,737
+MinSupport set to: 353
+Min-supp. changes:       8,676
+Numb. Tax. classes:        711
+Class. Taxonomy:           711
+Num. of queries:   12400690
+Aligned queries:    3535840
+Num. alignments:   20364490
+Loading MEGAN File: PLV001.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:        2,189,909
+With hits:           2,189,909 
+Alignments:         24,681,413
+Assig. Taxonomy:     2,189,825
+MinSupport set to: 218
+Min-supp. changes:       7,866
+Numb. Tax. classes:        911
+Class. Taxonomy:           911
+Num. of queries:   11431381
+Aligned queries:    2189909
+Num. alignments:   24681413
+Loading MEGAN File: RIG001.A0101_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6
+Total reads:        4,729,286
+With hits:           4,729,286 
+Alignments:         39,929,055
+Assig. Taxonomy:     4,729,214
+MinSupport set to: 472
+Min-supp. changes:       9,708
+Numb. Tax. classes:        874
+Class. Taxonomy:           874
+Num. of queries:   26077448
+Aligned queries:    4729286
+Num. alignments:   39929055

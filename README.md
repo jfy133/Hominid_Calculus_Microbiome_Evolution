@@ -1,10 +1,1563 @@
 # Anthropoid Calculus Microbiome Evolution
 
-This repository contains R notebooks, R scripts and Bash scripts used in the Anthropoid Calculus Microbiome Evolution project.
+## Preamble
 
-Scripts are referred to within the publication: Fellows Yates, J.A. _et al._ (2020) XXXX.
+This README is a walkthrough of the R notebooks, R scripts and Bash scripts 
+stored in this repository, and used in the Anthropoid Calculus Microbiome 
+Evolution project.
 
-While as many data (text) files as possible are included within the repository, however this is not possible for all (e.g. FASTQ/BAM files). Raw data can be found on the ENA under project accession ID: PRJEB34569. 
+Scripts are referred to within the publication: 
+Fellows Yates, J.A. _et al._ (2020) XXXX.
 
-**Important** The code in this repository was written over multiple 'learning' years by non-bioinformaticians. Quality will vary and may not be immediately re-rerunable - if you encounter any issues please leave an [issue](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/issues) and we will endevour to clarify.
+While as many data (text) files as possible are included within the repository, 
+however this is not possible for all (e.g. FASTQ/BAM files). Raw data can be 
+found on the ENA under project accession ID: PRJEB34569. 
+
+This analysis was performed on a server running Ubuntu 14.04 LTS, and a SLURM 
+submission scheduler. Some scripts or commands may heavily refer to SLURM, 
+however these are directly related to our system. As far as we can, we have 
+removed SLURM commands and/or MPI-SHH specific paths or parameters, but you 
+should always check this for each command and script.
+
+> Important: The code in this repository was written over multiple 'learning' 
+> years by non-bioinformaticians. Quality will vary and may not be immediately 
+> re-rerunable or readable - if you encounter any issues please leave 
+> an [issue](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/issues) 
+> and we will endevour to clarify.
  
+This README section acts as **walkthrough** guidence of the order of analyses. It also includes commands where the a program was intiated directly from the command line.
+
+## Resources
+
+Here is a list of programs and databases that will be used in this analysis
+and that you should have ready installed/downloaded prior carrying out the
+analysis. Note that the download and set up of the databases are described 
+below.
+
+### Software
+
+Name                    | Version                 | Citation
+------------------------|-------------------------|------------------------------------------------------------
+GNU bash                | 4.3.11                  | NA
+sratoolkit              | 2.8.0                   | https://www.ncbi.nlm.nih.gov/books/NBK158900/
+EAGER                   | 1.9.55                  | Peltzer et al. 2016 Genome Biol.
+AdapterRemoval          | 2.3.0                   | Schubert et al. 2016 BMC Resarch Notes
+bwa                     | 0.7.12                  | Li and Durbin 2009 Bioinformatics
+samtools                | 1.3                     | Li et al. 2009 Bioinformatics
+PicardTools             | 1.140                   | https://github.com/broadinstitute/picard
+GATK                    | 3.5                     | DePristo et al. 2011 Nat. Genets.
+mapDamage               | 2.0.6                   | Jónsson et al. ‎2013 Bioinformatics
+DeDup                   | 0.12.1                  | Peltzer et al. 2016 Genome Bio
+MALT                    | 0.4.0                   | Herbig et al. 2016 bioRxiv, Vagene et al. 2018 Nat. Eco. Evo.
+MEGANCE                 | 6.12.0                  | Huson et al. 2016, PLoS Comp. Bio.
+FastP                   | 0.19.3                  | Chen et al. 2018 Bioinformatics
+Entrez Direct           | Jun 2016                | http://www.ncbi.nlm.nih.gov/books/NBK179288
+QIIME                   | 1.9.1                   | Caporaso et al. 2010 Nat. Methods.
+Sourcetracker           | 1.0.1                   | Knights et al. 2011 Nat. Methods.
+conda                   | 4.7.0                   | https://conda.io/projects/conda/en/latest/
+pigz                    | 2.3                     | https://zlib.net/pigz/
+MALT                    | 0.4.0                   | Herbig et al. 2016 bioRxiv, Vagene et al. 2018
+MEGANCE                 | 6.12.0                  | Huson et al. 2016
+R                       | 3.4.4                   | https://www.R-project.org/
+MaltExtract             | 1.5                     | https://github.com/rhuebler/HOPS
+MultiVCFAnalyzer        | 0.87                    | https://github.com/alexherbig/MultiVCFAnalyzer
+bedtools                | 2.25.0                  | Quinlan et al. 2010 Bioinformatics
+panX                    | 1.5.1                   | Ding et al. 2018 Nucleic Acids Research
+MetaPhlAn2              | 2.7.1                   | Truong et al. 2015
+HuMANn2                 | 0.11.2                  | Franzosa et al. 2018 Nat. Methods.
+blastn                  | 2.7.1+                  | Package: blast 2.7.1, build Oct 18 2017 19:57:24
+seqtk                   | 1.2-r95-dirty           | https://github.com/lh3/seqtk
+Geneious                | R8                      | https://www.geneious.com/
+IGV                     | 2.4                     | https://software.broadinstitute.org/software/igv/
+Inkscape                | 0.92                    | www.inkscape.org
+
+
+### R Packages
+
+Here we used R version 3.6.1
+
+|      name      |  version   |                                                  URL                                                   |
+|:---------------|:-----------|:-------------------------------------------------------------------------------------------------------|
+|    markdown    |    1.1     |                                  https://github.com/rstudio/markdown                                   |
+| zCompositions  |  1.3.2-1   |                                              Not provided                                              |
+|   truncnorm    |   1.0-8    |                               https://github.com/olafmersmann/truncnorm                                |
+|      NADA      |   1.6-1    |                                              Not provided                                              |
+|    survival    |  2.44-1.1  |                                  https://github.com/therneau/survival                                  |
+|      XML       | 3.98-1.20  |                                     http://www.omegahat.net/RSXML                                      |
+|    viridis     |   0.5.1    |                                 https://github.com/sjmgarnier/viridis                                  |
+|  viridisLite   |   0.3.0    |                               https://github.com/sjmgarnier/viridisLite                                |
+|  VennDiagram   |   1.6.20   |                                              Not provided                                              |
+| futile.logger  |   1.4.3    |                                              Not provided                                              |
+|      vcfR      |   1.8.0    |             https://github.com/knausb/vcfR,; https://knausb.github.io/vcfR_documentation/              |
+|    usedist     |   0.1.0    |                                              Not provided                                              |
+|     UpSetR     |   1.4.0    |                                   http://github.com/hms-dbmi/UpSetR                                    |
+|    forcats     |   0.4.0    |                   http://forcats.tidyverse.org, https://github.com/tidyverse/forcats                   |
+|     purrr      |   0.3.2    |                     http://purrr.tidyverse.org, https://github.com/tidyverse/purrr                     |
+|   tidyverse    |   1.2.1    |                http://tidyverse.tidyverse.org,; https://github.com/tidyverse/tidyverse                 |
+|     tidyr      |   0.8.3    |                     http://tidyr.tidyverse.org, https://github.com/tidyverse/tidyr                     |
+|     tictoc     |    1.0     |                                http://github.com/collectivemedia/tictoc                                |
+|     tibble     |   2.1.3    |                   http://tibble.tidyverse.org/, https://github.com/tidyverse/tibble                    |
+|   textutils    |   0.1-11   |     http://enricoschumann.net/R/packages/textutils/,; https://github.com/enricoschumann/textutils      |
+|     taxize     |   0.9.8    | https://github.com/ropensci/taxize (devel),; https://ropenscilabs.github.io/taxize-book/ (user manual) |
+|    stringr     |   1.4.0    |                   http://stringr.tidyverse.org, https://github.com/tidyverse/stringr                   |
+|     seqinr     |   3.4-5    |                                  http://seqinr.r-forge.r-project.org/                                  |
+|     scales     |   1.0.0    |                       https://scales.r-lib.org, https://github.com/r-lib/scales                        |
+|    reshape2    |   1.4.3    |                                   https://github.com/hadley/reshape                                    |
+|    rentrez     |   1.2.2    |                                   http://github.com/ropensci/rentrez                                   |
+|     readxl     |   1.3.1    |                   https://readxl.tidyverse.org, https://github.com/tidyverse/readxl                    |
+|     readr      |   1.3.1    |                     http://readr.tidyverse.org, https://github.com/tidyverse/readr                     |
+|  RColorBrewer  |   1.1-2    |                                              Not provided                                              |
+|     psych      |   1.8.12   |      https://personality-project.org/r/psych; https://personality-project.org/r/psych-manual.pdf       |
+|     plotly     |   4.9.0    |          https://plotly-r.com, https://github.com/ropensci/plotly#readme,; https://plot.ly/r           |
+|    phytools    |   0.6-99   |                                 http://github.com/liamrevell/phytools                                  |
+|      maps      |   3.3.0    |                                              Not provided                                              |
+|    phyloseq    |   1.28.0   |                            http://dx.plos.org/10.1371/journal.pone.0061217                             |
+|     philr      |   1.10.1   |                                   https://github.com/jsilve24/philr                                    |
+|    phangorn    |   2.5.5    |                                 https://github.com/KlausVigo/phangorn                                  |
+|   patchwork    |   0.0.1    |                                 https://github.com/thomasp85/patchwork                                 |
+| pairwiseAdonis |   0.0.1    |                                              Not provided                                              |
+|    cluster     |   2.1.0    |                           https://svn.r-project.org/R-packages/trunk/cluster                           |
+|     vegan      |   2.5-6    |                     https://cran.r-project.org, https://github.com/vegandevs/vegan                     |
+|    mixOmics    |   6.8.1    |                                        http://www.mixOmics.org                                         |
+|    lattice     |  0.20-38   |                                 http://lattice.r-forge.r-project.org/                                  |
+|      MASS      |  7.3-51.4  |                                  http://www.stats.ox.ac.uk/pub/MASS4/                                  |
+|    janitor     |   1.2.0    |                                   https://github.com/sfirke/janitor                                    |
+|  indicspecies  |   1.7.6    |                                              Not provided                                              |
+|    permute     |   0.9-5    |                                https://github.com/gavinsimpson/permute                                 |
+|   gridExtra    |    2.3     |                                              Not provided                                              |
+|     gplots     |  3.0.1.1   |                                              Not provided                                              |
+|     ggtree     |   1.16.5   |                               https://yulab-smu.github.io/treedata-book/                               |
+|    ggridges    |   0.5.1    |                                 https://github.com/clauswilke/ggridges                                 |
+|    ggrepel     |   0.8.1    |                                   http://github.com/slowkow/ggrepel                                    |
+|   ggfortify    |   0.4.7    |                                  https://github.com/sinhrks/ggfortify                                  |
+|   ggbeeswarm   |   0.6.0    |                                 https://github.com/eclarke/ggbeeswarm                                  |
+|   ggalluvial   |   0.9.1    |                                http://corybrunson.github.io/ggalluvial/                                |
+|    ggplot2     |   3.2.1    |                   http://ggplot2.tidyverse.org, https://github.com/tidyverse/ggplot2                   |
+|     furrr      |   0.1.0    |                                 https://github.com/DavisVaughan/furrr                                  |
+|     future     |   1.14.0   |                               https://github.com/HenrikBengtsson/future                                |
+|      fpc       |   2.2-3    |                           https://www.unibo.it/sitoweb/christian.hennig/en/                            |
+|     dplyr      |   0.8.3    |                     http://dplyr.tidyverse.org, https://github.com/tidyverse/dplyr                     |
+|  directlabels  | 2018.05.22 |                               http://directlabels.r-forge.r-project.org/                               |
+|    decontam    |   1.4.0    |                                  https://github.com/benjjneb/decontam                                  |
+|   data.table   |   1.12.2   |                                         http://r-datatable.com                                         |
+|    dabestr     |   0.2.2    |                                   https://github.com/ACCLAB/dabestr                                    |
+|    magrittr    |    1.5     |                                              Not provided                                              |
+|      boot      |   1.3-23   |                                              Not provided                                              |
+|    cowplot     |   1.0.0    |                                      https://wilkelab.org/cowplot                                      |
+|  compositions  |   1.40-2   |                                http://www.stat.boogaart.de/compositions                                |
+|     bayesm     |   3.1-3    |                                   http://www.perossi.org/home/bsm-1                                    |
+|     energy     |   1.7-6    |                                  https://github.com/mariarizzo/energy                                  |
+|   robustbase   |   0.93-5   |                                http://robustbase.r-forge.r-project.org/                                |
+|    tensorA     |   0.36.1   |                                  http://www.stat.boogaart.de/tensorA                                   |
+|     clues      |   0.5.9    |                                              Not provided                                              |
+|     broom      |   0.5.2    |                                   http://github.com/tidyverse/broom                                    |
+|    BacDiveR    |   0.9.0    |                                https://github.com/TIBHannover/BacDiveR                                 |
+|      ape       |    5.3     |                                       http://ape-package.ird.fr/                                       |
+|      amap      |   0.8-17   |                                              Not provided                                              |
+|     ALDEx2     |   1.16.0   |                                    https://github.com/ggloor/ALDEx2                                    |
+|    adegenet    |   2.1.1    |                               https://github.com/thibautjombart/adegenet                               |
+|      ade4      |   1.7-13   |      http://pbil.univ-lyon1.fr/ADE-4, Mailing list:; http://listes.univ-lyon1.fr/wws/info/adelist      |
+
+### Sequence Databases
+
+If did not come with package itself, we downloaded the following:
+
+Name             | Version                      | Date          | Download Location
+-----------------|------------------------------|---------------|-------------------------------------------------------
+NCBI Nucleotide  | nt.gz                        | Dec. 2016     | ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/
+NCBI RefSeq      | Custom                       | Nov. 2018     | ftp://ftp.ncbi.nlm.nih.gov/genomes/
+SILVA            | 128_SSURef_Nr99              | Mar. 2017     | http://ftp.arb-silva.de/release_128/Exports/
+UniRef           | uniref90_ec_filtered_diamond | Oct. 2018     | https://bitbucket.org/biobakery/humann2
+
+### Single Reference Genomes
+
+Species                                       | Strain      | Date           | Completeness | Type           | Source
+----------------------------------------------|-------------|----------------|--------------|----------------|-----------------------------------------------------
+_Homo sapiens_                                | HG19        | 2016-01-14     | Complete     | Reference      | http://hgdownload.cse.ucsc.edu/downloads.html#human
+_Actinomyces dentalis_                        | DSM 19115   | 2019-02-25     | Scaffold     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/429/225/GCF_000429225.1_ASM42922v1/
+_Campylobacter gracilis__                     | -           | 2019-05-22     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/
+_Capnocytophaga gingivalis_                   | ATCC 33624  | 2019-02-25     | Contigs      | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/174/755/GCF_000174755.1_ASM17475v1/
+_Corynebacterium matruchotii_                 | ATCC 14266  | 2019-05-22     | Contigs      | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/175/375/GCF_000175375.1_ASM17537v1/
+_Fretibacterium fastidiosum_                  | -           | 2018-12-11     | Chromosome   | Unknown        | https://www.ncbi.nlm.nih.gov/nuccore/FP929056.1
+_Fusobacterium hwasookii_                     | ChDC F206   | 2019-10-27     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/455/105/GCF_001455105.1_ASM145510v1/
+_Olsenella sp. oral taxon 807_                | 807         | 2019-01-10     | Complete     | Unknown        | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/189/515/GCF_001189515.2_ASM118951v2/
+_Ottowia sp. oral taxon 894_                  | 894         | 2019-05-22     | Complete     | Unknown        | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/262/075/GCF_001262075.1_ASM126207v1/
+_Porphyromonas gingivalis_                    | ATCC 33277  | 2018-12-11     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/010/505/GCF_000010505.1_ASM1050v1/
+_Prevotella loescheii_                        | DSM 19665   | 2019-05-22     | Scaffolds    | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/378/085/GCF_000378085.1_ASM37808v1/
+_Pseudopropionibacterium propionicum_         | F0230a      | 2018-12-11     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/277/715/GCF_000277715.1_ASM27771v1
+_Selenomonas sp. F0473_                       | F0473       | 2019-05-22     | Scaffolds    | Unknown        | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/315/545/GCF_000315545.1_Seleno_sp_F0473_V1/
+_Streptococcus gordonii_                      | CH1         | 2019-02-13     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/017/005/GCF_000017005.1_ASM1700v1
+_Streptococcus sanguinis_                     | SK36        | 2018-12-11     | Complete     | Reference      | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/014/205/GCF_000014205.1_ASM1420v1/
+_Tannerella forsythia_                        | 92A2        | 2018-12-18     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/238/215/GCF_000238215.1_ASM23821v1/
+_Treponema socranskii subsp. paredies_        | ATCC 35535  | 2019-02-28     | Scaffolds    | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/413/015/GCF_000413015.1_Trep_socr_subsp_paredis_ATCC_35535_V1/
+
+__SCREENING__
+_Aggregatibacter aphrophilus_                 | W10433      | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
+_Desulfobulbus_ sp. oral taxon 041            | Dsb1-5      | 2018-06-06     | Contigs      | Assembly       | https://www.ncbi.nlm.nih.gov/genome
+_Fusobacterium nucleatum_ subsp. _nucleatum_  | ATCC 25586  | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
+_Pseudopropionibacterium propionicum_         | F0230a      | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
+_Rothia dentocariosa_                         | ATCC 17831  | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
+_Streptococcus gordonii_                      | CH1         | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
+_Treponema socranskii_                        | ATCC 35535  | 2018-05-31     | Scaffold     | Representative | https://www.ncbi.nlm.nih.gov/genome
+
+
+## Repository Structure
+
+### General Directory Structure
+
+The general struture of this project is typically as follows (although
+variants will occur):
+
+```
+README.md
+00-documentation/
+  00-document_1.txt
+  01-document_2.txt
+01-data/
+  raw_data/
+    screening/
+    deep/
+  databases/
+    <database_1>/
+02-scripts.backup/
+  000-ANALYSIS_CONFIG
+  001-script.sh
+  002-notebook.Rmd
+03-preprocessing
+  screening/
+    human_filtering/
+      input/
+      output/
+    library_merging/
+      input/
+      output/
+  deep/
+    human_filtering
+      input/
+      output/
+    library_merging/
+      input/
+      output/
+04-analysis/
+  screening/
+    analysis_1/
+      input
+      output
+    analysis_2/
+      input
+      output
+  deep/
+    analysis_1/
+      input
+     output
+    analysis_2/
+      input
+      output
+```
+
+### Analysis Profile
+
+Some scripts used in this project use variables stored a central profile called
+`02-scripts.backup/000-analysis_profile`. These variables indicate the location
+of certain programs in your servers filesystem. The scripts loading the 
+profile will therefore look for and use the program stored in the variable.
+
+You will need to replace the paths stored there to where each tool is stored
+on your personal server, I have replaced our central storage to `<YOUR_PATH>`, 
+however you will need to check each path correctly.
+
+> Note: not all scripts use the profile, so please check each one before running
+
+For direct commands (i.e. not used in a script), the path will be defined in
+the command block.
+
+## Database and Genome Indexing
+
+### MALT
+
+The MALT nt databases was downloaded and generated as follows.
+
+```bash
+DBDIR=<PATH_TO_CLONED_REPOSITORY>/01-data/databases
+MALTDIR=<PATH_TO>
+
+## MALT indexed NT database
+mkdir -p $DBDIR/malt/raw $DBDIR/malt/indexed
+cd $DBDIR/malt
+
+### Download nucleotide database fasta and md5sum file into a database directory
+wget ftp://ftp-trace.ncbi.nih.gov/blast/db/FASTA/nt.gz .
+wget ftp://ftp-trace.ncbi.nih.gov/blast/db/FASTA/nt.gz.md5 .
+
+### Generate the md5sum of the downloaded file, and comapre with contents of
+### the NCBI .md5 version
+md5sum nt.gz
+cat nt.gz.md5
+
+### Download into a different directory the accession to taxonomy mapping file
+### as provided on the MEGAN6 website, and unzip
+wget http://ab.inf.uni-tuebingen.de/data/software/megan6/download/nucl_acc2tax-May2017.abin.zip
+unzip nucl_acc2tax-May2017.abin.zip
+
+"$MALT"/malt-build \
+--step 2 \
+-i "$DBDIR"/malt/raw/nt.gz \
+-s DNA \
+-d "$DBDIR"/malt/indexed \
+-t 112 -a2taxonomy "$DBDIR"/malt/raw/nucl_acc2tax-May2017.abin
+```
+
+### BWA
+
+The SILVA reference database, and all single genomes (HG19, bacterial etc.) were
+indexed as follows - with the SILVA database FASTA file as an example.
+
+```bash
+BWA=<PATH_TO>/bwa
+SAMTOOLS=<PATH_TO>/samtools
+PICARDTOOLS=<PATH_TO>/picard
+
+mkdir $DBDIR/silva
+cd !$
+
+wget http://ftp.arb-silva.de/release_128/Exports/SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.gz
+"$BWA" index SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta
+"$SAMTOOLS" faidx SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta
+"$PICARDTOOLS" CreateSequenceDictionary \
+REFERENCE=SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta \
+O=SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.dict
+
+```
+
+For the custom NCBI Genome RefSeq database containing bacterial and archaea
+assemblies at scaffold, chromosome and complete levels - we follow the
+notebook here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_walkthrough_20181029.r`
+
+To build the `aadder` database for functional analysis, we run the command
+`01-data/027-aadder_build_refseqCGS_bacarch_sbatch_script_20181104.sh`. This 
+calls the `adder-build` command as provided in the MEGAN install directory's
+`tools` folder. Note we have to change the `MEGAN.vmoptions` to have a large 
+enough memory allocation in the MEGAN install directory.
+
+For the scripts using `analysis_profile` file, ensure to update the paths to in
+ the analysis profile to your correpsonding location.
+
+```bash
+## MALT DB Directory containing all database files
+MALTDB=<PATH_TO>//malt/databases/indexed/index038/full-nt_2017-10
+## SILVA DB directory containing the converted U to T FASTA file and associated bwa indexed files
+SILVADB=<PATH_TO>//microbiome_sciences/reference_databases/silva/release_128_DNA/
+## GreenGenes DB directory, as provided in QIIME
+GREENGENESDB=<PATH_TO>//tools/qiime-environment/1.9.1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus
+
+HG19REF=<PATH_TO>/Reference_Genomes/Human/HG19/hg19_complete.fasta
+```
+
+## Data Acquisition
+
+All raw FASTQ files should be downloaded sample specific directories in
+ `01-data/public_data/raw`.
+
+### Additional Individuals
+
+In addition to the samples sequenced in this study (or generated by our 
+group, but previously published in the case of JAE), we downloaded the shotgun 
+sequenced individuals from Weyrich et al. 2017 (Nature).
+
+For this, I downloaded the 'processed' files from the OAGR database, as the
+original data had barcodes, and they used AdapterRemoval as done here.
+
+The list of files and hard links can be seen in the documentation under
+`99-publicdata-Weyrich_Neanderthals.txt`.
+
+I downloaded each file with `wget`, renaming with the file as listed in the 
+OAGR website, concatenated multi-file samples if required (i.e. ElSidron1) then 
+renamed to the EAGER standard.
+
+An example:
+
+```bash
+cd 01-data/public_data/
+mkdir ElSidron1
+
+wget https://www.oagr.org.au/api/v1/dataset_file/3086/download
+rename s/download/2NoAdapt_ELSIDRON1L7_lTACTG_rCTCGA_R1R2_Collapsed.fastq.gz/ download
+wget https://www.oagr.org.au/api/v1/dataset_file/3109/download
+rename s/download/2NoAdapt_ELSIDRON1L7_lTACTG_rCTCGA_R1R2_Collapsed_Truncated.fastq.gz/ download
+
+cat *fastq.gz > ElSidron1_S0_L000_R1_000.fastq.merged.fq.gz
+
+## If no concatenation required
+# mv 2NoAdapt_CHIMP_150519_lACGTG_rATTGA_R1R2_Collapsed.fastq.gz Chimp.150519_S0_L000_R1_000.fastq.merged.fq.gz
+
+```
+
+The final merged individual fastq files were moved to individual directories in 
+`/01-data/public_data/prepped`. 
+
+The just renamed files were just symlinked into the above.
+
+### Comparative Sources
+
+In addition to ancient and calculus samples, we also require comparative data
+from different sources of microbiomes (e.g. soil, skin, gut etc.). 
+
+> Note that the bone 'environmental' sample comparative data was also sequenced
+> in this study and can be found in the ENA repository PRJEB34569.
+
+Comparative source files were selected based on the following criteria:
+
+  * Had to be shotgun metagenomes
+  * Have had no modification or treatment made to DNA selection or host (e.g. 
+  no pesticide)
+  * Must have been generated on the Illumina platform
+  * Must have more than 10 million reads
+  * Must have contain than 1000 16s rRNA reads in the shotgun data (detected 
+  during analysis)
+  
+In addition the Human Microbiome Project gut and plaque samples had the 
+additional criteria of:
+
+  * Must be from unique individuals (checked using the biospecimen column) 
+  * Aim for approximately 50/50 male and female where possible
+
+The files were downloaded from the NCBI SRA and EBI ENA 
+databases. A list of these libraries can be seen in the 'mapping' file 
+`02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`. 
+Metadata on the HMP samples can be seen in 
+`00-documentation/99-sourcemetadata-hmp_SraRunTable_allRuns.tsv`, with 
+samples selected for each source type coming from unique individuals, as 
+inferred by the hmp_subject_id column. Metadata for the other datasets can be 
+seen in the `00-documentation/99-sourcemetadata-*` files
+
+A file containing the ERR and SRR numbers of each library on each line was 
+given to the scripts `001-SRA_download_script.sh` and `002-ERR_download_script.sh`.
+
+Some HMP project samples were not avaliable directly from the FTP server,
+in which case these were directly pulled using either `prefetch -v`, which is 
+a similar command as in the `001-SRA_download_script.sh` file, but without 
+the `wget` step.
+
+```bash
+SRATOOLKIT=/projects1/tools/sratoolkit/2.8.0/sratoolkit.2.8.0-ubuntu64/bin
+
+"$SRATOOKIT"/prefetch -v SRR514306
+"$SRATOOKIT"/fastq-dump -F --split-files --readids /projects1/clusterhomes/fellows/ncbi/public/sra/SRR514306.sra --gzip --outdir .
+```
+
+These were then renamed using
+
+```bash
+cd 01-data/public_data/raw/
+rename s/_1.fastq.gz/_S0_L001_R1_000.fastq.gz/ */*.fastq.gz
+rename s/_2.fastq.gz/_S0_L001_R2_000.fastq.gz/ */*.fastq.gz
+
+```
+
+The final fastq files were then placed symlinked to individual directories in
+`01-data/public_data/prepped`
+
+For the sediment data from Slon et al. 2017, I also resort to 
+downloading the FASTQ files directly. However, unfortunately, the uploaded
+data was actually not 'raw' but the already merged data from the Slon 2017 paper. 
+We will download the FASTQ data anyway and do a modified pre-processing.
+
+I did this with the following command, and utilising the file generated from
+ the parsing script of the two metadata files which is stored here
+ `02-scripts.backup/99-Slon2017_DataFinderScript.R`.
+
+```bash
+cat 00-documentation.backup/99-Slon2017_AccessionsToDownload_2.tsv | while read LINE; do
+  mkdir 01-data/raw_data/screening/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev) && \
+  wget $(echo $LINE | cut -d ';' -f1) -P 01-data/raw_data/screening/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/ && \
+  wget $(echo $LINE | cut -d ';' -f2) -P 01-data/raw_data/screening/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/ && \
+  wget $(echo $LINE | cut -d ';' -f3) -P 01-data/raw_data/screening/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/ && \
+  rename s/.fastq.gz/_S0_L001_R1_000.merged.fastq.gz/ \
+  01-data/raw_data/screening/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev).fastq.gz && \
+  rename s/_1.fastq.gz/_S0_L001_R1_000.fastq.gz/ 01-data/raw_data/screening/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/*.fastq.gz && \
+  rename s/_2.fastq.gz/_S0_L001_R2_000.fastq.gz/ 01-data/raw_data/screening/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/*.fastq.gz
+done
+
+```
+
+To complete standardisation of this data, we can combine singleton files.
+
+```bash
+cat 00-documentation.backup/99-Slon2017_AccessionsToDownload_2.tsv | while read LINE; do
+  mkdir 03-preprocessing/screening/human_filtering/input/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/ && \
+  cat 01-data/raw_data/screening/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/*.fastq.gz >> \
+  03-preprocessing/screening/human_filtering/input/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)/$(echo $LINE | cut -d ';' -f1 | rev | cut -d/ -f 2 | rev)_S0_L001_R1_000.merged.fq.gz
+done
+```
+
+The final merged individual fastq files were moved to individual directories in 
+`01-data/public_data/prepped`
+
+## Data Preprocessing
+
+Now downloaded, we can begin preprocessing by performing a sequencing quality 
+check, merge any of the PE data (as well as trimming low quality bases), remove 
+any DNA that maps to the human genome (but preserving the statistics) and 
+extract all-non human DNA for downstream processing.
+
+We perform this in two different ways. When this project first started our 
+build of EAGER was broken, so we made our own script version(s)
+(`02-scripts.backup/003-preprocessing_human_filtering.sh`, and 
+`02-scripts.backup/004-preprocessing_human_filtering_premerged.sh`) utilising the same 
+commands and tool versions as run by EAGER. Once EAGER was fixed, we returned 
+to using to this as it was more robust. The only addition to the script 
+version was `samtools fastq` to convert unmapped reads (i.e. non-human reads, 
+used for metagenomic screening) to FASTQ.
+
+
+### Preprocessing
+
+#### Script Version 
+
+Below I provide a loop that makes sure to run the
+script on libraries you have not already run that are present in the output
+directory. All you need to do is change the paths in the variables `INDIR` and
+`OUTDIR`. 
+
+If you need to increase the number of cores of memory, you can
+modify this in the `CPU` and `MEM` variables in the script itself.
+
+You will need to check if this manual script is working correctly
+manually, as I didn't have time to inbuild checks. You can do this by checking 
+all the fields in the output of the next script (below) are filled with numbers.
+
+An example is below with 'premerged' script.
+
+```bash
+## Cycle through INDIR corresponding to each type of data (paired/single, hiseq/nextseq, pre-merged etc.)
+INDIR=03-preprocessing/screening/human_filtering/input/hiseq_single
+OUTDIR=03-preprocessing/screening/human_filtering/output
+SCRIPTS=02-scripts.backup
+
+for LIBDIR in "$INDIR"/*/; do
+  LIBNAME=$(echo "$LIBDIR" | rev | cut -d/ -f2 | rev)
+  if [ -d "$OUTDIR"/"$LIBNAME" ]; then
+    printf "\n $LIBNAME already Processed \n\n"
+  else
+    mkdir "$OUTDIR"/"$LIBNAME" 
+    $SCRIPTS/03-preprocessing_human_filtering_premerged.sh $OUTDIR/$LIBNAME $LIBDIR $LIBNAME
+    sleep 1
+done
+```
+
+#### EAGER Version
+
+For the Slon et al. 2017 and Weyrich et al. 2017 datasets, we ran EAGER without 
+AdapterRemoval as the ENA uploaded data was already trimmed and merged. 
+
+For the VLC/ARS/DLV/PLV/RIG/OFN samples, some the blanks and deep 
+sequenced samples, I ran the same as below, but with FastQC and AdapterRemoval 
+turned on with default settings. 
+
+```
+Organism: Human
+Age: Ancient
+Treated Data: non-UDG [Deep : UDG]
+Pairment: Single End (VLC/EXB/LIB - Paired End)
+Input is already concatenated (skip merging): Y (VLC/EXB/LIB - N)
+Concatenate Lanewise together: N (VLC -Y, EXB/LIB - N)
+Reference: HG19
+Name of mitocondrial chromosome: chrMT
+FastQC: Off (VLC/EXB/LIB/ARS - On)
+AdapterRemoval: Off (VLC/EXB/LIB - On)
+Mapping: BWA
+  Seedlength: 32
+  Max # diff: 0.01
+  Qualityfilter: 0
+  Filter unmapped: Off
+  Extract Mapped/Unmapped: On
+Remove Duplicates: DeDup
+  Treat all reads as merged: On
+Damage Calculation: Damageprofiler
+CleanUp: On
+Create Report: On
+
+```
+
+and submitted with 
+
+```bash
+EAGER=<PATH_TO>/1.92.55/bin/eager
+EAGERCLI=<PATH_TO>/1.92.55/bin/eagercli
+
+for FILE in $(find 03-preprocessing/screening/human_filtering/output/* -name '*.xml'); do
+  unset DISPLAY && $EAGERCLI $(readlink -f $FILE)
+done
+
+```
+
+For the screening data to clean up the EAGER results directories so 
+that they are in the same format as the script version others you can run the 
+following couple of commands.
+
+> All production dataset files were run with EAGER, so clean up was not required
+> and the default ReportTable output was used.
+
+For single samples:
+
+```bash
+cd 03-preprocessing/screening/human_filtering/output
+
+## Clean up
+SAMPLE=LIB007.A0124
+SAMTOOLS=<PATH_TO>/samtools_1.3/bin/samtools
+
+for DIR in $(readlink -f "$SAMPLE"); do
+  cd "$DIR"
+  mkdir fastqc
+  mv 0-FastQC/*zip fastqc
+  mv 1-AdapClip/*settings .
+  mv 4-Samtools/*mapped.bam.stats .
+  mv 4-Samtools/*extractunmapped.bam .
+  mv 5-DeDup/*.mapped.sorted.cleaned.hist .
+  mv 5-DeDup/*.log .
+  mv 6-QualiMap/*/ qualimap
+  mv 7-DnaDamage/*/ damageprofiler
+done
+
+cd ..
+
+for DIR in $(readlink -f "$SAMPLE"); do
+  cd "$DIR"
+  "$SAMTOOLS" idxstats $(readlink -f 4-Samtools/*.mapped.sorted.bam) >> $(readlink -f 4-Samtools/*.mapped.sorted.bam).idxstats
+  mv 4-Samtools/*idxstats .
+  rm -r 0-FastQC
+  rm -r 1-AdapClip
+  rm -r 3-Mapper
+  rm -r 4-Samtools
+  rm -r 5-DeDup
+  rm -r 6-QualiMap
+  rm -r 7-DnaDamage
+  rm DONE.CleanUpRedundantData
+  rm EAGER.log
+done
+
+
+```
+
+or for multiple samples
+
+```bash
+SAMPLES=($(find -name '2019*.xml' -type f -exec readlink -f {} \;))
+
+SAMTOOLS=<PATH_TO>/samtools_1.3/bin/samtools
+
+for DIR in ${SAMPLES[@]}; do 
+  cd $(dirname "$DIR")
+  mkdir fastqc
+  mv 0-FastQC/*zip fastqc
+  mv 1-AdapClip/*settings .
+  mv 4-Samtools/*mapped.bam.stats .
+  mv 4-Samtools/*extractunmapped.bam .
+  mv 5-DeDup/*.mapped.sorted.cleaned.hist .
+  mv 5-DeDup/*.log .
+  mv 6-QualiMap/*/ qualimap
+  mv 7-DnaDamage/*/ damageprofiler
+done
+
+cd ..
+
+for DIR in ${SAMPLES[@]}; do 
+  cd $(dirname "$DIR")
+  "$SAMTOOLS" idxstats $(readlink -f 4-Samtools/*.mapped.sorted.bam) >> $(readlink -f 4-Samtools/*.mapped.sorted.bam).idxstats
+  mv 4-Samtools/*idxstats .
+  rm -r 0-FastQC
+  rm -r 1-AdapClip
+  rm -r 3-Mapper
+  rm -r 4-Samtools
+  rm -r 5-DeDup
+  rm -r 6-QualiMap
+  rm -r 7-DnaDamage
+  rm DONE.CleanUpRedundantData
+  rm EAGER.log
+done
+```
+
+### Post-Processing
+
+#### EAGER preprocessing dataset BAM to FASTQ Conversion
+
+As EAGER itself does not have ability to convert unmapped read BAMs to FASTQ 
+(whereas), we have to do this manually for EAGER preprocessed files with:
+
+```bash
+FILES=($(find -L 03-preprocessing/{screening,deep}/human_filtering/output/{FUM,GOY,PES,GDN}*.2/ -name '*.extractunmapped.bam' -type f))
+
+for i in 1:${#FILES[@]}; do
+  samtools fastq ${FILES[$i]} | gzip > ${FILES[$i]} .fq.gz;
+done
+
+```
+
+
+#### Statistics
+We can then extract the statistics of this pre-processing with the script 
+`02-scripts.backup/005-statistics_human_filtering.sh`. Once checked, we move the resulting 
+`human_filtering_statistics.csv` script to our `00-documents` folder and
+rename as `03-human_filtering_statistics.csv`.
+
+```bash
+SCRIPTS=02-scripts.backup
+
+cd 03-preprocessing/screening/human_filtering
+
+"$SCRIPTS"/005-statistics_human_filtering.sh output/
+
+## Copy to documentation folder
+mv human_filtering_statistics_"$(date +"%Y%m%d")".csv ..
+cp ../human_filtering_statistics_"$(date +"%Y%m%d")".csv ../../../00-documentation.backup/03-human_filtering_statistics_"$(date +"%Y%m%d")".csv
+
+```
+
+NOTE: if you get a "Runtime error (func=(main), adr=6): Divide by zero" error,
+don't worry, this is related to the cluster factor calculation for when there 
+are no human reads after de-duplication. I just manually fill in with NA.
+
+For the deep data, the EAGER table was used for report statistics (see below for
+further information)
+
+#### Library Merging
+
+Next, we can merge together libraries that have been sequenced multiple times,
+or Individuals with multiple calculus samples.
+
+A list of libraries that have been merged together can be seen for the screening
+data at `00-documentation/04-library_merging_information.csv` and production
+dataset at `00-documentation/17-samples_deep_library_merging_information_20190708.csv`.
+
+However in general this can be worked out by merging together any library that 
+shares the first six character section of each library. For example:
+
+```
+CDC005.A0101
+CDC005.A0101.170817
+
+or
+
+ECO002.B0101
+ECO002.C0101
+```
+
+These represent distinct individuals (but different libraries of a single
+sample or multiple sequencing of the same library), and for this study we are 
+not considering differences in sampling source of the calculus.
+
+Into our final output preprocessing directory (library_merging), we can quickly 
+import the files not needing merging like so:
+
+```bash
+cd 03-preprocessing/screening/library_merging
+
+## Make directory
+for DIR in ../../screening/human_filtering/output/*/; do 
+  mkdir "$(echo $DIR | rev | cut -d/ -f2 | rev)/"
+done
+
+## Make symlink of FastQ into new directory above.
+for DIR in ../../screening/human_filtering/output/*/; do 
+  ln -s $(readlink -f "$DIR")/*fq.gz "$(echo $DIR | rev | cut -d/ -f2 | rev)/"; 
+done
+```
+
+Now remove those 'extra' libraries that will be collapsed into the 
+first entry 
+
+```bash
+rm \
+ABM007.A0101/*.fq.gz \
+ABM008.A0101/*.fq.gz \
+BIT001.A0101/*.fq.gz \
+CDC005.A0101/*.fq.gz \
+CDC011.A0101/*.fq.gz \
+DJA006.A0101/*.fq.gz \
+DJA007.A0101/*.fq.gz \
+EBO008.A0101/*.fq.gz \
+EBO009.A0101/*.fq.gz \
+ECO002.B0101/*.fq.gz \
+ECO004.B0101/*.fq.gz \
+FDM001.A0101/*.fq.gz \
+GDN001.A0101/*.fq.gz \
+IBA001.A0101/*.fq.gz \
+IBA002.A0101/*.fq.gz \
+LOB001.A0101/*.fq.gz \
+MOA001.A0101/*.fq.gz \
+MTK001.A0101/*.fq.gz \
+MTM003.A0101/*.fq.gz \
+MTM010.A0101/*.fq.gz \
+MTM011.A0101/*.fq.gz \
+MTM012.A0101/*.fq.gz \
+MTM013.A0101/*.fq.gz \
+MTS001.A0101/*.fq.gz \
+MTS002.A0101/*.fq.gz \
+MTS003.A0101/*.fq.gz \
+TAF017.A0101/*.fq.gz \
+TAF018.A0101/*.fq.gz \
+WAL001.A0101/*.fq.gz
+```
+
+These extras are merged into a single FASTQ file and placed in an 
+independent file with the following example command:
+
+```bash
+INDIR=03-preprocessing/screening/human_filtering/output
+OUTDIR=03-preprocessing/screening/library_merging
+
+cat "$INDIR"/ABM007*/*.fq.gz >> "$OUTDIR"/ABM007.A0101/ABM007_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/ABM008*/*.fq.gz >> "$OUTDIR"/ABM008.A0101/ABM008_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/BIT001*/*.fq.gz >> "$OUTDIR"/BIT001.A0101/BIT001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/CDC005*/*.fq.gz >> "$OUTDIR"/CDC005.A0101/CDC005_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/CDC011*/*.fq.gz >> "$OUTDIR"/CDC011.A0101/CDC011_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/DJA006*/*.fq.gz >> "$OUTDIR"/DJA006.A0101/DJA006_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/DJA007*/*.fq.gz >> "$OUTDIR"/DJA007.A0101/DJA007_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/EBO008*/*.fq.gz >> "$OUTDIR"/EBO008.A0101/EBO008_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/EBO009*/*.fq.gz >> "$OUTDIR"/EBO009.A0101/EBO009_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/ECO002*/*.fq.gz >> "$OUTDIR"/ECO002.B0101/ECO002_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/ECO004*/*.fq.gz >> "$OUTDIR"/ECO004.B0101/ECO004_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/FDM001*/*.fq.gz >> "$OUTDIR"/FDM001.A0101/FDM001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/GDN001*/*.fq.gz >> "$OUTDIR"/GDN001.A0101/GDN001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/IBA001*/*.fq.gz >> "$OUTDIR"/IBA001.A0101/IBA001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/IBA002*/*.fq.gz >> "$OUTDIR"/IBA002.A0101/IBA002_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/LOB001*/*.fq.gz >> "$OUTDIR"/LOB001.A0101/LOB001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MOA001*/*.fq.gz >> "$OUTDIR"/MOA001.A0101/MOA001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTK001*/*.fq.gz >> "$OUTDIR"/MTK001.A0101/MTK001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTM003*/*.fq.gz >> "$OUTDIR"/MTM003.A0101/MTM003_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTM010*/*.fq.gz >> "$OUTDIR"/MTM010.A0101/MTM010_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTM011*/*.fq.gz >> "$OUTDIR"/MTM011.A0101/MTM011_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTM012*/*.fq.gz >> "$OUTDIR"/MTM012.A0101/MTM012_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTM013*/*.fq.gz >> "$OUTDIR"/MTM013.A0101/MTM013_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTS001*/*.fq.gz >> "$OUTDIR"/MTS001.A0101/MTS001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTS002*/*.fq.gz >> "$OUTDIR"/MTS002.A0101/MTS002_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/MTS003*/*.fq.gz >> "$OUTDIR"/MTS003.A0101/MTS003_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/TAF017*/*.fq.gz >> "$OUTDIR"/TAF017.A0101/TAF017_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/TAF018*/*.fq.gz >> "$OUTDIR"/TAF018.A0101/TAF018_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+cat "$INDIR"/WAL001*/*.fq.gz >> "$OUTDIR"/WAL001.A0101/WAL001_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.fq.gz
+
+
+```
+
+For screening data, the final number of reads going downstream analysis is also 
+recorded in the file `04-samples_library_merging_information.csv`. For libraries 
+sequenced twice, I manually added the two values together.
+
+For deep sequencing data, The same concatenating of multiple samples and/or 
+lanes was done for the deep sequencing samples. However the statistics were 
+summarised across replicates using the R notebook 
+`02-scripts.backup/099-eager_table_individual_summarised.Rmd`.
+
+### Poly-G Trimming Assessment
+
+The human DNA GC content could be a bit off in some of the new libraries 
+generated in this study, as we are sequencing with Illumina NextSeqs, which 
+have a 2 colour chemistry that considers no light emission as a 'G'. Thus, 
+empty or finished clusters can be read as long poly G reads - which can still 
+map to the human genome in regions with long repetitive regions. Modern
+contamination with long human DNA reads on a failed flow cell cluster may also 
+containg poly-G stretches if the flouresence failed before the entire read is
+complete and the adapter had not been sequenced.
+
+To get improved human DNA content calculations, we can run EAGER to get the 
+mapped reads. Then run `fastp` on the bam2fastq mapped reads and use their 
+`--trim_poly_g` function to remove complete G reads or remove from reads that 
+has the last 10 reads as Gs this tail. This procedure is recorded in 
+`04-analysis/screening/eager` under the `polyGremoval*` directories.
+
+The polyG issue would not likely affect our ancient microbial data because
+these should be so short that each read would have both ends of the read
+entirely sequenced (the whole read with both adapters or most of both adapters 
+would fit in 75 cycles). Thus, adapter removal would remove anything that 
+comes after the adapters which would be the poly Gs. Poly G tails would 
+only affect single index reads, where the read itself is too short and doesn't
+have an adapter to indicate the read has ended.
+
+For the first round of mapping we use the input parameters per sequencing 
+configuration, and the mapping pipeline as follows: 
+
+```
+Organism: Human
+Age: Ancient
+Treated Data: non-UDG
+Pairment: Single End (R1) or Paired End (R1/R2)
+Input is already concatenated (skip merging): N
+Concatenate Lanewise together: N (HiSeq) or Y (NextSeq)
+Reference: HG19
+Name of mitocondrial chromosome: chrMT
+
+AdapterRemoval: Y (New Data)
+Mapping: BWA
+  Seedlength: 32
+  Max # diff: 0.01
+  Qualityfilter: 0
+  Filter unmapped: On
+  Extract Mapped/Unmapped: Off
+Remove Duplicates: DeDup
+  Treat all reads as merged: On
+CleanUp: On
+Create Report: Off
+
+```
+
+We then update the `find` path and number of jobs in the array in the script 
+`02-scripts.backup/18-eager_microbiota_slurm_array.sh` to the new input directory and number
+of libraries.
+
+Once completed, we can perform a cleanup FASTQs to reduce our footprint 
+
+```bash
+cd 04-analysis/screening/eager/polyGremoval_input
+
+rm -r 04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.collapsed.gz \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.collapsed.truncated.gz \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.discarded.gz \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.pair1.truncated.gz \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.pair2.truncated.gz \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.settings \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.singleton.truncated.gz \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/DONE.AdapterRemovaldefault \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/DONE.AdapterRemovalFixReadPrefix \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/DONE.CombineFastQ \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/DONE.TrackFastQ \
+04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/track_fastq.log \
+04-analysis/screening/eager/polyGremoval_input/*/3-Mapper/ \
+04-analysis/screening/eager/polyGremoval_input/*/4-Samtools/ \
+04-analysis/screening/eager/polyGremoval_input/*/6-QualiMap \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.bam \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.bai \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.hist \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.log \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.bam.mtnucratio \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.CleanSam \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.DeDup \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.MTToNucRatioCalculator \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.SamtoolsIndexDedup \
+04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.SamtoolsSortDeDup
+```
+
+and now use samtools to convert our mapped Human DNA reads (after DeDup) back to 
+FASTQ.
+
+```bash
+INDIR=04-analysis/screening/eager/polyGremoval_input/
+
+for LIBDIR in "$INDIR"/*/; do
+  LIBNAME=$(echo "$LIBDIR" | rev | cut -d/ -f2 | rev)
+  if [ -f "$INDIR"/"$LIBNAME"/5-DeDup/*mappedonly.sorted.cleaned_rmdup.sorted.bam.fq.gz ]; then
+    printf "\n $LIBNAME already Processed \n\n"
+  else
+    echo "$LIBNAME"
+    samtools fastq $(readlink -f $INDIR/$LIBNAME/5-DeDup/*mappedonly.sorted.cleaned_rmdup.sorted.bam) | gzip > $(readlink -f $INDIR/$LIBNAME/5-DeDup/*mappedonly.sorted.cleaned_rmdup.sorted.bam).fq.gz
+  fi
+done
+
+```
+
+Then we run the complexity filter on these to remove the poly-Gs using 
+[fastp](https://github.com/OpenGene/fastp). This will remove/trim any read
+where the last 10 reads are all Gs.
+
+```bash
+
+sbatch 02-scripts.backup/099-polyGcomplexity_filter.sh
+
+## If running with extra samples
+INDIR=/projects1/microbiome_calculus/iberian/03-preprocessing/screening/human_filtering/output
+
+for LIBDIR in "$INDIR"/*/; do
+  LIBNAME=$(echo "$LIBDIR" | rev | cut -d/ -f2 | rev)
+  if [ -f "$INDIR"/"$LIBNAME"/4-Samtools/*.polyGtrimmed.fq.gz ]; then
+    printf "\n $LIBNAME already Processed \n\n"
+  else
+    echo "$LIBNAME"
+    sbatch \
+  fastp \
+  -i $(readlink -f $INDIR/$LIBNAME/4-Samtools/*mapped.sorted.bam.fq.gz) \
+  -o $(readlink -f $INDIR/$LIBNAME/4-Samtools/*mapped.sorted.bam.fq.gz).polyGtrimmed.fq.gz \
+  --trim_poly_g \
+  --disable_quality_filtering \
+  --disable_length_filtering \
+  --disable_adapter_trimming
+  fi
+done
+```
+
+Once completed, we prepare the final round of EAGER mapping to generate the 
+EAGER ReportTable mapping information but without poly-G reads.
+
+```bash
+cd 04-analysis/screening/eager/polyGremoval_output/
+mkdir input output
+cd input
+
+find 04-analysis/screening/eager/polyGremoval_input/ -name '*.polyGtrimmed.fq.gz' -type f | while read LINE; do 
+  mkdir $(echo $LINE | rev | cut -d/ -f3 | rev) && ln -s "$LINE" $(echo $LINE | rev | cut -d/ -f3 | rev); 
+done
+
+```
+
+And set up EAGER with the following settings
+
+```
+Organism: Human
+Age: Ancient
+Treated Data: non-UDG
+Pairment: Single End 
+Input is already concatenated (skip merging): Y
+Concatenate Lanewise together: N
+Reference: HG19
+Name of mitocondrial chromosome: chrMT
+
+AdapterRemoval: N
+Mapping: BWA
+  Seedlength: 32
+  Max # diff: 0.01
+  Qualityfilter: 0
+  Filter unmapped: On
+  Extract Mapped/Unmapped: Off
+Remove Duplicates: DeDup
+  Treat all reads as merged: Y
+Damage Calculation: Y
+CleanUp: On
+Create Report: Off
+
+```
+
+## Metagenomic Screening
+
+### MALT
+
+For taxonomic binning of reads of the screening dataset we will use MALT, with 
+a wrapper script for efficient submission. The settings are set in 
+`007-malt-genbank-nt_2017_2step_85pc_supp_0.01` are as follows: a read requires 
+a minimum of 85% sequence identity (-id), it will only retain a second hit 
+if the alignment is within 1% of the bit-score of the top scoring hit (-top), 
+it will only keep a leaf-node on the tree if it has more than 0.01 of the hits
+over all the hits in the sample (-supp). It will only retain 100 possible hits
+per node. Note that you may have to change the `INSTALL4J_JAVA_HOME` path 
+within the script, as I'm currently not sure what that does. This script aligns
+to the NCBI Nucleotide database (nt).
+
+We can then run our taxonomic binning job with the following command, providing
+a input directory with wildcards to all the files and an output directory.
+
+```bash
+02-scripts.backup/07-malt-genbank-nt_2017_2step_85pc_supp_0.01 \
+03-preprocessing/screening/library_merging/*/*.fq.gz \
+04-analysis/screening/malt/nt
+```
+
+For the RefSeq database, see AADDER section below.
+
+#### Summary Statistics
+
+To extract the summary statistics for all the MALT runs, we can run
+the following on the MALT logs.
+
+```bash
+grep -e "Loading MEGAN File:" \
+-e "Total reads:" \
+-e "With hits:" \
+-e "Alignments:" \
+-e "Assig. Taxonomy" \
+-e "Min-supp. changes" \
+-e "Numb. Tax. classes:" \
+-e "Class. Taxonomy:" \
+-e "Num. of queries:" \
+-e "Aligned queries:" \
+-e "Num. alignments:" \
+-e "MinSupport set to:" \
+04-analysis/screening/malt/nt/*log | cut -d":" -f 2-99 > 00-documentation.backup/99-maltAlignedReadsSummary_raw_nt_$(date "+%Y%m%d").txt
+```
+
+Then we do a few clean up and calculation steps as in the R 
+script `02-scripts.backup/099-MALT_Summary_statistics.R`, the output of which 
+is recorded in `00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics.tsv`.
+
+The MinSupport value column(s) was then manually added to the indiviudals column of
+our main screening metadata file 
+`00-documentation/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv`.
+
+### MEGAN
+
+Once MALT has completed, we need to generate an OTU table of all the alignments.
+ 
+For this we need to use the GUI tool MEGAN6 locally on your desktop. To 
+generate the OTU table, open the MALT RMA6 files in MEGAN with absolute counts, 
+and ignore all unassigned reads.
+
+To uncollapse the tree: Tree > Rank > <Taxonomic level>, then select species 
+nodes with: Select > Rank > <Taxonomic level>. 
+
+Now go File > Export > Text (CSV) format, select taxonName_to-count, summarised 
+and tab as a separator.
+
+For a 'microbial-only' OTU table (basically not prokaryotes or synthetic DNA 
+sequences), we can before uncollapsing the tree select 
+'collapse non-prokaryotes' under the 'Tree' menu and then do Select > Rank > 
+<taxonomic level> to select only Bacteria and Archaea. We also need to export 
+the same data with as a tree from MEGAN with the option: file > export > tree, 
+and save as newick. This should also be done for each non-prokaryote taxonomic 
+level. 
+
+These are saved in `04-analysis/screening/megan.backup`
+
+### Additional Raw OTU Tables
+
+Raw MALT OTU tables with and without bad samples and at different min-support
+values are generated by the Notebook `016-MALT_otutable_generation.Rmd`. These
+tables are stored as `.tsv` files in the `04-analysis/screening/megan.backup` 
+directory.
+
+## Preservation Screening
+
+### Cumulative Proportion Decay Plots
+
+The OTU table itself does not give us much information about the oral signature.
+
+Instead I came up with a simple visualisation to show how abundant the oral
+signal in the samples are. This visualisation needs two things: an OTU table 
+from MEGAN at species level and a database of taxa with their 'sources'. 
+
+We have already generated the OTU above.
+
+For the database, you can follow the steps as recorded in 
+`013-Organism_Isolation_Source_Database_Generation.Rmd`. The database also 
+requires manual curation over time. This database is stored under
+`00-documentation` as `07-master_oralgenome_isolationsource_database_<DATE>.tsv`
+
+With these two things, the R notebook 
+`014-cumulative_proportion_decay_curves_20190627.Rmd` shows you how to generate
+the visualisation.
+
+### QIIME
+
+### 16s Extraction and QIIME Clustering
+
+We next want to compare to a less-suitable but more established approach to 
+compare the screening method to, which is Sourcetracker analysis. However this 
+typically uses an OTU table of 16S rRNA reads for the proportion estimation of the 
+sources in your sample.
+
+As we have shotgun data, we will instead extract reads with sequence similarity
+to 16S rRNA and run with that.
+
+The script `02-scripts.backup/009-preprocessing-16s_mapping` works very much the same 
+way as with the human DNA preprocessing, but mapping to the SILVA database and 
+converting the mapped only reads to FASTA format with a particular header 
+format (>sample.name_1) that works with QIIME.
+
+
+```bash
+INDIR=02-scripts.backup/03-preprocessing/screening/library_merging
+OUTDIR=02-scripts.backup/03-preprocessing/screening/silva_16s_reads
+SCRIPTS=02-scripts.backup/02-scripts.backup
+
+for LIBDIR in "$INDIR"/*/; do
+  LIBNAME=$(echo "$LIBDIR" | rev | cut -d/ -f2 | rev)
+  if [ -d "$OUTDIR"/"$LIBNAME" ]; then
+    printf "\n $LIBNAME already Processed \n\n"
+  else
+    mkdir "$OUTDIR"/"$LIBNAME"
+    $SCRIPTS/009-preprocessing_16s_mapping.sh $OUTDIR/$LIBNAME $LIBDIR $LIBNAME
+    sleep 1
+  fi
+done
+```
+
+To get the number of 16s rRNA reads that mapped, we can run the script 
+`02-scripts.backup/06-16s_extraction_statistics.sh`, and copy the resulting file 
+into our documents directory with
+
+```bash
+SCRIPTS=02-scripts.backup/02-scripts.backup
+
+cd 02-scripts.backup/03-preprocessing/screening
+
+## Generate stats
+"$SCRIPTS"/011-16s_extraction_statistics.sh silva_16s_reads/
+
+## Copy into documentation folder
+mv silva_16s_reads/16s_extraction_statistics_"$(date +"%Y%m%d")".csv .
+cp 16s_extraction_statistics_"$(date +"%Y%m%d")".csv ../../00-documentation.backup/05-16s_extraction_statistics_"$(date +"%Y%m%d")".csv
+```
+
+While we have these reads, we still don't know what taxa they are derived from. 
+
+For this we can use QIIME to cluster the reads by similarity then assign a
+taxonomic 'name'. We will stick with OTU clustering rather than the more 
+recent (and more powerful/statistically valid) ASV (amplicon sequence variant) 
+methods. This is because we are not dealing directly with amplicon data, and we 
+has also have damage which would affect reliability of assignment. Finally, the 
+more recent version of QIIME, QIIME2, has been made much less flexible for 
+non-amplicon data (at the time of writing) and I couldn't work out how to adapt 
+the data. For our rough preservational screening purposes using QIIME 1 is 
+sufficient.
+
+Firstly, we have to make a combined FASTA file containing all the 16s reads 
+from all the samples.
+
+```bash
+INDIR=02-scripts.backup/03-preprocessing/screening/silva_16s_reads
+OUTDIR=04-analysis/screening/qiime/input
+
+rm "$OUTDIR"/silva_16s_reads_concatenated.fna.gz
+touch "$OUTDIR"/silva_16s_reads_concatenated.fna.gz
+
+for SAMPLE in "$INDIR"/*; do
+  find "$SAMPLE"  -maxdepth 1 -name '*_renamed.fa.gz' -exec cat {} >> \
+  "$OUTDIR"/silva_16s_reads_concatenated.fna.gz \;
+done
+```
+
+For OTU clustering tself we need to define some parameter that have 
+been adapted for shotgun data by LMAMR in Oklahoma, in a file named 
+`02-scripts.backup/010-params_CrefOTUpick.txt` 
+
+To actually run the clustering analysis and generate our OTU table we need to 
+do the following. 
+
+```bash
+INDIR=04-analysis/screening/qiime/input
+OUTDIR=04-analysis/screening/qiime/output
+GREENGENESDB=<PATH_TO>/qiime_default_reference/gg_13_8_otus/
+SCRIPTS=02-scripts.backup/02-scripts.backup
+
+gunzip "$INDIR/silva_16s_reads_concatenated.fna.gz"
+
+pick_closed_reference_otus.py \
+-i $INDIR/silva_16s_reads_concatenated.fna \
+-o $OUTDIR/otu_picking \
+-a \
+-O 16 \
+-r $GREENGENESDB/rep_set/97_otus.fasta \
+-t $GREENGENESDB/taxonomy/97_otu_taxonomy.txt \
+-p $SCRIPTS/010-qiime_1_9_1_params_CrefOTUpick.txt
+
+
+```
+
+Once finished we can then re-gzip the input fasta file with:
+
+```bash
+INDIR=04-analysis/screening/qiime/input
+
+pigz -p 4 "$INDIR/silva_16s_reads_concatenated.fna"
+```
+
+To get some basic statistics about the OTU picking we can use the BIOM package
+that came with the QIIME environment.
+
+```bash
+INDIR=04-analysis/screening/qiime/input
+OUTDIR=04-analysis/screening/qiime/output
+
+cd "$OUTDIR"
+
+biom summarize-table -i "$OUTDIR"/otu_picking/otu_table.biom >> \
+"$OUTDIR"/otu_picking/otu_table_summary.txt
+
+## Check with: 
+head "$OUTDIR"/otu_picking/otu_table_summary.txt -n 20
+```
+
+Sourcetracker (I realised later) doesn't do rarefaction properly as it 
+allows sampling with replacement of the OTUS. Therefore, we need to remove
+samples that have less than 1000 OTUs (which is the default rarefaction level
+in sourcetracker - see below). So next we need to filter our OTU table
+to remove samples that have less than that threshold. Looking at the table
+summary shows that fortunately this will remove very few samples and 
+will remove mostly blanks.
+
+```bash
+cd 04-analysis/screening/qiime/output/otu_picking
+INDIR=04-analysis/screening/qiime/output/otu_picking
+
+filter_samples_from_otu_table.py \
+-i "$INDIR"/otu_table.biom \
+-o "$INDIR"/otu_table_1000OTUsfiltered.biom \
+-n 1000
+
+
+biom summarize-table -i "$INDIR"/otu_table_1000OTUsfiltered.biom >> \
+"$INDIR"/otu_table_1000OTUsfiltered_summary.txt
+
+## Check with: 
+head "$INDIR"/otu_table_1000OTUsfiltered_summary.txt -n 20
+ ```
+
+We also only want to look at genus level assignments, given species specific 
+IDs will be unreliable given damage and different mixtures of strain in 
+different individuals. 
+
+For filtering to Genus (L6) level:
+
+```bash
+cd 04-analysis/screening/qiime/output/otu_picking
+INDIR=04-analysis/screening/qiime/output/otu_picking
+
+## For Genus
+summarize_taxa.py \
+-i "$INDIR"/otu_table_1000OTUsfiltered.biom \
+-o "$INDIR" \
+-a \
+-L 6
+
+## Fixed crappy taxon ID that breaks loading into R when running Sourcetracker :+1:
+sed s#\'Solanum#Solanum#g otu_table_1000OTUsfiltered_L6.txt > otu_table_1000OTUsfiltered_L6_cleaned.tsv
+
+
+```
+
+With this final OTU table, we can now run Sourcetracker
+
+### Sourcetracker
+
+Sourecetracker requires a OTU table (generated above) and a metadata file
+that tells the program what libraries in the OTU are a 'sink' or a 'source'.
+This metadata file in this case is recorded here, 
+`02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`,
+which I try to use for all downstream analysis. In particular here we need to 
+ensure we have a 'Env' and a 'SourceSink' column. 
+
+```bash
+## change to new directory for output directories
+INDIR=04-analysis/screening/qiime/output/otu_picking
+OUTDIR=04-analysis/screening/sourcetracker.backup/
+
+MAPPINGFILE=00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190429.tsv
+
+Rscript \
+sourcetracker_for_qiime.r \
+-i "$INDIR"/otu_table_1000OTUsfiltered_L6_cleaned.tsv \
+-m "$MAPPINGFILE" \
+-o "$OUTDIR"/otu_table_L6_1000_"$(date +"%Y%m%d")" \
+-r 1000 \
+-v
+
+```
+
+For plotting of these, I use the following R notebook to summarise the 
+results in stacked plots: `12-sourcetracker_stackedbarplots_evo.Rmd`. 
+
+### Laboratory Contaminants
+
+To remove possible contaminating species from our samples that are derived from
+the laboratory environment, we can use the R package `decontam`. The idea here 
+is to use this to reduce the number of noisey taxa in the downstream 
+compositional analysis, e.g. reducing the overplotting of the loadings of PCAs.
+
+ We manually added the library quantification values (qPCR) o our
+main metadata file 
+`02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`.
+
+We then run Decontam following the Decontam tutorial in the script 
+`015-decontam_contamination_detection_analysis_20190410.Rmd`
+
+## Compositional Analysis
+
+### Principal Coordinate Analysis
+
+To explore if we have a structure in our data that can describe differences 
+between each group we want to explore, we can perform a Principal Coordinate 
+Analysis to reduce
+the variation between the samples to human-readable dimensions.
+
+We perform a Phylogenetic Isometric-Log-Ratio transform (Silverman et al. 2017 
+_eLife_), for 'proper' CoDa ordination as described in the notebook
+`22-PhILR_PC0A.Rmd`.
+
+Due to the notebook ending up having lots of options, I also used `knitr::purl()`
+to create a Script version of the R notebook that accepts arguments.
+
+To generate the script
+
+```{r}
+knitr::purl("/home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527.Rmd", "/home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R", documentation = 2)
+```
+
+Now we will generate PCoAs based on different sets of combinations of variables 
+of: 
+ * Whether to use the NCBI nt database or custom NCBI RefSeq
+ * Whether analysed at genus or species taxonomic level of taxa in the OTU table
+ * Whether comparative sources are included or not
+ * Whether controls are included or not
+ * Whether to include low preservation samples or not
+ * Which low preservation samples filtering list to use (see Cumulative Percentage Decay notebook above for explanation)
+ * Either minimum support value of 7 (genus) or 4 (species) [the value in the commands are multipliers of 0.01, the default MALT min support value set above]
+
+Th
+
+```bash
+i=7
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt genus withSources withControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt genus noSources withControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt genus withSources noControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt genus noSources noControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt genus withSources withControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt genus noSources withControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt genus withSources noControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt genus noSources noControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq genus withSources withControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq genus noSources withControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq genus withSources noControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq genus noSources noControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq genus withSources withControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq genus noSources withControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq genus withSources noControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq genus noSources noControls out withinvariation "$i"
+done
+
+i=4
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt species withSources withControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt species noSources withControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt species withSources noControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt species noSources noControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt species withSources withControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt species noSources withControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt species withSources noControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R nt species noSources noControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq species withSources withControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq species noSources withControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq species withSources noControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq species noSources noControls in withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq species withSources withControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq species noSources withControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq species withSources noControls out withinvariation "$i"
+  Rscript /home/fellows/projects1/microbiome_calculus/evolution/02-scripts.backup/017-PhILR_PCoA_20190527_script.R refseq species noSources noControls out withinvariation "$i"
+
+
+```
+
+**GOT TO HERE!!!!**
+
+The R script for summarising the results across all runs is named
+`017-PhILR_PCoA_summaries_<DATE>.R`, and the output files are in 
+  `00-documentation` under `philr_permanova_*_summary_<DATE>.tsv`.
+
+## Functional Analysis
+
+### HUMANn2
+
+#### MetaPhlan2
+
+In prepraration for HUMANn2, we ran MetaPhlan2.
+
+```bash
+METAPHLAN2=biobakery-metaphlan2-7898bf1/metaphlan2.py
+
+INDIR=04-analysis/screening/metaphlan2/input
+OUTDIR=04-analysis/screening/metaphlan2/output
+
+for LIBFILE in "$INDIR"/*/*.fq.gz; do
+  LIBNAME=$(echo "$LIBFILE" | rev | cut -d/ -f2 | rev)
+  if [ -d "$OUTDIR"/"$LIBNAME" ]; then
+    printf "\n $LIBNAME already Processed \n\n"
+  else
+    mkdir "$OUTDIR"/"$LIBNAME"
+    $METAPHLAN2 $LIBFILE \
+    -o $OUTDIR/$LIBNAME/$LIBNAME.mp2profile.tsv \
+    --input_type fastq \
+    --nproc 2 \
+    -t rel_ab
+  fi
+done
+
+## if re-running with different parameters, here changing fastq to bowtie2out
+
+METAPHLAN2=biobakery-metaphlan2-7898bf1/metaphlan2.py
+
+INDIR=04-analysis/screening/metaphlan2/input
+OUTDIR=04-analysis/screening/metaphlan2/output
+
+for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
+  LIBNAME=$(echo "$LIBFILE" | rev | cut -d/ -f2 | rev)
+  if [ -d "$OUTDIR"/"$LIBNAME" ]; then
+    printf "\n $LIBNAME already Processed \n\n"
+  else
+    mkdir "$OUTDIR"/"$LIBNAME"
+    $METAPHLAN2 $LIBFILE \
+    -o $OUTDIR/$LIBNAME/$LIBNAME.mp2profile.tsv \
+    --input_type bowtie2out \
+    --nproc 2 \
+    -t rel_ab
+  fi
+done
+
+## Re-running to get estimated read counts with rel_ab to rel_ab_w_read_stats
+
+METAPHLAN2=biobakery-metaphlan2-7898bf1/metaphlan2.py
+INDIR=04-analysis/screening/metaphlan2/input
+OUTDIR=04-analysis/screening/metaphlan2/output_readcounts
+
+for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
+  LIBNAME=$(echo "$LIBFILE" | rev | cut -d/ -f2 | rev)
+  if [ -d "$OUTDIR"/"$LIBNAME" ]; then
+    printf "\n $LIBNAME already Processed \n\n"
+  else
+    mkdir "$OUTDIR"/"$LIBNAME"
+    $METAPHLAN2 $LIBFILE \
+    -o $OUTDIR/$LIBNAME/$LIBNAME.mp2profile_readstats.tsv \
+    --input_type bowtie2out \
+    --nproc 2 \
+    -t rel_ab_w_read_stats
+  fi
+done
+
+
+## Re-running to get actual rad counts with rel_ab to rel_ab_w_read_stats
+
+METAPHLAN2=biobakery-metaphlan2-7898bf1/metaphlan2.py
+INDIR=04-analysis/screening/metaphlan2/input
+OUTDIR=04-analysis/screening/metaphlan2/output_readmappedcounts
+
+for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
+  LIBNAME=$(echo "$LIBFILE" | rev | cut -d/ -f2 | rev)
+  if [ -d "$OUTDIR"/"$LIBNAME" ]; then
+    printf "\n $LIBNAME already Processed \n\n"
+  else
+    mkdir "$OUTDIR"/"$LIBNAME"
+    $METAPHLAN2 $LIBFILE \
+    -o $OUTDIR/$LIBNAME/$LIBNAME.mp2profile_readsmappedstats.tsv \
+    --input_type bowtie2out \
+    --nproc 2 \
+    -t reads_map
+  fi
+done
+```
+
+To merging all of the MetaPhlAn2 percentage profiles of all the libraries
+
+```bash
+cd 04-analysis/screening/metaphlan2/output
+
+## Note, remove metaphlan2.py script in the variable here as using util scripts
+METAPHLAN2=biobakery-metaphlan2-7898bf1/
+
+INDIR=04-analysis/screening/metaphlan2/input
+OUTDIR=04-analysis/screening/metaphlan2/output
+
+"$METAPHLAN2"/utils/merge_metaphlan_tables.py "$OUTDIR"/*/*mp2profile.tsv > "$OUTDIR"/mp2_merged_abundance_table_all_"$(date +%Y%m%d)".txt
+```
+
+For merging of the estimated read count files, run the 
+`016-metaphlan2_readcount_table_generator.Rmd` notebook.
+
+For the mapped reads, method, the output actually gives both the name of the 
+read and a given taxonomic ID. For this we run the following:
+
+```bash
+
+for i in */*; do 
+  echo $(echo "$i" | cut -d "/" -f 1) $(zcat "$i" | wc -l) ; 
+done > mp2_merged_readsmapped_table_all_"$(date +%Y%m%d)".txt
+
+```
+
+Note that all of those files need to be -1 because the count includes a header.
+
+Finally, some read statistics by applying the same 0.01% threshold used in MALT
+are gained via the `099-MetaPhlan2_Summary_statistics.R` script. These were
+then manually added to the metadata file.

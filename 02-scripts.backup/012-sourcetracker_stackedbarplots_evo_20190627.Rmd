@@ -1,0 +1,365 @@
+---
+title: "Evolution Project - Sourcetracker2 Stacked Barplots"
+output: html_notebook
+author: "James Fellows Yates"
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Introduction
+
+For this project we want to do a small test to compare what happens
+when including variations on the sources from the Evolution project.
+In this context we want to see what is the difference of replacing
+sediment with  a 'bone' source (as an archaeologically oral-microbiome
+lacking source), and also including both at the same time.
+
+Load libraries
+
+```{r}
+library(tidyverse)
+```
+
+# Preparation
+
+Load data and select options
+
+```{r}
+## load data
+ st2_raw_both <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/otu_table_L6_1000_20190520/sink_predictions.txt")
+
+ st2_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
+
+colnames(st2_raw_both)[1] <- "sample"
+
+colnames(st2_meta)[1] <- "sample"
+
+```
+
+Default ordering information
+
+```{r}
+env_ordering <- c("Howler_Monkey",
+                                         "Gorilla_1",
+                                         "Gorilla_2",
+                                         "Gorilla_3",
+                                         "Chimp_1",
+                                         "Chimp_2",
+                                         "Chimp_3",
+                                         "Chimp_4",
+                                         "Neanderthal",
+                                         "PreagriculturalHuman_1",
+                                         "PreagriculturalHuman_2",
+                                         "PreantibioticHuman_1",
+                                         "PreantibioticHuman_2",
+                                         "ModernDayHuman_1",
+                                         "ModernDayHuman_2",
+                                         "ExtractionControl",
+                                         "LibraryControl",
+                                         "subPlaque",
+                                         "supPlaque",
+                                         "urbanGut",
+                                         "ruralGut",
+                                         "skin",
+                                         "EnvironmentalControl",
+                                         "sediment")
+hostgenus_ordering <- c("Alouatta", "Gorilla", "Pan", "Homo", "Control")
+
+```
+
+
+# Data Clean and Function Definitions
+
+For more intuitive plotting, we now need to manipulate the data for ordering
+and colouring of the different sources. We can also hard-assign the colours 
+for each source for consistency across each source.
+
+```{r}
+colnames(st2_raw_both) <- gsub("Z-", "", colnames(st2_raw_both))
+colnames(st2_raw_both) <- gsub("Unknown", "unknown", colnames(st2_raw_both))
+
+st2_meta <- st2_meta %>% 
+  mutate(Env = as_factor(Env), 
+         Env = fct_relevel(Env, env_ordering),
+         Host_Genus = as_factor(Host_Genus),
+         Host_Genus = fct_relevel(Host_Genus, hostgenus_ordering))
+
+data_reorder <- function(data_raw, metadata, sample_order){
+  ## Give: sink_predictions, metadata table and boolean for whether
+  ## to order by sample name or proportion of subPlaque
+  if (sample_order == TRUE) {
+      data_mod <- data_raw %>% 
+        arrange(-subPlaque) %>% 
+        gather(source, proportion, 2:ncol(data_raw))
+  } else {
+      data_mod <- data_raw %>% 
+      gather(source, proportion, 2:ncol(data_raw))
+  }
+
+    
+  data_mod$source <- factor(data_mod$source, 
+                                levels = rev(c("subPlaque", 
+                                               "supPlaque", 
+                                               "ruralGut", 
+                                               "urbanGut", 
+                                               "skin", 
+                                               "EnvironmentalControl",
+                                               "sediment",
+                                               "unknown"))) 
+  
+  data_mod_meta <- left_join(data_mod, metadata) %>%
+    arrange(Env)
+  
+  data_mod_meta$Env <- factor(data_mod_meta$Env, 
+                              levels = env_ordering
+                              )
+  
+  data_mod_meta <- data_mod_meta %>% 
+    mutate(sample = factor(sample, unique(sample)))
+}
+
+source_colours <- c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#abdda4", "#66c2a5", "#3288bd", "#5e4fa2")
+names(source_colours) <- c("subPlaque", "supPlaque",  "ruralGut", "urbanGut", "skin", "EnvironmentalControl", "sediment", "unknown")
+
+sourcetracker_bar_plotter <- function(input){
+  ggplot(input, aes(sample, proportion, fill = source)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = source_colours) +
+  xlab("Individuals") +
+  ylab("Proportion") +
+  labs(fill = 'Source') +
+  theme_minimal(base_size = 7) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), 
+        text = element_text(family = "Roboto"),
+        legend.position = "bottom") +
+  facet_grid(~Env, scales = "free", space = "free", switch = "y")
+}
+```
+
+# Plotting
+
+Then we can do our plotting.
+
+```{r}
+## For both
+barplot_prefilter <- sourcetracker_bar_plotter(data_reorder(st2_raw_both, st2_meta, T))
+
+barplot_prefilter
+
+ggsave(plot = barplot_prefilter, 
+       paste("sourcetracker_barplot_prefilter_",format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""),
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/", 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 3.5,
+       units = "in", 
+       dpi = 600)
+
+```
+
+# Sample Filtering
+
+Continuing with both sources together, we can now filter out samples 
+which have a proportion of plaque that is less than either the sediment or 
+skin component of the same sample.
+
+Note, I have included 'gut' in the calculations. This is because it seems in
+the chimps, there is a consistent level of a gut proportion in all samples 
+which could be a true biological signal. Also, without considering it we lose
+almost all samples (keeping only 4), despite CDFP plots showing that they are
+well preserved. Furthermore, relatives to (organ protected) gut taxa are less 
+likely to be taphonomic contaminants compared to skin.
+
+```{r}
+st2_filtering_calculations <- st2_raw_both %>% 
+  rowwise() %>%
+  mutate(total_plaquegut = sum(`subPlaque` + `supPlaque` + `ruralGut` + `urbanGut`)) %>%
+  rowwise() %>%
+  mutate(more_env = if_else(total_plaquegut < `sediment`, T, F)) %>%
+  rowwise() %>%
+  mutate(more_env = if_else(total_plaquegut < `skin`, T, more_env)) %>%
+  rowwise() %>%
+  mutate(more_env = if_else(total_plaquegut < unknown, T, more_env)) %>%
+  rowwise() %>%
+  mutate(more_env = if_else(total_plaquegut < EnvironmentalControl, T, more_env)) %>%
+  right_join(st2_meta %>% select(sample, Env, Description, 
+                                Host_General, Host_Common, Age), .)
+
+write_tsv(st2_filtering_calculations, 
+          paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/06-sourcetracker_filtering_results_", format(Sys.Date(), format = "%y%m%d"), ".tsv", sep = ""))
+
+```
+
+Save both results table and post-filtering barplot
+
+```{r}
+
+st2_filtered_both <- st2_filtering_calculations  %>% 
+  filter(more_env == F) %>% 
+  select(-more_env, -total_plaquegut, -Env, 
+         -Description, -Host_General, -Host_Common, -Age)
+
+barplot_postfilter <- sourcetracker_bar_plotter(data_reorder(st2_filtered_both, 
+                                                             st2_meta, 
+                                                             TRUE))
+
+barplot_postfilter
+
+
+ggsave(plot = barplot_postfilter, 
+       paste("sourcetracker_barplot_postfilter_",format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""),
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/", 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 3.5,
+       units = "in", 
+       dpi = 600)
+
+
+```
+
+# Post-filtering summary statistics
+
+To save the samples to remove
+
+And summary stats for the filtered results
+
+```{r}
+
+samples_to_retain <- st2_filtering_calculations %>% 
+    select(sample, more_env) %>% 
+    full_join(st2_meta, .) %>%
+  filter(SourceSink == "sink")
+
+```
+
+```{r}
+
+## Number of individuals per host genus population
+samples_to_retain %>%
+  select(sample, Env, more_env) %>%
+  replace_na(replace = list(more_env = T)) %>%
+  group_by(Env) %>% 
+  summarise(No_Individuals = sum(!more_env)) %>% write_tsv(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/post_filter_individual_hostgenuspopulation_counts_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = "")) %>% 
+  print
+
+## Number of individuals per host genus
+samples_to_retain %>%
+  select(sample, Host_Genus, more_env) %>%
+  replace_na(replace = list(more_env = T)) %>%
+  group_by(Host_Genus) %>% 
+  summarise(No_Individuals = sum(!more_env)) %>%
+  write_tsv(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/post_filter_individual_hostgenus_counts_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = "")) %>% print
+
+```
+
+
+# Threshold Comparison
+ 
+Without group assessment and purely based on proportion of plaque/gut
+
+```{r}
+
+lowest_proportion <- st2_filtering_calculations %>% 
+  filter(more_env == F) %>%
+  select(sample, Env, total_plaquegut) %>%
+  pull(total_plaquegut) %>%
+  min
+
+st2_preservation_order <- st2_raw_both %>% 
+  mutate(total_plaque = pmap(list(sub = subPlaque, sup = supPlaque, 
+                               rural = ruralGut, urban = urbanGut),
+                             function(sub, sup, rural, urban) {
+                               sum(sub + sup + rural + urban)
+         }) %>% 
+           unlist) %>% 
+  arrange(desc(total_plaque)) %>%
+  mutate(sample = as_factor(sample)) %>%
+  select(-total_plaque) %>%
+  gather(source, proportion, 2:ncol(.)) %>% 
+  mutate(source = as_factor(source),
+         source = fct_relevel(source, rev(c("subPlaque", "supPlaque", 
+                                            "ruralGut", "urbanGut", "skin", 
+                                            "EnvironmentalControl", "sediment", 
+                                            "unknown")))) %>%
+  print()
+
+abovebelow_plot <- ggplot(st2_preservation_order, aes(sample, proportion, fill = source)) +
+  geom_bar(stat = "identity") +
+  geom_hline(yintercept = lowest_proportion) +
+  scale_fill_manual(values = source_colours) +
+  xlab("Individuals") +
+  ylab("Proportion") +
+  labs(fill = 'Source') +
+  theme_minimal(base_size = 7) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), 
+        text = element_text(family = "Roboto"),
+        legend.position = "bottom")
+
+abovebelow_plot
+
+ggsave(plot = abovebelow_plot, 
+       paste("sourcetracker_barplot_abovebelowthresholdcomparison_plaquegut_",format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""),
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/", 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 3.5, 
+       units = "in",
+       dpi = 600)
+
+```
+
+Without group assessment and purely based on proportion of plaque only
+
+```{r}
+
+lowest_proportion <- st2_filtering_calculations %>% 
+  filter(more_env == F) %>%
+  rowwise() %>%
+  mutate(total_plaque = sum(`subPlaque` + `supPlaque`)) %>%
+  select(sample, Env, total_plaque) %>%
+  pull(total_plaque) %>%
+  min
+
+st2_preservation_order <- st2_raw_both %>% 
+  mutate(total_plaque = pmap(list(sub = subPlaque, sup = supPlaque),
+                             function(sub, sup, rural, urban) {
+                               sum(sub + sup)
+         }) %>% 
+           unlist) %>% 
+  arrange(desc(total_plaque)) %>%
+  mutate(sample = as_factor(sample)) %>%
+  select(-total_plaque) %>%
+  gather(source, proportion, 2:ncol(.)) %>% 
+  mutate(source = as_factor(source),
+         source = fct_relevel(source, rev(c("subPlaque", "supPlaque", 
+                                            "ruralGut", "urbanGut", "skin", 
+                                            "EnvironmentalControl", "sediment", 
+                                            "unknown")))) %>%
+  print()
+
+abovebelow_plot <- ggplot(st2_preservation_order, aes(sample, proportion, fill = source)) +
+  geom_bar(stat = "identity") +
+  geom_hline(yintercept = lowest_proportion) +
+  scale_fill_manual(values = source_colours) +
+  xlab("Individuals") +
+  ylab("Proportion") +
+  labs(fill = 'Source') +
+  theme_minimal(base_size = 7) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), 
+        text = element_text(family = "Roboto"),
+        legend.position = "bottom")
+
+abovebelow_plot
+
+ggsave(plot = abovebelow_plot, 
+       paste("sourcetracker_barplot_abovebelowthresholdcomparison_plaqueonly_",format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""),
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/", 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 3.5, 
+       units = "in",
+       dpi = 600)
+
+```
+

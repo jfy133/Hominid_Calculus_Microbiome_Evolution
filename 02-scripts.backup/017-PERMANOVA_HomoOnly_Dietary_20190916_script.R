@@ -1,0 +1,1089 @@
+#' ---
+#' title: "PhILR PCoA and PERMANOVA"
+#' ---
+#' 
+#' # Preamble
+#' 
+#' Following the introducory vignette: http://bioconductor.org/packages/release/bioc/vignettes/philr/inst/doc/philr-intro.html
+#' 
+#' Purpose of this notebook is to statistically test whether individuals from 
+#' Homo fall distintctly based on whether they are from pre- or post-agricultural
+#' time periods.
+#' 
+#' # Preparation
+#' 
+#' ## For script conversion
+#' 
+#' As this notebook became more and more parameterised, I decided to make it
+#' easy to convert into a script. But for the script, we also need to define
+#' input arguments for the options in chunk 1.
+#' 
+
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+args = commandArgs(trailingOnly = TRUE)
+
+if (args[1] == "" | args[1] == "-h" | args[1] == "--help") {
+ cat("Usage: 017-PhILR_PCoA_20XXXXXX_script.R <db> <tax_level> <sources> <controls> <bad_samples> <sample_filter> <minsupp_multiplier>\n")
+ cat("db: nt or refseq \n")
+ cat("tax_level: genus or species \n") 
+ cat("sources: noSources or withSources \n")
+ cat("controls: noControls or withControls \n")
+ cat("bad_samples: in or out \n")
+ cat("sample_filter: sourcetracker, onepcburnin, twocburnin, fivepcburnin, tenpcburnin, withinvariation or none \n")
+ cat("minsupp_multiplier: number to multiply foundation 0.01% minimum support")
+ stop()
+} else if (length(args) == 7) {
+ db <- args[1]
+ tax_level <- args[2]
+ sources <- args[3]
+ controls <- args[4]
+ bad_samples <- args[5]
+ sample_filter <- args[6]
+ minsupp_multiplier <- as.numeric(args[7])
+ script <- T
+}
+
+cat(args)
+
+minsupp_multiplier <- as.numeric(minsupp_multiplier)
+minsupp_threshold <- 0.01 * minsupp_multiplier
+ 
+
+#' 
+#' 
+#' ## Data Loading and Cleaning
+#' 
+#' Load libraries
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+library(tidyverse) ## for general data cleaning
+library(taxize) ## for NCBI taxonomic info collection
+library(ape) ## for tree manipulation
+library(phyloseq) ## for data format as input for PhILR
+library(philr) ## for data transform
+library(vegan) ## for statistical testing
+library(ggtree) ## for tree visualisation
+library(patchwork) ## for further visualisation assistance
+library(broom) ## for saving stats summary tables
+library(plotly) ## for interactive plots
+library(pairwiseAdonis) # for PERMANOVA mucltiple correction testing
+library(fpc) ## for hclustering stuff
+library(clues) ## for hclustering stuff
+
+#' 
+#' Load already generated data from MEGAN and metadata. We also need to export the 
+#' same data with as a tree from MEGAN with the option: file > export > tree.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+
+## The tree related to the OTU table
+if (tax_level == "genus" & db == "nt") {
+ otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_genus.nwk")
+} else if (tax_level == "species" & db == "nt") {
+ otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_species.nwk")
+} else if (tax_level == "genus" & db == "refseq") {
+ otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_genus.nwk")
+} else if (tax_level == "species" & db == "refseq") {
+  otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_species.nwk")
+}
+
+
+## OTU tables
+if (tax_level == "genus" & db == "nt") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_prokaryotes_summarised_nt.txt")
+} else if (tax_level == "species" & db == "nt") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+} else if (tax_level == "genus" & db == "refseq") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_prokaryotes_summarised_refseq.txt")
+} else if (tax_level == "species" & db == "refseq") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
+}
+
+
+## Predicted contaminant taxa to remove
+if (tax_level == "genus" & db == "nt") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_genus_combined_0.99_190411.tsv")
+} else if (tax_level == "species" & db == "nt") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+} else if (tax_level == "genus" & db == "refseq") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_genus_combined_0.99_190411.tsv")
+} else if (tax_level == "species" & db == "refseq") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
+}
+
+## Metadata
+raw_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
+
+## Bad samples to remove
+
+if (sample_filter == "sourcetracker") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/sourcetracker_filtering_results_190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "onepcburnin") {
+ samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "twopcburnin") {
+ samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "fivepcburnin") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "tenpcburnin") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "withinvariation") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "onepcburnin") {
+ samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "twopcburnin") {
+ samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "fivepcburnin") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "tenpcburnin") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "withinvariation") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+}
+
+
+
+
+#' 
+#' Clean up to remove samples not required and then remove any OTUs that
+#' now have no counts. Also remove OTUs that are likely lab contaminants.
+#' 
+#' Here we will also move all but ancient humans.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+data_cleaner <- function(x) {
+ colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam","", colnames(x))
+ colnames(x) <- gsub("_S.*_L00.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(x))
+ colnames(x) <- gsub("_S.*_L00.*_R1_.*.fastq.extractunmapped.bam", "", colnames(x))
+ colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.merged", "", colnames(x))
+ colnames(x) <- gsub(".prefixed.hg19unmapped", "", colnames(x))
+ colnames(x) <- gsub("_S0_L003_R1_001.sorted.bam.unmapped", "", colnames(x))
+ colnames(x)[1] <- "Taxon"
+ return(x)
+}
+
+## Remove col cruft of Metadata
+raw_metadata <- rename(raw_metadata, Individual = `#SampleID`)
+
+## Remove bad sources from OTU table
+if (bad_samples == "in") {
+ otu_table <- otu_table %>% 
+ data_cleaner
+} else if (bad_samples == "out") {
+ otu_table <- otu_table %>% 
+  data_cleaner %>% 
+  dplyr::select(-one_of(samples_to_remove %>% 
+                         left_join(raw_metadata, 
+                                   by = c("sample" = "Individual")) %>%
+                         select(sample, SourceSink, Sample_or_Control) %>% 
+                         filter(SourceSink == "sink", 
+                                Sample_or_Control == "Sample") %>% 
+                          pull(sample)) 
+ )
+}
+ 
+
+
+## Conditional filtering out of sources and/or Controls
+if (sources == "withSources") {
+ NA
+} else if (sources == "noSources") {
+ otu_table <- otu_table %>% 
+ dplyr::select(Taxon, one_of(filter(raw_metadata, SourceSink == "sink") %>% 
+             pull(Individual)))
+}
+
+if (controls == "withControls") {
+ NA
+} else if (controls == "noControls") {
+ otu_table <- otu_table %>% 
+ dplyr::select(Taxon, one_of(filter(raw_metadata, 
+                                    Sample_or_Control == "Sample") %>% 
+             pull(Individual)), 
+             contains("ARS"))
+}
+
+
+## Filter taxa not passing min support threshold 
+if (db == "nt") {
+ otu_table <- otu_table %>% 
+  gather(Individual, Value, 2:ncol(.)) %>% 
+  left_join(select(raw_metadata, Individual, Min_Support_Reads_Threshold_MALT)) %>%
+  mutate(Threshold = Min_Support_Reads_Threshold_MALT * minsupp_multiplier) %>%
+  mutate(Threshold = as.numeric(Threshold)) %>%
+  mutate(Filter_Passed = if_else(Value >= Threshold, 1, 0)) %>% 
+  filter(Filter_Passed == 1) %>%
+  select(Taxon, Individual, Value) %>%
+  spread(Individual, Value, fill = 0)
+} else if (db == "refseq") {
+ otu_table <- otu_table %>% 
+  gather(Individual, Value, 2:ncol(.)) %>% 
+  left_join(select(raw_metadata, Individual, Min_Support_Reads_Threshold_MALT_refseq)) %>%
+  mutate(Threshold = Min_Support_Reads_Threshold_MALT_refseq * minsupp_multiplier) %>%
+  mutate(Threshold = as.numeric(Threshold)) %>%
+  mutate(Filter_Passed = if_else(Value >= Threshold, 1, 0)) %>% 
+  filter(Filter_Passed == 1) %>%
+  select(Taxon, Individual, Value) %>%
+  spread(Individual, Value, fill = 0)
+}
+
+## Remove ancient humans
+keep_list <- raw_metadata %>% filter(Host_General %in% c("Neanderthal", "PreagriculturalHuman", "PreantibioticHuman", "ModernDayHuman")) %>% pull(Individual) %>% intersect(colnames(otu_table))
+names(keep_list) <- keep_list
+
+otu_table <- otu_table %>% select(Taxon, keep_list)
+
+## Convert to matrix
+otu_matrix <- as.matrix(dplyr::select(otu_table, -Taxon))
+rownames(otu_matrix) <- otu_table$Taxon
+
+## Remove any taxa that were unique to the bad samples
+pos_otus <- rowSums(otu_matrix)
+pos_otus <- pos_otus[pos_otus != 0] 
+
+## Remove lab contaminants
+otu_matrix <- subset(otu_matrix, !rownames(otu_matrix) %in% (taxa_to_remove %>% pull))
+otu_matrix_final <- subset(otu_matrix, rownames(otu_matrix) %in% names(pos_otus))
+
+rownames(otu_matrix_final) <- gsub(" ", "_", rownames(otu_matrix_final))
+
+#' 
+#' ## Make Taxonomy Table
+#' 
+#' We also need to make our taxonomy table at species level. This takes a long 
+#' to run, so I've generated ones in the past and re-load them when needed.
+#' 
+## ----eval = FALSE--------------------------------------------------------
+## taxonomy_to_tibble <- function(x) {
+##  y <- gsub("\\[", "", x)
+##  y <- gsub("\\]", "", y)
+##  y <- gsub("\\(.*\\)", "", y)
+## 
+##  ttt_uid <- taxize::get_uid(y, db = "ncbi") ## inspired by myTAI::taxonomy()
+##  ttt_result <- taxize::classification(ttt_uid)[[1]] ## inspired by myTAI::taxonomy()
+## 
+##  if ( is.na(ttt_result)[1] ) {
+##   ttt_out <- x
+##  } else {
+##   ttt_out <- as_tibble(ttt_result %>%
+##    mutate(taxon = paste(x)) %>%
+##    filter(rank %in% c("superkingdom", "kingdom", "phylum", "class", "order", "family", "genus", "species")) %>%
+##    dplyr::select(name, rank, taxon) %>%
+##    spread(rank, name))
+##  }
+##  return(ttt_out)
+##   Sys.sleep(2)
+## }
+## 
+## # taxonomy_summary <- rownames(otu_matrix_final) %>% map(., .f = taxonomy_to_tibble)
+## 
+## taxonomy_summary <- tibble(taxon = character(),
+##               superkingdom = character(),
+##               kingdom = character(),
+##               phylum = character(),
+##               class = character(),
+##               order = character(),
+##               family = character(),
+##               genus = character(),
+##               species = character()
+##               )
+## 
+## n <- 0
+## tot <- nrow(otu_matrix_final)
+## fail_taxa <- c()
+## 
+## ## Temp due to curl timeout, change number beginning øf range depending on
+## ## where n got to at time out
+## otu_matrix_final_sub <- otu_matrix_final[903:nrow(otu_matrix_final),]
+## 
+## ## If time out, replace otu_matrix_final with otu_matrix_final_sub and re-run
+## for(i in rownames(otu_matrix_final_sub)) {
+##  print(paste(i," - ", format(round((n / tot) * 100), nsmall = 2), "%", sep = ""))
+##  n <- n + 1
+##  taxonomy_temp <-taxonomy_to_tibble(i)
+## 
+##  if (length(taxonomy_temp) = 1) {
+##   fail_taxa <-append(fail_taxa, i)
+##  } else {
+##    taxonomy_summary <- bind_rows(taxonomy_summary, taxonomy_temp)
+##  }
+## }
+## 
+## taxonomy_summary <- taxonomy_summary %>% distinct()
+## 
+
+#' 
+#' And save
+#' 
+## ----eval = FALSE--------------------------------------------------------
+## save(taxonomy_summary, file = paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/0-evolution-philr_taxonomytable", "_", db,"_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".robj", sep = ""))
+
+#' 
+#' For the failed taxa, manually look up paths and add taxonomic paths and add them
+#' and save.
+#' 
+## ----eval = FALSE--------------------------------------------------------
+## ## To check for the ones still missing
+## missing <- setdiff(rownames(otu_matrix_final), rownames(taxonomy_table_final))
+## 
+## out <- tibble(taxon = character(),
+##               superkingdom = character(),
+##               kingdom = character(),
+##               phylum = character(),
+##               class = character(),
+##               order = character(),
+##               family = character(),
+##               genus = character(),
+##               species = character()
+##               )
+## 
+## n <- 0
+## tot <- length(missing)
+## fail_taxa <- c()
+## 
+## for(i in missing[1:length(missing)]) {
+##  print(paste(i," - ", format(round((n / tot) * 100), nsmall = 2), "%", sep = ""))
+##  n <- n + 1
+##  taxonomy_temp <- taxonomy_to_tibble(i)
+## 
+##  if (length(taxonomy_temp) == 1) {
+##   fail_taxa <- append(fail_taxa, i)
+##  } else {
+##    out <- bind_rows(out, taxonomy_temp)
+##  }
+## }
+## 
+## taxonomy_summary <- bind_rows(taxonomy_summary, out) %>% distinct()
+## 
+## 
+## ## Some manual additions
+## temp <- read_tsv("~/Downloads/Genus_extra.csv")
+## taxonomy_summary <- bind_rows(taxonomy_summary, temp) %>% distinct()
+## 
+## save(taxonomy_summary, file = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/0-evolution-philr_taxonomytable_withsources_withControls_all_20190404.robj")
+
+#' 
+#' Load a previously made taxonomy table
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+if (db == "nt") {
+ load("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/0-evolution-philr_taxonomytable_withsources_withblanks_all_20190404.robj")
+} else if (db == "refseq") {
+ load("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/0-evolution-philr_taxonomytable_refseq_species_withSources_withControls_20190115.robj")
+}
+
+taxonomy_table <- as.data.frame(taxonomy_summary[2:ncol(taxonomy_summary)])
+rownames(taxonomy_table) <- taxonomy_summary$taxon 
+taxonomy_table <- as.matrix.data.frame(taxonomy_table)
+
+
+## To make sure OTU names match tree, which in import replaced spaces with 
+## undercores
+#rownames(taxonomy_table) <- gsub(" ", "_", rownames(taxonomy_table))
+
+## Filter for genus level
+if (tax_level == "genus") {
+ taxonomy_table_final <- taxonomy_table[,c("superkingdom", 
+                                           "kingdom", 
+                                           "phylum", 
+                                           "class", 
+                                           "order", 
+                                           "family", 
+                                           "genus")] %>% 
+  as.data.frame.matrix
+ rownames(taxonomy_table_final) <- c()
+ taxonomy_table_final <- subset(taxonomy_table_final, 
+                                genus %in% gsub("_", 
+                                                " ", 
+                                                rownames(otu_matrix_final))) %>% 
+   unique()
+ taxonomy_table_final <- unique(taxonomy_table_final)
+ row.names(taxonomy_table_final) <- taxonomy_table_final[,"genus"]
+ taxonomy_table_final <- as.matrix(taxonomy_table_final)
+ taxonomy_table_final <- unique(taxonomy_table_final)
+
+ } else if (tax_level == "species") {
+ taxonomy_table_final <- taxonomy_table
+}
+
+#' 
+#' 
+#' ## Check Tree Format Valid
+#' 
+#' As need a purely bifurcating tree (thus do not allow polytomy), and need a
+#' rooted tree we should check this with:
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+is.rooted(otu_tree)
+is.binary.tree(otu_tree)
+
+#' 
+#' If we don't have a binary tree, solve polytomies with 
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+otu_tree <- multi2di(otu_tree)
+is.binary.tree(otu_tree)
+
+#' 
+#' Or if this doesn't work we can remove singletons (as in single-intermediate 
+#' nodes between a leaf and a parent node) with
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+otu_tree <- collapse.singles(otu_tree) # from http://blog.phytools.org/2018/05/when-phylogeny-fails-isbinary-but-is.html
+is.binary.tree(otu_tree)
+
+
+#' 
+#' ## Prepare Metdata
+#' 
+#' Prepare sample metadata
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+
+raw_metadata <- raw_metadata %>%
+  mutate(Region = if_else(Location %in% c("Morroco", "Ethiopia", "South_Africa"), "Africa", "Europe"))
+
+meta_data <- as.data.frame(raw_metadata[2:ncol(raw_metadata)], 
+              row.names = raw_metadata$Individual, 
+              colnames = col.names(raw_metadata[2:col(raw_metadata),]))
+rownames(meta_data) <- raw_metadata$Individual
+
+
+#' 
+#' 
+#' # Clustering Analysis
+#' 
+#' ## PhILR Transform
+#' 
+#' ### Make PhyloSeq object
+#' 
+#' Make our Phyloseq object.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+ps_data <- phyloseq(otu_table(otu_matrix_final, taxa_are_rows = TRUE), tax_table(taxonomy_table_final), phy_tree(otu_tree), sample_data(meta_data))
+
+#' 
+#' ### Zero Replacement
+#' 
+#' We also need to a run zero removal procedure as the *LR methods require
+#' positive numbers. Here just doing pseudocount (note might be flawed - see Fodor 
+#' paper), but here just following PhILR tutorial. Have used zCompositions
+#' in the past but that was with random guessing of parameters (or using
+#' recommended defaults)
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+ps_data <- transform_sample_counts(ps_data, function(x) x + 1)
+
+#' 
+#' ### Final Checks
+#' 
+#' We fix the tree nodes with and something else from the PhILR tutorial I don't 
+#' fully understand with name balancing and transpose to sample row/taxa column
+#' composition convention.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+phy_tree(ps_data) <- makeNodeLabel(phy_tree(ps_data), method = "number", prefix = 'n')
+name.balance(phy_tree(ps_data), tax_table(ps_data), 'n1')
+
+otu.table <- t(otu_table(ps_data))
+tree <- phy_tree(ps_data)
+
+
+#' 
+#' Some last checks
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+otu.table <- t(otu_table(ps_data))
+tree <- phy_tree(ps_data)
+metadata <- sample_data(ps_data)
+
+## Add new region column thing
+metadata$Region <- if_else(metadata$Location %in% c("Morroco", "Ethiopia", "South_Africa"), "Africa", "Europe")
+
+tax <- tax_table(ps_data)
+
+otu.table[1:2,1:2] # OTU Table
+tree
+head(metadata,2)
+
+#' 
+#' ### Run PhILR
+#' 
+#' Now run PhILR (hopefully)... here goes...
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+ps_data.philr <- philr(otu.table, 
+            tree,
+            part.weights = "enorm.x.gm.counts",
+            ilr.weights = "uniform")
+
+ps_data.philr[1:5,1:5]
+
+#' 
+#' And we can now do ordination within the PhILR space with 
+#' Euclidean distances
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+ps_data.dist <- dist(ps_data.philr, method = "euclidean")
+ps_data.pcoa <- ordinate(ps_data, 'PCoA', distance = ps_data.dist)
+
+#' 
+#' ### Plot PhILR
+#' 
+#' Pre-plotting formatting
+#' 
+#' #### Aesethetics
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+env_colours <- c("#1f78b4", 
+                 "#6a3d9a", 
+                 "#6a3d9a", 
+                 "#6a3d9a", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#e31a1c", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#d9d9d9", 
+                 "#d9d9d9",
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9",
+                 "#d9d9d9")
+
+names(env_colours) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "urbanGut",
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque",
+           "EnvironmentalControl"
+           )
+
+ env_shapes <- c(8,
+                0,
+                1,
+                2,
+                0,
+                1,
+                2,
+                5,
+                11,
+                0,
+                12,
+                1,
+                10,
+                2,
+                6,
+                10,
+                13,
+                7,
+                8,
+                14,
+                3,
+                4,
+                12,
+                0)
+
+ 
+ names(env_shapes) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque", 
+           "urbanGut",
+           "EnvironmentalControl"
+          )
+ 
+common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 10, LibraryControl = 13, Plaque = 9, 
+          Gut = 4, Skin = 14, Sediment = 7, EnvironmentalControl = 12)
+
+ general_colours <- c(Neanderthal = "#e31a1c", PreagriculturalHuman = "#d95f0e", PreantibioticHuman = "#ff7f00", ModernDayHuman = "#fdbb84")
+ general_shapes <- c(Neanderthal = 11, PreagriculturalHuman = 0, PreantibioticHuman = 1, ModernDayHuman = 2)
+ 
+ 
+ 
+
+#' 
+#' 
+#' And plot with host populations
+#' 
+## ----fig.height=3.5, fig.width=5-----------------------------------------
+
+## Convert to tidy data and add metadata
+ps_data.pcoa_tib <- as_tibble(ps_data.pcoa$vectors, rownames = "Individual") %>%
+ left_join(as_tibble(metadata, rownames = "Individual"))
+
+ps_data.pcoa_tib$Env <- factor(ps_data.pcoa_tib$Env, levels = c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "sediment",
+           "skin", 
+           "subPlaque",
+           "supPlaque", 
+           "urbanGut",
+           "EnvironmentalControl")
+           )
+
+## Extract percentage variation
+percentage_data <- round(100 * ps_data.pcoa$values[1] / sum(ps_data.pcoa$values[1]), 2)
+rownames(percentage_data) <- rownames(ps_data.pcoa$value)
+
+## Colour/Shapes by sample type and source/sink
+pcoa_plot_hostpops_12 <- ggplot(ps_data.pcoa_tib, aes(Axis.1, Axis.2, colour = Host_General, shape = Host_General, text = Individual)) +
+ geom_point(size = 2, stroke = 0.5) +
+ scale_colour_manual(values = general_colours) +
+ scale_shape_manual(values = general_shapes) +
+ xlab(paste("Axis 1 (", percentage_data[1,], "%)", sep = "")) +
+ ylab(paste("Axis 2 (", percentage_data[2,], "%)", sep = "")) +
+ theme_minimal(base_family = "Roboto", base_size = 7) +
+ labs(shape = "Host Population", colour = "Host Population") +
+  theme(legend.position = "bottom")
+
+if (script == F) {
+ pcoa_plot_hostpops_12
+}
+
+ggsave(paste("01a-philr_pcoa_malt_euclidean_axis1axis2_group_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostpops_12, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
+
+## Axis 3 and 2
+pcoa_plot_hostpops_32 <- ggplot(ps_data.pcoa_tib, aes(Axis.3, Axis.2, colour = Host_General, shape = Host_General)) +
+ geom_point(size = 2, stroke = 0.5) +
+ scale_colour_manual(values = general_colours) +
+ scale_shape_manual(values = general_shapes) +
+ xlab(paste("Axis 3 (", percentage_data[3,], "%)", sep = "")) +
+ ylab(paste("Axis 2 (", percentage_data[2,], "%)", sep = "")) +
+ theme_minimal(base_family = "Roboto", base_size = 7) +
+ labs(shape = "Host Population", colour = "Host Population") +
+  theme(legend.position = "bottom")
+
+
+if (script == F) {
+pcoa_plot_hostpops_32
+}
+
+ggsave(paste("01b-philr_pcoa_malt_euclidean_axis3axis2_group_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostpops_32, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = cairo_pdf, width = 3,5, height = 3.5, units = "in", dpi = 600)
+
+
+
+#' 
+#' Colour by Region
+#' 
+#' 
+## ------------------------------------------------------------------------
+## Colour/Shapes by sample type and source/sink
+pcoa_plot_hostregion_12 <- ggplot(ps_data.pcoa_tib, aes(Axis.1, Axis.2, colour = Region, shape = Host_General, text = Individual)) +
+ geom_point(size = 2) +
+ scale_shape_manual(values = general_shapes) +
+ xlab(paste("Axis 1 (", percentage_data[1,], "%)", sep = "")) +
+ ylab(paste("Axis 2 (", percentage_data[2,], "%)", sep = "")) +
+ theme_minimal(base_family = "Roboto", base_size = 7) +
+ labs(shape = "Host Population", colour = "Host Population") +
+ theme(legend.position = "bottom") +
+ guides(shape = F, colour = guide_legend(title = "Region"))
+
+
+if (script == F) {
+ pcoa_plot_hostregion_12
+}
+
+ggsave(paste("01a-philr_pcoa_malt_euclidean_axis1axis2_region_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostregion_12, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
+
+
+## Axis 3 and 2
+pcoa_plot_hostregion_32 <- ggplot(ps_data.pcoa_tib, aes(Axis.3, Axis.2, colour = Region, shape = Host_General)) +
+ geom_point(size = 2) +
+ scale_shape_manual(values = general_shapes) +
+ xlab(paste("Axis 3 (", percentage_data[3,], "%)", sep = "")) +
+ ylab(paste("Axis 2 (", percentage_data[2,], "%)", sep = "")) +
+ theme_minimal(base_family = "Roboto", base_size = 7) +
+ labs(shape = "Host Population", colour = "Host Population") +
+ theme(legend.position = "bottom")
+
+
+if (script == F) {
+pcoa_plot_hostregion_32
+}
+
+ggsave(paste("01b-philr_pcoa_malt_euclidean_axis3axis2_region_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostregion_32, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
+
+
+#' ### Combined Group and Region
+#' 
+## ------------------------------------------------------------------------
+dietary_pcoa_comparison <- pcoa_plot_hostpops_12 + pcoa_plot_hostregion_12
+
+dietary_pcoa_comparison
+
+ggsave(paste("11-philr_pcoa_malt_euclidean_axis1axis2_populationVSregion_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = dietary_pcoa_comparison, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
+
+ggsave(paste("11-philr_pcoa_malt_euclidean_axis1axis2_populationVSregion_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".png", sep = ""), plot = dietary_pcoa_comparison, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = "png", width = 7, height = 3.5, units = "in", dpi = 600)
+
+#' 
+#' 
+#' 
+#' ## Hierarchical Clustering
+#' 
+#' Moving away from the PhILR Tutorial, what happens if we run hierarchical 
+#' cluster analysis instead, using the distance matrix made in the previous
+#' method.
+#' 
+## ---- fig.width = 7, fig.height = 7--------------------------------------
+## Cluster
+ps_data.philr_hclust <- hclust(ps_data.dist, method = "average")
+
+## Convert hclust to phylo object for plotting
+ps_data.philr_clust_phylo <- as.phylo(ps_data.philr_hclust)
+
+## Plot
+ps_data.philr_clust_dendro_diet <- ggtree(as.phylo(ps_data.philr_clust_phylo), layout = "circular", branch.length = 'none', right = TRUE, ladderize = TRUE) %<+%
+ raw_metadata + 
+ geom_tiplab2(size = 2, hjust = -.2) +
+ geom_tippoint(aes(shape = Host_General, colour = Host_General), stroke = 1.1, size = 3) +
+ scale_shape_manual(values = general_shapes) +
+ scale_color_manual(values = general_colours) +
+ theme_tree() +
+ theme(text = element_text(family = "Roboto", size = 7), legend.position = "bottom")
+
+if (script == F) {
+ps_data.philr_clust_dendro_diet
+}
+
+ggsave(paste("04a-philr_pcoa_malt_euclidean_hclustwardD2_hostgroup_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = ps_data.philr_clust_dendro_diet, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = cairo_pdf, width = 7, height = 7, units = "in", dpi = 600)
+
+ggsave(paste("04a-philr_pcoa_malt_euclidean_hclustwardD2_hostgroup_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".png", sep = ""), plot = ps_data.philr_clust_dendro_diet, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = "png", width = 7, height = 7, units = "in", dpi = 600)
+
+
+## By region
+ps_data.philr_clust_dendro_region <- ggtree(as.phylo(ps_data.philr_clust_phylo), layout = "circular", branch.length = 'none', right = TRUE, ladderize = TRUE) %<+%
+ raw_metadata + 
+ geom_tiplab2(size = 2, hjust = -.2) +
+ geom_tippoint(aes(shape = Host_General, colour = Region), stroke = 1.1, size = 3) +
+ scale_colour_brewer(palette = "Set1") +
+ scale_shape_manual(values = general_shapes) +
+ theme_tree() +
+ theme(text = element_text(family = "Roboto", size = 7), legend.position = "bottom")
+
+if (script == F) {
+ps_data.philr_clust_dendro_region
+}
+
+ggsave(paste("04b-philr_pcoa_malt_euclidean_hclustwardD2_hostregion_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = ps_data.philr_clust_dendro_region, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = cairo_pdf, width = 7, height = 7, units = "in", dpi = 600)
+
+ggsave(paste("04b-philr_pcoa_malt_euclidean_hclustwardD2_hostregion_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = ps_data.philr_clust_dendro_region, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = "png", width = 7, height = 7, units = "in", dpi = 600)
+
+#' 
+#' Attempt at cluster validation. The rand index looks through a pairwise matrix
+#' to see in how many disagreements occur between the elements clusters
+#' assignment of two clustering results. In otherwords, it compares one element
+#' of one result to another element of the other result. Do they both have the 
+#' same relationship (in terms of cluster assignment) or not?. You then get the 
+#' fraction of disagreements over all comparisons, and subtract from one.
+#' 
+#' A value of 0 shows no pattern of relationship, whereas a value of 1 shows
+#' an exact matches between the two clustering results.
+#' 
+#' Additionally, the adjustedRandIndex encorporates the possibility of 'chance' 
+#' that two elements are classed in the same cluster, even if there is no 
+#' correspondence between the two.
+#' 
+#' We can also look at the jaccard index, which is intersection over union, i.e.
+#' the fraction of element agreements overall all comparisons. A value of 1 
+#' represents and exact match whereas 0 have total disagreement.
+#' 
+#' References:
+#' https://stackoverflow.com/questions/29520137/find-true-positive-true-negative-etc-in-case-of-clustering-location-data
+#' https://davetang.org/muse/2017/09/21/the-rand-index/
+#' https://davetang.org/muse/2017/09/21/adjusted-rand-index/
+#' https://davetang.org/muse/2017/09/28/rand-index-versus-adjusted-rand-index/
+#' https://stackoverflow.com/questions/42418773/how-can-we-interpret-negative-adjusted-rand-index
+#' 
+## ------------------------------------------------------------------------
+expect_cluster <- metadata$Host_General
+expect_cluster <- case_when(expect_cluster == "ModernDayHuman" ~ 1,
+                            expect_cluster == "Neanderthal" ~ 2,
+                            expect_cluster == "PreagriculturalHuman" ~ 2,
+                            expect_cluster == "PreantibioticHuman" ~ 3)
+names(expect_cluster) <- metadata$individual_id
+
+
+hc_clusters <- cutree(ps_data.philr_hclust, 4)
+
+cluster_comparison <- adjustedRand(expect_cluster, hc_clusters)
+
+cluster_comparison
+
+write_tsv(cluster_comparison %>% enframe(name = "Validation Metric", value = "Value"), paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/05-philr_pcoa_malt_euclidean_hclust_externalvalidation_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+
+
+#' 
+#' In both cases (HA for Hubert/Arabie version, Jaccard for Jaccard) we see that  
+#' the agreements are closer to 0 than 1, suggesting that the clustering of these
+#' individuals based on presumed dietary affiliation do not agree - when 
+#' considering oral microbiome composition.
+#' 
+#' # Multivariate Analysis
+#' 
+#' Next we want to calculate if the groups by host are truly distinct. For
+#' this people typically use PERMANOVA based on a distance matrix used to visualise
+#' the groups. It is nice as it is semi-parametric (i.e. doesn't need normal
+#' distributions), yet still allows downstream typical downstream statistical
+#' tests.
+#' 
+#' Howver, we first need to check some assumptions related to it as described in
+#' Anderson 2017 [(Wiley StatsRef: Statistics Reference Online) ](https://onlinelibrary.wiley.com/doi/full/10.1002/9781118445112.stat07841).
+#' We can assume we have a good dissimilarity measure, as we have followed current
+#' best practises for CoDa data and also are using the 'simplest' distance measure
+#' which is Euclidean.
+#' 
+#' ## Dispersion Homogenity Test
+#' 
+#' However, the second assumption is that there is homogenity of dispersions among
+#' groups (or beta-dispersion). While the method is robust when this is applied
+#' on balanced designs (i.e. same sample sizes per group), it is not robust
+#' when you have different numbers of sample sizes (for example: 
+#' http://thebiobucket.blogspot.com/2011/04/assumptions-for-permanova-with-adonis.html, 
+#' or originally published Anderson and Walsh (2013 in Ecological Monographs 83(4))). 
+#' 
+#' Anderson thus recommends using the 'PERMDISP' test which is implemented as 
+#' `betadisper()` in R's `vegan` library (originally published in Anderson et al. 
+#' (2006) Biometrics 62(1) 245-253)
+#' 
+#' First we need to make a vector for the grouping of the sample, with the order 
+#' matching that in the distance matrix.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+metadata_subset <- raw_metadata %>% 
+ filter(Individual %in% rownames(otu.table)) %>% 
+ dplyr::select(Individual, Host_General, Region)
+
+ind_groups <- metadata_subset %>% pull(Host_General)
+region <- metadata_subset %>% pull(Region)
+
+#' 
+#' Now we can run the `betadisper()` function to get the average distances from
+#' the centroid
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+ps_data.betadisper <- betadisper(ps_data.dist, ind_groups, type = "centroid")
+ps_data.betadisper
+
+## to save
+sink(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/06-betadisper_homogenity_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+ps_data.betadisper
+sink(file = NULL)
+
+
+#' 
+#' To check that we are violating the assumption of homogenity of 
+#' variances (i.e. the amount beta-dispersion does not vary between each group), 
+#' we can check this with an ANOVA.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+## to save
+
+ps_data.betadisper_anova <- anova(ps_data.betadisper) %>% tidy
+
+ps_data.betadisper_anova
+
+write_tsv(ps_data.betadisper_anova, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/07-betadisper_homogenity_anova_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+
+
+#' 
+#' Here, see we do have a borderline similarity in the amount of dispersion
+#' between each group.
+#' 
+#' We can double-double check this with an alternative method suggested by the
+#' `vegan` library developers, were we can use a permutation test.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+ps_data.betadisper_permutest <- permutest(ps_data.betadisper , pairwise = TRUE)
+ps_data.betadisper_permutest
+
+# to save
+sink(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/08-betadisper_homogenity_permutest_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+
+ps_data.betadisper_permutest
+sink(file = NULL)
+
+#' 
+#' For species and genus level, the F and P value suggest that the variances in the 
+#' dispersions are indeed significantly different (i.e. unlikely to have been 
+#' picked from the same distribution by chance).
+#' 
+#' According to the `vegan` help page on the `betadisper` function we can plot 
+#' this with
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+
+betadisper_scatterplot <- plot(ps_data.betadisper, main = 'PCoA Beta Dispersion of Groups', xlab = "Axis 1", ylab = "Axis 2", cex.lab = 0.7, cex.axis = 0.7, cex.main = 0.7, cex.sub = 0.7)
+
+if (script == F) {
+ betadisper_scatterplot
+}
+
+## Note: can't #ggsave plot()
+
+genus_colours <- c(Alouatta = "#F7756C", Gorilla = "#A2A500", Pan = "#00BF7D", 
+          Homo = "#E76BF2", Control = "#6a3d9a", Plaque = "#fdbf6f", 
+          Gut = "#a6cee3", Skin = "#fb9a99", Sediment = "#b2df8a")
+
+
+betadisper_boxplot <- tibble(ps_data.betadisper$distances, rownames = names(ps_data.betadisper$distances)) %>% 
+ rename(Individual = rownames, Distance_to_centroid = `ps_data.betadisper$distances`) %>% 
+ left_join(raw_metadata) %>% 
+ rename(Host = Host_General) %>%
+ ggplot(aes(Host, Distance_to_centroid, fill = Host)) + 
+ geom_boxplot() + 
+ xlab("Host Group") +
+ ylab("Distance to Centroid") +
+ scale_fill_manual(values = genus_colours) +
+ theme_minimal(base_size = 7, base_family = "Roboto") +
+ labs(fill = "Host Group") +
+ theme(axis.text.x = element_text(angle = 30))
+
+if (script == F) {
+ betadisper_boxplot
+}
+ggsave(paste("09-philr_betadisper_malt_boxplot_hostgenus_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = betadisper_boxplot, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
+
+
+#' 
+#' Where we can explicitly see large variations in dispersion.
+#' 
+#' ## PERMANOVA
+#' 
+#' The PERMANOVA null hypothesis is that
+#' under the assumption of 'exchangeability of the sample units among the groups'
+#' (as in if you randomly re-assign a sample to a different group), the centroids 
+#' (X~Y mean) among the groups is equvalient for all groups. Thus, if the null 
+#' hypothesis is true then any observered differences would be the same as if you 
+#' randomly allocated sample units to the groups. In contrast, if it is false, 
+#' then the observed differences is actually from different centroids between 
+#' the groups.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+permanova_factors <- factor(ind_groups)
+original_result <- adonis(ps_data.dist ~ ind_groups) %>% print
+
+## to save
+sink(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/10a-permanova_initial_hostgenuscentroids_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+ original_result
+sink(file = NULL)
+
+## Store values for later
+original_f <- original_result$aov.tab$F.Model[1]
+original_p <- original_result$aov.tab$`Pr(>F)`[1]
+
+
+#' 
+#' The results here would suggest that we do a extremely borderly significantly 
+#' different centroid of each group, suggesting that they are _maybe_ distinct. 
+#' However, we violate of assumption of homogenity between the beta-dispersion of 
+#' each group. This is possibly due to us having different sample sizes.
+#' 
+#' ## PERMANOVA with Multiple Correction Testing 
+#' 
+#' We also need to perform multiple-testing correction as we are using the same
+#' group over and over in this test, if I understand correctly.
+#' 
+## ------------------------------------------------------------------------
+original_result_posthoc <- pairwise.adonis(ps_data.dist, ind_groups)
+
+original_result_posthoc <- original_result_posthoc %>% as_tibble()
+  
+original_result_posthoc
+
+write_tsv(original_result_posthoc, 
+          paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr_dietary.backup/10b-permanova_initial_hostgenuscentroids_multiplecorrectiontesting_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+
+
+
+
+#' 
+#' Here we see that there is only a single significantly different group which is
+#' between Neandertals and Preantibiotic humans.
+#' 
+#' ## Script generation
+#' 
+#' Use the following to generate a new fast script.
+#' 
+
+#' 

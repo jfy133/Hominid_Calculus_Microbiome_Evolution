@@ -1,0 +1,161 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Load Libraries
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+Load data
+
+```{r}
+## set directory to search
+main_dir <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/03-preprocessing/deep/human_filtering/output/")
+
+## find files
+input_files <- list.files(main_dir, pattern = 'Report_output.csv', full.names = TRUE, recursive = FALSE)
+
+## Load EAGER stats
+data_raw <- data_frame(filename = input_files) %>%
+  mutate(file_contents = purrr::map(filename, 
+                                    ~ fread(.) %>% 
+                                      as_tibble() %>% 
+                                      mutate_all(as.character))) %>%
+  unnest %>%
+  bind_rows()
+
+## Load metadata
+data_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
+
+
+```
+
+
+Clean data
+
+```{r}
+eager_cleaner <- function(x){
+  out <- x
+  out[out == "NF"] <- 0
+  out <- out %>%
+    rename(sample_number = `Sample number`,
+           sample_name = `Sample Name`,
+           number_raw_reads_before_clipmerge = `# of Raw Reads prior Clip & Merge (C&M)`,
+           number_reads_after_clipmerge_prior_mapping = `# reads after C&M prior mapping`,
+           number_merged_reads = `# of Merged Reads`,
+           percent_merged_reads = `% Merged Reads`,
+           number_reads_not_attempted_to_map = `# reads not attempted to map`,
+           number_reads_mapped_prior_rmdup = `# mapped reads prior RMDup`,
+           number_duplicates_removed = `# of Duplicates removed`,
+           number_reads_mapped_after_rmdup = `Mapped Reads after RMDup`,
+           percent_endogenous_dna = `Endogenous DNA (%)`,
+           cluster_factor = `Cluster Factor`,
+           mean_fold_coverage = `Mean Coverage`,
+           std_dev_coverage = `std. dev. Coverage`,
+           percent_coverage_morethan_1x = `Coverage >= 1X in %`,
+           percent_coverage_morethan_2x = `Coverage >= 2X in %`,
+           percent_coverage_morethan_3x = `Coverage >= 3X in %`,
+           percent_coverage_morethan_4x = `Coverage >= 4X in %`,
+           percent_coverage_morethan_5x = `Coverage >= 5X in %`,
+           number_reads_on_mitochondrium = `# of reads on mitochondrium`,
+           average_coverage_on_mitochondrium = `AVG Coverage on mitochondrium`,
+           ratio_mitochondrion_to_nuclear = `MT/NUC Ratio`,
+           frequency_damage_1st_base_3prime = `DMG 1st Base 3'`,
+           frequency_damage_2nd_base_3prime = `DMG 2nd Base 3'`,
+           frequency_damage_1st_base_5prime = `DMG 1st Base 5'`,
+           frequency_damage_2nd_base_5prime = `DMG 2nd Base 5'`,
+           average_fragment_length = `average fragment length`,
+           median_fragment_length = `median fragment length`,
+           percent_gc_content = `GC content in %`
+    ) %>%
+    mutate(number_raw_reads_before_clipmerge = as.numeric(number_raw_reads_before_clipmerge)) %>%
+    mutate(number_reads_after_clipmerge_prior_mapping = as.numeric(number_reads_after_clipmerge_prior_mapping)) %>%
+    mutate(number_merged_reads = as.numeric(number_merged_reads)) %>%
+    mutate(percent_merged_reads = as.numeric(percent_merged_reads)) %>%
+    mutate(number_reads_not_attempted_to_map = as.numeric(number_reads_not_attempted_to_map)) %>%
+    mutate(number_reads_mapped_prior_rmdup = as.numeric(number_reads_mapped_prior_rmdup)) %>%
+    mutate(number_duplicates_removed = as.numeric(number_duplicates_removed)) %>% 
+    mutate(number_reads_mapped_after_rmdup = as.numeric(number_reads_mapped_after_rmdup)) %>% 
+    mutate(percent_endogenous_dna = as.numeric(percent_endogenous_dna)) %>% 
+    mutate(cluster_factor = as.numeric(cluster_factor)) %>%
+    mutate(mean_fold_coverage = as.numeric(mean_fold_coverage)) %>%
+    mutate(std_dev_coverage = as.numeric(std_dev_coverage)) %>%
+    mutate(percent_coverage_morethan_1x = as.numeric(percent_coverage_morethan_1x)) %>%
+    mutate(percent_coverage_morethan_2x = as.numeric(percent_coverage_morethan_2x)) %>%
+    mutate(percent_coverage_morethan_3x = as.numeric(percent_coverage_morethan_3x)) %>%
+    mutate(percent_coverage_morethan_4x = as.numeric(percent_coverage_morethan_4x)) %>%
+    mutate(percent_coverage_morethan_5x = as.numeric(percent_coverage_morethan_5x)) %>%
+    mutate(number_reads_on_mitochondrium = as.numeric(number_reads_on_mitochondrium)) %>%
+    mutate(ratio_mitochondrion_to_nuclear = as.numeric(ratio_mitochondrion_to_nuclear)) %>%
+    mutate(average_coverage_on_mitochondrium = as.numeric(average_coverage_on_mitochondrium)) %>%
+    mutate(frequency_damage_1st_base_3prime = as.numeric(frequency_damage_1st_base_3prime)) %>%
+    mutate(frequency_damage_2nd_base_3prime = as.numeric(frequency_damage_2nd_base_3prime)) %>%
+    mutate(frequency_damage_1st_base_5prime = as.numeric(frequency_damage_1st_base_5prime)) %>%
+    mutate(frequency_damage_2nd_base_5prime = as.numeric(frequency_damage_2nd_base_5prime)) %>%
+    mutate(median_fragment_length = as.numeric(median_fragment_length)) %>%
+    mutate(average_fragment_length = as.numeric(average_fragment_length)) %>%
+    mutate(percent_gc_content = as.numeric(percent_gc_content))
+  return(out)
+}
+
+data_clean <- eager_cleaner(data_raw) %>% select(-sample_number, -filename)
+
+data_meta_reduced <- data_meta %>% select(individual_id, Env, Description, Host_General, Host_Genus, Host_Common, Age, Location) 
+
+```
+
+Summarise
+
+```{r}
+data_summary <- data_clean %>%
+  rowwise() %>%
+  separate(sample_name, c("sample_name", "lane"), "_") %>%
+  select(sample_name, everything()) %>% 
+  group_by(sample_name) %>%
+  summarise(
+    total_number_raw_reads_before_clipmerge = sum(number_raw_reads_before_clipmerge),
+    total_number_reads_after_clipmerge_prior_mapping = sum(number_reads_after_clipmerge_prior_mapping),
+    total_number_merged_reads = sum(number_merged_reads),
+    mean_percent_merged_reads = mean(percent_merged_reads),
+    total_number_reads_not_attempted_to_map = sum(number_reads_not_attempted_to_map),
+    total_number_reads_mapped_prior_rmdup = sum(number_reads_mapped_prior_rmdup),
+    total_number_duplicates_removed = sum(number_duplicates_removed),
+    total_number_reads_mapped_after_rmdup = sum(number_reads_mapped_after_rmdup),
+    mean_percent_endogenous_dna = mean(percent_endogenous_dna),
+    mean_cluster_factor = mean(cluster_factor),
+    mean_mean_fold_coverage = mean(mean_fold_coverage),
+    mean_std_dev_coverage = mean(std_dev_coverage),
+    mean_percent_coverage_morethan_1x = mean(percent_coverage_morethan_1x),
+    mean_percent_coverage_morethan_2x = mean(percent_coverage_morethan_2x),
+    mean_percent_coverage_morethan_3x = mean(percent_coverage_morethan_3x),
+    mean_percent_coverage_morethan_4x = mean(percent_coverage_morethan_4x),
+    mean_percent_coverage_morethan_5x = mean(percent_coverage_morethan_5x),
+    total_number_reads_on_mitochondrium = sum(number_reads_on_mitochondrium),
+    mean_average_coverage_on_mitochondrium = mean(average_coverage_on_mitochondrium),
+    mean_ratio_mitochondrion_to_nuclear = mean(ratio_mitochondrion_to_nuclear),
+    mean_frequency_damage_1st_base_3prime = mean(frequency_damage_1st_base_3prime),
+    mean_frequency_damage_2nd_base_3prime = mean(frequency_damage_2nd_base_3prime),
+    mean_frequency_damage_1st_base_5prime = mean(frequency_damage_1st_base_5prime),
+    mean_frequency_damage_2nd_base_5prime = mean(frequency_damage_2nd_base_5prime),
+    mean_average_fragment_length = mean(average_fragment_length),
+    mean_median_fragment_length = mean(median_fragment_length),
+    mean_percent_gc_content = mean(percent_gc_content)
+  ) %>%
+  mutate(total_unmapped_reads = total_number_reads_after_clipmerge_prior_mapping - total_number_reads_mapped_prior_rmdup)
+#%>%
+#  left_join(data_meta_reduced, by = c("sample_name" = "individual_id")) %>%
+ # select(sample_name, Env, Description, Host_General, Host_Genus, Host_Common, Age, Location, everything())
+```
+
+Save file
+
+```{r eval = F}
+write_tsv(data_summary, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_LibraryLevel_HumanFiltering_Results__", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+```
+
+> Note for JAE and VLC, I manually copy the information from the screening data 
+> as the same files were used.

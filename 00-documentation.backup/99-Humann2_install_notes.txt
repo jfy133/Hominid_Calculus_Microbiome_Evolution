@@ -1,0 +1,36 @@
+# Humann2 install notes
+
+To create conda environment and install software
+
+```bash
+conda create --name humann2 -c bioconda humann2
+```
+
+To load
+
+```bash
+conda activate humann2
+```
+
+From now on following
+http://huttenhower.sph.harvard.edu/humann2
+https://bitbucket.org/biobakery/humann2/wiki/Home#markdown-header-configuration
+
+Small bug is the MetaPhlAn2 database doesn't come with the bioconda humann2 install.
+
+We can link that into the directory it was looking for with the following from our local install
+
+```bash
+/projects1/users/fellows/bin.backup/miniconda3/envs/humann2/bin
+ln -s /projects1/tools/metaphlan2/biobakery-metaphlan2-27f7e0c86785/db_v20/ .
+```
+
+ChocoPhlan I had already installed and it somehow picked it up (wtf?!), but
+uniref wasn't installed.
+
+```bash
+/projects1/microbiome_calculus/evolution/01-data/databases/uniref90
+humann2_databases --download uniref uniref90_ec_filtered_diamond "$(pwd)"
+```
+
+the humann2 utility scripts came with the conda environment.

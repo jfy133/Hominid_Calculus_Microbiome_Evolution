@@ -1,0 +1,220 @@
+---
+title: "MALT OTU Table Generation"
+output: html_notebook
+---
+
+## Introduction
+
+This notebook generates the raw MALT OTU tables for each possible paramter
+combination. This is also utilised in other notebooks but they don't produce
+the OTU table itself as the data is converted in different ways for 
+downstream analysis.
+
+Load Libraries
+
+```{r}
+library(tidyverse)
+```
+
+
+Load OTU tables
+
+```{r}
+main_dir <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/")
+
+input_files <- list.files(main_dir, pattern = '*.txt', full.names = TRUE, recursive = FALSE)
+input_files <- input_files[grepl("prokaryotes", input_files) & 
+                             !grepl("humanreads", input_files) & 
+                             !grepl("phylum", input_files)]
+
+data_out <- tibble(filename = input_files) %>%
+  mutate(file_contents = purrr::map(filename, 
+                                    ~ suppressWarnings(suppressMessages(read_tsv(.)))))
+```
+
+Load extra data
+
+```{r}
+## Metadata
+raw_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
+
+## Bad samples to remove
+main_dir_sampfil <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/")
+
+input_files_sampfil <- list.files(main_dir_sampfil, pattern = '*', full.names = TRUE, recursive = FALSE) %>%
+     enframe() %>% filter(grepl("withinfluctuation", value) & grepl("tsv", value)) %>% pull(value)
+
+data_out_sampfil <- tibble(filename = input_files_sampfil) %>%
+  mutate(file_contents = purrr::map(filename, 
+                                    ~ suppressWarnings(suppressMessages(read_tsv(.)))))
+
+
+## Predicted contaminant taxa to remove
+main_dir_cont <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup")
+
+input_files_cont <- list.files(main_dir_cont, pattern = 'decontam_*', full.names = TRUE, recursive = FALSE) %>%
+  enframe() %>% filter(grepl("megan", value) & grepl("tsv", value)) %>% pull(value)
+
+data_out_cont <- tibble(filename = input_files_cont) %>%
+  mutate(file_contents = purrr::map(filename, 
+                                    ~ suppressWarnings(suppressMessages(read_tsv(.)))))
+
+```
+
+Set Min Support Multiplier
+
+```{r}
+minsupp_multiplier <- 4
+```
+
+0.01minsupport
+  withBadSamples
+  withoutBadSamples
+0.02minsupport
+  withBadSamples
+  withoutBadSamples
+0.05minsupport
+  withBadSamples
+  withoutBadSamples
+
+```{r}
+data_cleaner <- function(x) {
+  colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam","", colnames(x))
+  colnames(x) <- gsub("_S.*_L00.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(x))
+  colnames(x) <- gsub("_S.*_L00.*_R1_.*.fastq.extractunmapped.bam", "", colnames(x))
+  colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.merged", "", colnames(x))
+  colnames(x) <- gsub(".prefixed.hg19unmapped", "", colnames(x))
+  colnames(x) <- gsub("_S0_L003_R1_001.sorted.bam.unmapped", "", colnames(x))
+  colnames(x)[1] <- "Taxon"
+  return(x)
+}
+
+```
+
+Set groupings
+
+```{r}
+order_env <- c("Howler_Monkey", "Gorilla_1", "Gorilla_2", "Gorilla_3", "Chimp_1", "Chimp_2", "Chimp_3", "Chimp_4", "Neanderthal", "PreagriculturalHuman_1", "PreagriculturalHuman_2", 
+               "PreantibioticHuman_1", "PreantibioticHuman_2", "ModernDayHuman_1", "ModernDayHuman_2", "ExtractionControl", "LibraryControl", "subPlaque", "supPlaque", "ruralGut", "urbanGut", "skin", "EnvironmentalControl", "sediment")
+
+  raw_metadata <- raw_metadata %>% 
+    mutate(Env = factor(Env, levels = order_env)) %>%
+    rename(Individual = `#SampleID`) %>% 
+    arrange(Env) %>% 
+    mutate(Individual = as_factor(Individual))
+
+```
+
+
+```{r}
+for (i in data_out$filename %>% unique) {
+  ## Load and clean OTU table
+  otutable <- filter(data_out, filename == i) %>% 
+    unnest %>% 
+    select(-filename) %>% 
+    rename(Taxon = `#Datasets`)
+  
+  otutable_clean <- data_cleaner(otutable)
+  otutable_long <- otutable_clean %>% gather(Individual, Value, 2:ncol(.)) 
+  
+  ## Load lab contaminants to remove and threshold metadata
+  if (grepl("genus", i) & !grepl("refseq", i)) {
+   
+     contaminants <- filter(data_out_cont, grepl("nt_genus", filename)) %>% 
+      unnest(file_contents) %>% 
+      pull(value)
+    
+    threshold <- raw_metadata %>% 
+      select(Min_Support_Reads_Threshold_MALT, Individual) %>% 
+      mutate(Threshold = Min_Support_Reads_Threshold_MALT * minsupp_multiplier)
+    
+    sample_discard_list <- filter(data_out_sampfil, grepl("nt", filename)) %>%
+      unnest(file_contents) %>% 
+      filter(!withinfluctuationvariation_pass) %>%
+      filter(!grepl("ARS|SRR|ERR|LIB|EXB", sample)) %>%
+      pull(sample)
+    
+  } else if (grepl("species", i) & !grepl("refseq", i)) {
+    
+    contaminants <- filter(data_out_cont, grepl("nt_species", filename)) %>% 
+      unnest(file_contents) %>% 
+      pull(value)
+    
+    threshold <- raw_metadata %>% 
+      select(Min_Support_Reads_Threshold_MALT, Individual) %>% 
+      mutate(Threshold = Min_Support_Reads_Threshold_MALT * minsupp_multiplier)
+    
+    sample_discard_list <- filter(data_out_sampfil, grepl("nt", filename)) %>%
+      unnest(file_contents) %>% 
+      filter(!withinfluctuationvariation_pass) %>%
+      filter(!grepl("ARS|SRR|ERR|LIB|EXB", sample)) %>% 
+      pull(sample)
+    
+  } else if (grepl("genus", i) & grepl("refseq", i)) {
+    
+    contaminants <- filter(data_out_cont, grepl("refseq_genus", filename)) %>% 
+      unnest(file_contents) %>% 
+      pull(value)
+    
+    threshold <- raw_metadata %>% 
+      select(Min_Support_Reads_Threshold_MALT_refseq, Individual) %>% 
+      mutate(Threshold = Min_Support_Reads_Threshold_MALT_refseq * minsupp_multiplier)
+    
+    sample_discard_list <- filter(data_out_sampfil, grepl("refseq", filename)) %>%
+      unnest(file_contents) %>% 
+      filter(!withinfluctuationvariation_pass) %>%
+      filter(!grepl("ARS|SRR|ERR|LIB|EXB", sample)) %>%
+      pull(sample)
+    
+  } else if (grepl("species", i) & grepl("refseq", i)) {
+    
+    contaminants <- filter(data_out_cont, grepl("refseq_species", filename)) %>% 
+      unnest(file_contents) %>% 
+      pull(value)
+   
+     threshold <- raw_metadata %>% 
+       select(Min_Support_Reads_Threshold_MALT_refseq, Individual) %>% 
+       mutate(Threshold = Min_Support_Reads_Threshold_MALT_refseq * minsupp_multiplier)
+     
+     sample_discard_list <- filter(data_out_sampfil, grepl("refseq", filename)) %>%
+      unnest(file_contents) %>% 
+      filter(!withinfluctuationvariation_pass) %>%
+      filter(!grepl("ARS|SRR|ERR|LIB|EXB", sample)) %>%
+      pull(sample)
+  }
+  
+  ## remove contaminants and fix missing Refseq names
+  otutable_filtered <- otutable_long %>% 
+    filter(!Taxon %in% contaminants)
+  
+  ## Set ordering
+  otutable_ordered <- otutable_filtered %>% 
+    left_join(raw_metadata %>% select(Individual, Env)) %>% 
+    mutate(Env = factor(Env, levels = order_env)) %>%
+    arrange(Env) %>% 
+    mutate(Individual = as_factor(Individual))
+
+  
+  ## With and without badSamples
+  otutable_ordered %>% 
+    select(-Env) %>%
+    left_join(threshold) %>%
+    mutate(Value = if_else(Value <= Threshold, 0, Value),
+           Individual = as_factor(Individual)) %>%
+    select(Taxon, Individual, Value) %>%
+    spread(Individual, Value) %>% 
+    write_tsv(paste(tools::file_path_sans_ext(i), "_labcontaminantsOut_badCalculusIn_", paste(0.01 * minsupp_multiplier),"_", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+  
+  otutable_ordered %>% 
+    select(-Env) %>% 
+    left_join(threshold) %>%
+    mutate(Value = if_else(Value <= Threshold, 0, Value),
+           Individual = as_factor(Individual)) %>%
+    filter(!Individual %in% sample_discard_list) %>% 
+    select(Taxon, Individual, Value) %>%
+    spread(Individual, Value) %>% 
+    write_tsv(paste(tools::file_path_sans_ext(i), "_labcontaminantsOut_badCalculusOut_", paste(0.01 * minsupp_multiplier),"_", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+  
+}
+```
+

@@ -1,0 +1,70 @@
+---
+title: "MetaPhlAn2 Read Count Table Generator"
+author: "James A. Fellows Yates"
+output: html_notebook
+---
+
+# Loading Libraries and Data
+
+Load libraries
+
+```{r}
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(stringr)
+```
+
+Set your input path to the output directory of `MetaPhlAn2` run with 
+the `-t` flag as 'rel_ab_w_read_stats`, **with** the path as trailing /
+
+```{r}
+input_path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/metaphlan2/output_readcounts/"
+```
+
+Load MetaPhlAn2 profiles into single dataframe using map and clean up.
+
+```{r}
+## Directory to search in
+main_dir <- Sys.glob(paste(input_path, "*", sep = ""))
+
+## Find the files in the directory, this may take some time
+input_files <- list.files(main_dir, pattern = '*/*\\.tsv', 
+                          full.names = TRUE, recursive = FALSE)
+
+## Load contents of each profile into a single dataframe, then extract.
+## This may take some time
+
+## Also note that this will not import files that are 100% unclassified, 
+## because they don't have the same number of columns.
+data_out <- data_frame(filename = input_files) %>%
+  mutate(file_contents = purrr::map(filename, 
+                                    ~ suppressMessages(fread(., skip = 1) %>% 
+                                                         as_tibble())))
+data_out <- unnest(data_out)
+
+## Now reduce and clean up column names
+reduced_data <- data_out %>% 
+  dplyr::select(filename, 
+                `#clade_name`, 
+                `estimated_number_of_reads_from_the_clade`)
+
+colnames(reduced_data) <- c("Sample", "ID", "Estimated_Count")
+
+## Remove the filepath cruft from the sample names
+reduced_data <- reduced_data %>% 
+  rowwise() %>%
+  mutate(Sample = tail(str_split(Sample, "/")[[1]], n = 1)) %>% 
+  mutate(Sample = gsub(".mp2profile.*tsv", "", Sample)) %>%
+  dplyr::select(Sample, ID, Estimated_Count) %>%
+  filter(!grepl("#estimated total number of reads from known clades:", ID))
+
+final_data <- spread(reduced_data, Sample, Estimated_Count, fill = 0)
+```
+
+Save file
+
+```{r}
+write_tsv(final_data, paste(input_path, "metaphlan2_merged_estimatedreadcount_table_", format(Sys.Date(), "%Y%m%d"), ".txt", sep = ""))
+```

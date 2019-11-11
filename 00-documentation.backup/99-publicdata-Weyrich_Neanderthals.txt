@@ -1,0 +1,7 @@
+Sample	File	Link	
+ElSidron1	2NoAdapt_ELSIDRON1L7_lTACTG_rCTCGA_R1R2_Collapsed.fastq.gz	https://www.oagr.org.au/api/v1/dataset_file/3086/download
+ElSidron1	2NoAdapt_ELSIDRON1L7_lTACTG_rCTCGA_R1R2_Collapsed_Truncated.fastq.gz	https://www.oagr.org.au/api/v1/dataset_file/3109/download
+ElSidron2	2NoAdapt_ELSIDRON2L7_lACTGT_rCTCGA_R1R2_Collapsed.fastq.gz	https://www.oagr.org.au/api/v1/dataset_file/3087/download
+SpyOld	2NoAdapt_SPYOLD_L7L8_lGTACC_rCTCGA_R1R2_Collapsed.fastq.gz	https://www.oagr.org.au/api/v1/dataset_file/3090/download
+SpyNew	2NoAdapt_SPYNEWL8_lGTACC_rCTCGA_R1R2_Collapsed.fastq.gz	https://www.oagr.org.au/api/v1/dataset_file/3089/download
+Chimp.150519	2NoAdapt_CHIMP_150519_lACGTG_rATTGA_R1R2_Collapsed.fastq.gz	https://www.oagr.org.au/api/v1/dataset_file/3085/download

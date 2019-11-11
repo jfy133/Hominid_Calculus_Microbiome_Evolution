@@ -1,0 +1,147 @@
+---
+title: "RefSeq Downloading for MALT Taxonomic Binning and AADDER functional Analysis"
+author: "James Fellows Yates"
+date: '2018-10-29'
+output:
+  html_document:
+    df_print: paged
+---
+
+Load Libraries
+
+```{r}
+library(tidyverse)
+library(data.table)
+```
+
+
+First download metadata files including RefSeq genomes assembly summary. However,
+we only want to use Bacterial and Archaea genomes. We will use the genomes 
+RefSeq database that was updated on Feburary 2018-11-21.
+
+```{r}
+assembly_summary <-fread("ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/archaea/assembly_summary.txt", skip = 1) %>% 
+  as_tibble() %>%
+  mutate(tax_level = "archaea") %>%
+  bind_rows(fread("ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt", skip = 1) %>% 
+              as_tibble() %>%
+              mutate(tax_level = "bacteria")
+            )
+
+```
+
+How many genomes is that?
+
+```{r}
+nrow(assembly_summary)
+
+```
+
+
+Now we want to filter for assembly levels that are scaffold or higher. This
+basically only excludes contigs.
+
+```{r}
+assembly_summary_filtered <- assembly_summary %>% 
+  filter(assembly_level != "Contig")
+
+nrow(assembly_summary_filtered)
+```
+
+And finally we want to add the human refernece sequence to pull any human
+reads.
+
+```{r}
+assembly_summary_filtered <- fread("ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/assembly_summary.txt", skip = 1) %>% 
+  as_tibble() %>%
+  mutate(tax_level = "eukaryote") %>%
+  bind_rows(assembly_summary_filtered)
+```
+
+How many genomes per species?
+
+```{r}
+taxa_entries <- assembly_summary_filtered %>% 
+  select(organism_name) %>% 
+  group_by(organism_name) %>% 
+  summarise(Num_Entries = n()) %>% arrange(desc(Num_Entries)) 
+
+taxa_entries$organism_name <- factor(taxa_entries$organism_name, levels= taxa_entries$organism_name)
+
+ggplot(filter(taxa_entries, Num_Entries != 1), aes(organism_name, Num_Entries)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_blank())
+
+```
+
+We can see that there is a large descrepency in the number of genomes.
+
+Lets see what happens if we take 10 genomes of each to minimise this
+
+```{r}
+#assembly_summary_filtered <- 
+taxa_mt10_genomes <- assembly_summary_filtered %>% 
+  dplyr::filter(organism_name %in% (taxa_entries %>% filter(Num_Entries > 10) %>% pull(organism_name))) %>%
+  group_by(organism_name) %>% 
+  sample_n(10)
+
+final_assembly_list <- assembly_summary_filtered %>%
+  dplyr::filter(organism_name %in% (taxa_entries %>% filter(Num_Entries <= 10) %>% pull(organism_name))) %>%
+  bind_rows(taxa_mt10_genomes)
+
+```
+
+
+And we can save this to a file
+
+```{r eval = FALSE}
+write_tsv(final_assembly_list, "01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/docs/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_downloadtable_20181122.txt")
+```
+
+
+Now we can use the FTP links to download the fasta and gff files, i.e. the 
+files that are ending in `_genome.gff.gz` and `_genomic.fna.gz`.
+
+For this, we will make a SLURM command which allows us to download all
+these files in parallel and save to a directory. In this case I've put
+the command in a `sbatch` script which internally runs at 16 downloads in 
+parallel.
+
+```{bash eval = FALSE}
+
+sbatch 02-scripts/99-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_downloadtable.sh
+
+```
+
+To check
+```{bash}
+cd 01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw
+function lister () { while read line1; do echo "$line1"/*fna.gz >> list.txt; done }
+ls | lister
+cat list.txt | wc -l
+
+## number is minus one for this table because headers
+cat ../docs/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_downloadtable_20181122.txt | wc -l
+
+```
+
+Once this is completed, we need to make a 'mega fasta' file of all the 
+entries as apparently ~50,000 genomes given as independent arguments to
+`malt-build` is too much. So we will cat these separate fastq files together 
+and then delete single files.
+
+```{bash}
+sbatch \
+-n 1 \
+--mem 4G \
+--partition=short \
+-t 02:00:00 \
+-o slurm.%j.out \
+-e slurm.%j.err \
+--mail-type=fail \
+--mail-type=time_limit \
+--mail-use=fellows@shh.mpg.de \
+-J "cat_cause_23k_genomes_too_much_for_malt-build" \
+--wrap="find 01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw/ -name \*.fna.gz -print0 | xargs -0 cat >> 01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_20181122.fna.gz && find 01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw/ -name \*.fna.gz -print0 | xargs -0 rm"
+```

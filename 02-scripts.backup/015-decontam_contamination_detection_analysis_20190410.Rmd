@@ -1,0 +1,676 @@
+---
+title: "Iberian Transect - Decontam"
+author: "James A. Fellows Yates"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+## Preface
+
+This basically rips-off the decontam intro vignette https://benjjneb.github.io/decontam/vignettes/decontam_intro.html, slightly re-worded for my own better understanding!
+
+## Preparation
+
+To detect possible lab contaminants, and to remove these OTUs from downstream
+analysis we can use the 'decontam' package.
+
+```{r}
+library(decontam)
+library(tidyverse)
+library(phyloseq)
+```
+
+Load data and parameter selection. Note: MP2 requires the read count NOT
+the proportions. Also the MP2 data doesn't seem to work.
+
+We don't need to perform any low-quality sample filtering here, as low quality
+samples actually help improve the analysis by informing the relative abundance
+correlation.
+
+```{r}
+### CHANGE OPTIONS HERE ###
+table_type <- "mp2" ## megan or mp2
+db <- "mp2" ## nt or refseq or mp2
+tax_level <- "species" ## genus or species
+############################
+
+
+if (table_type == "megan" & tax_level == "genus" & db == "nt") {
+  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_all_summarised_nt.txt")
+} else if (table_type == "megan" & tax_level == "species" & db == "nt") {
+  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_all_summarised_nt.txt")
+} else if (table_type == "megan" & tax_level == "genus" & db == "refseq") {
+  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_all_summarised_refseq.txt")
+} else if (table_type == "megan" & tax_level == "species" & db == "refseq") {
+  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
+}  else if (table_type == "mp2") {
+  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/metaphlan2/output_readcounts/metaphlan2_merged_estimatedreadcount_table_20190401.txt")
+} 
+
+
+metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190408.tsv")
+
+
+
+```
+
+## Data Cleaning and Conversion
+
+Do some data tidying and convert to phyloseq object, following: 
+https://benjjneb.github.io/decontam/vignettes/decontam_intro.html
+
+```{r}
+## Extract samples and controls only, and only those with library 
+## concentration values
+
+## ADD NULL READ SAMPLE COLUMNS
+null_sample_remover <- function(x){
+  otu_matrix[,grepl(0, colSums(otu_matrix))]
+}
+
+if (table_type == "megan") {
+  metadata <- metadata %>%
+    filter(!grepl("SRR|ERR", `#SampleID`)) %>%
+    filter(SumLibraryConcentration_copies_ul > 0)
+  
+  colnames(otu_table) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam", "", colnames(otu_table)) 
+  colnames(otu_table) <- gsub("_S.*_L.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(otu_table))
+  colnames(otu_table) <- gsub("_S0_L001_R1_001.fastq.extractunmapped.bam", "", colnames(otu_table))
+  colnames(otu_table) <- gsub("_S0_L003_R1_001.sorted.bam.unmapped", "", colnames(otu_table))
+
+  otu_table <- select(otu_table, one_of(c("#Datasets", metadata$`#SampleID`))) %>%
+    rename(Clade = `#Datasets`)
+  
+  ## Make phyloseq object
+  otu_matrix <- data.matrix(otu_table[2:ncol(otu_table)])
+  rownames(otu_matrix) <- otu_table$Clade
+
+  final_otu <- otu_table(otu_matrix, taxa_are_rows = TRUE)
+  
+  metadataframe <- data.frame(metadata)
+  rownames(metadataframe) <- metadata$`#SampleID`
+  final_sample <- sample_data(metadataframe)
+  
+  ps <- phyloseq(final_otu, final_sample)
+  
+} else if (table_type == "mp2") {
+  metadata <- metadata %>%
+    filter(!grepl("SRR|ERR", `#SampleID`)) %>%
+    filter(SumLibraryConcentration_copies_ul > 0)
+  
+  otu_table <- otu_table %>%
+    rename(Clade = ID) %>%
+    filter(!grepl("t__[[:alnum:]]", Clade))
+  
+  if (tax_level == "genus") {
+    otu_table <- otu_table %>%
+      filter(!grepl("s__[[:alnum:]]", Clade)) %>%
+      filter( grepl("g__[[:alnum:]]", Clade)) %>%
+      mutate(Clade = map(Clade, 
+                         function(x) str_split_fixed(x, 
+                                                     "\\|g__", 
+                                                     n = 2)[2]) %>% unlist) %>%
+      mutate(Clade = gsub("_", " ", Clade))
+  } else if (tax_level == "species") {
+    otu_table <- otu_table %>%
+      filter(grepl("s__[[:alnum:]]", Clade)) %>%
+      mutate(Clade = map(Clade, 
+                         function(x) str_split_fixed(x, 
+                                                     "\\|s__", 
+                                                     n = 2)[2]) %>% unlist) %>%
+      mutate(Clade = gsub("_", " ", Clade))
+
+  }
+  
+  otu_table <- select(otu_table, one_of(c("Clade", metadata$`#SampleID`)))
+  
+## Make phyloseq object
+  otu_matrix <- data.matrix(otu_table[2:ncol(otu_table)])
+  rownames(otu_matrix) <- otu_table$Clade
+  otu_matrix <- otu_matrix[,!grepl(0, colSums(otu_matrix))]
+  final_otu <- otu_table(otu_matrix, taxa_are_rows = TRUE)
+  
+  metadataframe <- data.frame(metadata)
+  rownames(metadataframe) <- metadata$`#SampleID`
+  final_sample <- sample_data(metadataframe)
+  
+  ps <- phyloseq(final_otu, final_sample)
+
+}
+
+
+
+```
+
+Note that for MetaPhlAn2, some samples get given as 'unknown columns'.
+In this case these are for blanks which had 100% unclassified, so have
+no data in the OTU table.
+
+Plot library quants
+
+```{r}
+df <- as.data.frame(sample_data(ps)) # Put sample_data into a ggplot-friendly data.frame
+df$LibrarySize <- sample_sums(ps)
+df <- df[order(df$LibrarySize),]
+df$Index <- seq(nrow(df))
+
+ggplot(data = df, aes(x = Index, y = LibrarySize, color = Sample_or_Control)) + 
+  geom_point() +
+  theme_minimal() +
+  theme(text = element_text(size = 14))
+
+```
+
+This doesn't look like to have the nice curve as in the tutorial. 
+This could be because we have a very large range of library sizes - what if
+we log transform our data?
+
+```{r}
+ggplot(data = df, aes(x = Index, y = log(LibrarySize), color = Sample_or_Control)) + 
+  geom_point() +
+  theme_minimal() +
+  theme(text = element_text(size = 14))
+
+```
+
+This looks slightly better.
+
+## Frequency Method
+
+From the tutorial:
+
+"The first contaminant identification method we’ll use is the “frequency” 
+method. In this method, the distribution of the frequency of each sequence 
+feature as a function of the input DNA concentration is used to identify 
+contaminants."
+
+Now we can start with our contamination identification, using the 'frequency'
+method.
+
+```{r}
+contamdf.freq <- isContaminant(ps, method = "frequency", conc = "SumLibraryConcentration_copies_ul")
+head(contamdf.freq)
+```
+
+To get the numbers of species considered possible contaminants.
+
+```{r}
+table(contamdf.freq$contaminant)
+head(which(contamdf.freq$contaminant))
+
+if (length(grep(TRUE, contamdf.freq$contaminant)) > 0) {
+  rownames(otu_table(ps)[which(contamdf.freq$contaminant)])
+} else {
+  print("No contaminant taxa found")
+}
+```
+
+In this case for only 4 taxa are found in MEGAN. For MetaPhlAn2, nothing is 
+found.
+
+Compared to the tutorial, for the MEGAN data, these are quite low abundant taxa 
+(as the numbers reflect the ranked order abundance of species), but we can do 
+the same plot to see what these plots would look like.
+
+```{r}
+if (length(grep(TRUE, contamdf.freq$contaminant)) > 0) {
+  plot_frequency(ps, taxa_names(ps)[which(contamdf.freq$contaminant)], conc = "SumLibraryConcentration_copies_ul")
+} else {
+  print("No contaminant taxa found")
+}
+```
+
+It seems those species have only been picked up because they have very few 
+samples which the taxa was found in in the first place.
+
+We can double check this with:
+
+```{r}
+
+if (length(grep(TRUE, contamdf.freq$contaminant)) == 0) {
+  print("No contaminant taxa found")
+} else if (table_type == "megan") {
+  filter(otu_table, Clade %in% rownames(otu_table(ps)[which(contamdf.freq$contaminant)])) %>% 
+    gather(sample, count, 2:ncol(.)) %>% 
+    mutate(present_in_sample = if_else(count > 0, 1, 0)) %>% 
+    filter(present_in_sample > 0)
+} else if (table_type == "mp2") {
+  filter(otu_table, Clade %in% rownames(otu_table(ps)[which(contamdf.freq$contaminant)])) %>% 
+    gather(sample, count, 2:ncol(.)) %>% 
+    mutate(present_in_sample = if_else(count > 0, 1, 0)) %>% 
+    filter(present_in_sample > 0)
+}
+
+```
+
+So if this is only in 11 rows, then there are very few samples informing 
+these possible decontaminants. Thus these are likely false positives.
+
+## Prevalence Method
+
+### Calculation
+
+The next method is the 'prevalence' method:
+
+"The second contaminant identification method we’ll use is the "prevalence" 
+method. In this method, the prevalence (presence/absence across samples) of 
+each sequence feature in true positive samples is compared to the prevalence 
+in negative controls to identify contaminants."
+
+```{r}
+sample_data(ps)$is.neg <- sample_data(ps)$Sample_or_Control == "Control"
+contamdf.prev <- isContaminant(ps, method = "prevalence", neg = "is.neg")
+table(contamdf.prev$contaminant)
+
+sort(rownames(otu_table(ps)[which(contamdf.prev$contaminant)]))
+
+```
+
+### Threshold Selection
+
+However, we can use an even more aggresive threshold, and see what comes up. 
+This threshold picks up anything that is more prevalent in negative controls 
+than in positive samples. We found a sweet-spot at 0.9, which detected well
+known environmental contaminants such as Mycobacterium and Streptomyces as
+contaminants, while not picking up well known oral taxa.
+
+```{r}
+prob_thres = 0.95
+
+
+
+contamdf.prevCustom <- isContaminant(ps, 
+                                     method = "prevalence", 
+                                     neg = "is.neg", 
+                                     threshold = prob_thres)
+table(contamdf.prevCustom$contaminant)
+
+contamdf.prevCustom[grepl("Streptomyces|Tannerella|Mycobacterium", rownames(contamdf.prevCustom)),]
+
+contamdf.prevCustom %>% 
+  as_tibble(rownames = "Taxon") %>% 
+  ggplot(aes(p)) + 
+  geom_histogram(bins = 50) +
+  geom_vline(xintercept = prob_thres)
+
+sort(rownames(otu_table(ps)[which(contamdf.prevCustom$contaminant)]))
+```
+
+We can take a slight detour here compared to the `decontam` tutorial to 
+try and optimise our p-value threshold.
+
+By comparing this list of taxa with the Human Oral Microbiome Database we can
+try to identify a sweet spot between removing as much contaminants as possible, 
+but not accidently removing known oral genera. Getting an exact match is not
+possible due to some genera being very diverse and occupying many habitats, 
+and differing naming schemes/formats between the two databases, however it
+can allow us to get a rough approximation.
+
+By also getting the mean number of reads that these contaminants consist of 
+across all samples in the database, we can also get an idea as to how much of 
+an influence the removal of all the taxa detected at a particular threshold may
+have.
+
+```{r}
+homd <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/99-HOMD_oralgenomesonly_20190319.tsv")
+
+if (tax_level == "genus") {
+  homd_taxon <- homd %>% 
+    select(Genus) %>% 
+    distinct() %>% 
+    rename(Taxon = Genus) %>%
+    mutate(homd_taxon = T)
+} else if (tax_level == "species") {
+  homd_taxon <- homd %>% 
+    select(Genus, Species) %>% 
+    unite(Taxon, Genus, Species, sep = " ") %>% 
+    distinct() %>% 
+    mutate(homd_taxon = T)
+}
+
+
+result_prev <- tibble(`threshold` = NA, `no_oral` = NA, `total_oralContaminant_sampleAlignments` = NA, proportion_all_taxa_contaminants = NA)
+
+decontam_result <- isContaminant(ps, 
+                method = "prevalence", 
+                neg = "is.neg", 
+                threshold = 0.1) %>% 
+  as_tibble(rownames = "Taxon")
+
+
+for (i in seq(0.1, 1, 0.01)) {
+  increased_result <- decontam_result %>% 
+    mutate(contaminant = p < i)
+  
+    cont_proportion_all <- increased_result %>% 
+      group_by(contaminant) %>%
+      summarise(Taxa_Count = n()) %>%
+      mutate(Total_Taxa = sum(Taxa_Count), Proportion_Total = Taxa_Count / Total_Taxa) %>%
+      filter(contaminant) %>%
+      pull(Proportion_Total)
+    
+  false_positive_oral <- increased_result %>%
+    filter(contaminant == TRUE) %>%
+    left_join(homd_taxon) %>%
+    replace_na(list("homd_taxon" = FALSE))
+  
+  false_positive_oral_count <- false_positive_oral %>%
+    group_by(homd_taxon) %>%
+    summarise(Number_Oral_Taxa = n()) %>%
+    filter(homd_taxon == "TRUE") %>%
+    pull(Number_Oral_Taxa)
+  
+  if (length(false_positive_oral_count) > 0) {
+    false_positive_oral_count <- false_positive_oral_count
+  } else {
+   false_positive_oral_count <- 0
+  }
+  
+  false_positive_oral_count
+  
+  total_oralContaminant_sampleAlignments <- otu_table %>% 
+    filter(Clade %in% false_positive_oral$Taxon) %>%
+    gather(Sample, Value, 2:ncol(.)) %>% 
+    left_join(metadata, by = c("Sample" = "#SampleID")) %>%
+    filter(Sample_or_Control == "Sample") %>%
+    summarise(total_oralContaminant_sampleAlignments = sum(Value)) %>%
+    pull(total_oralContaminant_sampleAlignments)
+  
+  result_prev <- bind_rows(result_prev, list("threshold" = i, 
+                                         "no_oral" = false_positive_oral_count, 
+                                         "total_oralContaminant_sampleAlignments" = total_oralContaminant_sampleAlignments,
+                                         "proportion_all_taxa_contaminants" = cont_proportion_all))
+  
+}
+```
+
+and plot
+
+```{r}
+otu_table_totalSampleAlignments <- otu_table %>% 
+    gather(Sample, Value, 2:ncol(.)) %>% 
+    left_join(metadata, by = c("Sample" = "#SampleID")) %>%
+    filter(Sample_or_Control == "Sample") %>%
+    summarise(total_sampleAlignments = sum(Value)) %>%
+    pull(total_sampleAlignments)
+
+ggplot(result_prev, aes(threshold, no_oral, fill = total_oralContaminant_sampleAlignments / otu_table_totalSampleAlignments )) +
+  geom_bar(stat = "identity") + 
+  scale_fill_distiller(palette = "YlOrRd", limits = c(0,1), breaks = seq(0, 1, 0.2)) +
+  theme_minimal(base_size = 7, base_family = "Roboto")
+
+ggplot(result_prev, aes(threshold, proportion_all_taxa_contaminants, fill = total_oralContaminant_sampleAlignments / otu_table_totalSampleAlignments )) +
+  geom_bar(stat = "identity") + 
+  scale_fill_distiller(palette = "YlOrRd", limits = c(0,1), breaks = seq(0, 1, 0.2)) +
+  theme_minimal(base_size = 7, base_family = "Roboto")
+  
+
+```
+
+This shows that until a p-value of 1, the amount of data that would be removed 
+if the oral taxa selected as possible contaminants would be discarded, is 
+quite minimal.
+
+For the MALT nt database at genus level, the number of oral taxa picked up as 
+potential contaminants increases gradually up until a p-value 0.99, after which 
+it increases drastically.
+
+We can review which taxa they are, to see if include well-characterised oral
+taxa.
+
+### Manual Check
+
+```{r}
+prob_thres_prev_man = 0.99
+
+## all 
+prev_result_man_all <- isContaminant(ps, 
+                method = "prevalence", 
+                neg = "is.neg", 
+                threshold = prob_thres_prev_man) %>%
+    as_tibble(rownames = "Taxon") %>%
+    filter(contaminant == TRUE) %>%
+  arrange(Taxon) %>%
+  print()
+
+## oral only
+prev_result_man_oral <- isContaminant(ps, 
+                method = "prevalence", 
+                neg = "is.neg", 
+                threshold = prob_thres_prev_man) %>%
+    as_tibble(rownames = "Taxon") %>%
+    filter(contaminant == TRUE) %>%
+    left_join(homd_taxon) %>%
+    filter(!is.na(homd_taxon)) %>%
+  arrange(Taxon) %>%
+  print()
+
+
+
+```
+
+We can also visualise the number of times some of these taxa were
+observed in both blanks and samples
+
+```{r}
+# Make phyloseq object of presence-absence in negative controls
+ps.neg <- prune_samples(sample_data(ps)$Sample_or_Control == "Control", ps)
+ps.neg.presence <- transform_sample_counts(ps.neg, 
+                                           function(abund) 1 * (abund > 0))
+
+# Make phyloseq object of presence-absence in true positive samples
+ps.pos <- prune_samples(sample_data(ps)$Sample_or_Control == "Sample", ps)
+ps.pos.presence <- transform_sample_counts(ps.pos, 
+                                           function(abund) 1 * (abund > 0))
+
+# Make data.frame of prevalence in positive and negative samples
+df.pres <- data.frame(prevalence.pos = taxa_sums(ps.pos.presence), 
+                      prevalence.neg = taxa_sums(ps.neg.presence),
+                      contam.prev = contamdf.prev$contaminant)
+ggplot(data = df.pres, aes(x = prevalence.neg, 
+                           y = prevalence.pos, 
+                           color = contam.prev)) + 
+  geom_point()
+```
+
+Where the X axis is the number of negative controls a OTU is detected, and Y
+is the number of samples an OTU is found in.
+
+Basically, the OTUs that were detected to be more prevalent in negative 
+controls (displayed 
+in blue) than in samples (red), are in the bottom right half of the graph.
+
+## Comparison with Salter et al 2014 BMC Biol
+
+To see how reliable the detection of contaminants are, we can see how 
+many of these were also reported in Salter et al. 2014 (BMC Bio.)
+
+```{r}
+salter_taxa <- c("Afipia", "Aquabacterium", "Asticcacaulis", "Aurantimonas", "Beijerinckia", "Bosea", "Bradyrhizobium", "Brevundimonas", "Caulobacter", "Craurococcus", "Devosia", "Hoeflea", "Mesorhizobium", "Methylobacterium", "Novosphingobium", "Ochrobactrum", "Paracoccus", "Pedomicrobium", "Phyllobacterium", "Rhizobium", "Roseomonas", "Sphingobium", "Sphingomonas", "Sphingopyxis", "Acidovorax", "Azoarcus", "Azospira", "Burkholderia", "Comamonas", "Cupriavidus", "Curvibacter", "Delftia", "Duganella", "Herbaspirillum", "Janthinobacterium", "Kingella", "Leptothrix", "Limnobacter", "Massilia", "Methylophilus", "Methyloversatilis", "Oxalobacter", "Pelomonas", "Polaromonas", "Ralstonia", "Schlegelella", "Sulfuritalea", "Undibacterium", "Variovorax", "Acinetobacter", "Enhydrobacter", "Enterobacter", "Escherichia", "Nevskia", "Pseudomonas", "Pseudoxanthomonas", "Psychrobacter", "Stenotrophomonas", "Xanthomonas ", "Aeromicrobium", "Arthrobacter", "Beutenbergia", "Brevibacterium", "Corynebacterium", "Curtobacterium", "Dietzia", "Geodermatophilus", "Janibacter", "Kocuria", "Microbacterium", "Micrococcus", "Microlunatus", "Patulibacter", "Propionibacterium", "Rhodococcus", "Tsukamurella", "Abiotrophia", "Bacillus", "Brevibacillus", "Brochothrix", "Facklamia", "Paenibacillus", "Streptococcus", "Chryseobacterium", "Dyadobacter", "Flavobacterium ", "Hydrotalea", "Niastella", "Olivibacter", "Pedobacter", "Wautersiella", "Thermus", "Deinococcus")
+
+contaminant_table <- as.tibble(rownames(otu_table(ps)[which(contamdf.prevCustom$contaminant)]))
+
+if (table_type == "megan" & tax_level == "genus") {
+  contaminant_table %>% 
+  mutate(In_Salter = value %in% salter_taxa) %>%
+  group_by(In_Salter) %>%
+  summarise(In_Salter_Count = n())
+}
+
+```
+
+Overall stats:
+
+```{r}
+nrow(otu_table)
+nrow(contaminant_table)
+
+
+if (table_type == "megan" & tax_level == "genus") {
+contaminant_table %>% 
+  mutate(In_Salter = value %in% salter_taxa) %>%
+  group_by(In_Salter) %>%
+  summarise(In_Salter_Count = n()) %>%
+  filter(In_Salter == T) %>% 
+  pull(In_Salter_Count)
+}
+
+```
+
+## Combined
+
+### Threshold Selection
+
+We can also utilise the the same selection system above for prevelance but
+also to the combined method
+
+```{r}
+
+result_comb <- tibble(`threshold` = NA, 
+                      `no_oral` = NA, 
+                      `total_oralContaminant_sampleAlignments` = NA, 
+                      `proportion_all_taxa_contaminants` = NA)
+
+decontam_result <- isContaminant(ps, 
+                method = "combined", 
+                neg = "is.neg", 
+                conc = "SumLibraryConcentration_copies_ul",
+                threshold = 0.1) %>% as_tibble(rownames = "Taxon")
+
+for (i in seq(0.1, 1, 0.01)) {
+  increased_result <- decontam_result %>%
+    mutate(contaminant = p < i)
+  
+    cont_proportion_all <- increased_result %>% 
+      group_by(contaminant) %>%
+      summarise(Taxa_Count = n()) %>%
+      mutate(Total_Taxa = sum(Taxa_Count), Proportion_Total = Taxa_Count / Total_Taxa) %>%
+      filter(contaminant) %>%
+      pull(Proportion_Total)
+  
+  
+  false_positive_oral <- increased_result %>%
+    filter(contaminant == TRUE) %>%
+    left_join(homd_taxon) %>%
+    replace_na(list("homd_taxon" = FALSE))
+  
+  false_positive_oral_count <- false_positive_oral %>%
+    group_by(homd_taxon) %>%
+    summarise(Number_Oral_Taxa = n()) %>%
+    filter(homd_taxon == "TRUE") %>%
+    pull(Number_Oral_Taxa)
+  
+  if (length(false_positive_oral_count) > 0) {
+    false_positive_oral_count <- false_positive_oral_count
+  } else {
+   false_positive_oral_count <- 0
+  }
+  
+  
+  total_oralContaminant_sampleAlignments <- otu_table %>% 
+    filter(Clade %in% false_positive_oral$Taxon) %>%
+    gather(Sample, Value, 2:ncol(.)) %>% 
+    left_join(metadata, by = c("Sample" = "#SampleID")) %>%
+    filter(Sample_or_Control == "Sample") %>%
+    summarise(total_oralContaminant_sampleAlignments = sum(Value)) %>%
+    pull(total_oralContaminant_sampleAlignments)
+  
+  result_comb <- bind_rows(result_comb, list("threshold" = i, 
+                                         "no_oral" = false_positive_oral_count, 
+                                         "total_oralContaminant_sampleAlignments" = total_oralContaminant_sampleAlignments,
+                                         "proportion_all_taxa_contaminants" = cont_proportion_all)
+                           )
+  
+}
+```
+
+And plot
+
+```{r}
+ggplot(result_comb, aes(threshold, no_oral, fill = total_oralContaminant_sampleAlignments / otu_table_totalSampleAlignments )) +
+  geom_bar(stat = "identity") + 
+  scale_fill_distiller(palette = "YlOrRd", limits = c(0,1), breaks = seq(0, 1, 0.2)) +
+  theme_minimal(base_size = 7, base_family = "Roboto")
+
+ggplot(result_comb, aes(threshold, proportion_all_taxa_contaminants, fill = total_oralContaminant_sampleAlignments / otu_table_totalSampleAlignments )) +
+  geom_bar(stat = "identity") + 
+  scale_fill_distiller(palette = "YlOrRd", limits = c(0,1), breaks = seq(0, 1, 0.2)) +
+  theme_minimal(base_size = 7, base_family = "Roboto")
+```
+
+### Manual Check
+
+To manually check
+
+```{r}
+prob_thres_comb_man = 0.9
+
+## all 
+comb_result_man_all <- isContaminant(ps, 
+                method = "combined", 
+                neg = "is.neg", 
+                threshold = prob_thres_comb_man,
+                conc = "SumLibraryConcentration_copies_ul") %>% 
+    as_tibble(rownames = "Taxon") %>%
+    filter(contaminant == TRUE) %>%
+  arrange(Taxon) %>%
+  print()
+
+## oral only
+comb_result_man_oral <- isContaminant(ps, 
+                method = "combined", 
+                neg = "is.neg", 
+                threshold = prob_thres_comb_man,
+                conc = "SumLibraryConcentration_copies_ul") %>% 
+
+    as_tibble(rownames = "Taxon") %>%
+    filter(contaminant == TRUE) %>%
+    left_join(homd_taxon) %>%
+    filter(!is.na(homd_taxon)) %>%
+  arrange(Taxon) %>%
+  print()
+```
+
+### Final Contaminant Table
+
+```{r}
+final_prob_threshold <- 0.90
+final_method <- "combined"
+```
+
+```{r}
+contamdf.final <- isContaminant(ps, 
+                                method = paste(final_method), 
+                                neg = "is.neg", 
+                                threshold = final_prob_threshold,
+                                conc = "SumLibraryConcentration_copies_ul")
+
+table(contamdf.final$contaminant)
+```
+
+
+
+
+## Conclusion
+
+We can select the output of the combined method as Taxa to remove.
+
+The final values were as follows
+
+Program    | Database | Tax Level | Method | Final Value | Comments                                                                      |
+-----------|----------|-----------|--------|-------------|-------------------------------------------------------------------------------|
+MALT       | nt       | genus     | comb   |  0.99       | 0.99 to remove have Mycobacterium                                             |
+MALT       | nt       | species   | comb   |  0.99       |                                                                               |
+MALT       | refseq   | genus     | comb   |  0.99       |                                                                               |
+MALT       | refseq   | species   | comb   |  0.99       |                                                                               |
+MetaPhlAn2 | default  | genus     | comb   |  0.99       | Nothing likely true oral removed, Mycobacterium has score                     |
+MetaPhlAn2 | default  | species   | comb   |  0.90       | Higher than this start picking up _S. salivarius_ and _S. sanguinis_          |
+
+
+```{r eval = T}
+write_tsv(as.tibble(sort(rownames(otu_table(ps)[which(contamdf.final$contaminant)]))),
+          paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_", table_type, "_", db, "_", tax_level,"_", final_method, "_", final_prob_threshold, "_", format(Sys.time(), "%y%m%d"),".tsv", sep = ""))
+```
+

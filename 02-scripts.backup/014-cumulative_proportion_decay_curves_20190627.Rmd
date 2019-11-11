@@ -1,0 +1,616 @@
+---
+title: "evolution Project - Cumulative Frequency Decay Curves"
+output: html_notebook
+---
+
+# Preparation
+
+## Data Loading
+
+Load libraries
+
+```{r}
+library(tidyverse)
+library(patchwork)
+```
+
+Load data
+
+> NOTE: Refseq won't perform as well because it uses a more recent database 
+which the isolation source DB was not built against
+
+```{r}
+
+## Database: nt or refseq
+db <- "refseq" ## 
+
+if (db == "nt") {
+  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_all_summarised_nt.txt")
+} else if (db == "refseq") {
+  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
+}
+
+
+metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
+
+database <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/07-master_oralgenome_isolationsource_database_20180510.tsv")
+
+```
+
+
+## Data Clean Up
+
+Data cleanup and add isolation source database to OTU table
+
+```{r}
+## Remove MEGAN otu table cruft
+colnames(otu_table) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam", "", colnames(otu_table)) 
+colnames(otu_table) <- gsub("_S.*_L.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(otu_table))
+colnames(otu_table) <- gsub("_S0_L001_R1_001.fastq.extractunmapped.bam", "", colnames(otu_table))
+colnames(otu_table) <- gsub("_S0_L000_R1_000.fastq.merged", "", colnames(otu_table))
+colnames(otu_table) <- gsub("_S0_L003_R1_001.sorted.bam.unmapped", "", colnames(otu_table))
+colnames(otu_table)[1] <- "species"
+
+## Add database to otu table
+combined_data <- left_join(otu_table, database) %>%
+  select(species, isolation_source, 2:(ncol(otu_table)))
+
+## Mutate Isolation Source 'NA's to Unknown
+combined_data <- combined_data %>%
+  rowwise() %>%
+  mutate(isolation_source = if_else(is.na(isolation_source), 
+                                    "unknown", 
+                                    isolation_source))
+
+
+
+## Convert to long
+combined_data <- gather(combined_data, sample, count, 3:ncol(combined_data))
+
+combined_data
+```
+
+
+# Calculations
+
+## Cumulative Frequency Calculation
+
+Now we reorder the data and do abundance calculuations per sample
+
+```{r}
+## Arrange firstly by sample then the count. Add boolean whether iso source is 
+## oral
+combined_data <- combined_data %>%
+  arrange(sample, desc(count)) %>%
+  mutate(is_oral = if_else(isolation_source == "oral", 1, 0)) %>%
+  mutate(is_oral = if_else(count == 0, 0, is_oral))
+
+## Add the abundance rank position for each species per sample
+combined_data <- combined_data %>%
+  group_by(sample) %>%
+  mutate(abundance_rank = row_number())
+
+## Do cumulative sum
+combined_data <- combined_data %>%
+  group_by(sample) %>%
+  mutate(cumulative_sum_oral = cumsum(is_oral))
+
+## Do fractions of species rank over cumulative sum of oral taxa
+combined_data <- combined_data %>%
+  group_by(sample) %>%
+  mutate(fraction_oral = (cumulative_sum_oral / abundance_rank) * 100)
+```
+
+Remove taxa when not detected in a sample
+
+```{r}
+combined_data <- filter(combined_data, count != 0)
+```
+
+We can add our metadata for improved plotting
+
+```{r}
+combined_data_meta <- left_join(combined_data, metadata, 
+                                by = c(sample = "#SampleID"))
+
+```
+
+And reorder the groups
+
+```{r}
+combined_data_meta$Env <- factor(combined_data_meta$Env,
+                                 levels = c("subPlaque",
+                                 "supPlaque",
+                                 "urbanGut",
+                                 "ruralGut",
+                                 "skin",
+                                 "EnvironmentalControl",
+                                 "sediment",
+                                 "Howler_Monkey",
+                                 "Gorilla_1",
+                                 "Gorilla_2",
+                                 "Gorilla_3",
+                                 "Chimp_1",
+                                 "Chimp_2",
+                                 "Chimp_3",
+                                 "Chimp_4",
+                                 "Neanderthal",
+                                 "PreagriculturalHuman_1",
+                                 "PreagriculturalHuman_2",
+                                 "PreantibioticHuman_1",
+                                 "PreantibioticHuman_2",
+                                 "ModernDayHuman_1",
+                                 "ModernDayHuman_2",
+                                 "ExtractionControl",
+                                 "LibraryControl"
+                                 )
+                                )
+
+```
+
+# Plotting
+
+Plotting function
+
+```{r}
+## define colours by Common_Host
+common_colours <- c(Alouatta = "#F7756C", Gorilla = "#A2A500", Pan = "#00BF7D", 
+                    `Homo (Neanderthal)` = "#E76BF2", 
+                    `Homo (Modern Human)` = "#E76BF2", 
+                    ExtractionControl = "#6a3d9a", LibraryControl = "#ff7f00", 
+                    Plaque = "grey", Gut = "grey", Skin = "grey", 
+                    EnvironmentalControl = "grey",
+                    Sediment = "grey")
+
+common_shapes <- c(Alouatta = 1, Gorilla = 2, Pan = 3, 
+                   `Homo (Neanderthal)` = 23, `Homo (Modern Human)` = 5, 
+                   Control = 4)
+
+
+cfdp_plot <- function(x, title, colour_col, limit){
+  colour_col <- enquo(colour_col)
+
+  if (is.na(!! limit)) {
+    dat <- x
+    limit <- "all"
+  } else {
+    dat <- x %>% filter(abundance_rank <= !! limit)
+  }
+  
+  out_plot <- ggplot(dat, aes(abundance_rank, 
+                fraction_oral,
+                group = sample, 
+                colour = !! colour_col,
+                label = sample)) +
+  geom_line(alpha = 0.7) +
+  ggtitle(title, subtitle = paste0("Limited to ", limit," taxa")) +
+  xlab("Ordered Taxa by Abundance (Most to Least)") +
+  ylab("Proportion of Oral Taxa at Abundance Rank") +
+  labs(colour = "Passed Filter?") +
+  theme_minimal(base_size = 7) +
+  theme(text = element_text(family = "Roboto"),
+        strip.text = element_text(size = 7)) +
+  facet_wrap(~ Env, ncol = 7)
+  
+  if (x %>% pull(!! colour_col) %>% class == "logical") {
+    out_plot
+  } else if (x %>% pull(!! colour_col) %>% class == "numeric") {
+    out_plot + scale_colour_distiller(palette = "Spectral")
+  }
+}
+```
+
+
+
+
+# Cumulative Decay Threshold Experimentation
+
+Using sourcetracker to define a preservation threshold seems quite weak.
+When we compare with the shotgun data, we see that certain samples that have 
+quite a few oral taxa are excluded (e.g. one blue line in Chimp_3 when 
+colouring lines by more_env). Or certain samples are included despite looking
+no better than skin or blanks (e.g. the lower PreagriculturalHuman_2 line).
+
+One observation is that other than a single blank, no non-plaque/calculus 
+sample goes above 50% proportion of oral taxa (y axis). Thus, this could be
+set as a 'hard' threshold of a well preserved sample, where anything above this
+threshold can be considered 'well preserved'.
+
+However, there are some caveats to this. There are some samples where the 
+first couple taxa are oral, but then the rest of the taxa are not. This
+suggests also that these samples are not well preserved (in the sense that
+there exists very few [abundant] oral taxa in that sample). Clear examples of 
+this can be seen in Preagricultural_1 and 2.
+
+## Percent Burn in
+
+This rapid decay means we should add another parameter which is a 'burn-in' 
+like threshold, where we only consider whether a sample has a > 50% oral 
+taxon _after_ ignoring the first X number of most abundant taxa.
+
+However, what to set this threshold to is unclear currently. Therefore we 
+will experiment with various burn-in thresholds. We can either set hard
+values, or maybe do something BEAST like in the sense of setting the threshold 
+of the burn-in to when the variation of oral proportion between a previous 
+rank and the current rank is less than the threshold (or half of this?).
+
+### Calculations
+
+To set a hard percentage burn in, firstly we need to calculate the overall 
+number of taxa per sample, and lets try at 1, 2, 5 and 10%.
+
+```{r}
+n_taxa_in_samples <- combined_data %>% 
+  summarise(No_Taxon = n()) %>%
+  mutate(one_pc = No_Taxon * 0.01,
+         two_pc = No_Taxon * 0.02,
+         five_pc = No_Taxon * 0.05,
+         ten_pc =  No_Taxon * 0.1)
+
+```
+
+Now lets bind this to our main cumulative data, and calculate if a sample is 
+goes above 50% after each burn in.
+
+```{r}
+if (db == "nt") {
+  proportion_threshold <- 50
+} else if (db == "refseq") {
+  proportion_threshold <- 65
+}
+
+## Mutate_if?
+combined_data_meta_extended <- combined_data_meta %>% 
+  left_join(n_taxa_in_samples) %>%
+  mutate(one_pc_pos_pass = abundance_rank > one_pc & fraction_oral > 50,
+         two_pc_pos_pass = abundance_rank > two_pc & fraction_oral > 50,
+         five_pc_pos_pass = abundance_rank > five_pc & fraction_oral > 50,
+         ten_pc_pos_pass = abundance_rank > ten_pc & fraction_oral > 50)
+
+combined_data_meta_extended_summary <- combined_data_meta_extended %>% 
+  summarise_at(vars(contains("_pc_pos_pass")), funs(any(.))) %>%
+  rename_at(vars(contains("_pc_pos_pass")), function(x) gsub("_pos", "", x))
+
+combined_data_meta_extended <- left_join(combined_data_meta_extended, 
+                                         combined_data_meta_extended_summary)
+```
+
+### Plotting 
+
+Now we can plot each burn in
+
+```{r}
+cfdp_plot(combined_data_meta_extended, 
+          paste("Filtering by oral fraction above", proportion_threshold, "after 'burn-in' of 1% of taxa"), 
+          one_pc_pass, 
+          250) %>% 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter1pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+        device = cairo_pdf, 
+        width = 7, 
+        height = 5, 
+        units = "in", 
+        dpi = 600)
+
+
+cfdp_plot(combined_data_meta_extended, 
+          paste("Filtering by oral fraction above", proportion_threshold, "after 'burn-in' of 2% of taxa"), 
+          two_pc_pass, 
+          250) %>% 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter2pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+        device = cairo_pdf, 
+        width = 7, 
+        height = 5, 
+        units = "in", 
+        dpi = 600)
+
+cfdp_plot(combined_data_meta_extended, 
+          paste("Filtering by oral fraction above", proportion_threshold, "after 'burn-in' of 5% of taxa"), 
+          five_pc_pass, 
+          250) %>% 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter5pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+        device = cairo_pdf, 
+        width = 7, 
+        height = 5, 
+        units = "in", 
+        dpi = 600)
+
+
+cfdp_plot(combined_data_meta_extended, 
+          paste("Filtering by oral fraction above", proportion_threshold, "after 'burn-in' of 10% of taxa"), 
+          ten_pc_pass, 
+          250) %>% 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter10pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+        device = cairo_pdf, 
+        width = 7, 
+        height = 5, 
+        units = "in", 
+        dpi = 600)
+
+```
+
+### Sample Discard List
+
+How many individuals per population do we have at the most extreme filtering
+
+```{r}
+combined_data_meta_extended %>% 
+  filter(five_pc_pass == T) %>%
+  select(sample, Env) %>%
+  distinct() %>%
+  group_by(Env) %>% 
+  summarise(n())
+```
+
+Function to save these as alternate filtering lists
+
+```{r}
+## Not in function because current dplyr has bug for non-standard evaluation:
+## https://community.rstudio.com/t/getting-argument-e2-is-missing-with-no-default-error-when-using-tidyeval-within-dplyr-summarize-at/25954
+combined_data_meta_extended %>% 
+  select(sample, one_pc_pass) %>% 
+  distinct() %>% 
+  mutate(more_env = if_else(one_pc_pass, FALSE, TRUE)) %>% 
+  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+
+
+combined_data_meta_extended %>% 
+  select(sample, two_pc_pass) %>% 
+  distinct() %>% 
+  mutate(more_env = if_else(two_pc_pass, FALSE, TRUE)) %>% 
+  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+
+
+combined_data_meta_extended %>% 
+  select(sample, five_pc_pass) %>% 
+  distinct() %>% 
+  mutate(more_env = if_else(five_pc_pass, FALSE, TRUE)) %>% 
+  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+
+
+combined_data_meta_extended %>% 
+  select(sample, ten_pc_pass) %>% 
+  distinct() %>% 
+  mutate(more_env = if_else(ten_pc_pass, FALSE, TRUE)) %>% 
+  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+
+
+```
+
+
+## Fluctuation Burn In
+
+In the above example, we have provided a 'hard' percentage threshold of the 
+number of taxa going down the abundance rank we should ignore, before checking
+to see if the proportion goes above 50%.
+
+However, this isn't very 'automated', and maybe thresholds need to be adapted
+per sample because each will have unique characterisics. For example, maybe
+one sample _is_ well preserved, but the calculus used was in contact with the 
+museum storage box, and had some overgrowth - which might 'fight' for being the 
+must abundant taxa over the first few. Thus the unique conditions means that 
+the optimal burn-in we want to set might vary from sample to sample.
+
+Therefore, again taking 'inspiration' from BEAST MCMC chains - maybe we can 
+start recording whether oral taxa are present above the 50% threshold, when
+large flip-flopping fluctiation of oral fraction values in the first few 
+taxa 'settles' down (i.e. stabilisation of the chain).
+
+>But stopping flip-flopping including results somewhat negates 'weighting' of 
+most abundant taxa being oral or not? Thus almost looking at like the 'average' 
+a amount of oral taxa.
+
+### Calculations
+
+Lets first see if we can measure the amount of fluctuation there normally is
+between the fraction oral at a rank and the previous one.
+
+```{r}
+combined_data_meta_extended <- combined_data_meta_extended %>%
+  mutate(fraction_oral_fluctuation = lag(fraction_oral, 
+                                       1, 
+                                       default = 0) - fraction_oral)
+  
+fraction_fluctuation_summary <- combined_data_meta_extended %>%
+    select(fraction_oral_fluctuation) %>%
+  group_by(sample) %>%
+  summarise(mean(fraction_oral_fluctuation),
+          sd(fraction_oral_fluctuation),
+          min(fraction_oral_fluctuation),
+          max(fraction_oral_fluctuation)) %>%
+  print()
+```
+
+For example, lets consider than when the variation of fraction_oral drops below 
+that of the standard deviation of overall variation, we start recording. That
+way, if a sample is indeed just highly variable (so actually is very mixed 
+of endogenous and exogenous taxa), it'll take a long time to stabilise for us
+to start recording whether it goes above our 50% fraction_oral threshold.
+
+```{r}
+fraction_fluctuation_summary <- fraction_fluctuation_summary %>%
+  mutate(upper_fluc_limit = `mean(fraction_oral_fluctuation)` + `sd(fraction_oral_fluctuation)`,
+         lower_fluc_limit = `mean(fraction_oral_fluctuation)` - `sd(fraction_oral_fluctuation)`) %>%
+  select(sample, contains("_fluc_")) %>%
+  print()
+```
+
+
+Now bind this together with our main data and calculate the point
+
+```{r}
+combined_data_meta_extended <- left_join(combined_data_meta_extended, 
+                                         fraction_fluctuation_summary) %>%
+  mutate(exceeds_sd_variation = if_else(fraction_oral_fluctuation < upper_fluc_limit & 
+                                          fraction_oral_fluctuation > lower_fluc_limit, 
+                                        F, 
+                                        T))
+```
+
+To find the point from which fluctiation doesn't exceed the standard deviation
+of the overall variation of a sample
+
+```{r}
+start_point <- combined_data_meta_extended %>% 
+  filter(exceeds_sd_variation) %>% 
+  slice(n()) %>%
+  select(sample, abundance_rank) %>%
+  rename(withinfluctuationvariation_pos = abundance_rank)
+```
+
+Combine _this_ with our main table, and do our conditions if after this point
+whether the fraction_oral goes above 50 (like out one_pc_pos_pass) as before.
+
+```{r}
+combined_data_meta_extended <- left_join(combined_data_meta_extended, start_point) %>%
+  mutate(withinfluctuationvariation_pos_pass = abundance_rank > withinfluctuationvariation_pos + 1 & fraction_oral > proportion_threshold)
+```
+
+Now to summarise this to a per sample i.e. does the sample _ever_ go above 50%
+_after_ the within variation start point.
+
+
+```{r}
+
+combined_data_meta_extended_summary2 <- combined_data_meta_extended %>% 
+  summarise(withinfluctuationvariation_pass = any(withinfluctuationvariation_pos_pass))
+
+
+combined_data_meta_extended <- left_join(combined_data_meta_extended, 
+                                         combined_data_meta_extended_summary2)
+
+```
+
+
+### Plotting
+
+This method results in
+
+```{r}
+cfdp_plot(combined_data_meta_extended, 
+          "Filtering by oral fraction above 50 after 'burn-in' of 10% of taxa", 
+            withinfluctuationvariation_pass,
+          250) %>% 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninwithinfluctuationSDvariation_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+        device = cairo_pdf, 
+        width = 7, 
+        height = 5, 
+        units = "in", 
+        dpi = 600)
+
+```
+
+
+Now lets compare all the filtering methods
+
+```{r}
+cfdp_plot(combined_data_meta_extended, 
+          "Filtering by oral fraction above 50 after 'burn-in' of 1% of taxa", 
+           one_pc_pass, 
+          250) +
+cfdp_plot(combined_data_meta_extended, 
+          "Filtering by oral fraction above 50 after 'burn-in' of 2% of taxa", 
+          two_pc_pass, 
+          250) +
+cfdp_plot(combined_data_meta_extended, 
+          "Filtering by oral fraction above 50 after 'burn-in' of 5% of taxa", 
+          five_pc_pass, 
+          250) +
+cfdp_plot(combined_data_meta_extended, 
+          "Filtering by oral fraction above 50 after 'burn-in' of 10% of taxa", 
+          ten_pc_pass, 
+          250) +
+cfdp_plot(combined_data_meta_extended, 
+          "Filtering by oral fraction above 50 after stabilisation of fraction fluctuations", 
+            withinfluctuationvariation_pass,
+          250)
+  
+
+```
+
+Observations: 
+  * Sourcetracker 'more_plaque' threshold: low quality samples included (e.g. PreAgr_1) and good samples discarded (Chimp_3)
+  * Cumulative_frequency 1%c burn in: blank retained as well preserved, possibly couple of sharp decaying samples retained (e.g. Gorilla_3)
+  * Cumulative_frequency 2% burn in: blank retained as well preserved, possibly couple of sharp decaying samples retained (e.g. Gorilla_3)
+  * Cumulative_frequency 5% burn in: blank retained as well preserved, possibly couple of sharp decaying samples retained (e.g. Gorilla_3)
+
+Lets take a closer look at 10% burn-in vs withinfluctuationvariation burn-in threshold as
+they seem to be relatively similar
+
+
+```{r}
+cfdp_plot(combined_data_meta_extended, 
+          "Filtering by oral fraction above 50 after 'burn-in' of 10% of taxa", 
+          ten_pc_pass, 
+          250) +
+cfdp_plot(combined_data_meta_extended, 
+          "Filtering by oral fraction above 50 after stabilisation of fraction fluctuations", 
+            withinfluctuationvariation_pass,
+          250)
+```
+
+Observations 
+ * Con 10%: rejects a  Gorilla_2 sample because a bit fast, but appears to fall just below that threshold and plataeus in tail about same as preserved samples; drops chimp 3 whihc look pretty much same as all other chimp 3
+ * Pro 10%: keeps out a few borderly Gorilla 1 which only just above 50; removes borderline PreAg_2 but tail follows good samples; removes unusually low preAntibio_1 which has a very long tail (this is retained in fluctuation)
+* PreAntiobitic Human 1 is probaably lost in 10pc becau
+ 
+### Sample Discard List
+
+To save this list
+ 
+```{r}
+
+combined_data_meta_extended %>% 
+  select(sample, withinfluctuationvariation_pass) %>% 
+  distinct() %>% 
+  mutate(more_env = if_else(withinfluctuationvariation_pass, FALSE, TRUE)) %>% 
+  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+
+```
+ 
+
+# Interactive Exploration
+
+```{r eval = FALSE}
+library(plotly)
+
+
+interactive_cfdp_plot <- cfdp_plot <- function(x, title, limit){
+
+  if (is.na(!! limit)) {
+    dat <- x
+    limit <- "all"
+  } else {
+    dat <- x %>% filter(abundance_rank <= !! limit)
+  }
+  
+  out_plot <- ggplot(dat, aes(abundance_rank, 
+                fraction_oral,
+                group = sample, 
+                label = sample)) +
+  geom_line(alpha = 0.7) +
+  ggtitle(title, subtitle = paste0("Limited to ", limit," taxa")) +
+  xlab("Ordered Taxa by Abundance (Most to Least)") +
+  ylab("Proportion of Oral Taxa at Abundance Rank") +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  labs(colour = "Passed Filter?") +
+  theme_minimal(base_size = 7) +
+  theme(text = element_text(family = "Roboto"),
+        strip.text = element_text(size = 7)) +
+  facet_wrap(~ Env, ncol = 7)
+
+
+    out_plot
+
+}
+
+temp <- combined_data_meta_extended %>% 
+  filter(sample == "CDC011.A0101") %>%
+  ungroup(sample)
+
+interactive_cfdp_plot(temp, 
+          "hellon", 
+          NA) %>%
+  ggplotly()
+
+```
+ 

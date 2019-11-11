@@ -1,0 +1,332 @@
+# Organism Isolation Source Database using NCBI databases and eutils
+
+Purpose of this walkthrough is to make a database of names of bacteria and 
+whether they have been isolated from the oral cavity or not. With this table
+we can then attach in R a MEGAN exported otu table to this database, and then 
+quickly visualise how many oral taxa are in the most abundant hits of a sample.
+
+We will work in this directory
+
+```{bash}
+cd ~/Downloads/Genome_Isolation_source_Experiment
+```
+
+First, extract your species list using MEGAN by exporting the file as a CSV
+file, lets call this 'malt_list.txt'
+
+Lets check what this looks like using `head`
+
+```{bash eval=F}
+head 01-malt_list.txt
+```
+
+```
+Datasets	Sum
+Ottowia sp. oral taxon 894	43330097
+uncultured bacterium	10006587
+Neisseria elongata subsp. glycolytica ATCC 29315	9280423
+Leptotrichia sp. oral taxon 212	5467593
+Desulfomicrobium orale DSM 12838	4639298
+Aggregatibacter aphrophilus NJ8700	2838384
+Alteromonas australica	2551982
+Campylobacter gracilis	2333772
+Capnocytophaga sp. oral taxon 323	1635013
+```
+
+In this case we don't want the 'Sum' column. Lets get rid of this with `cut`
+and the tab delimiter.
+
+```{bash eval=F}
+cat 01-malt_list.txt | cut -d$'\t' -f1
+```
+
+Now we don't want the first line with the headers. We can get rid of this with
+`tail` (and here we use head again to see the beginning of the output)
+
+```{bash eval=F}
+cat 01-malt_list.txt | cut -d$'\t' -f1 | tail -n +2 >> 02-malt_list_cleaned.txt
+
+head 02-malt_list_cleaned.txt
+```
+
+```
+Ottowia sp. oral taxon 894
+uncultured bacterium
+Neisseria elongata subsp. glycolytica ATCC 29315
+Leptotrichia sp. oral taxon 212
+Desulfomicrobium orale DSM 12838
+Aggregatibacter aphrophilus NJ8700
+Alteromonas australica
+Campylobacter gracilis
+Capnocytophaga sp. oral taxon 323
+Capnocytophaga ochracea DSM 7271
+```
+
+Much better! So we now have the species we want to find the isolation source
+for, but how can we get _that_ bit of information?
+
+Here we can use NCBI's eutils toolset to search from the command line for the
+information of interest.
+
+Lets do a brief example using a single species. First we need to give the
+database we want to search, and the target species.
+
+```{bash}
+/home/fellows/edirect/esearch -db nuccore -query "Ottowia sp. oral taxon 894"
+```
+```
+<ENTREZ_DIRECT>
+  <Db>nuccore</Db>
+  <WebEnv>NCID_1_380087691_130.14.18.34_9001_1506094336_594682084_0MetA0_S_MegaStore_F_1</WebEnv>
+  <QueryKey>1</QueryKey>
+  <Count>2</Count>
+  <Step>1</Step>
+</ENTREZ_DIRECT>
+```
+
+Good, so we have found a hit. Next we want extract the actual metadata stored
+in the nucleotide database. We can then do that with `efetch` (we get a lot of
+info here so lets also `head` this in this notebook to save screen space).
+
+```{bash eval=F}
+esearch -db nuccore -query "Ottowia sp. oral taxon 894" | efetch -format docsum | head
+```
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE DocumentSummarySet PUBLIC "-//NLM//DTD esummary nuccore 20170913//EN" >"https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20170913/esummary_nuccore.dtd">
+
+<DocumentSummarySet status="OK">
+<DocumentSummary><Id>914773913</Id>
+	<Caption>NZ_CP012073</Caption>
+	<Title>Ottowia sp. oral taxon 894 strain W10237, complete genome</Title>
+	<Extra>gi|914773913|ref|NZ_CP012073.1|</Extra>
+	<Gi>914773913</Gi>
+	<CreateDate>2015/08/12</CreateDate>
+```
+
+We start seeing more useful information, including the NCBI IDs and
+submission date.
+
+So wow do we get the isolation source? We can pull sections of the metadata
+using `xtract`. The specific information we want is stored in two flags
+SubType and SubName
+
+```{bash eval=F}
+esearch -db nuccore -query "Ottowia sp. oral taxon 894" | efetch -format \
+docsum | xtract -pattern DocumentSummary -element SubType -element SubName
+```
+```
+strain|host|country|isolation_source|lat_lon|collection_date	W10237|Homo sapiens|United Kingdom: London|curette|51.51 N 0.13 W|21-Sep-2011
+>strain|host|country|isolation_source|lat_lon|collection_date	W10237|Homo sapiens|United Kingdom: London|curette|51.51 N 0.13 W|21-Sep-2011
+```
+
+Hmm, 'curette', that isn't really informative. Well, we will go with it for the
+moment.
+
+Lets now pull all the information for all the species and speed it up using
+parallel.
+
+```{bash eval=F}
+cat 02-malt_list_cleaned.txt | parallel -j 4 "esearch -db nuccore -query {} | efetch -format docsum | xtract -pattern DocumentSummary -element Organism -element SubType -element SubName >> 03-source_results.tsv"
+```
+
+This has made us a large text file of 22 MB, lets reduce this a bit by
+gzipping
+
+```{bash eval=F}
+gzip 03-source_results.tsv
+```
+
+Now we have a 561k file. Much better. We can now manually explore the contents
+with
+
+```{bash eval=F}
+zcat 03-source_results.tsv.gz | less
+```
+Clearly not all uploaded sequences have an isolation source. Lets
+extract all those that do have that information using `grep`
+
+```{bash eval=F}
+zcat 03-source_results.txt.gz | grep 'isolation_source' >> \
+04-source_results_isolation_source_only.txt && \
+gzip 04-source_results_isolation_source_only.tsv
+```
+
+Better. So now we need to parse this so we can filter out the current unuseful 
+information. The two element keys that could be useful is 'host' and 
+'isolation_source'. Thus we need to firstly split each row into three (genome 
+name, element keys, and element values), find the position of those two in the 
+element keys section, and pull the same positions out of the element values.
+
+Now I want to switch to R, as it is easier to deal with tabular data (at least 
+for me).
+
+```{r eval=F}
+setwd("/home/fellows/Downloads/Genome_Isolation_source_Experiment")
+library(tidyverse)
+
+## Prep
+raw_data <- read_tsv("04-source_results_isolation_source_only.tsv.gz")
+colnames(raw_data) <- c('species', 'keys', 'values')
+
+## Convert NCBI strings to vectors in a cell
+mod_data <- raw_data %>%
+  mutate(keys_vec = str_split(raw_data$keys, '\\|')) %>%
+  mutate(values_vec = str_split(raw_data$values, '\\|'))
+
+## Add new column for key position of 'isolation_source'
+mod_data$position <- NA
+
+## Find position in key vector that matches 'isolation_source'
+for (i in 1:nrow(mod_data)){
+  mod_data$position[i] <- match("isolation_source", unlist(mod_data$keys_vec[i]))
+}
+
+## Pull from the value vector the isolation source bsaed on the character 
+## position extracted from the key vectors
+mod_data$isolation_source <- NA
+
+for (i in 1:nrow(mod_data)){
+  iso_pos <- mod_data$position[i]
+  mod_data$isolation_source[i] <- unlist(mod_data$values_vec[i])[iso_pos]
+}
+
+## Get the list of unique sources 
+list_of_sources <- unique(sort(mod_data$isolation_source))
+
+
+head(list_of_sources)
+```
+
+We can see that there is a 'very interesting' difference of what an isolation 
+source is. I only want 'oral' or not, so lets try out some various keywords 
+that might be related to the oral cavity.
+
+Note: for the keywords below, I actually exported the list_of_sources.txt and 
+skim read all 2000 lines to see if I could identify any further keywords.
+
+```{r}
+list_of_oral_sources <- c()
+
+## Find everything with 'X' in the isolation_source name, with a few typo
+for(i in grep("oral|mout|plaque|calculus|tartar|saliva|periodont|peridont", 
+              list_of_sources, 
+              ignore.case=TRUE)){
+  list_of_oral_sources <- append(list_of_oral_sources, paste(list_of_sources[i]))
+}
+
+list_of_oral_sources
+
+```
+
+This has a few false positives, in particular the corals, so lets remove any of 
+these.
+
+```{r}
+list_of_oral_sources_cleaned <- c()
+
+for(i in grep("coral|floral", list_of_oral_sources, invert=TRUE, ignore.case=TRUE)){
+  list_of_oral_sources_cleaned <- append(list_of_oral_sources_cleaned, paste(list_of_oral_sources[i]))
+}
+
+list_of_oral_sources_cleaned
+```
+
+Now we have this list, lets now make a database of all taxa from the MALT list,
+but with only those taxa that have an isolation souce as recorded in 
+`list_of_oral_sources_cleaned`
+
+
+```{r}
+my_database <- mod_data %>% select("species", "isolation_source") %>%
+  filter(isolation_source %in% list_of_oral_sources_cleaned)
+
+write_tsv(my_database, "05-ncbi_isolationsource_oral_genomes.tsv")
+```
+
+However! We also have the Human Oral Microbiome database, which we know for 
+sure that we these species have been isolated from the oral cavity. 
+
+We can further download this information from the following link:
+(http://homd.org/index.php?name=GenomeList&link=GenomeList&type=all_oral)[http://homd.org/index.php?name=GenomeList&link=GenomeList&type=all_oral]
+
+and pressing 'Export Entire Table'. We then place this in our working directory 
+and rename to `06-Genomes_Info_Table.xlsx`.
+
+With this data, we want to combine the two tables, and remove any duplicates to
+make sure that they match the NCBI naming system.
+
+```{r}
+## Load new library allowing us to import excel files
+library(readxl)
+
+my_database <- read_tsv("05-ncbi_isolationsource_oral_genomes.tsv")
+homd_raw_data <- read_excel("06-Genomes_Info_Table.xls")
+
+## Remove unimportant information for this process about each genome,
+## generate single string strain name (as currently in multiple columns)
+## then reduce further to just the concatenate strain name and add new column 
+## with oral source
+## Note: I didn't remove the strain/culture collection as this seemed to be 
+## quite inconsistent with the NCBI taxonomy and had lots of funny exceptions
+## that were too difficult to fix (e.g. with sp. oral taxon cell isolate 2)
+
+homd_mod_data <- homd_raw_data %>% 
+  select(Genus, Species) %>%
+  mutate(species = str_c(Genus, 
+                         Species, 
+                         sep=" ")) %>%
+  select(species) %>%
+  mutate(isolation_source = "oral")
+
+homd_mod_data
+
+## Now bind the two togther, remove any duplicates and change all isolation 
+## source to oral
+my_final_database <- bind_rows(my_database, homd_mod_data) %>%
+  distinct() %>%
+  mutate(isolation_source = "oral") %>%
+  arrange(species)
+
+my_final_database
+
+write_tsv(my_final_database, "07-master_oralgenome_isolationsource_database_20171114.tsv")
+```
+
+Now lets try this out! Lets see if we can bind this table with an actual output 
+from MALT/MEGAN.
+
+```{r}
+library(tidyverse)
+library(directlabels)
+## load example MEGAN output
+megan_data <- read_tsv("08-example_malt_output.tsv")
+
+colnames(megan_data)[1] <- "species"
+
+source_database <- read_tsv("07-master_oralgenome_isolationsource_database_20171211.tsv")
+
+## Join the two
+megan_screen_data <- left_join(megan_data, source_database)
+
+## Put the isolation_source column in second position
+megan_screen_data <- megan_screen_data %>% select(species, 
+                                                  isolation_source, 
+                                                  1:(ncol(megan_screen_data)-1))
+
+## Mutate 'NA's to Unknown
+megan_screen_data <- megan_screen_data %>%
+  rowwise() %>%
+  mutate(isolation_source = if_else(is.na(isolation_source), "unknown", isolation_source))
+
+megan_screen_data
+```
+
+The binding worked, but there are still lots of unknowns. Some of these require
+manually curation. If not currently found in oral cavity to the data I'll add 
+'not_oral' to the isolation source.
+
+Note that manual checking also includes updating more recent NCBI naming 
+changes e.g. _Propionibacterium propionicum_ to 
+_Pseudopropionibacterium propionicum_ or adding _Fusobacterium nucleatum_ as 
+the entries in NCBI are all specificsubstrains.

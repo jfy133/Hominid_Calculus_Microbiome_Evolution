@@ -1,0 +1,23 @@
+## SOFTWARE PATHS
+FASTQC=<YOUR_PATH>/tools/fastqc_0.11.4/fastqc
+ADAPTERREMOVALFIXPREFIX=<YOUR_PATH>/tools/adapterremovalfixprefix/0.0.3/bin/AdapterRemovalFixPrefix
+ADAPTERREMOVAL=<YOUR_PATH>/tools/adapterremoval/2.2.0-multiple_input_files/bin/AdapterRemoval
+BWA=<YOUR_PATH>/tools/bwa-0.7.12/bwa
+SAMTOOLS=<YOUR_PATH>/tools/samtools_1.3/bin/samtools
+PICARDTOOLS=<YOUR_PATH>/tools/picardtools/1.140/bin/picard
+DEDUP=<YOUR_PATH>/tools/dedup/0.12.2/bin/dedup
+QUALIMAP=<YOUR_PATH>/tools/qualimap/2.2.1/bin/qualimap
+DAMAGEPROFILER=<YOUR_PATH>/tools/damageprofiler/0.3.8/bin/damageprofiler
+MALT=<YOUR_PATH>/malt/versions/malt040/malt-run
+
+### MALT DB Directory containing all database files
+MALTDB=<YOUR_PATH>/malt/databases/indexed/index040/full-nt_2017-10
+MALTDB2=<YOUR_PATH>/malt/databases/indexed/index040/refseq-bac-arch-homo-2018_11
+
+
+### SILVA DB directory containing the FASTA file and associated bwa indexed files
+#SILVADB=<YOUR_PATH>/malt/databases/raw/full-16sSilva_2017-03
+SILVADB=<YOUR_PATH>/reference_databases/silva/release_128_DNA/silva128_thymines.fasta
+
+### HG19 Reference Sequence FASTA file
+HG19REF=<YOUR_PATH>/Reference_Genomes/Human/HG19/hg19_complete.fasta

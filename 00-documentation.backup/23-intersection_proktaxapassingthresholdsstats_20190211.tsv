@@ -1,0 +1,54 @@
+Software	MALT_DB	Tax_Level	Host_Genus	Host_Common	Env	0.01	0.02	0.05
+MALT	nt	genus	Pan	Pan	Chimp_2	105	74	40
+MALT	nt	genus	Pan	Pan	Chimp_3	171	99	56
+MALT	nt	genus	Pan	Pan	Chimp_4	183	102	62
+MALT	nt	genus	Control	ExtractionBlank	ExtractionBlank	42	30	12
+MALT	nt	genus	Gorilla	Gorilla	Gorilla_1	114	70	37
+MALT	nt	genus	Gorilla	Gorilla	Gorilla_2	105	54	27
+MALT	nt	genus	Gorilla	Gorilla	Gorilla_3	171	114	67
+MALT	nt	genus	Alouatta	Alouatta	Howler_Monkey	173	114	57
+MALT	nt	genus	Control	LibraryBlank	LibraryBlank	20	15	3
+MALT	nt	genus	Homo	Homo (Modern Human)	ModernDayHuman_1	36	26	21
+MALT	nt	genus	Homo	Homo (Modern Human)	ModernDayHuman_2	39	31	20
+MALT	nt	genus	Homo	Homo (Neanderthal)	Neanderthal	112	63	30
+MALT	nt	genus	Homo	Homo (Modern Human)	PreagriculturalHuman_1	50	29	15
+MALT	nt	genus	Homo	Homo (Modern Human)	PreantibioticHuman_1	74	43	25
+MALT	nt	genus	Homo	Homo (Modern Human)	PreantibioticHuman_2	110	67	39
+MALT	nt	species	Pan	Pan	Chimp_2	126	89	57
+MALT	nt	species	Pan	Pan	Chimp_3	176	96	61
+MALT	nt	species	Pan	Pan	Chimp_4	237	132	83
+MALT	nt	species	Control	ExtractionBlank	ExtractionBlank	24	8	1
+MALT	nt	species	Gorilla	Gorilla	Gorilla_1	122	84	45
+MALT	nt	species	Gorilla	Gorilla	Gorilla_2	78	37	18
+MALT	nt	species	Gorilla	Gorilla	Gorilla_3	284	151	85
+MALT	nt	species	Alouatta	Alouatta	Howler_Monkey	216	131	88
+MALT	nt	species	Control	LibraryBlank	LibraryBlank	9	4	NA
+MALT	nt	species	Homo	Homo (Modern Human)	ModernDayHuman_1	77	63	49
+MALT	nt	species	Homo	Homo (Modern Human)	ModernDayHuman_2	76	63	48
+MALT	nt	species	Homo	Homo (Neanderthal)	Neanderthal	92	59	31
+MALT	nt	species	Homo	Homo (Modern Human)	PreagriculturalHuman_1	54	37	22
+MALT	nt	species	Homo	Homo (Modern Human)	PreantibioticHuman_1	73	54	35
+MALT	nt	species	Homo	Homo (Modern Human)	PreantibioticHuman_2	151	110	73
+MALT	refseq	genus	Pan	Pan	Chimp_2	112	64	43
+MALT	refseq	genus	Pan	Pan	Chimp_3	158	97	53
+MALT	refseq	genus	Control	ExtractionBlank	ExtractionBlank	70	44	19
+MALT	refseq	genus	Gorilla	Gorilla	Gorilla_1	93	56	26
+MALT	refseq	genus	Gorilla	Gorilla	Gorilla_2	87	40	23
+MALT	refseq	genus	Gorilla	Gorilla	Gorilla_3	175	120	66
+MALT	refseq	genus	Alouatta	Alouatta	Howler_Monkey	135	83	44
+MALT	refseq	genus	Control	LibraryBlank	LibraryBlank	37	24	11
+MALT	refseq	genus	Homo	Homo (Modern Human)	ModernDayHuman_1	39	35	27
+MALT	refseq	genus	Homo	Homo (Modern Human)	ModernDayHuman_2	49	39	31
+MALT	refseq	genus	Homo	Homo (Modern Human)	PreagriculturalHuman_1	45	34	20
+MALT	refseq	genus	Homo	Homo (Modern Human)	PreantibioticHuman_1	58	41	24
+MALT	refseq	genus	Homo	Homo (Modern Human)	PreantibioticHuman_2	83	60	45
+MALT	refseq	species	Pan	Pan	Chimp_2	161	98	60
+MALT	refseq	species	Control	ExtractionBlank	ExtractionBlank	25	8	4
+MALT	refseq	species	Gorilla	Gorilla	Gorilla_2	66	36	20
+MALT	refseq	species	Alouatta	Alouatta	Howler_Monkey	201	135	67
+MALT	refseq	species	Control	LibraryBlank	LibraryBlank	11	6	3
+MALT	refseq	species	Homo	Homo (Modern Human)	ModernDayHuman_1	111	78	39
+MALT	refseq	species	Homo	Homo (Modern Human)	ModernDayHuman_2	113	82	51
+MALT	refseq	species	Homo	Homo (Modern Human)	PreagriculturalHuman_1	67	37	21
+MALT	refseq	species	Homo	Homo (Modern Human)	PreantibioticHuman_1	85	61	34
+MALT	refseq	species	Homo	Homo (Modern Human)	PreantibioticHuman_2	205	157	107

@@ -1,0 +1,5 @@
+pick_otus:max_accepts    100
+pick_otus:max_rejects    500
+pick_otus:word_length    12
+pick_otus:stepwords    20
+pick_otus:enable_rev_strand_match    True

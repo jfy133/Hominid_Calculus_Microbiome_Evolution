@@ -1,0 +1,9 @@
+Database	Taxonomic_Level	Min_Support	Test	Term	Degrees of Freedom	Sum of Squares	Mean of Squares	Test Statistic	No. Permutations (permutest)	p value
+nt	genus	0.07	permutest	Groups	3	1066682	355561	3.3092	999	0.024
+nt	genus	0.07	permutest	Residuals	85	9132865	107445	NA	NA	NA
+nt	species	0.04	permutest	Groups	3	586810	195603	2.4151	999	0.079
+nt	species	0.04	permutest	Residuals	85	6884242	80991	NA	NA	NA
+refseq	genus	0.07	permutest	Groups	3	1325633	441878	3.0401	999	0.039
+refseq	genus	0.07	permutest	Residuals	73	10610446	145349	NA	NA	NA
+refseq	species	0.04	permutest	Groups	3	538881	179627	1.632	999	0.186
+refseq	species	0.04	permutest	Residuals	73	8034883	110067	NA	NA	NA

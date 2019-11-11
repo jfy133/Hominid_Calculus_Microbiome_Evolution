@@ -1,0 +1,6 @@
+Set	Group	Hex					
+Host_Common	A-Hower	F7756CFF
+Host_Common	B-Gorilla A2A500FF
+Host_Common	C-Chimp 00BF7DFF
+Host_Common	D-Neanderthal 00B0F6FF
+Host_Common	E-Humans E76BF2FF
