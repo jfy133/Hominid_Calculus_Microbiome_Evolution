@@ -1,0 +1,621 @@
+---
+title: "MALT Assignement Results Summary"
+output: html_notebook
+---
+
+# Introduction
+
+This notebook is to generate a variety of summary statistics for the alignment
+of non-human reads to various database with the highthroughput aligner MALT.
+
+# Infrastructure
+
+Load tidyverse for data wrangling and plotting
+
+```{r}
+library(tidyverse)
+library(ggbeeswarm)
+library(scales)
+library(patchwork)
+library(dabestr)
+```
+
+Set project directory (if required!)
+
+```{r}
+proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
+```
+
+Load files to be analysed - fortunately nt stats are already in metadat
+
+```{r}
+metadata <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+
+data_refseq_raw <- read_tsv(paste0(proj_dir, "00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics_refseq_bacarchhomo_gcs_20181122_20190410.tsv"))
+```
+
+We will also load a MEGAN table for nt at domain level to look at 
+bacterial/archaeal/viral vs eukaryotic content.
+
+```{r}
+data_megan_nt_domain <- read_tsv(paste0(proj_dir, "04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190703-ex_absolute_domain_all_summarised_nt.txt"))
+```
+
+
+# Data Wrangling
+
+## Refseq stats
+
+Clean up refseq MALT run statistics
+
+```{r}
+strings_to_remove <- paste("_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6",
+                           "_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6", 
+                           "_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6",
+                           "_S0_L003_R1_001.sorted.bam.unmapped.rma6",
+                           "_S0_L000_R1_000.fastq.merged.rma6",
+                           "_S0_L003_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6",
+                            sep = "|")
+
+data_refseq_clean <- data_refseq_raw %>% mutate(Sample = map(File, 
+                                    ~ gsub(strings_to_remove, 
+                                           "", 
+                                           .x)) %>% 
+                         unlist) %>%
+  select(Sample, everything(), -File)
+
+## During re-contatenation for refseq, accidently performed an incorrect file
+## `rename` so lost extrac/library info from name. We can fix this here:
+
+list_namefixes_A <- c("ABM007", "ABM008", "BIT001", "CDC005", "CDC011", "DJA006", "DJA007", 
+  "EBO008", "EBO009", "FDM001", "GDN001", "IBA001", 
+  "IBA002", "LOB001", "MOA001", "MTK001", "MTM003", "MTM010", "MTM011", 
+  "MTM012", "MTM013", "MTS001", "MTS002", "MTS003", "TAF017", "TAF018", 
+  "WAL001")
+
+list_namefixes_B <- c("ECO002", "ECO004")
+
+data_refseq_clean <- data_refseq_clean %>% mutate(Sample = case_when(Sample %in% list_namefixes_A ~ paste0(Sample, ".A0101"),
+                                                Sample %in% list_namefixes_B ~ paste0(Sample, ".B0101") , 
+                                                TRUE ~ Sample)) %>%
+  rename_all(function(x) paste0("RefSeq_", x)) %>%
+  rename(Sample = RefSeq_Sample)
+
+## Join with metadata, removing an accidently included UDG treated lib blank
+data_refseq_clean <- data_refseq_clean %>% 
+  filter(Sample != "LIB025.A0301") %>% 
+  left_join(metadata, by = c("Sample" = "#SampleID"))
+```
+
+## Domain level stats
+
+Clean up domain level nt table
+
+```{r}
+data_megan_nt_domain_ratios <- data_megan_nt_domain %>% 
+  gather(Sample, Alignments, 2:ncol(.)) %>% 
+  filter(!grepl("LIB025.A0301", Sample)) %>%
+  mutate(Sample = map(Sample, ~ gsub(strings_to_remove %>% gsub(".rma6", "", .), "", .x)) %>% 
+                         unlist) %>%
+  rename(Domain = `#Datasets`) %>%
+  spread(Domain, Alignments) %>% 
+  group_by(Sample) %>%
+  summarise(NonEukaryotic_Total = Archaea + Bacteria + Viruses,
+            Eukaryota = Eukaryota) %>%
+  mutate(Ratio = (NonEukaryotic_Total / Eukaryota)) %>%
+  left_join(metadata, by = c("Sample" = "#SampleID")) %>%
+  print()
+```
+
+## Aesthetics
+
+Set plotting aesthetics
+
+```{r}
+env_shapes <- c(Howler_Monkey = 8, 
+                 Gorilla_1 = 0, 
+                 Gorilla_2 = 1, 
+                 Gorilla_3 = 2, 
+                 Chimp_1 = 0, 
+                 Chimp_2 = 1, 
+                 Chimp_3 = 2, 
+                 Chimp_4 = 5, 
+                 Neanderthal = 11, 
+                 PreagriculturalHuman_1 = 0, 
+                 PreagriculturalHuman_2 = 12, 
+                 PreantibioticHuman_1 = 1, 
+                 PreantibioticHuman_2 = 10, 
+                 ModernDayHuman_1 = 2, 
+                 ModernDayHuman_2 = 6, 
+                 ExtractionControl = 10, 
+                 LibraryControl = 13,
+                 subPlaque = 4, 
+                 supPlaque = 12,
+                 ruralGut = 7, 
+                 urbanGut = 8, 
+                 skin = 3, 
+                 EnvironmentalControl = 0,
+                 sediment = 14
+)
+
+env_colours <- c(Howler_Monkey = "#1f78b4", 
+                 Gorilla_1 = "#6a3d9a", 
+                 Gorilla_2 = "#6a3d9a", 
+                 Gorilla_3 = "#6a3d9a", 
+                 Chimp_1 = "#33a02c", 
+                 Chimp_2 = "#33a02c", 
+                 Chimp_3 = "#33a02c", 
+                 Chimp_4 = "#33a02c", 
+                 Neanderthal = "#ff7f00", 
+                 PreagriculturalHuman_1 = "#ff7f00", 
+                 PreagriculturalHuman_2 = "#ff7f00", 
+                 PreantibioticHuman_1 = "#ff7f00", 
+                 PreantibioticHuman_2 = "#ff7f00", 
+                 ModernDayHuman_1 = "#ff7f00", 
+                 ModernDayHuman_2 = "#ff7f00", 
+                 ExtractionControl = "#8e8d8d", 
+                 LibraryControl = "#8e8d8d",
+                 subPlaque = "#8e8d8d", 
+                 supPlaque = "#8e8d8d",
+                 ruralGut = "#8e8d8d", 
+                 urbanGut = "#8e8d8d", 
+                 skin = "#8e8d8d", 
+                 EnvironmentalControl = "#8e8d8d",
+                 sediment = "#8e8d8d"
+)
+
+ 
+common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#8e8d8d", 
+          LibraryControl = "#8e8d8d", Plaque = "#8e8d8d", Gut = "#8e8d8d", 
+          Skin = "#8e8d8d", Sediment = "#8e8d8d", EnvironmentalControl = "#8e8d8d")
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 10, LibraryControl = 13, Plaque = 9, 
+          Gut = 4, Skin = 14, Sediment = 7, EnvironmentalControl = 12)
+```
+
+Set order of groups
+
+```{r}
+metadata <- mutate(metadata, Host_Common = factor(Host_Common, 
+                                                  levels = names(common_colours)),
+                   Env = factor(Env, levels = names(env_shapes))) %>%
+  rename(Individual = `#SampleID`)
+
+data_refseq_clean <- mutate(data_refseq_clean, Host_Common = factor(Host_Common, 
+                                                  levels = names(common_colours)),
+                   Env = factor(Env, levels = names(env_shapes))) %>%
+  rename(Individual = Sample)
+
+data_megan_nt_domain_ratios <- mutate(data_megan_nt_domain_ratios, Host_Common = factor(Host_Common, 
+                                                  levels = names(common_colours)),
+                   Env = factor(Env, levels = names(env_shapes))) %>%
+  rename(Individual = Sample)
+```
+
+# Data Summaries
+
+## nt vs refseq
+
+For nt across all groups
+
+```{r}
+summary_nt <- metadata %>% 
+  select(Individual, Host_Common, Percentage_Hits_with_Taxonomy) %>%
+  group_by(Host_Common) %>%
+  summarise_if(is.numeric, list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  arrange(Mean) %>%
+  mutate(Database = "nt")  %>%
+  select(Host_Common, Database, everything()) %>%
+  gather(Metric, Value, 3:ncol(.))
+
+```
+
+For Refseq across all groups
+
+```{r}
+summary_refseq <- data_refseq_clean %>% 
+  select(Individual, Host_Common, RefSeq_Percentage_Hits_with_Taxonomy) %>%
+  group_by(Host_Common) %>%
+  summarise_if(is.numeric, list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  arrange(Mean) %>%
+  mutate(Database = "refseq") %>%
+  select(Host_Common, Database, everything()) %>%
+  gather(Metric, Value, 3:ncol(.))
+
+```
+
+Now we can combine nt and refseq for comparison
+
+```{r}
+summary_bothdb <- bind_rows(summary_nt, summary_refseq)
+
+summary_bothdb %>% spread(Database, Value) %>% mutate(Difference = refseq - nt)
+```
+
+## nt only modern humans
+
+For nt across all groups but only Modern humans
+
+```{r}
+data_modernhumanoral_nt <- metadata %>% 
+  select(Individual, Host_Common, Host_General, Percentage_Hits_with_Taxonomy, Env) %>%
+  filter(Host_Common %in% c("Homo (Modern Human)", "Plaque")) %>%
+  mutate(Host_General = factor(Host_General, levels = c("PreagriculturalHuman", "PreantibioticHuman", "ModernDayHuman", "plaque")))
+
+data_modernhumanoral_nt 
+
+summary_modernhumanoral_nt <- data_modernhumanoral_nt %>%
+  group_by(Host_General) %>%
+  summarise_if(is.numeric, list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  arrange(Mean)
+
+summary_modernhumanoral_nt
+```
+
+For nt across all groups but only Modern humans
+
+```{r}
+data_modernhumanoral_refseq <- data_refseq_clean %>% 
+  select(Individual, Host_Common, Host_General, RefSeq_Percentage_Hits_with_Taxonomy, Env) %>%
+  filter(Host_Common %in% c("Homo (Modern Human)", "Plaque")) %>%
+  mutate(Host_General = factor(Host_General, levels = c("PreagriculturalHuman", "PreantibioticHuman", "ModernDayHuman", "plaque")))
+
+data_modernhumanoral_refseq
+
+summary_modernhumanoral_refseq <- data_modernhumanoral_refseq %>%
+  group_by(Host_General) %>%
+  summarise_if(is.numeric, list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  arrange(Mean)
+
+summary_modernhumanoral_refseq
+```
+
+## Domain level stats
+
+For the nt domain level statistics
+
+```{r}
+data_megan_nt_domain_ratios %>%
+  select(Individual, Host_Common, Ratio) %>%
+  group_by(Host_Common) %>%
+  summarise_if(is.numeric, list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  arrange(Mean) %>%
+  select(Host_Common, everything()) %>%
+  gather(Metric, Value, 2:ncol(.)) %>%
+  spread(Metric, Value)
+```
+
+For modern humans only
+
+```{r}
+data_megan_nt_domain_ratios_modernhumanonly <- data_megan_nt_domain_ratios %>% 
+  select(Individual, Host_Common, Host_General, Ratio, Env) %>%
+  filter(Host_Common %in% c("Homo (Modern Human)", "Plaque")) %>%
+  mutate(Host_General = factor(Host_General, levels = c("PreagriculturalHuman", "PreantibioticHuman", "ModernDayHuman", "plaque")))
+  
+data_megan_nt_domain_ratios_modernhumanonly %>%
+  select(Individual, Host_General, Ratio) %>%
+  group_by(Host_General) %>%
+  summarise_if(is.numeric, list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  arrange(Mean) %>%
+  select(Host_General, everything()) %>%
+  gather(Metric, Value, 2:ncol(.)) %>%
+  spread(Metric, Value)
+
+```
+
+
+# Data Visualisation
+
+## All percent taxonomically assigned boxplots
+
+For nt
+
+```{r, fig.width=7, fig.height=4}
+final_nt_plot <- ggplot(metadata, aes(Host_Common, Percentage_Hits_with_Taxonomy)) +
+  geom_boxplot(outlier.size = -1) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Percent Reads with Taxonomic Assignment (%)") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  labs(title = "Nt Database (2017)") +
+  scale_colour_manual(values = env_colours, "Population") +
+  ylim(0, 100) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+final_nt_plot
+
+```
+
+For Refseq
+
+```{r, fig.width=7, fig.height=7}
+final_refseq_plot <- ggplot(data_refseq_clean, aes(Host_Common, RefSeq_Percentage_Hits_with_Taxonomy)) +
+  geom_boxplot(outlier.size = -1) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Percent Reads with Taxonomic Assignment (%)") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values =env_colours, "Population") +
+  labs(title = "Custom RefSeq Database (2018)") +
+  ylim(0, 100) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+final_refseq_plot
+```
+
+```{r}
+final_comparison_all <- final_nt_plot + final_refseq_plot + plot_layout(ncol = 1)
+
+final_comparison_all
+
+ggsave(paste0("SupFigX_MALTAssignments_AllCategories_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = final_comparison_all,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = cairo_pdf, 
+       width = 7, 
+       height = 5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_MALTAssignments_AllCategories_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       plot = final_comparison_all,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = "png", 
+       width = 7, 
+       height = 5, 
+       units = "in", 
+       dpi = 600)
+```
+
+## Database comparison percent taxonomically assigned
+
+
+Comparison across databases
+
+```{r}
+summary_bothdb %>% 
+  filter(Metric == "Mean") %>% 
+  ggplot(aes(Database, Value, colour = Host_Common, shape = Host_Common, group = Host_Common)) + 
+  geom_point(size = 3, stroke = 0.7) + 
+  geom_line() + 
+  ylab("Mean Percent Reads with Taxonomic Assignment (%)") +
+  ylim(0, 100) +
+  scale_colour_manual(values = env_colours, "Population") + 
+  scale_shape_manual(values = common_shapes) +
+  theme_minimal(base_size = 7, base_family = "Roboto")
+```
+
+We can see that there appears to be an increase in the mean percentage of reads
+with taxonomic assignment. If we want to statistically test the confidence of 
+the increase, we can use the recently released `dabestr` package which aims 
+to move away from simple yes/no _p_-value descisions but move towards
+estimation statistics - i.e. visualise the confidence of in the difference
+between the means of two populations via bootstrapping and confidence 
+intervals (i.e. effect size) (Ho et al. 2019 Nat. Methods). Bootstrapping 
+follows a non-parametric statistical framework which applies to our data here.
+
+```{r}
+dabest_res <- dabest(summary_bothdb %>% filter(Metric == "Mean"), 
+       Database, 
+       Value, 
+       idx = c("nt", "refseq"), 
+       paired = T, 
+       id.column = Host_Common)
+
+dabest_all <- plot(dabest_res, color.column = Host_Common)
+
+dabest_all
+```
+
+We can also check more specifically the calculus samples
+
+```{r, fig.width=7, fig.height=5}
+dabest_res_calculusonly <- dabest(summary_bothdb %>% filter(Metric == "Mean",
+                                               Host_Common %in% c("Alouatta", 
+                                                                  "Pan", 
+                                                                  "Gorilla", 
+                                                                  "Homo (Neanderthal)", 
+                                                                  "Homo (Modern Human)")), 
+       Database, 
+       Value, 
+       idx = c("nt", "refseq"), 
+       paired = T, 
+       id.column = Host_Common)
+
+
+dabest_calculus <- plot(dabest_res_calculusonly, color.column = Host_Common)
+
+dabest_calculus
+```
+
+Put together
+
+> This will need to be fixed in postprocessing!
+
+```{r, fig.width=5, fig.height=5}
+dabest_final <- dabest_all + dabest_calculus + plot_layout(ncol = 1)
+
+dabest_final
+
+ggsave(paste0("SupFigX_MALTAssignments_dabest_AllCategoriesCalculusOnly_comparison_" ,
+             format(Sys.Date(), "%Y%m%d"),".pdf"),
+       plot = dabest_final,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = cairo_pdf,
+       width = 5,
+       height = 5,
+       units = "in",
+       dpi = 600)
+
+ggsave(paste0("SupFigX_MALTAssignments_dabest_AllCategoriesCalculusOnly_comparison_" ,
+             format(Sys.Date(), "%Y%m%d"),".png"),
+       plot = dabest_final,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = "png",
+       width = 5,
+       height = 5,
+       units = "in",
+       dpi = 600)
+```
+
+In both cases we see a clear difference in the paired means
+
+## Calculus only percent taxnonmoically assigned
+
+For nt but only modern humans
+
+```{r}
+modernhumanoral_nt <- ggplot(data_modernhumanoral_nt, aes(Host_General, Percentage_Hits_with_Taxonomy)) +
+  geom_boxplot(outlier.size = -1) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host Group") +
+  ylab("Percent Reads with Taxonomic Assignment (%)") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values = env_colours, "Population") +
+  labs(title = "Nt Database (2017)") +
+  ylim(0, 100) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+modernhumanoral_nt
+```
+
+For refseq but only modern humans
+
+```{r}
+modernhumanoral_refseq <- ggplot(data_modernhumanoral_refseq, aes(Host_General, RefSeq_Percentage_Hits_with_Taxonomy)) +
+  geom_boxplot(outlier.size = -1) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host Group") +
+  ylab("Percent Reads with Taxonomic Assignment (%)") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values = env_colours, "Population") +
+  labs(title = "Custom RefSeq Database (2018)") +
+  ylim(0, 100) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+modernhumanoral_refseq
+```
+
+And together
+
+```{r}
+calculusonly_comparison <- modernhumanoral_nt + theme(legend.position = "none") + modernhumanoral_refseq + ylab("")
+```
+
+And save
+
+```{r}
+ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_comparison_" ,
+             format(Sys.Date(), "%Y%m%d"),".pdf"),
+       plot = calculusonly_comparison,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = cairo_pdf,
+       width = 7,
+       height = 3,
+       units = "in",
+       dpi = 600)
+
+ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_comparison_" ,
+             format(Sys.Date(), "%Y%m%d"),".png"),
+       plot = calculusonly_comparison,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = "png",
+       width = 7,
+       height = 3,
+       units = "in",
+       dpi = 600)
+```
+
+## Eukaryotic vs non-Eukaryotic Ratio
+
+To plot boxplots of ratios of eukaryotic vs non-eukaryotic alignments
+
+```{r}
+eukvsnoneuk_all_plot <- ggplot(data_megan_nt_domain_ratios, aes(Host_Common, Ratio)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Ratio Bacterial/Archaeal/Viral Reads over Eukaryotic") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values = env_colours, "Population") +
+  scale_y_log10() +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+eukvsnoneuk_all_plot
+
+ggsave(paste0("SupFigX_MALTAssignments_all_eukaryoticNoneukaryoticRatio_" ,
+             format(Sys.Date(), "%Y%m%d"),".pdf"),
+       plot = eukvsnoneuk_all_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = cairo_pdf,
+       width = 7,
+       height = 3,
+       units = "in",
+       dpi = 600)
+
+ggsave(paste0("SupFigX_MALTAssignments_all_eukaryoticNoneukaryoticRatio_" ,
+             format(Sys.Date(), "%Y%m%d"),".png"),
+       plot = eukvsnoneuk_all_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = "png",
+       width = 7,
+       height = 3,
+       units = "in",
+       dpi = 600)
+```
+
+
+```{r}
+
+
+eukvsnoneuk_modernhumanplaque_plot <- ggplot(data_megan_nt_domain_ratios_modernhumanonly, aes(Host_General, Ratio)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host Group") +
+  ylab("Ratio Bacterial/Archaeal/Viral Reads over Eukaryotic") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values = env_colours, "Population") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+eukvsnoneuk_modernhumanplaque_plot
+
+ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_eukaryoticNoneukaryoticRatio_" ,
+             format(Sys.Date(), "%Y%m%d"),".pdf"),
+       plot = eukvsnoneuk_modernhumanplaque_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = cairo_pdf,
+       width = 7,
+       height = 3,
+       units = "in",
+       dpi = 600)
+
+ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_eukaryoticNoneukaryoticRatio_" ,
+             format(Sys.Date(), "%Y%m%d"),".png"),
+       plot = eukvsnoneuk_modernhumanplaque_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       device = "png",
+       width = 7,
+       height = 3,
+       units = "in",
+       dpi = 600)
+```
+

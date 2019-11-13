@@ -1,0 +1,375 @@
+---
+title: "Sourcetracker2 vs Cumulative Percent Decay"
+output: html_notebook
+---
+
+# Introduction
+
+This notebook is to compare the results from the cumulative percent decay
+analysis of shotgun taxonomic binning with MALT, to the sourcetracker 
+profiles generated from 16s read based OTU clustering. 
+
+# Infrastructure
+
+Load libraries we will use
+
+```{r}
+library(tidyverse)
+library(ggbeeswarm)
+library(broom)
+```
+
+Set project directory (if required!)
+
+```{r}
+proj_dir <- "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker/"
+```
+
+
+Load metadata
+
+```{r}
+metadata <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+```
+
+## Cumulative Decay
+
+First we will load the cumulative percent decay results - i.e. which
+samples passed and failed the threshold set there.
+
+
+Load files to be analysed
+
+```{r}
+data_nt_raw <- read_tsv(paste0(proj_dir, "04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv"))
+data_refseq_raw <- read_tsv(paste0(proj_dir, "04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv"))
+```
+
+## Sourcetracker
+
+Load data and select options
+
+```{r}
+## load data
+ st2_raw_both <- read_tsv(paste0(proj_dir, "/04-analysis/screening/sourcetracker.backup/otu_table_L6_1000_20190520/sink_predictions.txt"))
+
+colnames(st2_raw_both)[1] <- "sample"
+
+```
+
+## Ratio data
+
+```{r}
+data_megan_nt_domain <- read_tsv(paste0(proj_dir, "04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190703-ex_absolute_domain_all_summarised_nt.txt"))
+```
+
+Cleanup 
+
+```{r}
+strings_to_remove <- paste("_S0_L000_R1_000.fastq.merged.prefixed.hg19unmapped.rma6",
+                           "_S0_L001_R1_000.fastq.merged.prefixed.hg19unmapped.rma6", 
+                           "_S0_L001_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6",
+                           "_S0_L003_R1_001.sorted.bam.unmapped.rma6",
+                           "_S0_L000_R1_000.fastq.merged.rma6",
+                           "_S0_L003_R1_001.fastq.combined.fq.prefixed.extractunmapped.bam.rma6",
+                            sep = "|")
+
+
+data_megan_nt_domain_ratios <- data_megan_nt_domain %>% 
+  gather(Sample, Alignments, 2:ncol(.)) %>% 
+  filter(!grepl("LIB025.A0301", Sample)) %>%
+  mutate(Sample = map(Sample, ~ gsub(strings_to_remove %>% gsub(".rma6", "", .), "", .x)) %>% 
+                         unlist) %>%
+  rename(Domain = `#Datasets`) %>%
+  spread(Domain, Alignments) %>% 
+  group_by(Sample) %>%
+  summarise(NonEukaryotic_Total = Archaea + Bacteria + Viruses,
+            Eukaryota = Eukaryota) %>%
+  mutate(Ratio = (NonEukaryotic_Total / Eukaryota)) %>%
+  left_join(metadata, by = c("Sample" = "#SampleID")) %>%
+  left_join(data_nt_raw, by = c("Sample" = "sample"))
+  
+```
+
+
+## Aesthetics
+
+Default ordering information
+
+```{r}
+env_ordering <- c("Howler_Monkey",
+                                         "Gorilla_1",
+                                         "Gorilla_2",
+                                         "Gorilla_3",
+                                         "Chimp_1",
+                                         "Chimp_2",
+                                         "Chimp_3",
+                                         "Chimp_4",
+                                         "Neanderthal",
+                                         "PreagriculturalHuman_1",
+                                         "PreagriculturalHuman_2",
+                                         "PreantibioticHuman_1",
+                                         "PreantibioticHuman_2",
+                                         "ModernDayHuman_1",
+                                         "ModernDayHuman_2",
+                                         "ExtractionControl",
+                                         "LibraryControl",
+                                         "subPlaque",
+                                         "supPlaque",
+                                         "urbanGut",
+                                         "ruralGut",
+                                         "skin",
+                                         "EnvironmentalControl",
+                                         "sediment")
+hostgenus_ordering <- c("Alouatta", "Gorilla", "Pan", "Homo", "Control")
+
+```
+
+
+
+
+# Visualisation
+
+## Stacked Bars - Plaque/Gut Proportion Order
+
+For more intuitive plotting, we now need to manipulate the data for ordering
+and colouring of the different sources. We can also hard-assign the colours 
+for each source for consistency across each source.
+
+```{r}
+colnames(st2_raw_both) <- gsub("Z-", "", colnames(st2_raw_both))
+colnames(st2_raw_both) <- gsub("Unknown", "unknown", colnames(st2_raw_both))
+
+st2_meta <- metadata %>% 
+  mutate(Host_Genus = as_factor(Host_Genus),
+         Host_Genus = fct_relevel(Host_Genus, hostgenus_ordering),
+         Env = as_factor(Env), 
+         Env = fct_relevel(Env, env_ordering))
+
+data_reorder <- function(data_raw, metadata, filter_comp_dat, sample_order){
+  ## Give: sink_predictions, metadata table and boolean for whether
+  ## to order by sample name or proportion of subPlaque
+  if (sample_order == TRUE) {
+      data_mod <- data_raw %>% 
+        arrange(-subPlaque) %>% 
+        gather(source, proportion, 2:ncol(data_raw))
+  } else {
+      data_mod <- data_raw %>% 
+      gather(source, proportion, 2:ncol(data_raw))
+  }
+
+    
+  data_mod$source <- factor(data_mod$source, 
+                                levels = rev(c("subPlaque", 
+                                               "supPlaque", 
+                                               "ruralGut", 
+                                               "urbanGut", 
+                                               "skin", 
+                                               "EnvironmentalControl",
+                                               "sediment",
+                                               "unknown"))) 
+  
+  data_mod_meta <- left_join(data_mod, metadata, by = c("sample" = "#SampleID")) %>%
+    left_join(filter_comp_dat)
+  
+  data_mod_meta$Env <- factor(data_mod_meta$Env, 
+                              levels = env_ordering
+                              )
+  
+  data_mod_meta <- arrange(data_mod_meta, Env)
+  
+  data_mod_meta <- data_mod_meta %>% 
+    mutate(sample = factor(sample, unique(sample)))
+}
+
+source_colours <- c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#abdda4", "#66c2a5", "#3288bd", "#5e4fa2")
+names(source_colours) <- c("subPlaque", "supPlaque",  "ruralGut", "urbanGut", "skin", "EnvironmentalControl", "sediment", "unknown")
+
+```
+
+
+Then we can do our plotting by plaque content order
+
+```{r eval = F}
+## Order by plaque/gut total
+
+st2_filtering_calculations <- st2_raw_both %>% 
+  rowwise() %>%
+  mutate(total_plaquegut = sum(`subPlaque` + `supPlaque` + `ruralGut` + `urbanGut`)) %>%
+  right_join(metadata %>% select(`#SampleID`, Env, Description, 
+                                Host_General, Host_Common, Age), 
+             ., 
+             by = c("#SampleID" = "sample"))
+
+st2_preservation_order <- st2_raw_both %>% 
+  mutate(total_plaque = pmap(list(sub = subPlaque, sup = supPlaque, 
+                               rural = ruralGut, urban = urbanGut),
+                             function(sub, sup, rural, urban) {
+                               sum(sub + sup + rural + urban)
+         }) %>% 
+           unlist) %>% 
+  arrange(desc(total_plaque)) %>%
+  mutate(sample = as_factor(sample)) %>%
+  select(-total_plaque) %>%
+  gather(source, proportion, 2:ncol(.)) %>% 
+  mutate(source = as_factor(source),
+         source = fct_relevel(source, rev(c("subPlaque", "supPlaque", 
+                                            "ruralGut", "urbanGut", "skin", 
+                                            "EnvironmentalControl", "sediment", 
+                                            "unknown"))))
+
+## Get colour order
+colour_vec <- st2_preservation_order %>% 
+  left_join(data_nt_raw) %>%
+  mutate(sample = factor(sample, 
+                         levels = levels(st2_preservation_order$sample))) %>%
+  mutate(Colour = if_else(withinfluctuationvariation_pass, "grey50", "black")) %>%
+  select(sample, Colour) %>%
+  distinct() %>%
+  pull(Colour)
+
+colour_vec
+
+
+
+## Try plotting
+st2_bar_cpd_perplaquecontent <- ggplot(st2_preservation_order, aes(sample, proportion, fill = source)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = source_colours) +
+  xlab("Individuals") +
+  ylab("Proportion") +
+  labs(fill = 'Source') +
+  theme_minimal(base_size = 7) +
+   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = colour_vec), 
+        text = element_text(family = "Roboto"),
+        legend.position = "right")
+
+st2_bar_cpd_perplaquecontent
+
+ggsave(paste0("SupFigX_SourcetrackerVsCPD_st2bar_cpdtext_" ,
+             format(Sys.Date(), "%Y%m%d"),".pdf"),
+       plot = st2_bar_cpd_perplaquecontent,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker",
+       device = cairo_pdf,
+       width = 7,
+       height = 3,
+       units = "in",
+       dpi = 600)
+
+ggsave(paste0("SupFigX_SourcetrackerVsCPD_st2bar_cpdtext_" ,
+             format(Sys.Date(), "%Y%m%d"),".png"),
+       plot = st2_bar_cpd_perplaquecontent,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker",
+       device = "png",
+       width = 7,
+       height = 3,
+       units = "in",
+       dpi = 600)
+  ```
+
+Reason for MTS002.A0101 and MTM011 being rejected is due to long flat tails 
+tightening the limits of within standard deviation to be very strict. By the 
+time the curve falls within these boundaries it is quite past the 50% 
+threshold. TAF017 is retained despite being very borderline because there is
+large variation at the beginning and stabilses quite quickly without a drop-off
+of oral content (a % oral of around ~45-50 is maintined along the abundance
+rank). MTM010 is retained for a similar reason, although this is because 
+the variation is extremely large over the first few ranks, so the rank 
+threshold kicks in quite early on just before it falls the percentage limit.
+
+## Stacked Bars - Plaque and Host Group Order
+
+If we want to see per group
+
+```{r}
+## Order by plaque/gut total
+
+st2_filtering_calculations <- st2_raw_both %>% data_reorder(., st2_meta, data_nt_raw, T)
+
+## Get colour order
+colour_vec <- st2_filtering_calculations %>% 
+  mutate(Colour = if_else(withinfluctuationvariation_pass, "#4daf4a", "#e41a1c")) %>%
+  select(sample, Colour) %>%
+  distinct() %>%
+  pull(Colour)
+
+## Group bar separators
+bar_vec <- st2_filtering_calculations %>% 
+  select(sample, Env) %>% 
+  distinct() %>% 
+  group_by(Env) %>% 
+  summarise(count = n()) %>% 
+  mutate(CumSum = cumsum(count)) %>% 
+  mutate(CumSum = CumSum + 0.5) %>%
+  pull(CumSum)
+
+
+## Try plotting
+st2_bar_cpd_pergrouporder <- ggplot(st2_filtering_calculations, aes(sample, proportion, fill = source)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = source_colours) +
+  xlab("Individuals") +
+  ylab("Proportion") +
+  geom_vline(xintercept = bar_vec, stroke = 0.6) +
+  labs(fill = 'Source') +
+  theme_minimal(base_size = 7) +
+   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = colour_vec), 
+        text = element_text(family = "Roboto"),
+        legend.position = "bottom")
+
+st2_bar_cpd_pergrouporder
+```
+
+## Cumulative decay vs Ratio
+
+```{r}
+metadata_megan_nt_domain_ratios_calculus <- data_megan_nt_domain_ratios %>% 
+  filter(Type == "Calculus",
+         Age != "ModernDay") %>%
+  mutate(withinfluctuationvariation_pass = factor(as.character(withinfluctuationvariation_pass), levels = c("TRUE", "FALSE")))
+
+ratio_plot <- ggplot(metadata_megan_nt_domain_ratios_calculus, aes(withinfluctuationvariation_pass, Ratio, fill = withinfluctuationvariation_pass)) +
+  geom_beeswarm(alpha = 0.5, cex = 2) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75), alpha = 0.5) +
+  ylab("Ratio Bacterial/Archeal/Virus over Eukaryotic Alignments") +
+  xlab("Passed preservation threshold?") +
+  labs(fill = "Threshold Pass?") +
+  scale_fill_manual(values = c("#e41a1c", "#377eb8")) +
+  scale_y_log10() +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(legend.position = "none")
+
+ratio_plot
+
+metadata_megan_nt_domain_ratios_calculus %>% group_by(withinfluctuationvariation_pass) %>% summarise(count = n())
+
+ wilcox.test(Ratio ~ withinfluctuationvariation_pass, 
+             data = metadata_megan_nt_domain_ratios_calculus, 
+             alternative = "g") %>% broom::tidy()
+
+```
+
+To save the ratio distribution plot
+
+```{r}
+ggsave(paste0("SupFigX_eukaryoticratioplot_ancientcalculusonly_" ,
+             format(Sys.Date(), "%Y%m%d"),".pdf"),
+       plot = ratio_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker",
+       device = cairo_pdf,
+       width = 3,
+       height = 3,
+       units = "in",
+       dpi = 600)
+
+ggsave(paste0("SupFigX_eukaryoticratioplot_ancientcalculusonly_" ,
+             format(Sys.Date(), "%Y%m%d"),".png"),
+       plot = ratio_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker",
+       device = "png",
+       width = 3,
+       height = 3,
+       units = "in",
+       dpi = 600)
+```
+

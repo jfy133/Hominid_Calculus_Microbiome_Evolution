@@ -1,0 +1,1049 @@
+#' ---
+#' title: "PhILR Compositional Heatmaps and Hierarchical Clustering"
+#' ---
+#' 
+#' # Preamble
+#' 
+#' Purpose of this notebook is to show whether calculus samples cluster 
+#' compositionally via hierarchical clustering, in a manner expected by 
+#' the host phylogeny.
+#' 
+#' # Preparation
+#' 
+#' ## For script conversion
+#' 
+#' As this notebook became more and more parameterised, I decided to make it
+#' easy to convert into a script. But for the script, we also need to define
+#' input arguments for the options in chunk 1.
+#' 
+
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+args = commandArgs(trailingOnly = TRUE)
+
+if (args[1] == "" | args[1] == "-h" | args[1] == "--help") {
+ cat("Usage: 045-Compositional_Heatmaps_20XXXXXX_script.R <db> <tax_level> <sources> <controls> <bad_samples> <sample_filter> <minsupp_multiplier> <prevalence_filter>\n")
+ cat("db: nt or refseq \n")
+ cat("tax_level: genus or species \n") 
+ cat("sources: noSources or withSources \n")
+ cat("controls: noControls or withControls \n")
+ cat("bad_samples: in or out \n")
+ cat("sample_filter: sourcetracker, onepcburnin, twocburnin, fivepcburnin, tenpcburnin, withinvariation or none \n")
+ cat("view_taxon_only: any valid genus in filtered OTU table or none\n")
+ cat("zero_trans: pseudo or czm\n")
+ cat("minsupp_multiplier: number to multiply foundation 0.01% minimum support\n")
+ cat("prevalence_filter: number individuals across filtered dataset taxon needs to be in to be retained. Set to 0 to do not filter\n")
+ stop()
+} else if (length(args) != 10) {
+ cat("ERRROR: Not enough arguments provided! \n\n")
+ cat("Usage: 045-Compositional_Heatmaps_20XXXXXX_script.R <db> <tax_level> <sources> <controls> <bad_samples> <sample_filter> <minsupp_multiplier> <prevalence_filter>\n")
+ cat("db: nt or refseq \n")
+ cat("tax_level: genus or species \n") 
+ cat("sources: noSources or withSources \n")
+ cat("controls: noControls or withControls \n")
+ cat("bad_samples: in or out \n")
+ cat("sample_filter: sourcetracker, onepcburnin, twocburnin, fivepcburnin, tenpcburnin, withinvariation or none \n")
+ cat("view_taxon_only: any valid genus in filtered OTU table or none\n")
+ cat("zero_trans: pseudo or czm\n")
+ cat("minsupp_multiplier: number to multiply foundation 0.01% minimum support\n")
+ cat("prevalence_filter: number individuals across filtered dataset taxon needs to be in to be retained\n")
+ stop()
+} else if (length(args) == 10) {
+ db <- args[1]
+ tax_level <- args[2]
+ sources <- args[3]
+ controls <- args[4]
+ bad_samples <- args[5]
+ sample_filter <- args[6]
+ view_taxon_only <- args[7]
+ zero_trans <- args[8]
+ minsupp_multiplier <- as.numeric(args[9])
+ prevalence_filter <- as.numeric(args[10])
+ script <- T
+}
+
+cat(args)
+
+if (db == "nt" | db == "refseq") {
+  minsupp_multiplier <- as.numeric(minsupp_multiplier)
+  minsupp_threshold <- 0.01 * minsupp_multiplier
+} else if (db == "mp2") {
+  minsupp_threshold <- 0
+}
+ 
+
+#' 
+#' 
+#' ## Data Loading
+#' 
+#' Load libraries
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+library(tidyverse) ## for general data cleaning
+library(ape) ## for tree manipulation
+#library(phyloseq) ## for data format as input for PhILR (borrowed from PCoA)
+library(philr) ## for data transform
+library(vegan) ## for statistical testing
+library(ggtree) ## for tree visualisation
+library(patchwork) ## for further visualisation assistance
+library(zCompositions) ## for alternative zero replacement
+#library(phytools) ## for tree manipulations
+
+#' 
+#' Load already generated data from MEGAN and metadata. We also need to export the 
+#' same data with as a tree from MEGAN with the option: file > export > tree.
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+
+## The tree related to the OTU table
+if (tax_level == "genus" & db == "nt") {
+ otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_genus.nwk")
+} else if (tax_level == "species" & db == "nt") {
+ otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_species.nwk")
+} else if (tax_level == "genus" & db == "refseq") {
+ otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_genus.nwk")
+} else if (tax_level == "species" & db == "refseq") {
+  otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_species.nwk")
+}
+
+
+## OTU tables
+if (tax_level == "genus" & db == "nt") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_prokaryotes_summarised_nt.txt")
+} else if (tax_level == "species" & db == "nt") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+} else if (tax_level == "genus" & db == "refseq") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_prokaryotes_summarised_refseq.txt")
+} else if (tax_level == "species" & db == "refseq") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_prokaryotes_summarised_refseq.txt")
+} else if (tax_level == "genus" & db == "mp2") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/metaphlan2/output/mp2_merged_abundance_table_all_20190401.txt", comment = '#') %>%
+    rename(Clade = ID) %>%
+    filter(!grepl("t__[[:alnum:]]", Clade)) %>%
+    filter(!grepl("s__[[:alnum:]]", Clade)) %>%
+    filter( grepl("g__[[:alnum:]]", Clade)) %>%
+    mutate(Clade = purrr::map(Clade, 
+                       function(x) str_split_fixed(x, 
+                                                   "\\|g__", 
+                                                   n = 2)[2]) %>% unlist) %>%
+    mutate(Clade = gsub("_", " ", Clade)) %>%
+    rename(`#Datasets` = Clade)
+ 
+} else if (tax_level == "species" & db == "mp2") {
+ otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/metaphlan2/output/mp2_merged_abundance_table_all_20190401.txt", comment = '#') %>%
+    rename(Clade = ID) %>%
+    filter(!grepl("t__[[:alnum:]]", Clade)) %>%
+    filter(grepl("s__[[:alnum:]]", Clade)) %>%
+    mutate(Clade = purrr::map(Clade, 
+                       function(x) str_split_fixed(x, 
+                                                   "\\|s__", 
+                                                   n = 2)[2]) %>% unlist) %>%
+    mutate(Clade = gsub("_", " ", Clade)) %>%
+    rename(`#Datasets` = Clade)
+}
+
+
+## Predicted contaminant taxa to remove
+if (tax_level == "genus" & db == "nt") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_genus_combined_0.99_190411.tsv")
+} else if (tax_level == "species" & db == "nt") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+} else if (tax_level == "genus" & db == "refseq") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_genus_combined_0.99_190411.tsv")
+} else if (tax_level == "species" & db == "refseq") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
+} else if (tax_level == "genus" & db == "mp2") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_mp2_mp2_genus_combined_0.99_190411.tsv")
+} else if (tax_level == "species" & db == "mp2") {
+ taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_mp2_mp2_species_combined_0.9_190411.tsv")
+}
+
+## Metadata
+raw_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>% rename(Individual = `#SampleID`)
+
+## Bad samples to remove
+
+if (sample_filter == "sourcetracker") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/sourcetracker_filtering_results_190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "onepcburnin") {
+ samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "twopcburnin") {
+ samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "fivepcburnin") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "tenpcburnin") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "nt" && sample_filter == "withinvariation") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "onepcburnin") {
+ samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "twopcburnin") {
+ samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "fivepcburnin") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "tenpcburnin") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "refseq" && sample_filter == "withinvariation") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+  filter(more_env == T)
+} else if (db == "mp2" && sample_filter == "withinvariation") {
+ samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+  filter(more_env == T)
+}
+
+
+
+
+#' 
+#' ## Data Cleaning
+#' 
+#' Clean up to remove samples not required and then remove any OTUs that
+#' now have no counts. Also remove OTUs that are likely lab contaminants
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+
+data_cleaner <- function(x) {
+ colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam","", colnames(x))
+ colnames(x) <- gsub("_S.*_L00.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(x))
+ colnames(x) <- gsub("_S.*_L00.*_R1_.*.fastq.extractunmapped.bam", "", colnames(x))
+ colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.merged", "", colnames(x))
+ colnames(x) <- gsub(".prefixed.hg19unmapped", "", colnames(x))
+ colnames(x) <- gsub("_S0_L003_R1_001.sorted.bam.unmapped", "", colnames(x))
+colnames(x) <- gsub(".mp2profile", "", colnames(x))
+ colnames(x)[1] <- "Taxon"
+ return(x)
+}
+
+
+
+
+
+## Remove bad sources from OTU table
+if (bad_samples == "in") {
+ otu_table <- otu_table %>% data_cleaner
+} else if (bad_samples == "out") {
+ otu_table <- otu_table %>% 
+  data_cleaner %>% 
+  dplyr::select(-one_of(samples_to_remove %>% 
+                         left_join(raw_metadata, 
+                                   by = c("sample" = "Individual")) %>%
+                         dplyr::select(sample, SourceSink, Sample_or_Control) %>% 
+                         filter(SourceSink == "sink", 
+                                Sample_or_Control == "Sample") %>% 
+                          pull(sample)) 
+ )
+}
+ 
+
+
+## Conditional filtering out of sources and/or Controls
+if (sources == "withSources") {
+ NA
+} else if (sources == "noSources") {
+ otu_table <- otu_table %>% 
+ dplyr::select(Taxon, one_of(filter(raw_metadata, SourceSink == "sink") %>% 
+             pull(Individual)))
+}
+
+if (controls == "withControls") {
+ NA
+} else if (controls == "noControls") {
+ otu_table <- otu_table %>% 
+ dplyr::select(Taxon, one_of(filter(raw_metadata, 
+                                    Sample_or_Control == "Sample") %>% 
+             pull(Individual)), 
+             contains("ARS"))
+}
+
+
+## Filter taxa not passing min support threshold 
+if (db == "nt") {
+ otu_table <- otu_table %>% 
+  gather(Individual, Value, 2:ncol(.)) %>% 
+  left_join(dplyr::select(raw_metadata, Individual, Min_Support_Reads_Threshold_MALT)) %>%
+  mutate(Threshold = Min_Support_Reads_Threshold_MALT * minsupp_multiplier) %>%
+  mutate(Threshold = as.numeric(Threshold)) %>%
+  mutate(Filter_Passed = if_else(Value >= Threshold, 1, 0)) %>% 
+  filter(Filter_Passed == 1) %>%
+  dplyr::select(Taxon, Individual, Value) %>%
+  spread(Individual, Value, fill = 0)
+} else if (db == "refseq") {
+ otu_table <- otu_table %>% 
+  gather(Individual, Value, 2:ncol(.)) %>% 
+  left_join(dplyr::select(raw_metadata, Individual, Min_Support_Reads_Threshold_MALT_refseq)) %>%
+  mutate(Threshold = Min_Support_Reads_Threshold_MALT_refseq * minsupp_multiplier) %>%
+  mutate(Threshold = as.numeric(Threshold)) %>%
+  mutate(Filter_Passed = if_else(Value >= Threshold, 1, 0)) %>% 
+  filter(Filter_Passed == 1) %>%
+  dplyr::select(Taxon, Individual, Value) %>%
+  spread(Individual, Value, fill = 0)
+} else if (db == "mp2") {
+  otu_table <- otu_table %>% 
+    gather(Individual, Value, 2:ncol(.)) %>%
+    mutate(Threshold = 0 * minsupp_multiplier) %>%
+    mutate(Value = as.numeric(Value)) %>%
+    mutate(Filter_Passed = if_else(Value > Threshold, 1, 0)) %>%
+    filter(Filter_Passed == 1) %>%
+    dplyr::select(Taxon, Individual, Value) %>%
+    spread(Individual, Value, fill = 0)
+}
+ 
+## Convert to matrix
+otu_matrix <- as.matrix(dplyr::select(otu_table, -Taxon))
+rownames(otu_matrix) <- otu_table$Taxon
+
+## Remove any taxa that were unique to the bad samples
+pos_otus <- rowSums(otu_matrix)
+pos_otus <- pos_otus[pos_otus != 0] 
+
+## Remove lab contaminants
+otu_matrix <- subset(otu_matrix, !rownames(otu_matrix) %in% (taxa_to_remove %>% pull))
+otu_matrix_final <- subset(otu_matrix, rownames(otu_matrix) %in% names(pos_otus))
+
+## Select for only genus of interested
+if (view_taxon_only == "none") {
+  NULL
+} else {
+  if ( length(grep(view_taxon_only, rownames(otu_matrix_final))) == 0 ) {
+    stop("The searched for taxa does not exist: is it in your OTU table, otu comtaminants or falls below min-support threshold?")
+  } else {
+    otu_matrix_final <- subset(otu_matrix_final, 
+                             grepl(view_taxon_only, rownames(otu_matrix_final)))
+  }
+}
+
+rownames(otu_matrix_final) <- gsub(" ", "_", rownames(otu_matrix_final))
+
+#' 
+#' Apply prevalence filter
+#' 
+## ------------------------------------------------------------------------
+if (prevalence_filter == 0) {
+  NULL
+} else {
+  prevalence_filter <- as.numeric(prevalence_filter)
+  passed_prevalence_list <- otu_matrix_final %>% 
+    as_tibble(rownames = "Taxon") %>% 
+    gather(Sample, Count, 2:ncol(.)) %>% 
+    group_by(Taxon) %>% 
+    summarise(Passes_Prevalence = sum(Count > 0)) %>% 
+    filter(Passes_Prevalence >= prevalence_filter) %>% 
+    pull(Taxon)
+  otu_matrix_final <- subset(otu_matrix_final, 
+                             grepl(paste(passed_prevalence_list, collapse = "|"), 
+                                   rownames(otu_matrix_final)))
+}
+
+
+#' 
+#' 
+#' ## Prepare Metdata
+#' 
+#' # CLR Transform
+#' 
+#' While for the PCoA we used the more statistically valid 'PhILR' transform,
+#' this loses information about specific species informing any clustering (as
+#' it calculates 'balances'). As we currently do not plan further statistical 
+#' testing of this matrix (which is why PhILR is used), we will stick to 
+#' the Centered-log-ratio transform which retains htis information.
+#' 
+#' ## Zero Replacement
+#' 
+#' We also need to a run zero removal procedure as the *LR methods require
+#' positive numbers. Here we will use both a pseudocount (note might be flawed - 
+#' see Fodor paper), and also the 'multiplicative simple replacement' method
+#' from the zCompositions package as suggested in Palarea-Alaladejo and 
+#' Martín-Fernández (2015) _Chemometrics Intellig Lab Syst_ (and also used
+#' in https://github.com/ggloor/CoDa_microbiome_tutorial/wiki/Part-1:-Exploratory-Compositional-PCA-biplot)
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+otu_matrix_pseudo <- t(otu_matrix_final) + 1
+otu_matrix_czm <- cmultRepl(t(otu_matrix_final),  label = 0, method = "CZM")
+
+#' 
+#' ## Run CLR
+#' 
+#' Now run CLR transform... here goes...
+#' 
+## ----fig.height=3.5, fig.width=7-----------------------------------------
+otu_matrix_pseudo_clr <- t(apply(otu_matrix_pseudo, 1, function(x){log(x) - mean(log(x))}))
+otu_matrix_czm_clr <- t(apply(otu_matrix_czm, 1, function(x){log(x) - mean(log(x))}))
+
+#' 
+#' To show there is minimal difference between the two zero replacement methods
+#' 
+## ---- fig.height=5, fig.width=5------------------------------------------
+otu_matrix_pseudo_clr_pca <- prcomp(t(otu_matrix_pseudo_clr))$rotation %>% as_tibble(rownames = "Individual")
+otu_matrix_czm_clr_pca <- prcomp(t(otu_matrix_czm_clr))$rotation %>% as_tibble(rownames = "Individual")
+
+
+#' 
+#' We can plot this like so
+#' 
+
+#' 
+#' 
+#' While there is a slight clockwise rotation, the actual positioning of all the samples
+#' are in the same place in relative to other theother samples.
+#' 
+#' For the notebook we will continue with pseudocount as the same 'relative' 
+#' information between all the samples is there, but the pseudocount spreads out 
+#' the clades slightly better.
+#' 
+#' # Hierarchical Clustering
+#' 
+#' ## Method testing (Samples)
+#' 
+#' For hierarxhical clustering we need samples as rows again. Further, we need to
+#' generate a distance matrix. As *-Log-Ratio transforms are intrinsically 
+#' euclidean, we can create an according distance matrix.
+#' 
+#' > For the script we give an option to choose which transform to use
+#' 
+## ------------------------------------------------------------------------
+if (zero_trans == "pseudo") {
+  otu_matrix_pseudo_dist <- dist(otu_matrix_pseudo_clr, method = "euclidean")
+} else if (zero_trans == "czm") {
+    otu_matrix_pseudo_dist <- dist(otu_matrix_czm_clr, method = "euclidean")
+}
+
+
+#' 
+#' First we can see how much variability there is between different clustering
+#' methods. First we can generate all the phylogenies of each clustering method.
+#' 
+## ------------------------------------------------------------------------
+list_hclust <- list()
+
+for (i in  c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")) {
+  list_hclust[[i]] <- hclust(otu_matrix_pseudo_dist, method = i)
+}
+
+
+#' 
+#' Next we can run the cophenetic distance (from vegan) on each clustering, to see 
+#' how well each corresponding hclust clustering method correlates with the 
+#' original distance matrix
+#' 
+#' See:
+#' http://cc.oulu.fi/~jarioksa/opetus/metodi/vegantutor.pdf (parge 38)
+#' kakarot (https://stats.stackexchange.com/users/26327/kakarot), Choosing the right linkage method for hierarchical clustering, URL (version: 2019-05-17): https://stats.stackexchange.com/q/408842
+#' 
+## ------------------------------------------------------------------------
+list_cor <- list()
+
+for (i in names(list_hclust)) {
+  list_cor[[i]] <- cor(otu_matrix_pseudo_dist, cophenetic(list_hclust[[i]]))
+}
+
+#' 
+#' We can view the output with
+#' 
+## ------------------------------------------------------------------------
+result_cor <- list_cor %>% 
+  enframe(name = "Method", value = "Correlation") %>% 
+  unnest %>% 
+  arrange(-Correlation) %>%
+  print
+
+#' 
+#' Here we see the 'average' method appears to represent the original distance
+#' matrix the best (however all the values are very poor)
+#' 
+#' However, as recommended we should check how similar the trees are between
+#' the highly similar methods listed above.
+#' 
+## ------------------------------------------------------------------------
+## Reorder list in order of high to low correlation
+list_hclust <- list_hclust[result_cor$Method]
+
+#' 
+#' Plot all trees
+#' 
+
+#' 
+#' Visual inspection of the trees that the average method looks reasonable, with
+#' samples from similar sites clustering together (as expected from individuals 
+#' being 'related' by sharing a similar environment).
+#' 
+#' We can then select the best one as follows
+#' 
+## ------------------------------------------------------------------------
+best_method <- result_cor[1,1] %>% as.character() %>% eval()
+
+#' 
+#' 
+#' ## Method testing (Taxa)
+#' 
+#' Now we repeat the same procedure but with the taxa.
+#' 
+## ------------------------------------------------------------------------
+otu_matrix_pseudo_dist_tax <- dist(t(otu_matrix_pseudo_clr), method = "euclidean")
+
+list_hclust_tax <- list()
+
+for (i in  c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")) {
+  list_hclust_tax[[i]] <- hclust(t(otu_matrix_pseudo_dist_tax), method = i)
+}
+
+list_cor_tax <- list()
+
+for (i in names(list_hclust)) {
+  list_cor_tax[[i]] <- cor(otu_matrix_pseudo_dist_tax, cophenetic(list_hclust_tax[[i]]))
+}
+
+result_cor_tax <- list_cor_tax %>% 
+  enframe(name = "Method", value = "Correlation") %>% 
+  unnest %>% 
+  arrange(-Correlation)
+
+## Reorder list in order of high to low correlation
+list_hclust_tax <- list_hclust_tax[result_cor_tax$Method]
+
+
+#' 
+#' We can then select the best one as follows
+#' 
+## ------------------------------------------------------------------------
+best_method_tax <- result_cor_tax[1,1] %>% 
+  as.character() %>% 
+  eval()
+
+#' 
+#' # Clustering Validation
+#' 
+#' While we now have a clustering of our samples, we don't know how reliable
+#' this clustering is. For this we can utilise the `pvclust` package that runs
+#' a non-parametric bootstraps on the dataset, to see how often that particular
+#' cluster appears. The tool provides 'bootstrap probability' values, which
+#' gives you a 'confidence' on the probability that that cluster appears not 
+#' just by chance.
+#' 
+#' Note, pvclust requires rows as features and columns as variables
+#' 
+## ------------------------------------------------------------------------
+hclust_boot <- pvclust::pvclust(t(otu_matrix_pseudo_clr),
+                 method.hclust = best_method,
+                 method.dist = "euclidean",
+                 nboot = 1000,
+                 parallel = T)
+
+#' 
+#' ## Individual/Taxa Ordering
+#' 
+#' Now we need to record the exact order of the individual and taxa so we order them
+#' correctly on the heatmap.
+#' 
+## ------------------------------------------------------------------------
+
+best_hclust <- hclust_boot$hclust
+best_hclust_tax <- eval(parse(text = paste0("list_hclust_tax$", best_method_tax)))
+
+list_individual <- best_hclust$labels[best_hclust$order]
+
+## We want to ladderize and rotate our tree now for later, as otherwise you 
+## might have non-sparse regions of the heatmap mixed in the tree with sparse 
+## regions, so:
+
+temp_tax_n <- best_hclust_tax$order %>% length
+temp_tax <- as.phylo(best_hclust_tax) %>% ladderize()
+temp_order_tax <- temp_tax$edge[,2] 
+temp_order_tax <- temp_order_tax[temp_order_tax <= temp_tax_n]
+
+list_taxa <- best_hclust_tax$labels[temp_order_tax]
+
+
+
+#' 
+#' # Heatmap Display
+#' 
+#' Next we can set some aesthetics
+#' 
+## ------------------------------------------------------------------------
+
+ env_shapes <- c(8,
+                0,
+                1,
+                2,
+                0,
+                1,
+                2,
+                5,
+                11,
+                0,
+                12,
+                1,
+                10,
+                2,
+                6,
+                10,
+                13,
+                7,
+                8,
+                14,
+                3,
+                4,
+                12,
+                0)
+
+names(env_shapes) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque", 
+           "urbanGut",
+           "EnvironmentalControl")
+
+## Additional 0 for ggtree
+common_colours <- c(`0` = "black", Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+common_colours_extended <- c(None = "black", Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#e41a1c", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 3, LibraryControl = 7, Plaque = 9, 
+          Gut = 7, Skin = 14, Sediment = 10, EnvironmentalControl = 12)
+
+common_colours_tbl <- common_colours %>% enframe(name = "Host_Common", value = "Colour")
+
+genus_colours <- c(None = "black", Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo` = "#ff7f00", Control = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9")
+
+
+#' 
+#' 
+#' ## Heatmap
+#' 
+#' Fixing ultra-long filenames
+#' 
+## ------------------------------------------------------------------------
+if (view_taxon_only == "Actinomyces|Campylobacter|Capnocytophaga|Corynebacterium|Desulfomicrobium|Fusobacterium|Fretibacterium|Mogibacterium|Mycobacterium|Olsenella|Ottowia|Parvimonas|Prevotella|Porphyromonas|Pseudopropionibacterium|Selenomonas|Streptococcus|Treponema|Tannerella") {
+  view_taxon_only <- "CoreGenusOnly"
+} else {
+  view_taxon_only <- view_taxon_only
+}
+
+#' 
+#' 
+#' We will now prepare the heatmap itself. To get the data in the right order
+#' and add metadata for improved plotting.
+#' 
+## ------------------------------------------------------------------------
+data_heatmap <- otu_matrix_pseudo_clr %>%  
+  as_tibble(rownames = "Individual") %>%
+  gather(Taxon, CLR, 2:ncol(.)) %>%
+  left_join(raw_metadata) %>%
+  left_join(common_colours_tbl) %>%
+  mutate(Individual = factor(Individual, levels = list_individual), 
+         Taxon = factor(Taxon, levels = list_taxa)) %>%
+  arrange(Individual) %>%
+  mutate(Host_Common = as_factor(Host_Common),
+         Colour = as_factor(Colour))
+
+#' 
+#' 
+#' Save for later
+#' 
+## ------------------------------------------------------------------------
+write_tsv(data_heatmap, paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/compositional_heatmaps.backup/045-compositional_heatmapdatalong_clr_" ,
+              zero_trans, "_",
+             db , "_", 
+             tax_level, "_", 
+             sources, "_", 
+             controls, 
+             "_badsamples", bad_samples, "_", 
+             sample_filter, "_", 
+             "additionaltaxafilteringto_", gsub("\\|", "", view_taxon_only), "_",
+             minsupp_threshold, "_" , 
+             format(Sys.Date(), "%Y%m%d"),".tsv"))
+
+#' 
+#' 
+#' We cannot auto assign font colours to axis labels in R. To do this we need
+#' to make a vector (in the corresponding order of the axis labels) of the 
+#' colours we want to set.
+#' 
+## ------------------------------------------------------------------------
+vector_colour <- data_heatmap %>% 
+  dplyr::select(Individual, Colour) %>% 
+  unique %>% 
+  pull(Colour) %>% 
+  as.character()
+
+#' 
+#' This can be plotted with
+#' 
+## ------------------------------------------------------------------------
+heatmap_base <- ggplot(data_heatmap, aes(Taxon, Individual, fill = CLR)) +
+  geom_tile() +
+  ggtitle(paste("Centered Log Ratio Transformed Heatmap at", tax_level ,"level"), subtitle = paste0("Database: ", db, 
+                                                                   ". Sources: ", sources, 
+                                                                   ". Controls: ", controls, 
+                                                                   ". Bad Samples: ", bad_samples,
+                                                                   ". Min Support: ", minsupp_threshold,
+                                                                   ". \nZero replacement: ", zero_trans,
+                                                                   ". Min. Prevalence (Inds): ", prevalence_filter,
+                                                                   ". Individual clustering: ", best_method,
+                                                                   ". Taxon clustering: ", best_method_tax)) +
+  #scale_fill_viridis_c() +
+  scale_fill_distiller(palette = "Spectral") +
+  scale_colour_manual(values = NA) +
+  scale_x_discrete(position = "top") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.x = element_text(angle = 90, hjust = -0.001),
+        axis.text.y = element_text(colour = vector_colour),
+        plot.margin = margin(0, 0, 0, 0, "pt"),
+        axis.title.y = element_blank(),
+        legend.position = "left")
+
+# if colour sample labels wanted theme(element_text(colour = vector_colour))
+
+  
+
+#' 
+#' To view the base heatmap
+#' 
+
+#' 
+#' 
+#' ## Trees
+#' 
+#' Make the Individual tree. First we need to convert the hclust to a phylo 
+#' object. However, as we want to keep our cluster stability values, we need
+#' to use a modified verison of ape's `as.phylo` that carries along
+#' these AU `pvclust` values. I have modified conversion function from the fastbaps 
+#' package [here]
+#' (https://github.com/gtonkinhill/fastbaps/blob/master/R/as.phylo.hclust.node.attributes.R)
+#' 
+## ------------------------------------------------------------------------
+
+as.phylo.hclust.node.attributes <- function(x, attribute)
+{
+  N <- dim(x$merge)[1]
+  edge <- matrix(0L, 2*N, 2)
+  edge.length <- numeric(2*N)
+  ## `node' gives the number of the node for the i-th row of x$merge
+  node <- integer(N)
+  node[N] <- N + 2L
+  node.attributes <- rep(NA, N)
+  cur.nod <- N + 3L
+  j <- 1L
+  for (i in N:1) {
+    edge[j:(j + 1), 1] <- node[i]
+    for (l in 1:2) {
+      k <- j + l - 1L
+      y <- x$merge[i, l]
+      if (y > 0) {
+        edge[k, 2] <- node[y] <- cur.nod
+        cur.nod <- cur.nod + 1L
+        edge.length[k] <- x$height[i] - x$height[y]
+        node.attributes[edge[k, 1] - (N + 1)] <- attribute[i]
+      } else {
+        edge[k, 2] <- -y
+        edge.length[k] <- x$height[i]
+        node.attributes[edge[k, 1] -  (N + 1)] <- attribute[i]
+      }
+    }
+    j <- j + 2L
+  }
+  if (is.null(x$labels))
+    x$labels <- as.character(1:(N + 1))
+  
+  ## clean up node.attributes so they are in same format in pvclust plots
+  node.attributes <- as.character(round(node.attributes * 100, 0))
+  node.attributes[1] <- NA
+  
+  obj <- list(edge = edge, edge.length = edge.length / 2,
+              tip.label = x$labels, Nnode = N, node.label = node.attributes)
+  class(obj) <- "phylo"
+  stats::reorder(obj)
+}
+
+best_hclust_phylo <- as.phylo.hclust.node.attributes(best_hclust, 
+                                                     hclust_boot$edges$au)
+
+
+#' 
+#' Save tree for later
+#' 
+## ------------------------------------------------------------------------
+write.tree(best_hclust_phylo, file = paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/compositional_heatmaps.backup/045-compositional_samplehclust_clr_" ,
+              zero_trans, "_",
+             db , "_", 
+             tax_level, "_", 
+             sources, "_", 
+             controls, 
+             "_badsamples", bad_samples, "_", 
+             sample_filter, "_", 
+             "additionaltaxafilteringto_", gsub("\\|", "", view_taxon_only), "_",
+             minsupp_threshold, "_" , 
+             format(Sys.Date(), "%Y%m%d"),".nwk"))
+
+#' 
+#' To set branch colours
+#' 
+#' 
+## ------------------------------------------------------------------------
+## Extract groups and assign OTUs within tree
+list_metadata_subset <- aggregate(data = raw_metadata %>% 
+                                    filter(Type == "Calculus"), 
+                                  `Individual` ~ Host_Common, as.vector)
+
+Host_Common_grouping_list <- list_metadata_subset$Individual
+names(Host_Common_grouping_list) <- list_metadata_subset$Host_Common
+
+tree <- groupOTU(best_hclust_phylo, Host_Common_grouping_list, 
+                 group_name = "Group", overlap = "abandon")
+
+## Extract the edge groups, and repair so any node with 'conflicting' offspring
+## groups will have group between offsprings and parents set to no-group
+
+## Extract edge groups, and corresponding parent-offspring relationships
+edge_groups <- attr(tree, "Group") %>% 
+  enframe(name = "Offspring", value = "Group")
+edge_connections <- tree$edge %>% 
+  as_tibble %>% 
+  rename(Parent = "V1", Offspring = "V2")
+metadata_edges <- left_join(edge_groups, edge_connections)
+
+## Calculate new list based on whether offspring groups are different, note if
+## no group that is because tip label, and does not have offspring
+new_groups <- list()
+
+for (i in metadata_edges$Parent) {
+    n_group <- filter(metadata_edges, Parent == i) %>% 
+      pull(Group) %>% 
+      as.character() %>% 
+      unique
+    result <- case_when(length(n_group) == 0 ~ n_group,
+              length(n_group) == 1 ~ n_group,
+              length(n_group) > 1 ~ "0") %>% unique
+    result <- setNames(i, result)
+    new_groups <- append(new_groups, result, after = length(new_groups))
+}
+
+## Generate a new table, remove root 'parent', and re-assign tree 'Groups'
+groups_fixed <- new_groups %>% 
+  enframe(name = "New_Group", value = "Parent") %>% 
+  unnest %>% 
+  mutate(New_Group = if_else(is.na(Parent), "None", New_Group)) %>%
+  mutate(New_Group = if_else(New_Group == 0, "None", New_Group))
+
+groupings_final <- groups_fixed$New_Group %>% as_factor
+attr(tree, "Group") <- groupings_final
+
+#' 
+#' And make tree
+#' 
+## ------------------------------------------------------------------------
+
+tree_sample <- ggtree(tree, aes(x, y, colour = Group), ladderize = F, branch.length = 'none') %<+% 
+  raw_metadata + 
+  geom_tippoint(aes(shape = Env, colour = Host_Common), stroke = 0.5) +
+  geom_text2(aes(subset = !isTip, label = label), size = 2, colour = "red", 
+             hjust = -0.3, vjust = -0.3) +
+  scale_shape_manual(values = env_shapes, name = "Group") +
+  scale_colour_manual(values = common_colours_extended, name = "Clade") +
+  scale_y_continuous(expand = expand_scale(mult = 0.005)) + 
+  geom_tree(size = 0.01) + 
+  theme_tree() +
+  theme(text = element_text(family = "Roboto", size = 7),
+        plot.margin = margin(0, 0, 0, 0, "pt"),
+        legend.position = "right") +
+  scale_x_reverse()
+
+#' 
+#' View sample tree
+#' 
+
+#' 
+#' 
+#' Make the taxa tree
+#' 
+## ------------------------------------------------------------------------
+
+best_hclust_tax_phylo <- as.phylo(best_hclust_tax) %>% ladderize()
+
+## To save
+write.tree(best_hclust_tax_phylo, file = paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/compositional_heatmaps.backup/045-compositional_taxahclust_clr_" ,
+              zero_trans, "_",
+             db , "_", 
+             tax_level, "_", 
+             sources, "_", 
+             controls, 
+             "_badsamples", bad_samples, "_", 
+             sample_filter, "_", 
+             "additionaltaxafilteringto_", gsub("\\|", "", view_taxon_only), "_",
+             minsupp_threshold, "_" ,
+             "minprevalencethreshold_", prevalence_filter, "_",
+             format(Sys.Date(), "%Y%m%d"),".nwk"))
+
+
+tree_taxa <- ggtree(best_hclust_tax_phylo, aes(x, y), ladderize = T, right = T, branch.length = 'none') + 
+  scale_y_continuous(expand = expand_scale(mult = 0.005)) + 
+  geom_tree(size = 0.01) + 
+  theme_tree() +
+  theme(text = element_text(family = "Roboto"),
+        plot.margin = margin(0, 0, 0, 0, "pt")) +
+  coord_flip()
+
+
+
+
+#' 
+#' To view the taxa tree
+#' 
+
+#' 
+#' ## Final Heatmap
+#' 
+#' Put all together
+#' 
+## ---- fig.width = 7, fig.height= 7---------------------------------------
+final_plot <- heatmap_base + tree_sample + tree_taxa +  plot_spacer() + 
+  plot_layout(ncol = 2, widths = c(7, 1), heights = c(7,1))
+
+#' 
+#' And plot
+#' 
+
+#' 
+#' Save plot
+#' 
+## ------------------------------------------------------------------------
+
+if (length(best_hclust_tax_phylo$tip.label) > 100) {
+  plot_width <- length(best_hclust_tax_phylo$tip.label) * 0.08
+} else {
+  plot_width <- 7
+}
+
+ggsave(paste0("045-compositional_heatmap_clr_" ,
+              zero_trans, "_",
+             db , "_", 
+             tax_level, "_", 
+             sources, "_", 
+             controls, 
+             "_badsamples", bad_samples, "_", 
+             sample_filter, "_", 
+             "additionaltaxafilteringto_", gsub("\\|", "", view_taxon_only), "_",
+             minsupp_threshold, "_" , 
+             "minprevalencethreshold_", prevalence_filter, "_",
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = final_plot, 
+       path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/compositional_heatmaps.backup/", 
+       device = cairo_pdf, 
+       width = plot_width, 
+       height = 7, 
+       units = "in", 
+       dpi = 600)
+
+
+#' 
+#' ## Publication Plot
+#' 
+#' We need to reduce down the plot slightly for publication.
+#' 
+## ------------------------------------------------------------------------
+
+heatmap_bars_data <- data_heatmap %>% 
+  dplyr::select(Individual, Colour) %>% 
+  unique %>% 
+  mutate(Group = "Group") 
+
+vector_colour <- unique(vector_colour)
+names(vector_colour) <- vector_colour
+
+heatmap_bars <- ggplot(heatmap_bars_data, aes(Group, Individual, fill = Colour)) + 
+  geom_tile() +
+  labs(title = "", subtitle = "") +
+  xlab(label = "") +
+  scale_fill_manual(values = vector_colour) +
+  scale_x_discrete(position = "top") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        plot.margin = margin(0, 0, 0, 0, "pt"),
+        axis.title.y = element_blank(),
+        legend.position = "none",
+        panel.grid = element_blank())
+
+
+heatmap_publication <- heatmap_base + theme(axis.text.y = element_blank()) +
+  heatmap_bars + 
+  plot_spacer() + 
+  plot_layout(ncol = 2, widths = c(60, 1))
+
+if (length(best_hclust_tax_phylo$tip.label) > 100) {
+  plot_width <- length(best_hclust_tax_phylo$tip.label) * 0.05
+} else {
+  plot_width <- 7
+}
+
+ggsave(paste0("045-compositional_heatmap_clr_" ,
+              zero_trans, "_",
+             db , "_", 
+             tax_level, "_", 
+             sources, "_", 
+             controls, 
+             "_badsamples", bad_samples, "_", 
+             sample_filter, "_", 
+             "additionaltaxafilteringto_", gsub("\\|", "", view_taxon_only), "_",
+             minsupp_threshold, "_" , 
+             "minprevalencethreshold_", prevalence_filter, "_",
+             "publicationbaseplot_",
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = heatmap_publication, 
+       path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/compositional_heatmaps.backup/", 
+       device = cairo_pdf, 
+       width = plot_width, 
+       height = 7, 
+       units = "in", 
+       dpi = 600)
+
+
+#' 
+#' 
+#' ## Script generation
+#' 
+#' Use the following to generate a new fast script.
+#' 
+
+#' 

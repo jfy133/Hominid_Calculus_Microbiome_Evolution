@@ -1,0 +1,161 @@
+---
+title: "Core Microbiome - Database comparison"
+output: html_notebook
+---
+
+## Preparation
+
+This notebook shows describes the consistency between the core microbiome 
+assignments between the two databases.
+
+Load Libraries
+
+```{r}
+library(tidyverse)
+library(ggalluvial)
+library(scales)
+library(ggbeeswarm)
+library(data.table)
+library(patchwork)
+```
+
+Load the data
+
+```{r}
+data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup") %>%
+  list.files("08a-*", full.names = T) %>% 
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
+         Database = map(file_name, ~str_split(.x, "_")[[1]][7] %>% str_replace("maltdb", "") %>% as.character) %>% unlist,
+         Min_Supp = map(file_name, ~str_split(.x, "_")[[1]][8]) %>% unlist,
+         Inds_Frac = map(file_name, ~str_split(.x, "_")[[1]][9] %>% str_replace("fracinds", "") %>% as.numeric) %>% unlist,
+         Pops_Frac = map(file_name, ~str_split(.x, "_")[[1]][10] %>% str_replace("fracpops", "") %>% as.numeric) %>% unlist,
+         Single_Pops_Dropped = map(file_name, ~str_split(.x, "_")[[1]][11] %>% str_replace("singleindpopsdropped", "") %>% as.logical) %>% unlist,
+         Grouping = map(file_name, ~str_split(.x, "_")[[1]][12]) %>% unlist,
+         Level = map(file_name, ~str_split(.x, "_")[[1]][13]) %>% unlist,
+         Date = map(file_name, ~str_split(.x, "_")[[1]][14]) %>% unlist %>% str_replace(".tsv", "")) %>%
+  select(-file_name) %>%
+  filter(Date == "20190902",
+         !Min_Supp %in% c(0.08, 0.09) ) %>%
+  unnest()
+
+data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup") %>%
+  list.files("08b-*", full.names = T) %>% 
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
+         Database = map(file_name, ~str_split(.x, "_")[[1]][7] %>% str_replace("maltdb", "") %>% as.character) %>% unlist,
+         Min_Supp = map(file_name, ~str_split(.x, "_")[[1]][8]) %>% unlist,
+         Inds_Frac = map(file_name, ~str_split(.x, "_")[[1]][9] %>% str_replace("fracinds", "") %>% as.numeric) %>% unlist,
+         Pops_Frac = map(file_name, ~str_split(.x, "_")[[1]][10] %>% str_replace("fracpops", "") %>% as.numeric) %>% unlist,
+         Single_Pops_Dropped = map(file_name, ~str_split(.x, "_")[[1]][11] %>% str_replace("singleindpopsdropped", "") %>% as.logical) %>% unlist,
+         Grouping = map(file_name, ~str_split(.x, "_")[[1]][12]) %>% unlist,
+         Level = map(file_name, ~str_split(.x, "_")[[1]][13]) %>% unlist,
+         Date = map(file_name, ~str_split(.x, "_")[[1]][14]) %>% unlist %>% str_replace(".tsv", "")) %>%
+  select(-file_name) %>%
+  filter(Date == "20190902") %>%
+  unnest() %>%
+  bind_rows(data_raw) %>%
+  filter(Min_Supp == 0.07 & Tax_Level == "genus" | Min_Supp == 0.04 & Tax_Level == "species",
+         !Single_Pops_Dropped)
+```
+
+## General Database Comparison
+
+Now spread to compare between the database
+
+```{r}
+data_match <- data_raw %>% distinct() %>% 
+  spread(Database, Combination) %>% 
+  select(Min_Supp, Tax_Level, Taxon, nt, refseq) %>% 
+  mutate(Match = nt == refseq)
+
+
+## Save for publication
+
+data_match %>% 
+  replace_na(list(nt = "DidNotPassPrevalenceThreshold", refseq = "DidNotPassPrevalenceThreshold", Match = "DidNotPassPrevalenceThreshold")) %>%
+  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_databasecomparison_table_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
+```
+
+To summarise
+
+```{r}
+data_match %>% 
+  group_by(Tax_Level, Match) %>% 
+  summarise(`No. Matches` = n()) %>%
+  group_by(Tax_Level) %>%
+  mutate(total = sum(`No. Matches`))
+```
+
+We see above half of each category (assuming a taxon is found in both) is 
+supported between the two databases.
+
+We can check this using `nt` as our reference
+
+```{r}
+## Get the original number of taxa for each combination
+
+data_combs <- data_raw %>% 
+  group_by(Database, Tax_Level, Combination) %>% 
+  summarise(`No. Taxa per Combination` = n())
+
+data_corroboration <- data_match %>% 
+  gather(Database, Combination, nt, refseq) %>% 
+  filter(Match) %>%
+  distinct() %>%
+  group_by(Database, Tax_Level, Combination) %>% 
+  summarise(`No. Taxa Corroborated` = n()) %>%
+  arrange(Tax_Level,  desc(`No. Taxa Corroborated`)) %>% 
+  left_join(data_combs) %>%
+  mutate(`Combination Corroborated (%)` = (`No. Taxa Corroborated` / `No. Taxa per Combination` * 100)) %>%
+  arrange(Tax_Level,  desc(`Combination Corroborated (%)`))
+
+data_corroboration %>% 
+  filter(Combination %in% c("Alouatta:Gorilla:Pan:Homo", "Gorilla:Pan:Homo", "Pan:Homo")) %>%
+  arrange(Tax_Level, Database, desc(`Combination Corroborated (%)`))
+
+```
+
+Here we see that that when looking at only our host phylogeny
+expected combinations (which we also use for the core), that at genus
+level all genus-level >= 50% of the combinations are aggreed upon between
+the two databases. There is less support at species level, with all combinations
+are >= 60%.
+
+## How are taxa reassigned?
+
+We can investigate how the reassignment occurs (when a taxon is assigned between
+two of the host phylogeny core combination  - not if a taxon is  reassigned to
+a non-host phylogeny combination)
+
+```{r}
+data_match_reduced <- data_raw %>% 
+  distinct() %>% 
+  filter(Combination %in% c("Alouatta:Gorilla:Pan:Homo", "Gorilla:Pan:Homo", "Pan:Homo")) %>%
+  spread(Database, Combination) %>% 
+  select(Min_Supp, Tax_Level, Taxon, nt, refseq) %>% 
+  mutate(Match = nt == refseq) %>%
+  filter(!Match) %>%
+  print()
+```
+
+In 3/4 cases, the reassignment is in the nt database having a taxon
+being assigned to a Gorilla:... combination, whereas in RefSeq it is
+the same combination but without Gorilla. The other is _Campylobacter gracilis_
+being considered core to all anthropoids in nt, and just Hominins in Refseq.
+
+
+```{r}
+data_match_reduced <- data_raw %>% 
+  distinct() %>% 
+  filter(Combination %in% c("Alouatta:Gorilla:Pan:Homo", "Gorilla:Pan:Homo", "Pan:Homo")) %>%
+  spread(Database, Combination) %>% 
+  select(Min_Supp, Tax_Level, Taxon, nt, refseq) %>% 
+  mutate(Match = nt == refseq) %>%
+  filter(is.na(Match)) %>%
+  print()
+```
+
+All other cases, it appears the taxa (mostly at species level), the differences
+between the combination assignments rae likely due to the given taxon not 
+passing prevalence or abundance thresholds in the other database.

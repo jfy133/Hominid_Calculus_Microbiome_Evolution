@@ -1,0 +1,16 @@
+
+	Homogeneity of multivariate dispersions
+
+Call: betadisper(d = ps_data.dist, group = ind_groups, type = "centroid")
+
+No. of Positive Eigenvalues: 53
+No. of Negative Eigenvalues: 0
+
+Average distance to centroid:
+      ModernDayHuman          Neanderthal PreagriculturalHuman   PreantibioticHuman 
+               909.8                728.8                970.9                830.6 
+
+Eigenvalues for PCoA axes:
+(Showing 8 of 53 eigenvalues)
+   PCoA1    PCoA2    PCoA3    PCoA4    PCoA5    PCoA6    PCoA7    PCoA8 
+39035876  9529629  4414818  3496918  2635671  2003008  1752281  1147494 

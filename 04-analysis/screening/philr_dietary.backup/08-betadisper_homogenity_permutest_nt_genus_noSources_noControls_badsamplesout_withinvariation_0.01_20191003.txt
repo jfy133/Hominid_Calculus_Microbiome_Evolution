@@ -1,0 +1,17 @@
+
+Permutation test for homogeneity of multivariate dispersions
+Permutation: free
+Number of permutations: 999
+
+Response: Distances
+          Df   Sum Sq Mean Sq      F N.Perm Pr(>F)
+Groups     3   338312  112771 0.5372    999  0.674
+Residuals 50 10497103  209942                     
+
+Pairwise comparisons:
+(Observed p-value below diagonal, permuted p-value above diagonal)
+                     ModernDayHuman Neanderthal PreagriculturalHuman PreantibioticHuman
+ModernDayHuman                          0.49800              0.73700              0.709
+Neanderthal                 0.45636                          0.13400              0.557
+PreagriculturalHuman        0.73026     0.16060                                   0.342
+PreantibioticHuman          0.67539     0.53526              0.33071                   

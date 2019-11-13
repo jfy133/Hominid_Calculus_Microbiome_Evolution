@@ -1,0 +1,48 @@
+Logging started at 07:53:48 on 18 May 2019
+QIIME version: 1.9.1
+
+qiime_config values:
+pick_otus_reference_seqs_fp	/projects1/users/fellows/bin.backup/miniconda3/envs/qiime1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta
+sc_queue	all.q
+pynast_template_alignment_fp	/projects1/users/fellows/bin.backup/miniconda3/envs/qiime1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set_aligned/85_otus.pynast.fasta
+cluster_jobs_fp	start_parallel_jobs.py
+assign_taxonomy_reference_seqs_fp	/projects1/users/fellows/bin.backup/miniconda3/envs/qiime1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/rep_set/97_otus.fasta
+torque_queue	friendlyq
+jobs_to_start	1
+denoiser_min_per_core	50
+assign_taxonomy_id_to_taxonomy_fp	/projects1/users/fellows/bin.backup/miniconda3/envs/qiime1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus/taxonomy/97_otu_taxonomy.txt
+temp_dir	/projects1/users/fellows/qiime_tmp/
+blastall_fp	blastall
+seconds_to_sleep	1
+
+parameter file values:
+parallel:jobs_to_start	16
+pick_otus:max_rejects	500
+pick_otus:stepwords	20
+pick_otus:enable_rev_strand_match	True
+pick_otus:word_length	12
+pick_otus:max_accepts	100
+
+Input file md5 sums:
+/projects1/microbiome_calculus/evolution/04-analysis/screening/qiime/input/silva_16s_reads_concatenated.fna: d4c80e5b57ad79ba25f6c80acd20dfa1
+/projects1/users/fellows/bin.backup/miniconda3/envs/qiime1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus//rep_set/97_otus.fasta: 50b2269712b3738afb41892bed936c29
+/projects1/users/fellows/bin.backup/miniconda3/envs/qiime1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus//taxonomy/97_otu_taxonomy.txt: 56ef15dccf2e931ec173f4f977ed649b
+
+Executing commands.
+
+# Pick OTUs command 
+parallel_pick_otus_uclust_ref.py -i /projects1/microbiome_calculus/evolution/04-analysis/screening/qiime/input/silva_16s_reads_concatenated.fna -o /projects1/microbiome_calculus/evolution/04-analysis/screening/qiime/output/otu_picking/uclust_ref_picked_otus -r /projects1/users/fellows/bin.backup/miniconda3/envs/qiime1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus//rep_set/97_otus.fasta -T --jobs_to_start 16 --max_rejects 500 --word_length 12 --max_accepts 100 --stepwords 20 --enable_rev_strand_match
+
+Stdout:
+
+Stderr:
+
+# Make OTU table command 
+make_otu_table.py -i /projects1/microbiome_calculus/evolution/04-analysis/screening/qiime/output/otu_picking/uclust_ref_picked_otus/silva_16s_reads_concatenated_otus.txt -t /projects1/users/fellows/bin.backup/miniconda3/envs/qiime1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus//taxonomy/97_otu_taxonomy.txt -o /projects1/microbiome_calculus/evolution/04-analysis/screening/qiime/output/otu_picking/otu_table.biom 
+
+Stdout:
+
+Stderr:
+
+
+Logging stopped at 13:57:54 on 18 May 2019

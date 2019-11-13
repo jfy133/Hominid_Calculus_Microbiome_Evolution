@@ -1,0 +1,450 @@
+---
+title: "16s Mapping Results Summary"
+output: html_notebook
+---
+
+# Introduction
+
+This notebook is to generate a variety of summary statistics for the 
+16s mapping results for the libraries in this project.
+
+# Infrastructure
+
+## Data loading
+
+Load tidyverse for data wrangling and plotting
+
+```{r}
+library(tidyverse)
+library(ggbeeswarm)
+library(scales)
+library(patchwork)
+library(dabestr)
+```
+
+Set project directory (if required!)
+
+```{r}
+proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
+```
+
+Load files to be analysed 
+
+```{r}
+metadata <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+
+data_16smapping <- read_csv(paste0(proj_dir, "00-documentation.backup/05-16s_extraction_statistics_20190507.csv"), skip = 1)
+
+data_16sclustering <- read_delim(paste0(proj_dir, "04-analysis/screening/qiime/output/otu_picking/otu_table_summary.txt"), skip = 14, delim = " ")
+```
+
+## Plotting Aesthetics
+
+Set plotting aesthetics
+
+```{r}
+env_shapes <- c(Howler_Monkey = 8, 
+                 Gorilla_1 = 0, 
+                 Gorilla_2 = 1, 
+                 Gorilla_3 = 2, 
+                 Chimp_1 = 0, 
+                 Chimp_2 = 1, 
+                 Chimp_3 = 2, 
+                 Chimp_4 = 5, 
+                 Neanderthal = 11, 
+                 PreagriculturalHuman_1 = 0, 
+                 PreagriculturalHuman_2 = 12, 
+                 PreantibioticHuman_1 = 1, 
+                 PreantibioticHuman_2 = 10, 
+                 ModernDayHuman_1 = 2, 
+                 ModernDayHuman_2 = 6, 
+                 ExtractionControl = 10, 
+                 LibraryControl = 13,
+                 subPlaque = 4, 
+                 supPlaque = 12,
+                 ruralGut = 7, 
+                 urbanGut = 8, 
+                 skin = 3, 
+                 EnvironmentalControl = 0,
+                 sediment = 14
+)
+
+
+env_colours <- c(Howler_Monkey = "#1f78b4", 
+                 Gorilla_1 = "#6a3d9a", 
+                 Gorilla_2 = "#6a3d9a", 
+                 Gorilla_3 = "#6a3d9a", 
+                 Chimp_1 = "#33a02c", 
+                 Chimp_2 = "#33a02c", 
+                 Chimp_3 = "#33a02c", 
+                 Chimp_4 = "#33a02c", 
+                 Neanderthal = "#ff7f00", 
+                 PreagriculturalHuman_1 = "#ff7f00", 
+                 PreagriculturalHuman_2 = "#ff7f00", 
+                 PreantibioticHuman_1 = "#ff7f00", 
+                 PreantibioticHuman_2 = "#ff7f00", 
+                 ModernDayHuman_1 = "#ff7f00", 
+                 ModernDayHuman_2 = "#ff7f00", 
+                 ExtractionControl = "#8e8d8d", 
+                 LibraryControl = "#8e8d8d",
+                 subPlaque = "#8e8d8d", 
+                 supPlaque = "#8e8d8d",
+                 ruralGut = "#8e8d8d", 
+                 urbanGut = "#8e8d8d", 
+                 skin = "#8e8d8d", 
+                 EnvironmentalControl = "#8e8d8d",
+                 sediment = "#8e8d8d"
+)
+
+ 
+common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#8e8d8d", 
+          LibraryControl = "#8e8d8d", Plaque = "#8e8d8d", Gut = "#8e8d8d", 
+          Skin = "#8e8d8d", Sediment = "#8e8d8d", EnvironmentalControl = "#8e8d8d")
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 10, LibraryControl = 13, Plaque = 9, 
+          Gut = 4, Skin = 14, Sediment = 7, EnvironmentalControl = 12)
+```
+
+
+# Data Wrangling
+
+## 16s Mapping
+
+Filename cleanup
+
+```{r}
+strings_to_remove <- paste("_S0_L000_R1_000.fastq.merged.prefixed.16smapped.stats",
+                           "_S0_L001_R1_000.fastq.merged.prefixed.16smapped.stats", 
+                           "_S0_L001_R1_001.fastq.combined.fq.prefixed.16smapped.stats",
+                           "_S0_L003_R1_001.sorted.bam.16smapped.stats",
+                           "_S0_L000_R1_000.fastq.16smapped.stats",
+                           "_S0_L003_R1_001.fastq.combined.fq.prefixed.16smapped.stats",
+                            sep = "|")
+
+data_16smapping <- data_16smapping %>% mutate(Sample = map(File, 
+                                    ~ gsub(strings_to_remove, 
+                                           "", 
+                                           .x)) %>% 
+                         unlist) %>%
+  select(Sample, everything(), -File)
+```
+
+Add metadata and set ordering
+
+Remove accidently leftover UDG control samples. Not a problem as
+doesn't reach enough 16s rRNA reads for downstream analysis downstream  anyway 
+(yay for super clean lab and techs!)
+
+```{r}
+data_16smapping_full <- data_16smapping %>% 
+  left_join(metadata, by = c("Sample" = "#SampleID")) %>%
+  filter(Sample != "LIB025.A0301")
+  
+
+data_16smapping_full <- mutate(data_16smapping_full, Host_Common = factor(Host_Common, 
+                                                  levels = names(common_colours)),
+                   Env = factor(Env, levels = names(env_shapes)))
+
+```
+
+Calculate percentage of 16s reads from all all processed reads
+
+```{r}
+data_16smapping_full <- data_16smapping_full %>% 
+  mutate(Percent_16sReads_of_Library = (Count / Individual_Seq_Depth) * 100)
+```
+
+
+Summary statistics across all samples
+
+```{r}
+## Across everything
+data_16smapping_full %>% pull(Count) %>% summary
+
+data_16smapping_full %>% pull(Percent_16sReads_of_Library) %>% summary
+
+```
+
+Summary statistics for just calculus
+
+```{r}
+filter(data_16smapping_full, Is_Oral == "Calculus") %>% group_by(Host_Common) %>%
+  summarise_at(vars(c(Count, Percent_16sReads_of_Library)), list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  gather(Metric, Value, 2:ncol(.)) %>%
+  mutate(Statistic = map(Metric, function(x) str_split(x, "_")[[1]] %>% tail(n = 1)) %>% unlist,
+         Metric = map(Metric, function(x) str_split(x, "_")[[1]] %>% 
+                        head(-1) %>% 
+                        paste(collapse = "_")) %>% 
+           unlist,
+         Value = round(Value, 2)) %>%
+  spread(Statistic, Value)
+```
+
+Summary statistics for just modern human ancient and modern day
+
+```{r}
+filter(data_16smapping_full, Host_Common == "Homo (Modern Human)") %>% group_by(Host_General) %>%
+  summarise_at(vars(c(Count, Percent_16sReads_of_Library)), list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  gather(Metric, Value, 2:ncol(.)) %>%
+  mutate(Statistic = map(Metric, function(x) str_split(x, "_")[[1]] %>% tail(n = 1)) %>% unlist,
+         Metric = map(Metric, function(x) str_split(x, "_")[[1]] %>% 
+                        head(-1) %>% 
+                        paste(collapse = "_")) %>% 
+           unlist,
+         Value = round(Value, 2)) %>%
+  spread(Statistic, Value)
+```
+
+## OTU Clustering
+
+Clean up and join with metadata
+
+```{r}
+data_16sclustering_full <- data_16sclustering %>%
+  rename(Sample = `Counts/sample`, `OTU Count` = `detail:`) %>%
+  mutate(Sample = gsub("\\:", "", Sample)) %>%
+  left_join(metadata, by = c("Sample" = "#SampleID")) %>%
+  filter(Sample != "LIB025.A0301")
+
+data_16sclustering_full <- mutate(data_16sclustering_full, Host_Common = factor(Host_Common, 
+                                                  levels = names(common_colours)),
+                   Env = factor(Env, levels = names(env_shapes)))
+
+data_16sclustering_full
+```
+
+
+Summary across entire dataset
+
+```{r}
+data_16sclustering_full$`OTU Count` %>% summary
+```
+
+Summary across calculus samples only
+
+```{r}
+filter(data_16sclustering_full, Is_Oral == "Calculus") %>% group_by(Host_Common) %>%
+  summarise_at(vars(c(`OTU Count`)), list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  gather(Metric, Value, 2:ncol(.)) %>%
+  mutate(Statistic = map(Metric, function(x) str_split(x, "_")[[1]] %>% tail(n = 1)) %>% unlist,
+         Metric = map(Metric, function(x) str_split(x, "_")[[1]] %>% 
+                        head(-1) %>% 
+                        paste(collapse = "_")) %>% 
+           unlist,
+         Value = round(Value, 2)) %>%
+  spread(Statistic, Value)
+```
+
+Between ancient and modern human dental calculus and plaque
+
+```{r}
+
+data_16sclustering_modernhumancalculusplaqueonly <- data_16sclustering_full %>% 
+         filter(Host_Common %in% c("Homo (Modern Human)", "Plaque")) %>%
+    mutate(Host_General = factor(Host_General, 
+                                 levels = c("PreagriculturalHuman", 
+                                            "PreantibioticHuman", 
+                                            "ModernDayHuman", "plaque")))
+
+
+data_16sclustering_modernhumancalculusplaqueonly %>% 
+  group_by(Host_General) %>% 
+  summarise_at(vars(`OTU Count`), 
+               list(Mean = mean, SD = sd, Min = min, Max = max))
+```
+
+
+# Data Visualisation
+
+## 16s mapping
+
+And plot percentage of 16s reads from total non-human reads of library
+
+```{r fig.height=4, fig.width=7}
+data_16smapping_full_plot <- ggplot(data_16smapping_full, aes(Host_Common, Percent_16sReads_of_Library)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("16s Mapping Reads of Library Total (%)") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values = env_colours, name = "Population") +
+  scale_y_log10() +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+data_16smapping_full_plot
+```
+
+Save
+
+```{r}
+ggsave(paste0("SupFigX_16sMapping_AllCategories_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = data_16smapping_full_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       device = cairo_pdf, 
+       width = 7, 
+       height = 4, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_16sMapping_AllCategories_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       plot = data_16smapping_full_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       device = "png", 
+       width = 7, 
+       height = 4, 
+       units = "in", 
+       dpi = 600)
+```
+
+
+
+And at a finer resolution with just humans.
+
+```{r fig.width=7, fig.height=3.5}
+
+
+data_16smapping_modernhumancalculusplaqueonly <- data_16smapping_full %>% 
+         filter(Host_Common %in% c("Homo (Modern Human)", "Plaque")) %>%
+    mutate(Host_General = factor(Host_General, 
+                                 levels = c("PreagriculturalHuman", 
+                                            "PreantibioticHuman", 
+                                            "ModernDayHuman", "plaque")))
+
+data_16smapping_modernhumancalculusplaqueonly_plot <- ggplot(data_16smapping_modernhumancalculusplaqueonly, 
+       aes(Host_General, Percent_16sReads_of_Library)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host Group") +
+  ylab("16s Mapping Reads of Library Total (%)") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values = env_colours, name = "Population") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+
+data_16smapping_modernhumancalculusplaqueonly_plot
+```
+
+To save
+
+```{r}
+ggsave(paste0("SupFigX_16sMapping_ModernHumanCalculusPlaque_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = data_16smapping_modernhumancalculusplaqueonly_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       device = cairo_pdf, 
+       width = 7, 
+       height = 3.5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_16sMapping_ModernHumanCalculusPlaque_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       plot = data_16smapping_modernhumancalculusplaqueonly_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       device = "png", 
+       width = 7, 
+       height = 3.5, 
+       units = "in", 
+       dpi = 600)
+```
+
+## OTU Clustering
+
+Across all
+
+```{r fig.height=4, fig.width=7}
+data_16sclustering_full_plot <- ggplot(data_16sclustering_full, aes(Host_Common, `OTU Count`)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("OTU Count") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values = env_colours, name = "Population") +
+  scale_y_log10(labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+data_16sclustering_full_plot
+```
+
+To save 
+
+```{r}
+ggsave(paste0("SupFigX_16sClustering_AllCategories_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = data_16sclustering_full_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       device = cairo_pdf, 
+       width = 7, 
+       height = 3.5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_16sClustering_AllCategories_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       plot = data_16sclustering_full_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       device = "png", 
+       width = 7, 
+       height = 3.5, 
+       units = "in", 
+       dpi = 600)
+```
+
+Just ancient/modern modern human calculus/plaque
+
+
+```{r fig.width=7, fig.height=3.5}
+
+data_16sclustering_modernhumancalculusplaqueonly_plot <- ggplot(data_16sclustering_modernhumancalculusplaqueonly, 
+       aes(Host_General, `OTU Count`)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(colour = Env, shape = Env), stroke = 0.4, size = 1.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host Group") +
+  ylab("OTU Count") +
+  scale_shape_manual(values = env_shapes, name = "Population") +
+  scale_colour_manual(values = env_colours, name = "Population") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+
+data_16sclustering_modernhumancalculusplaqueonly_plot
+```
+
+To save 
+
+```{r}
+ggsave(paste0("SupFigX_16sClustering_ModernHumanCalculusPlaque_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = data_16sclustering_modernhumancalculusplaqueonly_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       device = cairo_pdf, 
+       width = 7, 
+       height = 3.5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_16sClustering_ModernHumanCalculusPlaque_comparison_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       plot = data_16sclustering_modernhumancalculusplaqueonly_plot,
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       device = "png", 
+       width = 7, 
+       height = 3.5, 
+       units = "in", 
+       dpi = 600)
+```
+
+

@@ -1,0 +1,247 @@
+Taxon	Group_Type	s.Alouatta	s.Control	s.Gorilla	s.Homo	s.Pan	index	stat	p.value	Combination
+X Eubacterium  brachy	Multiple	1	0	0	0	1	9	0.8330386935131772	0.002	Alouatta:Pan
+X Eubacterium  infirmum	Single	0	0	0	0	1	5	0.6370285193605515	0.024	Pan
+X Eubacterium  minutum	Multiple	0	0	0	1	1	15	0.9056996576572188	0.001	Homo:Pan
+X Eubacterium  saphenum	Single	0	0	0	1	0	4	0.6285509901138657	0.033	Homo
+X Eubacterium  sulci	Single	0	0	0	0	1	5	0.9258200997725514	0.001	Pan
+X Eubacterium  yurii	Single	0	0	0	1	0	4	0.7071067811865476	0.004	Homo
+Abiotrophia defectiva	Single	0	0	0	1	0	4	0.7858412917273054	0.003	Homo
+Abiotrophia sp. HMSC24B09	Single	0	0	0	1	0	4	0.8574676847598751	0.002	Homo
+Actinobacillus pleuropneumoniae	Multiple	1	0	1	0	0	7	0.4629100498862757	0.027	Alouatta:Gorilla
+Actinobacillus succinogenes	Multiple	1	0	1	0	0	7	0.7071067811865476	0.001	Alouatta:Gorilla
+Actinobaculum sp. oral taxon 183	Single	1	0	0	0	0	1	0.8501022780702728	0.001	Alouatta
+Actinomyces cardiffensis	Multiple	0	0	0	1	1	15	0.8115026712006891	0.003	Homo:Pan
+Actinomyces culturomici	Single	0	0	0	0	1	5	0.9260034037857648	0.001	Pan
+Actinomyces dentalis	Multiple	1	0	1	1	1	29	0.9718132782365654	0.001	Alouatta:Gorilla:Homo:Pan
+Actinomyces georgiae	Multiple	0	0	1	0	1	14	0.6085025505006362	0.032	Gorilla:Pan
+Actinomyces gerencseriae	Multiple	1	0	1	1	1	29	0.9603707001898367	0.001	Alouatta:Gorilla:Homo:Pan
+Actinomyces glycerinitolerans	Single	0	0	1	0	0	3	0.4714045207910317	0.015	Gorilla
+Actinomyces israelii	Multiple	1	0	1	1	1	29	0.9627597899608499	0.001	Alouatta:Gorilla:Homo:Pan
+Actinomyces johnsonii	Multiple	1	0	1	1	0	19	0.871266764982817	0.001	Alouatta:Gorilla:Homo
+Actinomyces massiliensis	Multiple	1	0	0	1	0	8	0.897433866452944	0.001	Alouatta:Homo
+Actinomyces naeslundii	Multiple	1	0	1	1	1	29	0.9952234575666603	0.001	Alouatta:Gorilla:Homo:Pan
+Actinomyces odontolyticus	Single	0	0	0	1	0	4	0.8377870527790351	0.004	Homo
+Actinomyces oris	Multiple	1	0	1	1	1	29	0.9981138563378046	0.001	Alouatta:Gorilla:Homo:Pan
+Actinomyces provencensis	Single	0	0	0	0	1	5	0.6546536707079771	0.001	Pan
+Actinomyces ruminicola	Multiple	1	0	1	1	1	29	0.7135060680126757	0.012	Alouatta:Gorilla:Homo:Pan
+Actinomyces slackii	Single	1	0	0	0	0	1	0.8106700879813286	0.001	Alouatta
+Actinomyces sp. oral taxon 170	Multiple	1	0	1	1	0	19	0.7981285530685482	0.004	Alouatta:Gorilla:Homo
+Actinomyces sp. oral taxon 171	Multiple	1	0	1	1	0	19	0.7755432254506521	0.003	Alouatta:Gorilla:Homo
+Actinomyces sp. oral taxon 414	Multiple	0	0	1	1	1	25	0.977658641405896	0.001	Gorilla:Homo:Pan
+Actinomyces sp. oral taxon 448	Multiple	1	0	1	0	1	20	0.7522170813859937	0.01	Alouatta:Gorilla:Pan
+Actinomyces sp. oral taxon 849	Multiple	0	0	1	1	0	13	0.6712351540885553	0.009	Gorilla:Homo
+Aeromicrobium choanae	Single	1	0	0	0	0	1	0.6324555320336759	0.003	Alouatta
+Aggregatibacter actinomycetemcomitans	Multiple	1	0	1	0	0	7	0.9628647113347747	0.001	Alouatta:Gorilla
+Aggregatibacter aphrophilus	Multiple	1	0	1	1	0	19	0.7903942209741298	0.023	Alouatta:Gorilla:Homo
+Aggregatibacter segnis	Multiple	1	0	1	1	0	19	0.7903364084611956	0.007	Alouatta:Gorilla:Homo
+Anaeroglobus geminatus	Multiple	0	0	1	0	1	14	0.8310475997746387	0.001	Gorilla:Pan
+Anaerolineaceae bacterium oral taxon 439	Multiple	0	0	0	1	1	15	0.9356176845878609	0.001	Homo:Pan
+Asaccharospora irregularis	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Atopobium rimae	Single	0	0	0	0	1	5	0.8757192188638768	0.001	Pan
+Atopobium sp. HMSC064B08	Single	0	0	0	0	1	5	0.8823752683446562	0.001	Pan
+Atopobium sp. oral taxon 199	Single	0	0	0	0	1	5	0.8465343931522376	0.001	Pan
+Avibacterium endocarditidis	Single	0	0	1	0	0	3	0.4714045207910317	0.015	Gorilla
+Bacteroides pyogenes	Multiple	1	0	0	0	1	9	0.7028951019063594	0.002	Alouatta:Pan
+Bacteroides zoogleoformans	Single	0	0	0	0	1	5	0.6228165232154509	0.012	Pan
+Bacteroidetes oral taxon 274	Multiple	0	0	1	1	1	25	0.9380087699961255	0.001	Gorilla:Homo:Pan
+Basfia succiniciproducens	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Campylobacter curvus	Single	1	0	0	0	0	1	0.755707485566542	0.003	Alouatta
+Campylobacter gracilis	Multiple	0	0	1	1	1	25	0.8964446844338951	0.001	Gorilla:Homo:Pan
+Campylobacter showae	Multiple	0	0	0	1	1	15	0.9754848960021649	0.001	Homo:Pan
+Candidatus Methanomethylophilus alvus	Single	0	0	0	0	1	5	0.9248743284137706	0.001	Pan
+Candidatus Saccharibacteria oral taxon TM7x	Multiple	0	0	0	1	1	15	0.9239156629238388	0.001	Homo:Pan
+Capnocytophaga gingivalis	Multiple	1	0	0	1	0	8	0.8911740682770297	0.001	Alouatta:Homo
+Capnocytophaga granulosa	Single	0	0	0	1	0	4	0.8744309927146039	0.001	Homo
+Capnocytophaga haemolytica	Single	1	0	0	0	0	1	0.9237772586606572	0.001	Alouatta
+Capnocytophaga leadbetteri	Single	0	0	0	1	0	4	0.8216773782560995	0.001	Homo
+Capnocytophaga ochracea	Single	0	0	0	1	0	4	0.5767288991222431	0.03	Homo
+Capnocytophaga sp. ChDC OS43	Single	0	0	0	1	0	4	0.6642111641550714	0.007	Homo
+Capnocytophaga sp. oral taxon 326	Single	0	0	0	1	0	4	0.7071067811865476	0.007	Homo
+Capnocytophaga sp. oral taxon 329	Single	0	0	0	1	0	4	0.6416889479197478	0.015	Homo
+Capnocytophaga sp. oral taxon 332	Single	0	0	0	1	0	4	0.639524981223839	0.019	Homo
+Capnocytophaga sp. oral taxon 863	Single	0	0	0	1	0	4	0.7258305983919987	0.012	Homo
+Capnocytophaga sp. oral taxon 878	Single	0	0	0	1	0	4	0.7276068751089989	0.009	Homo
+Capnocytophaga sputigena	Multiple	1	0	0	1	0	8	0.8915558282417286	0.001	Alouatta:Homo
+Cardiobacterium hominis	Multiple	1	0	0	1	0	8	0.9009872706107166	0.001	Alouatta:Homo
+Cardiobacterium valvarum	Multiple	1	0	0	1	0	8	0.9195719803089879	0.001	Alouatta:Homo
+Catonella morbi	Multiple	1	0	0	1	0	8	0.745062881527332	0.007	Alouatta:Homo
+Citrobacter gillenii	Single	0	0	1	0	0	3	0.4465780494858493	0.045	Gorilla
+Clostridium septicum	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Coriobacteriaceae bacterium 68 1 3	Multiple	0	0	1	0	1	14	0.75	0.002	Gorilla:Pan
+Corynebacterium durum	Multiple	1	0	1	1	0	19	0.7071067811865476	0.014	Alouatta:Gorilla:Homo
+Corynebacterium matruchotii	Single	0	0	0	1	0	4	0.9020635972943634	0.001	Homo
+Corynebacterium variabile	Single	1	0	0	0	0	1	0.6315842525326718	0.006	Alouatta
+Cryptobacterium curtum	Multiple	0	0	1	0	1	14	0.75	0.001	Gorilla:Pan
+Cupriavidus gilardii	Single	0	0	1	0	0	3	0.4714045207910317	0.02	Gorilla
+Desulfobulbus sp. ORNL	Multiple	0	0	1	1	1	25	0.9051918031707058	0.003	Gorilla:Homo:Pan
+Dialister invisus	Single	0	0	0	0	1	5	0.7665533413493631	0.007	Pan
+Eggerthella lenta	Multiple	0	0	1	0	1	14	0.5590169943749475	0.017	Gorilla:Pan
+Eggerthia catenaformis	Single	0	0	0	0	1	5	0.8371116555137526	0.001	Pan
+Eikenella corrodens	Multiple	1	0	0	1	0	8	0.9206787076416303	0.001	Alouatta:Homo
+Exiguobacterium profundum	Single	0	0	1	0	0	3	0.4714045207910317	0.019	Gorilla
+Exiguobacterium sp. HVEsp1	Single	0	0	1	0	0	3	0.4714045207910317	0.019	Gorilla
+Filifactor alocis	Multiple	0	0	0	1	1	15	0.6541133530681169	0.042	Homo:Pan
+Fusobacterium hwasookii	Multiple	1	0	0	1	1	21	0.6840904114734451	0.029	Alouatta:Homo:Pan
+Fusobacterium nucleatum	Multiple	1	0	1	1	1	29	0.9436990485504055	0.001	Alouatta:Gorilla:Homo:Pan
+Fusobacterium periodonticum	Multiple	1	0	0	0	1	9	0.8022597747521357	0.001	Alouatta:Pan
+Fusobacterium sp. oral taxon 203	Multiple	1	0	1	0	1	20	0.5166223327002536	0.044	Alouatta:Gorilla:Pan
+Gemella bergeri	Single	0	0	0	0	1	5	0.9258200997725514	0.001	Pan
+Gemella cuniculi	Multiple	1	0	0	0	1	9	0.5773502691896257	0.008	Alouatta:Pan
+Gemella morbillorum	Single	0	0	0	1	0	4	0.8174784538404497	0.003	Homo
+Gordonia phthalatica	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Haemophilus haemolyticus	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Haemophilus influenzae	Multiple	1	0	1	0	0	7	0.5345224838248488	0.015	Alouatta:Gorilla
+Haemophilus massiliensis	Single	1	0	0	0	0	1	0.7636112517229441	0.001	Alouatta
+Haemophilus parainfluenzae	Multiple	1	0	0	1	0	8	0.8047963365690604	0.001	Alouatta:Homo
+Haemophilus pittmaniae	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Johnsonella ignava	Multiple	0	0	1	1	1	25	0.7745966692414834	0.004	Gorilla:Homo:Pan
+Jonquetella anthropi	Single	0	0	0	0	1	5	0.8451542547285166	0.001	Pan
+Kingella denitrificans	Single	0	0	0	1	0	4	0.724655536391159	0.01	Homo
+Kingella oralis	Single	1	0	0	0	0	1	0.7330344549468019	0.002	Alouatta
+Kocuria kristinae	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Lachnoanaerobaculum saburreum	Single	0	0	0	0	1	5	0.4533700597363451	0.041	Pan
+Lachnospiraceae bacterium oral taxon 500	Multiple	0	0	0	1	1	15	0.8832250144490502	0.001	Homo:Pan
+Lautropia mirabilis	Multiple	1	0	0	1	0	8	0.9704248676515997	0.001	Alouatta:Homo
+Lawsonella clevelandensis	Single	0	0	0	0	1	5	0.9998967393511157	0.001	Pan
+Lelliottia amnigena	Single	0	0	1	0	0	3	0.468267272415977	0.029	Gorilla
+Leptotrichia goodfellowii	Single	1	0	0	0	0	1	0.9510313184915752	0.001	Alouatta
+Leptotrichia sp. oral taxon 212	Single	0	0	0	1	0	4	0.8224783208299743	0.001	Homo
+Leucobacter chromiiresistens	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Leucobacter sp. UCD THU	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Megasphaera micronuciformis	Single	1	0	0	0	0	1	0.6324555320336759	0.002	Alouatta
+Methanobrevibacter oralis	Multiple	0	0	0	1	1	15	0.6042377661770776	0.036	Homo:Pan
+methanogenic archaeon ISO4 H5	Single	0	0	0	0	1	5	0.9258200997725514	0.001	Pan
+Mogibacterium diversum	Single	0	0	0	0	1	5	0.9410630313010842	0.001	Pan
+Mogibacterium pumilum	Single	0	0	0	0	1	5	0.8833759968303915	0.001	Pan
+Morococcus cerebrosus	Multiple	0	0	1	1	0	13	0.6819943394704735	0.008	Gorilla:Homo
+Mycolicibacter icosiumassiliensis	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Necropsobacter massiliensis	Single	1	0	0	0	0	1	0.7920454003682238	0.001	Alouatta
+Neisseria bacilliformis	Multiple	1	0	1	1	0	19	0.6922186552431729	0.018	Alouatta:Gorilla:Homo
+Neisseria cinerea	Single	0	0	1	0	0	3	0.4714045207910317	0.02	Gorilla
+Neisseria elongata	Multiple	1	0	0	1	0	8	0.8847217054979536	0.001	Alouatta:Homo
+Neisseria gonorrhoeae	Single	0	0	1	0	0	3	0.6073401738423273	0.005	Gorilla
+Neisseria iguanae	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Neisseria lactamica	Single	0	0	1	0	0	3	0.6666666666666666	0.001	Gorilla
+Neisseria meningitidis	Single	0	0	1	0	0	3	0.5759513712425337	0.042	Gorilla
+Neisseria polysaccharea	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Neisseria shayeganii	Single	1	0	0	0	0	1	0.9633073672990047	0.001	Alouatta
+Neisseria sicca	Multiple	0	0	1	1	0	13	0.6099347649652357	0.043	Gorilla:Homo
+Neisseria sp. 10022	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Neisseria sp. 10023	Single	0	0	1	0	0	3	0.816496580927726	0.001	Gorilla
+Neisseria sp. HMSC061B04	Single	0	0	1	0	0	3	0.4714045207910317	0.02	Gorilla
+Neisseria sp. HMSC064E01	Multiple	0	0	1	1	0	13	0.6099942813304187	0.028	Gorilla:Homo
+Neisseria sp. HMSC069H12	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Neisseria sp. HMSC077D05	Multiple	0	0	1	1	0	13	0.6099942813304187	0.03	Gorilla:Homo
+Neisseria sp. HMSC31F04	Single	0	0	0	1	0	4	0.6795100518289207	0.017	Homo
+Neisseria sp. oral taxon 014	Multiple	1	0	1	0	0	7	0.7815876170235637	0.003	Alouatta:Gorilla
+Neisseria weaveri	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Neisseria zoodegmatis	Single	0	0	1	0	0	3	0.5773502691896257	0.007	Gorilla
+Nocardioides sp. Root122	Single	1	0	0	0	0	1	0.6294379813194657	0.005	Alouatta
+Olsenella provencensis	Single	0	0	1	0	0	3	0.4714045207910317	0.017	Gorilla
+Olsenella sp. HMSC062G07	Single	0	0	1	0	0	3	0.4714045207910317	0.017	Gorilla
+Olsenella sp. oral taxon 807	Multiple	0	0	1	1	1	25	0.9479002707075108	0.001	Gorilla:Homo:Pan
+Olsenella uli	Multiple	0	0	1	1	1	25	0.8714303362742963	0.001	Gorilla:Homo:Pan
+Olsenella umbonata	Single	0	0	1	0	0	3	0.5773502691896257	0.003	Gorilla
+Olsenella urininfantis	Single	0	0	1	0	0	3	0.4714045207910317	0.017	Gorilla
+Oribacterium sp. oral taxon 078	Single	0	0	0	0	1	5	0.6909268656405892	0.01	Pan
+Ottowia sp. oral taxon 894	Multiple	1	0	0	1	1	21	0.9243949445931663	0.001	Alouatta:Homo:Pan
+Oxalobacter formigenes	Multiple	0	0	1	0	1	14	0.6614378277661477	0.004	Gorilla:Pan
+Paraeggerthella hongkongensis	Multiple	0	0	1	0	1	14	0.7071067811865476	0.003	Gorilla:Pan
+Parvimonas micra	Multiple	1	0	1	1	1	29	0.7507571935295483	0.006	Alouatta:Gorilla:Homo:Pan
+Parvimonas sp. KA00067	Single	0	0	0	0	1	5	0.8451542547285166	0.001	Pan
+Pasteurella multocida	Single	1	0	0	0	0	1	0.7863654439964926	0.001	Alouatta
+Pasteurella testudinis	Single	1	0	0	0	0	1	0.8396256353942544	0.001	Alouatta
+Pasteurellaceae bacterium NI1060	Single	0	0	1	0	0	3	0.4714045207910317	0.015	Gorilla
+Peptoanaerobacter stomatis	Single	0	0	0	0	1	5	0.7866064080570376	0.001	Pan
+Peptostreptococcaceae bacterium oral taxon 113	Single	0	0	0	0	1	5	0.813751150682566	0.001	Pan
+Peptostreptococcaceae bacterium pGA 8	Single	0	0	0	0	1	5	0.814777008069016	0.001	Pan
+Phocaeicola abscessus	Multiple	0	0	1	1	1	25	0.8600537257672599	0.001	Gorilla:Homo:Pan
+Porphyromonas catoniae	Single	0	0	0	1	0	4	0.7276068751089989	0.003	Homo
+Porphyromonas gingivalis	Multiple	0	0	0	1	1	15	0.8099425296616184	0.009	Homo:Pan
+Porphyromonas gulae	Single	1	0	0	0	0	1	0.6260126019558632	0.003	Alouatta
+Prevotella intermedia	Multiple	1	0	1	1	1	29	0.7132820394581202	0.008	Alouatta:Gorilla:Homo:Pan
+Prevotella loescheii	Single	0	0	0	1	0	4	0.7669649888473704	0.002	Homo
+Prevotella saccharolytica	Single	0	0	0	1	0	4	0.7276068751089989	0.002	Homo
+Prevotella sp. oral taxon 472	Single	0	0	0	1	0	4	0.7669649888473704	0.003	Homo
+Propionibacterium acidifaciens	Single	0	0	1	0	0	3	0.6866514739438057	0.003	Gorilla
+Propionibacterium australiense	Single	0	0	1	0	0	3	0.874607646342129	0.001	Gorilla
+Propionibacterium freudenreichii	Single	0	0	1	0	0	3	0.5328633090125755	0.012	Gorilla
+Pseudomonas alcaligenes	Single	1	0	0	0	0	1	0.6324555320336759	0.002	Alouatta
+Pseudomonas sp. ML96	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Pseudopropionibacterium propionicum	Multiple	1	0	1	1	1	29	0.99022829596897	0.001	Alouatta:Gorilla:Homo:Pan
+Pseudoramibacter alactolyticus	Multiple	0	0	0	1	1	15	0.7870068522955378	0.01	Homo:Pan
+Pseudoxanthomonas sp. Root65	Single	1	0	0	0	0	1	0.5452660177366796	0.007	Alouatta
+Rothia aeria	Multiple	1	0	1	1	0	19	0.8538216186250562	0.002	Alouatta:Gorilla:Homo
+Rothia dentocariosa	Multiple	1	0	1	1	0	19	0.6757794126999073	0.027	Alouatta:Gorilla:Homo
+Rothia mucilaginosa	Multiple	1	0	1	0	0	7	0.6546536707079771	0.006	Alouatta:Gorilla
+Saccharopolyspora erythraea	Single	0	0	0	0	1	5	0.7559289460184544	0.003	Pan
+Saccharopolyspora flava	Single	0	0	0	0	1	5	0.4844051410995499	0.04	Pan
+Saccharopolyspora shandongensis	Single	0	0	0	0	1	5	0.5345224838248488	0.015	Pan
+Selenomonas artemidis	Multiple	1	0	0	1	0	8	0.5547001962252291	0.04	Alouatta:Homo
+Selenomonas noxia	Multiple	0	0	1	1	0	13	0.777593185920953	0.002	Gorilla:Homo
+Selenomonas sp. F0473	Single	1	0	0	0	0	1	0.6506774107335672	0.003	Alouatta
+Selenomonas sp. oral taxon 126	Single	0	0	0	1	0	4	0.6416889479197478	0.008	Homo
+Selenomonas sp. oral taxon 138	Single	0	0	0	1	0	4	0.5423261445466404	0.034	Homo
+Selenomonas sp. oral taxon 892	Single	0	0	0	1	0	4	0.6416889479197478	0.012	Homo
+Selenomonas sp. oral taxon 920	Single	0	0	0	1	0	4	0.5423261445466404	0.038	Homo
+Selenomonas sputigena	Single	0	0	0	1	0	4	0.7669649888473704	0.003	Homo
+Shuttleworthia satelles	Single	0	0	0	0	1	5	0.7318667835847918	0.001	Pan
+Slackia exigua	Multiple	0	0	1	0	1	14	0.8749412379102509	0.001	Gorilla:Pan
+Solobacterium moorei	Single	0	0	0	0	1	5	0.8678710873609278	0.001	Pan
+Sphingobacterium mizutaii	Single	1	0	0	0	0	1	0.8932926743827211	0.001	Alouatta
+Staphylococcus saprophyticus	Single	0	0	1	0	0	3	0.5738202704910055	0.008	Gorilla
+Staphylococcus xylosus	Single	0	0	1	0	0	3	0.5773502691896257	0.005	Gorilla
+Streptococcus agalactiae	Single	1	0	0	0	0	1	0.7745966692414834	0.001	Alouatta
+Streptococcus anginosus	Single	1	0	0	0	0	1	0.9000952318202757	0.001	Alouatta
+Streptococcus caballi	Single	1	0	0	0	0	1	0.7745966692414834	0.001	Alouatta
+Streptococcus constellatus	Single	1	0	0	0	0	1	0.6324555320336759	0.003	Alouatta
+Streptococcus cristatus	Multiple	1	0	1	1	0	19	0.901216826512889	0.001	Alouatta:Gorilla:Homo
+Streptococcus devriesei	Single	1	0	0	0	0	1	0.7586638214957917	0.001	Alouatta
+Streptococcus dysgalactiae	Multiple	1	0	1	0	0	7	0.5695571392009323	0.022	Alouatta:Gorilla
+Streptococcus equi	Multiple	1	0	0	0	1	9	0.9070424848291019	0.001	Alouatta:Pan
+Streptococcus equinus	Single	1	0	0	0	0	1	1	0.001	Alouatta
+Streptococcus ferus	Single	1	0	0	0	0	1	0.6324555320336759	0.003	Alouatta
+Streptococcus gallolyticus	Single	1	0	0	0	0	1	0.9902521300509021	0.001	Alouatta
+Streptococcus gordonii	Multiple	1	0	0	1	0	8	0.8755071153440298	0.002	Alouatta:Homo
+Streptococcus himalayensis	Single	1	0	0	0	0	1	1	0.001	Alouatta
+Streptococcus iniae	Single	1	0	0	0	0	1	0.6048162972484084	0.004	Alouatta
+Streptococcus intermedius	Single	1	0	0	0	0	1	0.8854129183975422	0.001	Alouatta
+Streptococcus macedonicus	Single	1	0	0	0	0	1	1	0.001	Alouatta
+Streptococcus marmotae	Single	1	0	0	0	0	1	0.8944271909999159	0.001	Alouatta
+Streptococcus massiliensis	Single	1	0	0	0	0	1	0.9996674647044562	0.001	Alouatta
+Streptococcus merionis	Single	1	0	0	0	0	1	0.8944271909999159	0.001	Alouatta
+Streptococcus mitis	Multiple	1	0	0	1	0	8	0.5773502691896257	0.034	Alouatta:Homo
+Streptococcus mutans	Multiple	1	0	1	0	1	20	0.73149243081017	0.005	Alouatta:Gorilla:Pan
+Streptococcus oralis	Multiple	1	0	0	1	0	8	0.9318142572463864	0.001	Alouatta:Homo
+Streptococcus ovis	Multiple	1	0	0	0	1	9	0.5773502691896257	0.014	Alouatta:Pan
+Streptococcus parasanguinis	Single	1	0	0	0	0	1	0.9889663114542944	0.001	Alouatta
+Streptococcus pasteurianus	Single	1	0	0	0	0	1	0.9999625984949803	0.001	Alouatta
+Streptococcus pneumoniae	Single	1	0	0	0	0	1	0.9919115774891702	0.001	Alouatta
+Streptococcus pseudopneumoniae	Single	1	0	0	0	0	1	0.7024809616331722	0.002	Alouatta
+Streptococcus pyogenes	Single	1	0	0	0	0	1	0.8071239519664439	0.001	Alouatta
+Streptococcus salivarius	Multiple	1	0	0	1	0	8	0.6602252917735247	0.012	Alouatta:Homo
+Streptococcus sanguinis	Multiple	1	0	0	1	0	8	0.9835063557588702	0.001	Alouatta:Homo
+Streptococcus sobrinus	Single	1	0	0	0	0	1	0.9502058359948506	0.001	Alouatta
+Streptococcus sp. DD04	Multiple	1	0	0	1	0	8	0.7963228933802395	0.002	Alouatta:Homo
+Streptococcus sp. DD10	Single	1	0	0	0	0	1	0.8944271909999159	0.001	Alouatta
+Streptococcus sp. DD12	Multiple	1	0	1	0	0	7	0.6476866783571514	0.007	Alouatta:Gorilla
+Streptococcus sp. DD13	Multiple	1	0	1	0	0	7	0.5345224838248488	0.013	Alouatta:Gorilla
+Streptococcus sp. HMSC071D03	Single	1	0	0	0	0	1	0.6324555320336759	0.003	Alouatta
+Streptococcus sp. HMSC072G04	Single	1	0	0	0	0	1	0.6324555320336759	0.003	Alouatta
+Streptococcus suis	Single	1	0	0	0	0	1	0.9820414853022361	0.001	Alouatta
+Streptococcus thermophilus	Single	1	0	0	0	0	1	0.7745966692414834	0.001	Alouatta
+Streptomyces sp. JV178	Single	0	1	0	0	0	2	0.6311644392772183	0.035	Control
+Streptomyces sp. TP A0875	Single	1	0	0	0	0	1	0.44721359549995793	0.049	Alouatta
+Tannerella forsythia	Multiple	0	0	1	1	1	25	0.882925101798881	0.005	Gorilla:Homo:Pan
+Tannerella sp. oral taxon HOT 286	Multiple	0	0	0	1	1	15	0.921616094720422	0.001	Homo:Pan
+Tessaracoccus sp. T2 5 30	Single	1	0	0	0	0	1	0.6324555320336759	0.002	Alouatta
+Thermoplasmatales archaeon BRNA1	Single	0	0	0	0	1	5	0.9255694217595059	0.001	Pan
+Treponema denticola	Multiple	0	0	0	1	1	15	0.8832610780811856	0.002	Homo:Pan
+Treponema lecithinolyticum	Multiple	0	0	1	1	1	25	0.6780675425221621	0.021	Gorilla:Homo:Pan
+Treponema maltophilum	Multiple	0	0	0	1	1	15	0.9032726650448617	0.001	Homo:Pan
+Treponema putidum	Single	0	0	0	0	1	5	0.8320342167046557	0.001	Pan
+Treponema socranskii	Multiple	1	0	1	1	1	29	0.8737944524454251	0.001	Alouatta:Gorilla:Homo:Pan
+Veillonella atypica	Single	0	0	1	0	0	3	0.6666666666666666	0.001	Gorilla
+Veillonella dispar	Single	0	0	1	0	0	3	0.6666666666666666	0.001	Gorilla
+Veillonella rodentium	Multiple	1	0	1	0	0	7	0.6517276890338741	0.004	Alouatta:Gorilla
+Veillonella tobetsuensis	Single	0	0	1	0	0	3	0.6666666666666666	0.001	Gorilla

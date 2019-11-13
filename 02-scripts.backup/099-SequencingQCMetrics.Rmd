@@ -1,0 +1,503 @@
+---
+title: "Sequencing Results and Human Content Assessment"
+output: html_notebook
+---
+
+# Introduction
+
+This notebook is to generate a variety of summary statistics for the 
+sequencing results and human content of the libraries generated for this project.
+
+# Infrastructure
+
+Load tidyverse for data wrangling and plotting
+
+```{r}
+library(tidyverse)
+library(ggbeeswarm)
+library(scales)
+library(patchwork)
+```
+
+Set project directory (if required!)
+
+```{r}
+proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
+```
+
+Load files to be analysed
+
+
+## Screening
+
+```{r}
+metadata_sample <- read_csv(paste0(proj_dir, "00-documentation.backup/01-calculus_microbiome_deep_evolution_samplescontrols_metadata_20190523.csv"))
+metadata_individual <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+metadata_library_screening <- read_csv(paste0(proj_dir, "00-documentation.backup/03-human_filtering_statistics_20190522.csv"))
+
+metadata_library_screening_polyg <- read_csv(paste0(proj_dir, "04-analysis/screening/eager/polyGremoval_output/output/Report_output.csv"))
+```
+
+## Deep
+
+```{r}
+metadata_library_deep <- read_csv(paste0(proj_dir, "03-preprocessing/deep/human_filtering/output/Report_output.csv"))
+metadata_individual_deep <- read_tsv(paste0(proj_dir, "00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv"))
+```
+
+# Data Wranging
+
+## Screening
+
+Clean up poly G stats
+
+```{r}
+metadata_library_screening_polyg_clean <- metadata_library_screening_polyg %>% 
+  rename_all(function(x) str_replace(x, "^", "PolyG_")) %>%
+  select(`PolyG_Sample Name`, 
+         `PolyG_# reads after C&M prior mapping`,
+         `PolyG_# mapped reads prior RMDup`,
+         `PolyG_Mapped Reads after RMDup`,
+         `PolyG_# of reads on mitochondrium`
+         ) %>%
+  rename(Library_Name = `PolyG_Sample Name`,
+         PolyG_Mapped_Reads = `PolyG_# mapped reads prior RMDup`,
+         PolyG_Deduplicated_Mapped_Reads = `PolyG_Mapped Reads after RMDup`,
+         PolyG_Deduplicated_mtDNA_Reads = `PolyG_# of reads on mitochondrium`
+         )
+```
+
+Merging sample metadata and library preprocessing data.
+
+> I am removing the single-stranded deeper sequenced samples here, as these are
+not used for compositional analysis, and only the amylase analysis
+
+```{r}
+metadata_combined_screening <- metadata_library_screening %>%
+  rename(Library_Name = Sample_Name) %>%
+  left_join(metadata_library_screening_polyg_clean) %>%
+  mutate(Sample = map(Library_Name, function(x) str_extract(x, "^.{8}")[[1]] %>% head(n = 1)) %>% unlist,
+         PolyG_Percent_Endogenous = (PolyG_Mapped_Reads / Post_Clip_and_Merge) * 100) %>% 
+  select(Sample, Library_Name, everything()) %>% 
+  left_join(metadata_sample) %>%
+  filter(!is.na(Host_Common),
+         !grepl(".SG.", Library_Name))
+
+```
+
+Summarise per Sample
+
+```{r}
+metadata_combined_screening_summary  <- metadata_combined_screening %>%
+  select(Sample, Library_Name, Raw_Reads, Post_Clip_and_Merge, PolyG_Mapped_Reads, Percent_Endogenous_DNA, PolyG_Deduplicated_mtDNA_Reads, Group, Host_Common, PolyG_Percent_Endogenous) %>%
+  mutate(Host_Common = factor(Host_Common, levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)"))) %>%
+  group_by(Host_Common, Group, Sample) %>%
+  summarise(Total_Raw_Reads = sum(Raw_Reads),
+            Total_Processed_Reads = sum(Post_Clip_and_Merge),
+            Total_Mapped_Reads = sum(PolyG_Mapped_Reads),
+            Total_Deduplicated_mtDNA_Reads = sum(PolyG_Deduplicated_mtDNA_Reads),
+            Mean_Percent_Endogenous = mean(Percent_Endogenous_DNA),
+            Mean_PostPolyG_Percent_Endogenous = mean(PolyG_Percent_Endogenous)) %>%
+  mutate(Total_AnalysisReadyReads = Total_Processed_Reads - Total_Mapped_Reads,
+         Age = if_else(grepl("ModernDay", Group), "Modern", "Ancient"))
+```
+
+> Note: Total_Mapped_Reads appears to be reported incorrectly. The DeDup
+log reports a number which when removing this from input mapped reads does not
+result in the number contained in the output BAM file itself. We will
+ignore this.
+
+
+## Deep
+
+Clean up mapping
+
+```{r}
+metadata_library_deep_clean <- metadata_library_deep %>% 
+  mutate(Individual = map(`Sample Name`, function(x) str_extract(x, "^.{6}")[[1]]) %>% unlist) %>%
+  separate(`Sample Name`, c("Sample", "Lane"), sep = "_") %>%
+  mutate(Lane = if_else(is.na(Lane), "L1", Lane)) %>%
+  select(Individual, Sample, Lane, everything(), -`Sample number`) %>%
+  group_by(Individual, Sample) %>%
+  summarise(Library_Raw_Reads = sum(`# of Raw Reads prior Clip & Merge (C&M)`),
+            Library_Processed_Reads = sum(`# reads after C&M prior mapping`),
+            Library_Mapped_Reads = sum(`# mapped reads prior RMDup`),
+            Percent_Endogenous_DNA = mean(`Endogenous DNA (%)`),
+            mtDNA_Reads = sum(`# of reads on mitochondrium`)) %>%
+  filter(!grepl("LIB", Individual))
+```
+
+Summarise per Individual
+
+```{r}
+metadata_library_deep_summary <- metadata_library_deep_clean %>%
+  group_by(Individual) %>%
+  summarise(Total_Raw_Reads = sum(Library_Raw_Reads),
+            Total_Processed_Reads = sum(Library_Processed_Reads),
+            Total_Mapped_Reads = sum(Library_Mapped_Reads),
+            Total_mtDNA_Reads = sum(mtDNA_Reads),
+            Mean_Percent_Endogenous = mean(Percent_Endogenous_DNA))
+```
+
+Add remaining metadata
+
+```{r}
+metadata_combined_deep <- metadata_library_deep_summary %>% 
+  left_join(metadata_individual_deep, by = c("Individual" = "sample_name")) %>% 
+  mutate(Total_AnalysisReadyReads = Total_Processed_Reads - Total_Mapped_Reads, 
+         Age = if_else(grepl("ModernDay", Host_Common), "Modern", "Ancient"),
+         Host_Common = factor(Host_Common, levels = c("Alouatta", "Gorilla", 
+                                                      "Pan", 
+                                                      "Homo (Neanderthal)", 
+                                                      "Homo (Modern Human)")))
+
+```
+
+# Data Summary
+
+## Screening
+
+Set general function
+
+```{r}
+summarise_multiple <- function(x, group_col){
+  group_col <- enquo(group_col)
+  paste(group_col)
+  x %>%
+    group_by(!! group_col) %>%
+    summarise_if(is.numeric, list(Mean = mean, SD = sd, Min = min, Max = max, Sum = sum)) %>%
+    gather(Metric, Value, 2:ncol(.)) %>%
+    mutate(Summary = map(Metric, function(x) str_split(x, "_")[[1]] %>% tail(n = 1)) %>% unlist,
+           Metric = map(Metric, function(x) {
+             name <- str_split(x, "_")[[1]]
+             len <- length(name)
+             return(name %>% head(n = (len - 1)) %>% paste(collapse = "_"))}
+             ) %>% unlist,
+           Value = as.numeric(Value) %>% round(2)) %>%
+    spread(Summary, Value) %>%
+    select(!! group_col, Metric, Mean, SD, Min, Max, Sum)
+}
+```
+
+
+Across entire data
+
+```{r}
+metadata_combined_screening_summary %>% 
+  summarise_multiple(., Age)
+
+```
+
+Per host (using common names)
+
+```{r}
+metadata_combined_screening_summary %>%
+  filter(Age == "Ancient") %>%
+  summarise_multiple(., Host_Common)
+
+metadata_combined_screening_summary %>%
+  filter(Age == "Modern") %>%
+  summarise_multiple(., Host_Common)
+
+```
+
+For inividual counts
+
+```{r}
+## all ancient
+metadata_sample  %>% 
+  filter(!grepl("VLC|JAE", Sample)) %>% 
+  group_by(Host_Common) %>% 
+  summarise(N = n())
+
+## only modern day individuals
+metadata_sample  %>% 
+  filter(grepl("VLC|JAE", Sample)) %>% 
+  group_by(Host_Common) %>% 
+  summarise(N = n())
+```
+
+For blanks, we can do the following
+
+```{r}
+metadata_library_screening %>%
+  rename(Library_Name = Sample_Name) %>%
+  left_join(metadata_library_screening_polyg_clean) %>%
+  left_join(metadata_sample, by = c("Library_Name" = "Sample")) %>%
+  filter(grepl("EXB|LIB", Library_Name)) %>%
+  group_by(Group) %>%
+  summarise_at(vars(Raw_Reads, Post_Clip_and_Merge, Percent_Endogenous_DNA), list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  gather(Metric, Value, 2:ncol(.)) %>% 
+  arrange(Group, Metric) %>%
+  mutate(Value = round(Value, 2))
+
+```
+
+## Deep
+
+Across whole dataset
+
+```{r}
+metadata_combined_deep %>%
+  summarise_multiple(., Age) %>%
+  filter(Metric %in% c("Total_Raw_Reads",
+                       "Total_Processed_Reads",
+                       "Total_AnalysisReadyReads"))
+```
+
+Per host common
+
+```{r}
+metadata_combined_deep %>%
+  summarise_multiple(., Host_Common) %>%
+  filter(Metric %in% c("Total_AnalysisReadyReads", 
+                       "total_number_raw_reads_before_clipmerge",
+                       "Total_AnalysisReadyReads"))
+```
+
+Individual counts
+
+```{r}
+metadata_combined_deep %>% 
+  group_by(Host_Common) %>% 
+  summarise(N = n())
+```
+
+For controls
+
+```{r}
+metadata_library_deep %>% 
+  mutate(Individual = map(`Sample Name`, function(x) str_extract(x, "^.{6}")[[1]]) %>% unlist) %>%
+  separate(`Sample Name`, c("Sample", "Lane"), sep = "_") %>%
+  mutate(Lane = if_else(is.na(Lane), "L1", Lane)) %>%
+  select(Individual, Sample, Lane, everything(), -`Sample number`) %>%
+  group_by(Individual, Sample) %>%
+  summarise(Library_Raw_Reads = sum(`# of Raw Reads prior Clip & Merge (C&M)`),
+            Library_Processed_Reads = sum(`# reads after C&M prior mapping`),
+            Library_Mapped_Reads = sum(`# mapped reads prior RMDup`),
+            Percent_Endogenous_DNA = mean(`Endogenous DNA (%)`),
+            mtDNA_Reads = sum(`# of reads on mitochondrium`)) %>%
+  filter(grepl("LIB", Individual)) %>%
+  arrange(Library_Processed_Reads) %>%
+  ungroup() %>%
+  summarise_at(vars(Library_Raw_Reads,Library_Processed_Reads, Percent_Endogenous_DNA), list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  gather(Metric, Value, 1:ncol(.)) %>% 
+  arrange(Metric) %>%
+  mutate(Value = round(Value, 2))
+```
+
+# Data Visualisation
+
+## Screening
+
+Raw Reads (per library!) i.e. sequencing depth
+
+```{r}
+plot_screening_rawreads <- ggplot(metadata_combined_screening_summary, aes(Host_Common, Total_Raw_Reads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = Age), colour = "black", shape = 21, stroke = 0.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Number of Sequencing Raw Reads") +
+  labs(tag = "a") +
+  scale_y_continuous(breaks = seq(0, 
+                                  150000000, 
+                                  10000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  
+
+plot_screening_rawreads
+```
+
+Processed Reads (per library!) i.e. post-adapter removal
+
+```{r}
+plot_screening_totalprocessedreads <- ggplot(metadata_combined_screening_summary, aes(Host_Common, Total_Processed_Reads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = Age), colour = "black", shape = 21, stroke = 0.2) +
+  xlab("Host (Common Name)") +
+  ylab("Number of Processed Reads") +
+  labs(tag = "b") +
+  scale_fill_brewer(palette = "Set1") +
+  scale_y_continuous(breaks = seq(0, 
+                                  150000000, 
+                                  10000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  
+
+plot_screening_totalprocessedreads
+```
+
+Mean Percent Endogenous  (per library!)
+
+```{r}
+ggplot(metadata_combined_screening_summary, aes(Host_Common, Mean_Percent_Endogenous)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = Age), colour = "black", shape = 21, stroke = 0.2) +
+  scale_fill_brewer(palette = "Set1") +
+  scale_y_log10(limits = c(0.03, 100)) +
+  xlab("Host (Common Name)") +
+  ylab("Mean Human DNA (%)") +
+  annotation_logticks(sides = "l", scaled = T, colour = "lightgrey") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  
+
+plot_screening_postpolyGhumancontent <- ggplot(metadata_combined_screening_summary, aes(Host_Common, Mean_PostPolyG_Percent_Endogenous)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = Age), colour = "black", shape = 21, stroke = 0.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Human DNA after PolyG removal (%)") +
+  labs(tag = "c") +
+  scale_y_log10(limits = c(0.03, 100)) +
+  annotation_logticks(sides = "l", scaled = T, colour = "lightgrey") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  
+
+plot_screening_postpolyGhumancontent
+
+```
+
+mtDNA Mapped Reads (per library!)
+
+```{r}
+ggplot(metadata_combined_screening_summary, aes(Host_Common, Total_Deduplicated_mtDNA_Reads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = Age), colour = "black", shape = 21, stroke = 0.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Number of mapped mtDNA reads") +
+  scale_y_log10() +
+  annotation_logticks(sides = "l", scaled = T, colour = "lightgrey") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  
+```
+
+```{r}
+plot_screening_totalnonhumanreads <- ggplot(metadata_combined_screening_summary, 
+                                             aes(Host_Common, Total_AnalysisReadyReads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = Age), colour = "black", shape = 21, stroke = 0.2) +
+  xlab("Host (Common Name)") +
+  ylab("Number of Non-Human Reads") +
+  labs(tag = "d") +
+  scale_fill_brewer(palette = "Set1") +
+  scale_y_continuous(breaks = seq(0, 
+                                  150000000, 
+                                  10000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  
+
+plot_screening_totalnonhumanreads
+  
+```
+
+To put together figure for supplementary text
+
+```{r fig.width=7, fig.height=5}
+final_screening_plot <- plot_screening_rawreads + 
+  plot_screening_totalprocessedreads +
+  plot_screening_postpolyGhumancontent + 
+  plot_screening_totalnonhumanreads +
+  plot_layout(ncol = 2)
+
+ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = final_screening__plot, 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       plot = final_screening_plot, 
+       device = "png", 
+       width = 7, 
+       height = 5, 
+       units = "in", 
+       dpi = 300)
+```
+
+## Deep
+
+Total sequenced reads per sample
+
+```{r}
+plot_deep_rawreads <- ggplot(metadata_combined_deep, aes(Host_Common, Total_Raw_Reads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = Age), colour = "black", shape = 21, stroke = 0.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Number of Sequencing Raw Reads") +
+  labs(tag = "a") +
+  scale_y_continuous(breaks = seq(0, 
+                                  500000000, 
+                                  50000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  
+
+plot_deep_rawreads
+```
+
+
+```{r}
+plot_deep_totalnonhumanreads <- ggplot(metadata_combined_deep, 
+                                             aes(Host_Common, Total_AnalysisReadyReads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = Age), colour = "black", shape = 21, stroke = 0.2) +
+  xlab("Host (Common Name)") +
+  ylab("Number of Non-Human Reads") +
+  labs(tag = "b") +
+  scale_fill_brewer(palette = "Set1") +
+  scale_y_continuous(breaks = seq(0, 
+                                  500000000, 
+                                  50000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  
+
+plot_deep_totalnonhumanreads
+```
+
+And save
+
+```{r}
+final_deep_plot <- plot_deep_rawreads + 
+  plot_deep_totalnonhumanreads +
+  plot_layout(ncol = 2)
+
+final_deep_plot
+
+ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Deep_AncientOnly_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       plot = final_deep_plot, 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 2.5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Deep_AncientOnly_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       plot = final_deep_plot, 
+       device = "png", 
+       width = 7, 
+       height = 2.5, 
+       units = "in", 
+       dpi = 300)
+```
+
