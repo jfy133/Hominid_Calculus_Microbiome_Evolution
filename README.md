@@ -687,7 +687,7 @@ for DIR in ${SAMPLES[@]}; do
 done
 ```
 
-> The per-sample EAGER results files are not provided here due to the large size.
+> The per-sample EAGER run files are not provided here due to the large size.
 
 ### Post-Processing
 
@@ -1172,10 +1172,10 @@ We have already generated the OTU above.
 For the database, you can follow the steps as recorded in 
 `02-scripts.backup/013-Organism_Isolation_Source_Database_Generation.Rmd`. The database also 
 requires manual curation over time. This database is stored under
-`00-documentation` as `07-master_oralgenome_isolationsource_database_<DATE>.tsv`
+`00-documentation` as `07-master_oralgenome_isolationsource_database.tsv`
 
 With these two things, the R notebook 
-`02-scripts/014-cumulative_proportion_decay_curves_20190627.Rmd` shows you how to generate
+`02-scripts/014-cumulative_proportion_decay_curves.Rmd` shows you how to generate
 the visualisation.
 
 These are saved in `04-analysis/screening/cumulative_decay.backup`
@@ -1232,7 +1232,9 @@ mv silva_16s_reads/16s_extraction_statistics_"$(date +"%Y%m%d")".csv .
 cp 16s_extraction_statistics_"$(date +"%Y%m%d")".csv ../../00-documentation.backup/05-16s_extraction_statistics_"$(date +"%Y%m%d")".csv
 ```
 
-The summary statistics for the number of !6S reads identified can be seen in 
+> The mapping results files are not provided here due to the large size.
+
+The summary statistics for the number of 16S reads identified can be seen in 
 `00-documentation.backup/05-16s_extraction_statistics.csv`
 
 While we have these reads, we still don't know what taxa they are derived from. 
@@ -1264,6 +1266,8 @@ for SAMPLE in "$INDIR"/*; do
   "$OUTDIR"/silva_16s_reads_concatenated.fna.gz \;
 done
 ```
+
+> The FASTA file is not provided here due to the large size.
 
 For OTU clustering tself we need to define some parameter that have 
 been adapted for shotgun data by LMAMR in Oklahoma, in a file named 
@@ -1422,8 +1426,8 @@ compositional analysis, e.g. reducing the overplotting of the loadings of PCAs.
 main metadata file 
 `02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`.
 
-We then run Decontam following the Decontam tutorial in the script 
-`015-decontam_contamination_detection_analysis.Rmd`
+We then run Decontam following the Decontam tutorial vignette on CRAN in the 
+script, and also described here `015-decontam_contamination_detection_analysis.Rmd`
 
 ## Compositional Analysis
 
@@ -1601,8 +1605,8 @@ notebook is also provided under
 
 Once optimal parameters for prevalence and abundance were chosen by permutating
 population fractions and min support values respectively (minimising retention 
-of environment contaminants and retaining well charactirised oral taxa as  
-reference), we collated the results from each database and taxonomic level into 
+of environment contaminants and retaining well characterised oral taxa as  
+reference) (see `02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.Rmd`), we collated the results from each database and taxonomic level into 
 a single set of results using the R script 
 `02-scripts.backup/018-CoreMicrobiome_summaries_20190902.R`. This collected set 
 of results can be seen in 
@@ -1669,6 +1673,7 @@ MaltExtract \
 MaltExtract results were viewed using [MEx-IPA](https://github.com/jfy133/MEx-IPA).
 The results files for this analysis ar are stored in the MEx-IPA GitHub 
 repository. 
+
 
 ## Genome Reconstruction and Phylogenetics
 
@@ -1794,6 +1799,9 @@ done > mp2_merged_readsmapped_table_all_"$(date +%Y%m%d)".txt
 ```
 
 Note that all of those files need to be -1 because the count includes a header.
+
+> Individual metaphlan2 files are not provided here due to redundency with
+> combined file(s)
 
 Finally, some read statistics by applying the same 0.01% threshold used in MALT
 are gained via the `099-MetaPhlan2_Summary_statistics.R` script. These were
