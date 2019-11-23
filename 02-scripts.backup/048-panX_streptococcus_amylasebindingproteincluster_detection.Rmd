@@ -1,0 +1,257 @@
+---
+title: "Deep Calculus Microbiome Evolution - Amylase-Binding-Protein Gene in Streptococcus Database Search"
+output: github_document
+author: "James A. Fellows Yates"
+---
+
+## Introduction
+
+This notebook describes how I identified potential amylase-binding-protein like 
+annotations from my Streptococcus supereference.
+
+I used panX to perform protein clustering based on NCBI genbank files 
+(see evolution main walkthrough). I then extracted the alignments of the 
+clusters that had the annotations of 'abpA' and 'abpB' (as I already knew
+_S. gordonii_ had these).
+
+I then needed to validate the results. This notebook describes how I performed
+additional filtering.
+
+## Set up
+
+Load libraries
+
+```{r}
+library(tidyverse)
+library(broom)
+library(seqinr)
+library(rentrez)
+```
+
+Load data
+
+```{r}
+
+## Amino acid alignment
+abpA_aa <-  read.alignment(file = "GC00002917_aa_aln.fa", format = "fasta")
+abpB_aa <- read.alignment(file = "GC00000227_1_aa_aln.fa", format = "fasta")
+
+## nucleotide alignment
+abpA_na <-  read.alignment(file = "GC00002917_na_aln.fa", format = "fasta")
+abpB_na <- read.alignment(file = "GC00000227_1_na_aln.fa", format = "fasta")
+```
+
+We can convert these to comparable alignments as well, and inspect
+
+
+```{r}
+all_abpA_aa <- abpA_aa$seq
+names(all_abpA_aa) <- abpA_aa$nam
+all_abpA_aa_aln <- all_abpA_aa %>% enframe(name = "name", value = "seq") %>% unnest
+
+all_abpB_aa <- abpB_aa$seq
+names(all_abpB_aa) <- abpB_aa$nam
+all_abpB_aa_aln <- all_abpB_aa %>% enframe(name = "name", value = "seq") %>% unnest
+
+all_abpA_na <- abpA_aa$seq
+names(all_abpA_na) <- abpA_na$nam
+all_abpA_na_aln <- all_abpA_na %>% enframe(name = "name", value = "seq") %>% unnest
+
+all_abpB_na <- abpB_na$seq
+names(all_abpB_na) <- abpB_na$nam
+all_abpB_na_aln <- all_abpB_na %>% enframe(name = "name", value = "seq") %>% unnest
+```
+
+## Distance Calculation
+
+Firstly we can look at what the distributions of distances between each
+pair-wise combination of annotations.
+
+```{r}
+
+
+
+plot_distance <- function(x, name) {
+  ggplot(x, aes(Identity)) +
+    geom_histogram(bins = 100) +
+    ggtitle(name) +
+    scale_x_continuous(breaks = seq(0, 1, 0.05)) +
+    theme_minimal(base_family = "Roboto")
+}
+  
+
+abpA_aa_gorddist <- abpA_aa %>% 
+  dist.alignment(matrix = "identity") %>% 
+  as.matrix() %>% 
+  as_tibble(rownames = "Taxon") %>% 
+  gather(Comparator, Identity, 2:ncol(.)) %>%
+  filter(Taxon == "GCA_000017005.1_ASM1700v1_genomic-SGO_2105-1-abpA_amylase-binding_protein_AbpA") %>% 
+  arrange(Identity)
+
+abpA_na_gorddist <- abpA_na %>% 
+  dist.alignment(matrix = "identity") %>% 
+  as.matrix() %>% 
+  as_tibble(rownames = "Taxon") %>% 
+  gather(Comparator, Identity, 2:ncol(.)) %>%
+  filter(Taxon == "GCA_000017005.1_ASM1700v1_genomic-SGO_2105-1-abpA_amylase-binding_protein_AbpA") %>% 
+  arrange(Identity)
+
+abpB_aa_gorddist <- abpB_aa %>% 
+  dist.alignment(matrix = "identity") %>% 
+  as.matrix() %>% 
+  as_tibble(rownames = "Taxon") %>% 
+  gather(Comparator, Identity, 2:ncol(.)) %>%
+  filter(Taxon == "GCA_000017005.1_ASM1700v1_genomic-SGO_0162-1-abpB_amylase-binding_protein_B") %>% 
+  arrange(Identity)
+
+abpB_na_gorddist <- abpB_na %>% 
+  dist.alignment(matrix = "identity") %>% 
+  as.matrix() %>% 
+  as_tibble(rownames = "Taxon") %>% 
+  gather(Comparator, Identity, 2:ncol(.)) %>%
+  filter(Taxon == "GCA_000017005.1_ASM1700v1_genomic-SGO_0162-1-abpB_amylase-binding_protein_B") %>% 
+  arrange(Identity)
+
+plot_distance(abpA_aa_gorddist, "abpB_na")
+plot_distance(abpA_na_gorddist, "abpA_na")
+plot_distance(abpB_aa_gorddist, "abpB_aa")
+plot_distance(abpB_na_gorddist, "abpB_na")
+
+
+```
+
+The way the identity score with the `dist.alignment()` function works is that
+the smaller the number, the more similar the sequences. From the documentation:
+"For example, if identity between 2 sequences is 80 the squared root of 
+(1.0 - 0.8) i.e. 0.4472136.
+
+## abpA Selection
+
+For abpA that seems to hold quite nicely, so we will keep that threshold.
+
+```{r}
+abpA_aa_filter <- abpA_aa_gorddist %>% filter(Identity <= 0.4472136) %>% print()
+abpA_na_filter <- abpA_na_gorddist %>% filter(Identity <= 0.4472136) %>% print()
+```
+
+This only reuslts in 2 similar sequences, one is it'self, and another
+which is probably a mislabelled taxon.
+
+We can double check the alignment itself though
+
+```{r}
+all_abpA_aa_aln %>% mutate(seq = map(seq, ~str_remove_all(.x, "-")) %>% unlist)
+```
+
+Actually all of thse look pretty similar, and are actually labeled as such. We 
+know for sure there are more abpA present in the database as labeled in the 
+annotations (at least 3) than the 2 found with similarity to Gordonii. 
+Therefore, we will keep all.
+
+## abpB Selection
+
+However, for abpB, which there is potentially more diversity (according to the
+literature). I would argue that there are three sections: < 0.55, < 0.65
+and < 0.8. This would correspond to apprximately 80, 70, and 60% identity. As
+nothing goes higher than 80% that would suggest the minimum 'percenty identity'
+like metric by PanX is 
+
+```{r}
+abpB_aa_filter_strict <- abpB_aa_gorddist %>% filter(Identity <= 0.55) %>% print() %>% pull(Comparator)
+abpB_aa_filter_medium <- abpB_aa_gorddist %>% filter(Identity <= 0.65) %>% print() %>% pull(Comparator)
+abpB_aa_filter_loose <- abpB_aa_gorddist %>% filter(Identity <= 0.8) %>% print() %>% pull(Comparator)
+
+#abpB_na_filter <- abpB_na_gorddist %>% filter(Identity <= 0.4472136) %>% print()
+```
+
+We can also check these alignments
+
+```{r}
+all_abpB_aa_aln %>% filter(name %in% abpB_aa_filter_strict ) %>% mutate(seq = map(seq, ~str_remove_all(.x, "-")) %>% unlist) %>% arrange(seq)
+all_abpB_aa_aln %>% filter(name %in% abpB_aa_filter_medium ) %>% mutate(seq = map(seq, ~str_remove_all(.x, "-")) %>% unlist) %>% arrange(seq)
+all_abpB_aa_aln %>% filter(name %in% abpB_aa_filter_loose ) %>% mutate(seq = map(seq, ~str_remove_all(.x, "-")) %>% unlist) %>% arrange(seq)
+```
+
+There is more variation in the starting amino acids when including everything.
+So to take a slightly coservative approach will will keep everything with the 
+equivalent of 70% percent identity to _S. gordonii_ or more.
+
+## Taxonomic Sanity Check
+
+We can also run a sanity check, by scanning the taxonomic IDs of the 
+assemblies with Haase et al. 2017 that did functional checks of amylase binding
+activity.
+
+For abpA
+
+```{r}
+get_taxon_id <- function(x){
+  entrez_search(x, db = "assembly") %>% 
+    pluck("ids") %>% 
+    entrez_link(id = ., dbfrom = "assembly", db = "taxonomy") %>% 
+    pluck("links") %>% 
+    pluck("assembly_taxonomy") %>% 
+    entrez_summary(id = ., db = "taxonomy") %>% 
+    pluck("scientificname")
+}
+
+all_abpA_aa_aln %>% 
+  select(name) %>% 
+  mutate(assembly = map(name, ~str_split(.x, "_")[[1]][1:2] %>% 
+                          paste(collapse = "_")) %>% 
+           unlist) %>%
+  mutate(taxon = map(assembly, get_taxon_id) %>% unlist) %>% 
+  arrange()
+```
+
+The three name taxa are all confirmed to have abpA activity and has
+the protein enriched and isolated.
+
+For abpB
+
+```{r}
+all_abpB_aa_aln %>% 
+  filter(name %in% abpB_aa_filter_medium ) %>% 
+  select(name) %>% 
+  mutate(assembly = map(name, ~str_split(.x, "_")[[1]][1:2] %>% 
+                          paste(collapse = "_")) %>% 
+           unlist) %>%
+  mutate(taxon = map(assembly, get_taxon_id) %>% unlist) %>% 
+  arrange()
+```
+
+Same goes for abpB, with a few extra strains not in the Haase paper.
+
+I note that in some cases there are sequences that are not necessarily 
+specific to an amylase binding protein (the "abpB-like_dipeptidase_lipoprotein"
+proteins), but we can assume they ahve relatively similar sequenes anyway
+so true abpB reads would also possibly map there due to similarity.
+
+## Results
+
+We will thus save the following annotations to count mapped reads to
+in the Streptococcus superrefernce, as lists for abpA and abpB.
+
+For abpA
+
+```{r}
+all_abpA_aa_aln %>% select(name) %>% rename(Annotation = name) %>%
+  write_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/streptococcus_investigation.backup/panX/selected_panX_abpA_annotations.tsv")
+```
+
+For abpA
+
+```{r}
+all_abpB_aa_aln %>% 
+  filter(name %in% abpB_aa_filter_medium ) %>% 
+  mutate(seq = map(seq, ~str_remove_all(.x, "-")) %>% unlist) %>% 
+  arrange(seq) %>% 
+  select(name) %>% 
+  rename(Annotation = name) %>%
+  write_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/streptococcus_investigation.backup/panX/selected_panX_abpB_annotations.tsv")
+
+```
+
+
+
+

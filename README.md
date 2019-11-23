@@ -1713,11 +1713,82 @@ bedtools coverage -a <REFERENCE>.gff -b <BAM> > <OUT FILE>.tsv -mean
 
 For the actual filtering and identification of presence/absence, we load the
  resulting TSV files into R with the notebook 
- `02-scripts.backu[/054-virulence_investigation.Rmd`
-
-**UP TO HERE - checking input files for 054, adding eager reports** 
+ `02-scripts.backup/054-virulence_investigation.Rmd`
 
 ### Amylase
+
+#### Streptococcus Distribution
+
+In the hierarchical clustering ([above](#hierarchical-clustering-heatmaps)), we
+observed the relative abundance and prevalence of Streptococci varied between 
+host genus. We therefore wished to explore this further - given the interest
+in human evolutionary history regarding the role of amylase copy number 
+variation, and certain groups of Streptococci displaying amylase activity.
+
+
+Firstly, we can look at the distribution of different types of streptocci groups
+within each of our host genera. We generated a 'consensus' table of Streptocci
+groups and their reported amylase-binding protein activity (as reported in the
+literature), described here under `00-documentation.backup/25-streptococcus_cladegroup_amylasegroup_database.tsv`.
+
+Using the MALT species level OTU tables from the screening dataset, we 
+can visualise as stacked bar plots the proportion of Streptococus alignments 
+deriving from each group. We can also applied the same concept to the production 
+dataset - but using the _Streptococcus_ superreference as the reference 
+database, as in the notebook
+`02-scripts.backup/033-streptoccocus_investigation_v2_20190826.Rmd`.
+
+#### Amylase binding protein genes
+
+Given the different distributions of the _Streptococcus_ content of each 
+host-genera and the observation that Humans tend to have more prominant signals
+of amylase-binding-activity positive species, we also looked at whether amylase-
+binding genes can be actually detected in each host genus.
+
+We decided to use the production dataset for this, to provide higher confidence
+of gene presence given the higher whole-reference depth coverages in this 
+dataset. Given that sections of amylase-binding protein genes is present in other
+genes, we wanted to find all possible 'amylase-binding-protein gene'-like 
+sequences in the superrefenece, to maximise our sensitivity in finding related
+reads.
+
+For this we can recover all amylase-like reads in our superreference with the 
+tool panX, using the Genbank files for each reference.
+
+```bash
+## Run panX analysis
+pan-genome-analysis/panX.py \
+-fn <GENBANK_FILE_DIR> \
+-sl Streptococcus_Superreference \
+-t 32
+```
+
+In the output using the panX visualisation companion tool, we searched
+for the _abpA_ and _abpB_ genes as annotated in the `_Streptococcus gordonii` genome, and downloaded the corresponding FASTA alignments of similar sequences from 
+the sequence alignment table. The alignments can be seen under 
+
+`04-analysis/screening/streptococcus_investigation.backup/panX/abpA_abpB_cluster_alignments`
+
+We then performed a filtering procedure to the files due to
+the inclusion of highly diverged sequences, as described in `02-scripts.backup/048-panX_streptococcus_amylasebindingproteincluster_detection.Rmd`.
+
+We then used the R script `02-scripts.backup/049-Streptoccocus_superreference_amylasebinding_coordinate_reconstruction.R` to recover the coordinates
+of these sequences from the superreference FASTA, which was exported as a BED file.
+
+> The super-reference FASTA files are not included here to large size.
+
+For each sample's mapping to the _Streptococcus_ super-reference, we then
+ran bedtools to recover statistics on the genome coverage.
+
+```bash
+## Extract reads from abpA and abpB-like regions
+bedtools intersect \
+-c \
+-a <ABPA_OR_ABPB_BEDFILE> \
+-b <SUPER-REFERENCE_BAM>
+```
+
+The resulting files wre then loaded into to assess the ratio of all streptococus reads to amylase binding protein-like reads as in `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`
 
 ### HUMANn2
 

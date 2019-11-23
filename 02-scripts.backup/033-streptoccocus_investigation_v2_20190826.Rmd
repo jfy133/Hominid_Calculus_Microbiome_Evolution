@@ -1,0 +1,1207 @@
+---
+title: "Early Coloniser Investigation"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Introduction
+
+Visual inspection of the 'whole' plaque microbiome heatmaps seems to show
+differences in early colonisers. In particular, certain Streptococcal species
+that are known in modern day humans (those containing/associated with 
+Amylase-Binding-Protein or abp gene containing species) to be the most abundant/important do
+not appear to be present in the non-human species. However, the other 
+most important early coloniser genera, Actinomyces, seems to be pretty 
+consistent. We will try to investgate this, and test the hypothesis that 
+abp-related species are specific to humans.
+
+We want to test this across different parameters. Firstly via compositional
+analysis, with two different databases and abundance cutoffs, and also
+via the superreference mappings specifically to _Streptococcus_ of the 
+deep sequencing data.
+
+# Preparation
+
+Load libraries.
+
+```{r}
+library(tidyverse) ## for general data cleaning
+library(ape) ## for tree manipulation
+library(philr) ## for data transform
+library(vegan) ## for statistical testing
+library(ggtree) ## for tree visualisation
+library(patchwork) ## for further visualisation assistance
+library(ggbeeswarm) ## for further visualisation assistance
+library(broom) ## for tidy statistics
+library(ALDEx2) ## for compositional diff. abund. testing
+```
+
+
+# Compositional Heatmaps
+
+Firstly I want to see do we see this pattern in heatmaps of the Streptococci
+themselves - in both nt and the custom refseq database, and with different
+minimum support values (0.01 and 0.04).
+
+## Loading 
+
+Load compositional data and associated data.
+
+```{r}
+ otu_tree_nt <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_species.nwk")
+  otu_tree_rs <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_species.nwk")
+ otu_table_nt <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+ otu_table_rs <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+ taxa_to_remove_nt <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+ taxa_to_remove_rs <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
+
+ samples_to_remove_nt <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv") %>% filter(more_env == T)
+ samples_to_remove_rs <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv") %>% filter(more_env == T)
+ 
+ raw_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
+
+```
+
+## Processing
+
+Clean up compositional data
+
+```{r}
+## Remove col cruft of Metadata
+raw_metadata <- rename(raw_metadata, Individual = `#SampleID`)
+
+## Functions
+data_cleaner <- function(x, db, samples_to_remove, taxa_to_remove, minsupp_multiplier, prevalence_filter) {
+ ## Clean names 
+ print("name cleaning")
+ colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam","", colnames(x))
+ colnames(x) <- gsub("_S.*_L00.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(x))
+ colnames(x) <- gsub("_S.*_L00.*_R1_.*.fastq.extractunmapped.bam", "", colnames(x))
+ colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.merged", "", colnames(x))
+ colnames(x) <- gsub(".prefixed.hg19unmapped", "", colnames(x))
+ colnames(x) <- gsub("_S0_L003_R1_001.sorted.bam.unmapped", "", colnames(x))
+ colnames(x) <- gsub(".mp2profile", "", colnames(x))
+ colnames(x)[1] <- "Taxon"
+
+ print("sample removal")
+ ## Remove low quality samples
+ otu_table <- x %>% 
+  dplyr::select(-one_of(samples_to_remove %>% 
+                         left_join(raw_metadata, 
+                                   by = c("sample" = "Individual")) %>%
+                         dplyr::select(sample, SourceSink, Sample_or_Control) %>% 
+                         filter(SourceSink == "sink", 
+                                Sample_or_Control == "Sample") %>% 
+                          pull(sample)) 
+ )
+
+  print("control/comparative source removal")
+ ## Remove controls/comaprative sources
+ otu_table <- otu_table %>%
+ dplyr::select(Taxon, one_of(filter(raw_metadata, SourceSink == "sink") %>%
+             pull(Individual)))
+
+   otu_table <- otu_table %>%
+   dplyr::select(Taxon, one_of(filter(raw_metadata,
+                                      Sample_or_Control == "Sample") %>%
+               pull(Individual)),
+               contains("ARS"))
+
+ print("tail filtering")
+ ## Filter taxa not passing min support threshold
+ if (db == "nt") {
+  otu_table <- otu_table %>%
+   gather(Individual, Value, 2:ncol(.)) %>%
+   left_join(dplyr::select(raw_metadata, Individual, Min_Support_Reads_Threshold_MALT)) %>%
+   mutate(Threshold = Min_Support_Reads_Threshold_MALT * minsupp_multiplier) %>%
+   mutate(Threshold = as.numeric(Threshold)) %>%
+   mutate(Filter_Passed = if_else(Value >= Threshold, 1, 0)) %>%
+   filter(Filter_Passed == 1) %>%
+   dplyr::select(Taxon, Individual, Value) %>%
+   spread(Individual, Value, fill = 0)
+ } else if (db == "refseq") {
+  otu_table <- otu_table %>%
+   gather(Individual, Value, 2:ncol(.)) %>%
+   left_join(dplyr::select(raw_metadata, Individual, Min_Support_Reads_Threshold_MALT_refseq)) %>%
+   mutate(Threshold = Min_Support_Reads_Threshold_MALT_refseq * minsupp_multiplier) %>%
+   mutate(Threshold = as.numeric(Threshold)) %>%
+   mutate(Filter_Passed = if_else(Value >= Threshold, 1, 0)) %>%
+   filter(Filter_Passed == 1) %>%
+   dplyr::select(Taxon, Individual, Value) %>%
+   spread(Individual, Value, fill = 0)
+ }
+
+ print("matrix conversion")
+ ## Convert to matrix
+ otu_matrix <- as.matrix(dplyr::select(otu_table, -Taxon))
+ rownames(otu_matrix) <- otu_table$Taxon
+
+ print("remove now absent samples")
+ ## Remove any taxa that were unique to the bad samples
+ pos_otus <- rowSums(otu_matrix)
+ pos_otus <- pos_otus[pos_otus != 0]
+
+ print("lab contaminant removal")
+ ## Remove lab contaminants
+ otu_matrix <- subset(otu_matrix, !rownames(otu_matrix) %in% (taxa_to_remove %>% pull))
+ otu_matrix_final <- subset(otu_matrix, rownames(otu_matrix) %in% names(pos_otus))
+
+ print("taxon name fixing")
+ rownames(otu_matrix_final) <- gsub(" ", "_", rownames(otu_matrix_final))
+
+ print("prevalence filtering")
+ prevalence_filter <- as.numeric(prevalence_filter)
+ passed_prevalence_list <- otu_matrix_final %>%
+   as_tibble(rownames = "Taxon") %>%
+   gather(Sample, Count, 2:ncol(.)) %>%
+   group_by(Taxon) %>%
+   summarise(Passes_Prevalence = sum(Count > 0)) %>%
+   filter(Passes_Prevalence >= prevalence_filter) %>%
+   pull(Taxon)
+
+ otu_matrix_final <- subset(otu_matrix_final,
+                            grepl(paste(passed_prevalence_list, collapse = "|"),
+                                  rownames(otu_matrix_final)))
+  
+ print("Perform pseudocount and CLR Transform") 
+ otu_matrix_pseudo <- t(otu_matrix_final) + 1
+ otu_matrix_pseudo_clr <- t(apply(otu_matrix_pseudo, 1, function(x){log(x) - mean(log(x))}))
+
+
+ 
+ return( list(alignments = otu_matrix_final, clr = otu_matrix_pseudo_clr))
+}
+
+
+otu_dist_nt_loose <- data_cleaner(otu_table_nt, 'nt', samples_to_remove_nt, taxa_to_remove_nt, 1, 5)
+otu_dist_nt_strict <- data_cleaner(otu_table_nt, 'nt', samples_to_remove_nt, taxa_to_remove_nt, 4, 5)
+otu_dist_rs_loose <- data_cleaner(otu_table_rs, 'refseq', samples_to_remove_rs, taxa_to_remove_rs, 1, 5)
+otu_dist_rs_strict <- data_cleaner(otu_table_rs, 'refseq', samples_to_remove_rs, taxa_to_remove_rs, 4, 5)
+
+
+```
+
+
+Now we perform hierarchical clustering
+
+```{r}
+perform_hclust <- function(x){
+    otu_matrix_pseudo_dist <- dist(x, method = "euclidean")
+    
+    list_hclust <- list()
+
+    for (i in  c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")) {
+      list_hclust[[i]] <- hclust(otu_matrix_pseudo_dist, method = i)
+    }
+    
+    list_cor <- list()
+
+    for (i in names(list_hclust)) {
+      list_cor[[i]] <- cor(otu_matrix_pseudo_dist, cophenetic(list_hclust[[i]]))
+    }
+    
+    result_cor <- list_cor %>% 
+      enframe(name = "Method", value = "Correlation") %>% 
+      unnest %>% 
+      arrange(-Correlation)
+    
+    list_hclust <- list_hclust[result_cor$Method]
+    best_method <- result_cor[1,1] %>% as.character() %>% eval()
+    
+    result <- list(entry_order = list_hclust[[best_method]], best_method = best_method)
+    
+    return(result)
+}
+
+otu_dist_nt_loose_sam <- perform_hclust(otu_dist_nt_loose$clr)
+otu_dist_nt_strict_sam <- perform_hclust(otu_dist_nt_strict$clr)
+otu_dist_rs_loose_sam <- perform_hclust(otu_dist_rs_loose$clr)
+otu_dist_rs_strict_sam <- perform_hclust(otu_dist_rs_strict$clr)
+
+otu_dist_nt_loose_tax <- perform_hclust(t(otu_dist_nt_loose$clr))
+otu_dist_nt_strict_tax <- perform_hclust(t(otu_dist_nt_strict$clr))
+otu_dist_rs_loose_tax <- perform_hclust(t(otu_dist_rs_loose$clr))
+otu_dist_rs_strict_tax <- perform_hclust(t(otu_dist_rs_strict$clr))
+
+
+
+```
+
+Sample hclust bootstrapping
+
+```{r}
+otu_pvclust_nt_loose_sam <- pvclust::pvclust(t(otu_dist_nt_loose$clr),
+                                             method.hclust = otu_dist_nt_loose_sam$best_method,
+                                             method.dist = "euclidean",
+                                             nboot = 1000,
+                                             parallel = T)
+
+otu_pvclust_nt_strict_sam <- pvclust::pvclust(t(otu_dist_nt_strict$clr),
+                                             method.hclust = otu_dist_nt_strict_sam$best_method,
+                                             method.dist = "euclidean",
+                                             nboot = 1000,
+                                             parallel = T)
+
+otu_pvclust_rs_loose_sam <- pvclust::pvclust(t(otu_dist_rs_loose$clr),
+                                             method.hclust = otu_dist_rs_loose_sam$best_method,
+                                             method.dist = "euclidean",
+                                             nboot = 1000,
+                                             parallel = T)
+
+otu_pvclust_rs_strict_sam <- pvclust::pvclust(t(otu_dist_rs_strict$clr),
+                                             method.hclust = otu_dist_rs_strict_sam$best_method,
+                                             method.dist = "euclidean",
+                                             nboot = 1000,
+                                             parallel = T)
+
+```
+
+## Individual/Taxa Ordering
+
+Now we need to record the exact order of the individual and taxa so we order them
+correctly on the heatmap.
+
+```{r}
+
+set_ordering <- function(sample, taxon){
+  best_hclust <- sample$hclust
+  best_hclust_tax <- taxon$entry_order
+  
+  list_individual <- best_hclust$labels[best_hclust$order]
+  
+  ## We want to ladderize and rotate our tree now for later, as otherwise you 
+  ## might have non-sparse regions of the heatmap mixed in the tree with sparse 
+  ## regions, so:
+  
+  temp_tax_n <- best_hclust_tax$order %>% length
+  temp_tax <- as.phylo(best_hclust_tax) %>% ladderize()
+  temp_order_tax <- temp_tax$edge[,2] 
+  temp_order_tax <- temp_order_tax[temp_order_tax <= temp_tax_n]
+  
+  list_taxa <- best_hclust_tax$labels[temp_order_tax]
+  
+  return(list(list_individual = list_individual, 
+              list_taxa = list_taxa))
+}
+
+otu_ordered_nt_loose_sam <- set_ordering(otu_pvclust_nt_loose_sam, otu_dist_nt_loose_tax)
+otu_ordered_nt_strict_sam <- set_ordering(otu_pvclust_nt_strict_sam, otu_dist_nt_strict_tax)
+
+otu_ordered_rs_loose_sam <- set_ordering(otu_pvclust_rs_loose_sam, otu_dist_rs_loose_tax)
+otu_ordered_rs_strict_sam <- set_ordering(otu_pvclust_rs_strict_sam, otu_dist_rs_strict_tax)
+
+
+
+```
+
+## Aesthetics
+
+Next we can set some aesthetics
+
+```{r}
+
+ env_shapes <- c(8,
+                0,
+                1,
+                2,
+                0,
+                1,
+                2,
+                5,
+                11,
+                0,
+                12,
+                1,
+                10,
+                2,
+                6,
+                10,
+                13,
+                7,
+                8,
+                14,
+                3,
+                4,
+                12,
+                0)
+
+names(env_shapes) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque", 
+           "urbanGut",
+           "EnvironmentalControl")
+
+## Additional 0 for ggtree
+common_colours <- c(`0` = "black", Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+common_colours_extended <- c(None = "black", Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#e41a1c", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 3, LibraryControl = 7, Plaque = 9, 
+          Gut = 7, Skin = 14, Sediment = 10, EnvironmentalControl = 12)
+
+common_colours_tbl <- common_colours %>% enframe(name = "Host_Common", value = "Colour")
+
+genus_colours <- c(None = "black", Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo` = "#ff7f00", Control = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9")
+
+
+strep_db <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/25-streptococcus_cladegroup_amylasegroup_database.tsv")
+
+## Drop salivarius as not normally considered abp carrying, and only single strain with possible activity
+strep_db <- strep_db %>% 
+  mutate(NewColour = if_else(Haase_Amylase_Activity, "#e41a1c", "#f448fa"))
+
+order_cladeconsensus_by_abp <- c("sanguinis", "mitis", "salivarius", "anginosus", "downei", "pyogenic", "mutans", "unknown", NA)
+
+```
+
+Convert data to plottable format
+
+```{r}
+prepare_heatmap_data <- function(base, order){
+  base %>%  
+    as_tibble(rownames = "Individual") %>%
+    gather(Taxon, CLR, 2:ncol(.)) %>%
+    left_join(raw_metadata) %>%
+    left_join(common_colours_tbl) %>%
+    mutate(Individual = factor(Individual, levels = order$list_individual), 
+           Taxon = factor(Taxon, levels = order$list_taxa)) %>%
+    arrange(Individual) %>%
+    mutate(Host_Common = as_factor(Host_Common),
+           Colour = as_factor(Colour))
+}
+
+otu_heatmap_nt_loose <- prepare_heatmap_data(otu_dist_nt_loose$clr, otu_ordered_nt_loose_sam)
+otu_heatmap_nt_strict <- prepare_heatmap_data(otu_dist_nt_strict$clr, otu_ordered_nt_strict_sam)
+otu_heatmap_rs_loose <- prepare_heatmap_data(otu_dist_rs_loose$clr, otu_ordered_rs_loose_sam)
+otu_heatmap_rs_strict <- prepare_heatmap_data(otu_dist_rs_strict$clr, otu_ordered_rs_strict_sam)
+
+
+```
+
+Get host genus label colours
+
+```{r}
+
+set_colour <- function(x){
+  x  %>% 
+    dplyr::select(Individual, Colour) %>% 
+    unique %>% 
+    pull(Colour) %>% 
+    as.character()
+}
+
+
+otu_colour_nt_loose  <- set_colour(otu_heatmap_nt_loose)
+otu_colour_nt_strict  <- set_colour(otu_heatmap_nt_strict)
+otu_colour_rs_loose  <- set_colour(otu_heatmap_rs_loose)
+otu_colour_rs_strict  <- set_colour(otu_heatmap_rs_strict)
+
+
+
+```
+
+Increase resultion to just _Streptococcus_
+
+```{r}
+filter_taxa <- function(x) {
+  x %>% 
+    mutate(Genus = map(Taxon, ~str_split(.x, "_")[[1]][1]) %>% unlist) %>%
+    filter(Genus == "Streptococcus" | Genus == "Actinomyces" | Genus == "Veillonella" | Genus == "Neisseria" | Genus == "Corynebacterium" | Genus == "Parvimonas")
+}
+
+otu_heatmap_nt_loose_strep <- filter_taxa(otu_heatmap_nt_loose)
+otu_heatmap_nt_strict_strep <- filter_taxa(otu_heatmap_nt_strict)
+otu_heatmap_rs_loose_strep <- filter_taxa(otu_heatmap_rs_loose)
+otu_heatmap_rs_strict_strep <- filter_taxa(otu_heatmap_rs_strict)
+
+```
+
+## Plot heatmap(s)
+
+Plot base heatmap
+
+```{r}
+plot_heatmap <- function(x, vector_colour, db, min_supp) {
+  
+  vector_colour_tax <- x$Taxon %>% 
+    levels %>% 
+    enframe(name = NULL, value = "Taxon") %>% 
+    left_join(strep_db) %>% 
+    mutate(NewColour = if_else(is.na(NewColour), "darkgrey", NewColour),
+           Taxon = factor(Taxon, levels = levels(x$Taxon))) %>%
+    mutate(Genus = map(Taxon, ~str_split(.x, "_")[[1]][1]) %>% unlist) %>%
+    filter(Genus == "Streptococcus" | Genus == "Actinomyces" | Genus == "Veillonella" | Genus == "Neisseria" | Genus == "Corynebacterium" | Genus == "Parvimonas") %>%
+    pull(NewColour)
+    
+  heatmap_base <- ggplot(x, aes(Individual, Taxon, fill = CLR)) +
+  geom_tile() +
+  coord_equal() +
+  scale_fill_distiller(palette = "Spectral") +
+  scale_colour_manual(values = NA) +
+  ggtitle("CLR Intensity Heatmap Subset to Early Colonising Taxa",
+          subtitle = paste0("Database: ", db, ". Minimum Node Support:", min_supp, ".\nRed: abp-related Streptoccci group; Pink: non-abp-related Streptococci group.")) +
+  scale_x_discrete(position = "top") +
+  theme_minimal(base_family = "Roboto", base_size = 10) +
+  theme(axis.text.x = element_text(angle = 90, hjust = -0.001, colour = vector_colour),
+        axis.text.y = element_text(colour = vector_colour_tax),
+        plot.margin = margin(0, 0, 0, 0, "pt"),
+        axis.title.y = element_blank(),
+        legend.position = "right")
+  return(heatmap_base)
+}
+
+plot_heatmap(otu_heatmap_nt_loose_strep, otu_colour_nt_loose, "nt", "0.01%")
+plot_heatmap(otu_heatmap_nt_strict_strep, otu_colour_nt_strict, "nt", "0.04%")
+plot_heatmap(otu_heatmap_rs_loose_strep, otu_colour_rs_loose,"Custom RefSeq", "0.01%")
+plot_heatmap(otu_heatmap_rs_strict_strep, otu_colour_rs_strict, "Custom RefSeq", "0.04%")
+
+```
+
+## Observations
+
+Obervation                                                                                                                                                  | nt 0.01 | nt 0.04 | rs 0.01 | rs 0.04 | Notes
+------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|---------|---------|---------|---------
+All taxa have members of the Streptococci pyogenes group, and _S. anguinosus_/ _S. intermedius_/ _S. constellatus_; less prevalent in modern day humans     | T       | T       | T       | T. Con.n| Con.n: not constellatus
+_Actinomyces naeslundii_ and related (meyeri, succinici..., oris) etc. consistent across all groups                                                         | T       | T       | T       | T       |
+Chimpanzees and small subset of humans do not have _abp_ containing taxa (e.g. _S. gordonii_, _S. mitis_, _S. oralis_, etc.) & _Neisseria lactmica_ group   | T       | T       | T       | T       |
+Most humans (primarily modern day ones) are conversely very abundant in the _abp_; slightly less intesnse in ancient humans                                 | T       | T       | T       | T       |
+Gorillas do not have clearly 'abundant' _Streptococcus_ peaks; long smear across all. Unspecific-/mis-mapping from relative? Slightly stronger _abp_        | T       | T       | T       | T       |      
+_S. salivarius_, _S. mutans_, _S. parasanguinis_ taxa appear to be more prevalent in Gorillas and ancient humans than modern day and recent ancient humans  | T       | F Gor.o.| F Hom.s.| F Gor.o.| Gor. only; Homo sporadic.
+
+The clearest pattern is the missing _abp_ taxa from Chimps and a few number of
+Humans. Whole microbiome heatmaps seem to suggest Chimps have greater signals
+of late-colonising taxa. Could the missing _abp_ signal be due to very large
+late-colonisers 'drowning out' abp signal? Other than the _Actinomyces_ and 
+_S. intermedius_ cluster, Chimps are missing pretty much all Streptococci, 
+whereas Gorillas and Howlers appear to have lots of (low level) Streptocci 
+hits which are generally unspecific. Could this just be an inverse pattern
+of the drowning out?
+
+There are also some subset of humans that have similar missing abp taxa,
+and look similar to chimps overall (mostly PYK, MOA, OAK, LIS).
+
+
+## Refiltering
+
+Lets instead try additionally filtering for late colonisers, to see if we have
+the inverse pattern between Gorillas and Chimps.
+
+
+```{r}
+## Following Kolenbrander 2010 Nat. Rev. Micro. + extra (Selenomonas, Neisseria, Corynebacteirum, Parvimonas, Fretibacterium)
+filter_taxa2 <- function(x) {
+  x %>% 
+    mutate(Genus = map(Taxon, ~str_split(.x, "_")[[1]][1]) %>% unlist) %>%
+    filter(Genus == "Streptococcus"  | Genus == "Capnocytophaga" | Genus == "Pseudopropionibacterium" | Genus == "Haemophilus" | Genus == "Prevotella" | Genus == "Veillonella" | Genus == "Actinomyces" | Genus == "Fusobacterium" | Genus == "Aggregatibacter" | Genus == "Treponema" | Genus == "Tannerella" | Genus == "Porphyromonas" | Genus  == "Selenomonas" | Genus == "Neisseria" | Genus == "Corynebacterium" | Genus == "Parvimonas" |  Genus == "Fretibacterium")
+}
+
+otu_heatmap_nt_loose_kolenbrander <- filter_taxa2(otu_heatmap_nt_loose)
+otu_heatmap_nt_strict_kolenbrander <- filter_taxa2(otu_heatmap_nt_strict)
+otu_heatmap_rs_loose_kolenbrander <- filter_taxa2(otu_heatmap_rs_loose)
+otu_heatmap_rs_strict_kolenbrander <- filter_taxa2(otu_heatmap_rs_strict)
+```
+
+And re-plot
+
+```{r}
+plot_heatmap2 <- function(x, vector_colour, db, min_supp) {
+  
+  vector_colour_tax <- x$Taxon %>% 
+    levels %>% 
+    enframe(name = NULL, value = "Taxon") %>% 
+    left_join(strep_db) %>% 
+    mutate(NewColour = if_else(is.na(NewColour), "darkgrey", NewColour),
+           Taxon = factor(Taxon, levels = levels(x$Taxon))) %>%
+    mutate(Genus = map(Taxon, ~str_split(.x, "_")[[1]][1]) %>% unlist) %>%
+    filter(Genus == "Streptococcus"  | Genus == "Capnocytophaga" | Genus == "Pseudopropionibacterium" | Genus == "Haemophilus" | Genus == "Prevotella" | Genus == "Veillonella" | Genus == "Actinomyces" | Genus == "Fusobacterium" | Genus == "Aggregatibacter" | Genus == "Treponema" | Genus == "Tannerella" | Genus == "Porphyromonas" | Genus  == "Selenomonas" | Genus == "Neisseria" | Genus == "Corynebacterium" | Genus == "Parvimonas" |  Genus == "Fretibacterium") %>%
+    pull(NewColour)
+    
+  heatmap_base <- ggplot(x, aes(Individual, Taxon, fill = CLR)) +
+  geom_tile() +
+  coord_equal() +
+  scale_fill_distiller(palette = "Spectral") +
+  scale_colour_manual(values = NA) +
+  ggtitle("CLR Intensity Heatmap Subset to Kolenbrander 2010 Early-Late Colonising Taxa",
+          subtitle = paste0("Database: ", db, ". Minimum Node Support:", min_supp, ".\nRed: abp-related Streptoccci group; Pink: non-abp-related Streptococci group.")) +
+  scale_x_discrete(position = "top") +
+  theme_minimal(base_family = "Roboto", base_size = 10) +
+  theme(axis.text.x = element_text(angle = 90, hjust = -0.001, colour = vector_colour),
+        axis.text.y = element_text(colour = vector_colour_tax),
+        plot.margin = margin(0, 0, 0, 0, "pt"),
+        axis.title.y = element_blank(),
+        legend.position = "right")
+  return(heatmap_base)
+}
+
+plot_heatmap2(otu_heatmap_nt_loose_kolenbrander, otu_colour_nt_loose, "nt", "0.01%")
+plot_heatmap2(otu_heatmap_nt_strict_kolenbrander, otu_colour_nt_strict, "nt", "0.04%")
+plot_heatmap2(otu_heatmap_rs_loose_kolenbrander, otu_colour_rs_loose,"Custom RefSeq", "0.01%")
+plot_heatmap2(otu_heatmap_rs_strict_kolenbrander, otu_colour_rs_strict, "Custom RefSeq", "0.04%")
+```
+
+## Observations
+
+The pattern still remains. However, chimps do not have any 'replacement'
+for the other colonisers - they just hold those few _Actinomyces_. The few 
+extra taxa they have are generally briding/later colonisers anyway
+(e.g. _Fusobacterium_, _Prevotella_). Therefore they appear to have a low
+alpha diversity consisting alsmost entirely of anaerobic/later colonising taxa 
+.The same subset of humans that look very similar to chimps in just 
+Strep./Actinomyces also remain present in the same way across all datasets.
+
+# Compositional Distribution Comparison
+
+We can also look at more detail, by comparing the distributions of different
+taxa and host genera.
+
+## Processing
+
+Define functions for taking ordered heatmap above, filter to just Strep. 
+Then calculate percentage of each Individual's abp or taxonomic Strep groups.
+
+```{r}
+## Prepare data
+prepare_clustered_stackbar <- function(otu_table, ordering, strep_grouping, factor_order) {
+
+otu_table <- otu_table$alignments %>% as_tibble(rownames = "Taxon")
+
+otu_table_strep <- filter(otu_table, grepl("^Streptococcus", Taxon))
+
+order_strep <- ordering$list_taxa[grepl("^Streptococcus", ordering$list_taxa)]
+order_sam <- ordering$list_individual
+
+otu_table_strep <- otu_table_strep %>% 
+  arrange(Taxon) %>%
+  gather(Individual, Alignment, 2:ncol(.)) %>%
+  group_by(Individual) %>%
+  mutate(Individual_Strep_Total = sum(Alignment),
+         Percentage_Strep = (Alignment / Individual_Strep_Total) * 100) %>%
+  ungroup() %>%
+  left_join(strep_db) %>%
+  mutate(Taxon = factor(Taxon, levels = order_strep)) %>%
+  mutate(Individual = factor(Individual, levels = order_sam))
+
+
+summary_strep <- otu_table_strep  %>%
+  group_by(Individual, {{strep_grouping}}) %>%
+  summarise(Strep_Group_Fraction = sum(Percentage_Strep)) %>%
+  mutate({{strep_grouping}} := factor({{strep_grouping}}, levels = factor_order))
+
+  result <- list(raw_strep = otu_table_strep, summary_strep = summary_strep)
+
+  return(result)
+
+}
+
+
+## For plotting
+plot_clustered_stackedbar <- function(table, phylo, label_order, fill, title){
+  
+  custom_colour <- c("#a50026", "#d73027", "#f46d43", "#fee090", "#74add1", "#4575b4", "#313695", "grey70")
+
+  
+  barplot_out <- ggplot(table, aes_string("Individual", "Strep_Group_Fraction", fill = fill)) +
+    geom_bar(stat = "identity") +
+    theme_minimal(base_size = 7, base_family = "Roboto") +
+    scale_fill_manual(values = custom_colour, na.value = "grey50") +
+    ggtitle(title) +
+    theme(axis.text.x = element_text(angle = 90, colour = label_order, vjust = 0.5, hjust = 1),
+          legend.position = "top",
+          axis.title.x = element_blank())
+  
+  tree_sample <- ggplot(as.phylo(phylo$hclust)) +
+    geom_tree() +
+    theme_tree() +
+    scale_y_reverse(expand = expand_scale(mult = 0.005)) +
+    coord_flip() +
+    theme_tree() +
+    theme(axis.text.x = element_blank(),
+          plot.margin = margin(0, 0, 0, 0, "pt"),
+                axis.text.y = element_blank())
+  
+  
+  
+  barplot_out + tree_sample + plot_layout(ncol = 1, heights = c(6,2))
+}
+
+```
+
+## Plot stacked barplot(s)
+
+### Strep by Clade
+
+Display the distribution of different Strep. group abundances, keeping
+ordering as clustered in the heatmaps above.
+
+```{r}
+figure_stackedbar_clade_nt_loose <- prepare_clustered_stackbar(otu_dist_nt_loose, otu_ordered_nt_loose_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>% pluck("summary_strep") %>% plot_clustered_stackedbar(otu_pvclust_nt_loose_sam, otu_colour_nt_loose, "Clade_Consensus", "nt 0.01")
+figure_stackedbar_clade_nt_strict <- prepare_clustered_stackbar(otu_dist_nt_strict, otu_ordered_nt_strict_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>% pluck("summary_strep") %>% plot_clustered_stackedbar(otu_pvclust_nt_strict_sam, otu_colour_nt_strict,  "Clade_Consensus", "nt 0.04")
+figure_stackedbar_clade_rs_loose <- prepare_clustered_stackbar(otu_dist_rs_loose, otu_ordered_rs_loose_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>% pluck("summary_strep") %>% plot_clustered_stackedbar(otu_pvclust_rs_loose_sam, otu_colour_rs_loose, "Clade_Consensus", "refseq 0.01")
+figure_stackedbar_clade_rs_strict <- prepare_clustered_stackbar(otu_dist_rs_strict, otu_ordered_rs_strict_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>% pluck("summary_strep") %>% plot_clustered_stackedbar(otu_pvclust_rs_strict_sam, otu_colour_rs_strict, "Clade_Consensus", "refseq 0.04")
+
+```
+
+To save our preferred ones
+
+```{r}
+save_stackedbar <- function(x, db, minsup, clustering) {
+  ggsave(paste0("01-streptococcusinvestigation_stackedbar_",
+                db,
+                "_",
+                minsup, 
+                "_",
+                clustering,
+                "_percentagegroupoverallstrepreads_cladeconsensus",
+    "_",
+    format(Sys.Date(), "%Y%m%d"),
+    ".pdf",
+    sep = ""
+  ),
+  plot = x,
+  "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/streptococcus_investigation.backup/",
+  device = cairo_pdf,
+  width = 7,
+  height = 3.5,
+  units = "in",
+  dpi = 600
+  )
+}
+
+save_stackedbar(figure_stackedbar_clade_nt_loose, "nt", "0.01", "hclust_all")
+save_stackedbar(figure_stackedbar_clade_nt_strict, "nt", "0.04", "hclust_all")
+save_stackedbar(figure_stackedbar_clade_rs_loose, "refseq", "0.01", "hclust_all")
+save_stackedbar(figure_stackedbar_clade_rs_strict, "refseq", "0.04", "hclust_all")
+
+```
+
+### Strep by abp activity
+
+Display the distribution of different amylase-binding-protein activity
+Streptococcus species, keeping
+ordering as clustered in the heatmaps above.
+
+```{r}
+prepare_clustered_stackbar(otu_dist_nt_loose, otu_ordered_nt_loose_sam, Haase_Amylase_Activity, c(TRUE, FALSE, NA)) %>% pluck("summary_strep") %>% plot_clustered_stackedbar(otu_pvclust_nt_loose_sam, otu_colour_nt_loose, "Haase_Amylase_Activity", "nt 0.01")
+prepare_clustered_stackbar(otu_dist_nt_strict, otu_ordered_nt_strict_sam, Haase_Amylase_Activity, c(TRUE, FALSE, NA)) %>% pluck("summary_strep") %>% plot_clustered_stackedbar(otu_pvclust_nt_strict_sam, otu_colour_nt_strict, "Haase_Amylase_Activity", "nt 0.04")
+prepare_clustered_stackbar(otu_dist_rs_loose, otu_ordered_rs_loose_sam, Haase_Amylase_Activity, c(TRUE, FALSE, NA)) %>% pluck("summary_strep") %>% plot_clustered_stackedbar(otu_pvclust_rs_loose_sam, otu_colour_rs_loose, "Haase_Amylase_Activity", "refseq 0.01")
+prepare_clustered_stackbar(otu_dist_rs_strict, otu_ordered_rs_strict_sam, Haase_Amylase_Activity, c(TRUE, FALSE, NA)) %>% pluck("summary_strep") %>% plot_clustered_stackedbar(otu_pvclust_rs_strict_sam, otu_colour_rs_strict, "Haase_Amylase_Activity", "refseq 0.04")
+
+```
+
+### Observations
+
+In both cases we see that Chimps have a very low Strep group diversity, and
+in particular do not have Amylase binding protein containing strep. A subset
+of humans also seemingly show a similar pattern here.
+
+Gorillas and howlers have a more equal and greater diversity of Strep groups
+than humans; whereas Humans are dominated by the sanguinis group of 
+streptococcus. However, of known amylase binding taxa, the percentage of
+Gorillas and humans look pretty similar, possibly slightly higher in ancient 
+humans.
+
+## Strep Clustered Stacked Bar
+
+As an alternative, maybe we can cluster the stacked bar purely by Strep
+
+### Processing
+
+Get the CLR values for clustering of just strep
+
+```{r}
+clr_nt_strict_streponly <- list()
+clr_nt_strict_streponly$alignments <- otu_dist_nt_strict$alignments[,grepl("^Streptococcus", colnames(otu_dist_nt_strict$alignments))]
+clr_nt_strict_streponly$clr <- otu_dist_nt_strict$clr[,grepl("^Streptococcus", colnames(otu_dist_nt_strict$clr))]
+
+clr_nt_strict_streponly_sam <- perform_hclust(clr_nt_strict_streponly$clr)
+
+clr_nt_strict_streponly_tax <- perform_hclust(t(clr_nt_strict_streponly$clr))
+
+clr_nt_strict_streponly_pvclust_sam <- pvclust::pvclust(t(clr_nt_strict_streponly$clr),
+                                             method.hclust = otu_dist_nt_loose_sam$best_method,
+                                             method.dist = "euclidean",
+                                             nboot = 1000,
+                                             parallel = T)
+
+clr_nt_strict_ordered_streponly_sam <- set_ordering(clr_nt_strict_streponly_pvclust_sam, clr_nt_strict_streponly_tax)
+```
+
+
+
+### Plotting
+
+Now we can plot the same stacked barplots with the Strep group as above, but
+with ordering by that exact data.
+
+```{r}
+clr_nt_strict_ordered_streponly_sam_colour <- clr_nt_strict_ordered_streponly_sam$list_individual %>% 
+  enframe(name = NULL, value = "Individual") %>% 
+  left_join(raw_metadata) %>% 
+  left_join(common_colours_tbl) %>% 
+  pull(Colour)
+
+prepare_clustered_stackbar(otu_dist_nt_strict, clr_nt_strict_ordered_streponly_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>%
+  pluck("summary_strep") %>%
+  plot_clustered_stackedbar(otu_pvclust_nt_strict_sam, clr_nt_strict_ordered_streponly_sam_colour,  "Clade_Consensus", "nt 0.04")
+```
+
+Still not exactly what I want. Will use the original whole-composition 
+clustering (see above) and will need to flip some nodes manually inkscape,
+because I'm getting errors with ggtree for some reason.
+
+Tina also asked to order purely just by host genus.
+
+```{r}
+fake_order <- c("OME002.A0101", "OME003.A0101", "OME005.A0101", "OME007.A0101", "OME009.A0101", 
+                "ABM006.A0101", "DJA002.A0101", "EBO001.A0101", "EBO003.A0101", "FDM001.A0101", "MTK001.A0101", "MTM001.A0101", "MTM004.A0101", "MTM005.A0101", "MTM006.A0101", "MTM008.A0101", "MTM009.A0101", "MTM010.A0101", "MTS001.A0101", 
+                "ABM007.A0101", "ABM008.A0101", "CDC008.A0101", "CDC010.A0101", "Chimp.150519", "DJA006.A0101", "DJA007.A0101", "EBO008.A0101", "EBO009.A0101", "KNP001.A0102", "KNP003.A0102", "KNP004.A0102", "KNP005.A0102", "KNP006.A0102", "KNP007.A0102", "KNP009.A0102", 
+                "ECO010.B0101", "MOA001.A0101", "OAK001.A0101",  "PYK005.A0101", "PYK003.A0101", "PYK001.A0101",  
+                "ElSidron1", "ElSidron2", "FUM002.A0101", "GOY005.A0101", "GOY006.A0101", "PES001.B0101", "SpyNew",
+                "OAK002.A0101", "OAK003.A0101", "OAK004.A0101", "OAK005.A0101", "TAF008.B0101", "TAF017.A0101", "TAF018.A0101", 
+                "ECO002.B0101", "ECO004.B0101",  "EMN001.A0101", "OFN001.A0101",  "PLV001.A0101", "RIG001.A0101",  
+                "ESA003.A0101", "ESA004.A0101", "ESA006.A0101", "ESA007.A0101", "ESA008.A0101", "PYK002.A0101", "PYK004.A0101",
+                "LIS001.A0101", "LIS002.A0101", "LIS003.A0101",    
+                "JAE006.A0101", "JAE007.A0101", "JAE008.A0101", "JAE009.A0101", "JAE010.A0101", "JAE012.A0101", "JAE013.A0101", "JAE014.A0101", "JAE015.A0101", "JAE016.A0101",
+                "VLC001.A0101", "VLC002.A0101", "VLC003.A0101", "VLC004.A0101", "VLC005.A0101", "VLC008.A0101", "VLC009.A0101", "VLC010.A0101")
+
+out <- prepare_clustered_stackbar(otu_dist_nt_strict, clr_nt_strict_ordered_streponly_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>%
+  pluck("summary_strep") %>% 
+  filter(Individual != "EBO003.A0101") %>%
+  left_join(raw_metadata) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo"))) %>%
+  arrange(Host_Genus, Individual) %>%
+  ungroup() %>%
+  mutate(Individual = factor(Individual, levels = fake_order))
+
+custom_colour <- c("#a50026", "#d73027", "#f46d43", "#fee090", "#74add1", "#4575b4", "#313695", "grey70")
+
+label_order <-  levels(out$Individual) %>% 
+  enframe(name = NULL, value = "Individual") %>% 
+  left_join(raw_metadata) %>% 
+  left_join(common_colours_tbl) %>% 
+  pull(Colour)
+  
+figure_stackedbar_clade_nt_loose_hostgenus <- ggplot(out, aes(Individual, Strep_Group_Fraction, fill = Clade_Consensus)) +
+  geom_bar(stat = "identity") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  scale_fill_manual(values = custom_colour, na.value = "grey50") +
+  ggtitle("nt 0.04") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = "top",
+        axis.title.x = element_blank(),
+        strip.background = element_rect(colour = "lightgrey")) +
+  facet_grid(~Host_Genus, scales = "free", space = "free")
+
+figure_stackedbar_clade_nt_loose_hostgenus
+```
+
+Tina perferred this one, so we will save as above
+
+```{r}
+save_stackedbar(figure_stackedbar_clade_nt_loose_hostgenus, "nt", "0.04", "hostgenus")
+```
+
+## Distribution Comparison
+
+One theory in regards to human cultural and biological development away from
+other primates is related to the ability to process greater amounts of
+carbohydrates, assisted by duplication of amylase-binding-protein genes.
+
+We can try and look if there is a difference in the proportion of 
+amylase-activity taxa between host genera.
+
+Prepare data
+
+```{r}
+## Haase
+abp_comparison_nt_loose_haase <- 
+  prepare_clustered_stackbar(otu_dist_nt_loose, otu_ordered_nt_loose_sam, Haase_Amylase_Activity, c(TRUE, FALSE, NA)) %>% 
+  pluck("summary_strep") %>%
+  left_join(raw_metadata %>% select(Individual, Host_Genus)) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo")))
+
+abp_comparison_nt_strict_haase <- 
+  prepare_clustered_stackbar(otu_dist_nt_strict, otu_ordered_nt_strict_sam, Haase_Amylase_Activity, c(TRUE, FALSE, NA)) %>% 
+  pluck("summary_strep") %>%
+  left_join(raw_metadata %>% select(Individual, Host_Genus)) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo")))
+
+abp_comparison_rs_loose_haase <- 
+  prepare_clustered_stackbar(otu_dist_rs_loose, otu_ordered_rs_loose_sam, Haase_Amylase_Activity, c(TRUE, FALSE, NA)) %>% 
+  pluck("summary_strep") %>%
+  left_join(raw_metadata %>% select(Individual, Host_Genus)) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo")))
+
+abp_comparison_rs_strict_haase <- 
+  prepare_clustered_stackbar(otu_dist_rs_strict, otu_ordered_rs_strict_sam, Haase_Amylase_Activity, c(TRUE, FALSE, NA)) %>% 
+  pluck("summary_strep") %>%
+  left_join(raw_metadata %>% select(Individual, Host_Genus)) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo")))
+
+## Clade
+abp_comparison_nt_loose_clade <- 
+  prepare_clustered_stackbar(otu_dist_nt_loose, otu_ordered_nt_loose_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>% 
+  pluck("summary_strep") %>%
+  left_join(raw_metadata %>% select(Individual, Host_Genus)) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo")))
+
+abp_comparison_nt_strict_clade <- 
+  prepare_clustered_stackbar(otu_dist_nt_strict, otu_ordered_nt_strict_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>% 
+  pluck("summary_strep") %>%
+  left_join(raw_metadata %>% select(Individual, Host_Genus)) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo")))
+
+abp_comparison_rs_loose_clade <- 
+  prepare_clustered_stackbar(otu_dist_rs_loose, otu_ordered_rs_loose_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>% 
+  pluck("summary_strep") %>%
+  left_join(raw_metadata %>% select(Individual, Host_Genus)) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo")))
+
+abp_comparison_rs_strict_clade <- 
+  prepare_clustered_stackbar(otu_dist_rs_strict, otu_ordered_rs_strict_sam, Clade_Consensus, order_cladeconsensus_by_abp) %>% 
+  pluck("summary_strep") %>%
+  left_join(raw_metadata %>% select(Individual, Host_Genus)) %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = c("Alouatta", "Gorilla", "Pan", "Homo")))
+```
+
+
+
+### Plotting
+
+### 
+
+### Boxplot
+
+Firstly we can compare the distributions of amylase activities and 
+streptococus clades between different host genera, to see if we see any pattern.
+
+```{r}
+plot_boxplot <- function(x, fill, title) {
+  ggplot(x, aes(Host_Genus, Strep_Group_Fraction)) +
+  geom_boxplot(outlier.alpha = 0) +
+  geom_beeswarm(shape = 21, aes_string(fill = fill), alpha = 0.7) +
+  facet_wrap(fill) +
+  ggtitle(title) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 90, 
+                                   vjust = 0.5, 
+                                   hjust = 1))
+}
+
+plot_boxplot(abp_comparison_nt_loose_haase, "Haase_Amylase_Activity", "refeq 0.01")
+plot_boxplot(abp_comparison_nt_strict_haase, "Haase_Amylase_Activity", "refseq 0.04")
+plot_boxplot(abp_comparison_nt_loose_clade, "Clade_Consensus", "refseq 0.01")
+plot_boxplot(abp_comparison_nt_strict_clade, "Clade_Consensus", "refseq 0.04")
+
+plot_boxplot(abp_comparison_rs_loose_haase, "Haase_Amylase_Activity", "refseq 0.01")
+plot_boxplot(abp_comparison_rs_strict_haase, "Haase_Amylase_Activity", "refseq 0.04")
+plot_boxplot(abp_comparison_rs_loose_clade, "Clade_Consensus", "refseq 0.01")
+plot_boxplot(abp_comparison_rs_strict_clade, "Clade_Consensus", "refseq 0.04")
+
+
+```
+
+For amylase activity _Alouatta_ and _Homo_ have quite similar means of 
+percetnage of _Strep_ that are amylase-active.  Gorillas overlap but 
+are reduced, compared to _Alouatta_/ _Homo_. Chimps have almots none, but
+a subset of humans and Gorillas also have this pattern. For RefSeq, the amount 
+of Gorilla/Human overlap is much closer.
+
+Sanguinis taxa are definitely _Homo_ enriched, although Gorillas still overlap.
+Mitis taxa appear to be pretty similar, or slightly enriched in Gorilla but 
+both pretty much absent in _Pan_.
+
+### Kruskal Wallis
+To statistically test (looks pretty non-normal, and have more > 2 groups)
+
+```{r}
+
+pairwise_kruskalwallis <- function(data, filter_col, condition){
+  comparison_list <- data %>% 
+    filter(grepl(paste0(condition, collapse = "|"), {{filter_col}})) %>% 
+    group_by(Individual, Host_Genus) %>% 
+    summarise(Strep_Group_Fraction = sum(Strep_Group_Fraction)) %>%
+    filter(!is.nan(Strep_Group_Fraction))
+
+  combs <- comparison_list %>% pull(Host_Genus) %>% as.character %>% unique %>% combn(2)
+  
+  combs <- apply(combs, 2, function(x) paste0(x, collapse = "|"))
+  
+  result <- map(combs, ~filter(comparison_list, grepl(.x, Host_Genus)) %>% 
+                  kruskal.test(data = ., Strep_Group_Fraction ~ Host_Genus ) %>% 
+                  tidy())
+  names(result) <- combs
+  
+  enframe(result) %>% unnest %>% mutate(alpha = 0.05,
+                                        stat_sig_difference = p.value < 0.05)
+}
+
+kw_nt_loose_haase <- pairwise_kruskalwallis(abp_comparison_nt_loose_haase, Haase_Amylase_Activity, "TRUE")
+kw_nt_strict_haase <- pairwise_kruskalwallis(abp_comparison_nt_strict_haase, Haase_Amylase_Activity, "^TRUE")
+kw_rs_loose_haase <- pairwise_kruskalwallis(abp_comparison_rs_loose_haase, Haase_Amylase_Activity, "^TRUE")
+kw_rs_strict_haase <- pairwise_kruskalwallis(abp_comparison_rs_strict_haase, Haase_Amylase_Activity, "^TRUE")
+
+kw_nt_loose_clade <- pairwise_kruskalwallis(abp_comparison_nt_loose_clade, Clade_Consensus, "^mitis|^sanguinis|^salivarius")
+kw_nt_strict_clade <- pairwise_kruskalwallis(abp_comparison_nt_strict_clade, Clade_Consensus, "^mitis|^sanguinis|^salivarius")
+kw_rs_loose_clade <- pairwise_kruskalwallis(abp_comparison_rs_loose_clade, Clade_Consensus, "^mitis|^sanguinis|^salivarius")
+kw_rs_strict_clade <- pairwise_kruskalwallis(abp_comparison_rs_strict_clade, Clade_Consensus, "^mitis|^sanguinis|^salivarius")
+
+
+```
+
+### ALDEx2
+
+Alternatively we can try ALDEx2. Selected this over e.g. metagenome Seq, because
+it works 'reasonably' wlel with unequal sample sizes; whereas the ones that
+do better have a high FPR (Thorsen et al. 2016, Microbiome)
+
+```{r, eval = F}
+
+pairwise_aldex <- function(otu){
+  otu <- otu$alignments
+  sample_order <- raw_metadata %>% 
+    select(Individual, Host_Genus) %>% 
+    filter(Individual %in% colnames(otu)) %>% 
+    arrange(Individual) %>% 
+    pull(Host_Genus)
+  
+  order_groups <- sample_order %>% unique %>% combn(2)
+  combs <- apply(order_groups, 2, function(x) paste0(x, collapse = "|"))
+  
+  result <- map(combs, function(x){
+    print(x)
+    otu_sub <- otu[,grepl(x, sample_order)]
+  
+    sample_order_sub <- raw_metadata %>% 
+      select(Individual, Host_Genus) %>% 
+      filter(Individual %in% colnames(otu_sub)) %>% 
+      arrange(Individual) %>% 
+      pull(Host_Genus)
+    
+    ## from https://github.com/ggloor/CoDa_microbiome_tutorial/wiki/Part-2:-ALDEx2-for-differential-expression-analysis
+    aldex_clr <- aldex.clr(otu_sub, conds = sample_order_sub, useMC = T) ## iqlr for unequal/asymmetric datasets doesn't work here for some reason denom = "iqlr"
+    aldex_ttest <- aldex.ttest(aldex_clr, paired.test = FALSE)
+    aldex_effect <- aldex.effect(aldex_clr, include.sample.summary = FALSE, verbose = TRUE)
+    aldex_all <- data.frame(aldex_ttest, aldex_effect, stringsAsFactors = FALSE)
+    aldex_all <- aldex_all %>% 
+      as_tibble(rownames = "Taxon") %>% 
+      mutate(Host_More_Abundant = case_when(wi.eBH < 0.05 & effect < -1 ~ str_split(x, "\\|")[[1]][1] %>% unlist,
+                                            wi.eBH < 0.05 & effect > 1 ~ str_split(x, "\\|")[[1]][2] %>% unlist,
+                                            TRUE ~ "NotSignificant"
+                                            )
+      )
+    
+    return(aldex_all)
+
+    })
+  
+  names(result) <- combs
+  
+  return(result)
+}
+
+multi_aldex2_cleanup <- function(x, db, ms){
+  x %>% 
+  enframe %>% 
+  rename(Combination = name, Data = value) %>%
+  mutate(Database = db, Min_Support = ms)
+}
+
+aldex_nt_loose <- pairwise_aldex(otu_dist_nt_loose) %>% multi_aldex2_cleanup("nt", "0.01")
+aldex_nt_strict <- pairwise_aldex(otu_dist_nt_strict) %>% multi_aldex2_cleanup("nt", "0.04")
+aldex_rs_loose <- pairwise_aldex(otu_dist_rs_loose) %>% multi_aldex2_cleanup("refseq", "0.01")
+aldex_rs_strict <- pairwise_aldex(otu_dist_rs_strict) %>% multi_aldex2_cleanup("refseq", "0.04")
+
+aldex_all_both <- bind_rows(aldex_nt_loose, aldex_nt_strict, aldex_rs_loose, aldex_rs_strict) %>%
+  unnest() %>%
+  select(-contains("rab"))
+
+```
+
+
+# Superreference Heatmap
+
+# Superreference Comparison
+
+Load genus/stats superrefernece stats (previously generated in notebook 
+`031-supperferencemapped_stats`)
+
+```{r}
+superreference_data <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz")
+
+raw_metadata_deep <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+```
+
+## Ordering
+
+```{r}
+host_general_order <- c("ExtractionBlank", "LibraryBlank", "Howler", "Gorilla", "Chimp", "Neanderthal", "PreagriculturalHuman", "PreantibioticHuman", "ModernDayHuman")
+host_genus_order <- c("Control", "Alouatta", "Gorilla", "Pan", "Homo")
+```
+
+
+## Streptococcus Overall Read Count
+
+Total number of streptococcus reads per sample
+
+```{r}
+## Collapse the contigs
+superreference_data_meta <- superreference_data %>% 
+  group_by(genus, sample, species) %>%
+  summarise(total_no_reads = sum(no_reads),
+             total_no_bases_covered = sum(no_bases_covered),
+             total_species_length = sum(feature_length),
+             mean_mean_depth_coverage = mean(mean_depth_coverage)
+             ) %>%
+    mutate(percent_covered = (total_no_bases_covered / total_species_length) * 100) %>%
+  group_by(sample) %>%
+  mutate(total_dataset_reads = sum(total_no_reads)) %>%
+  left_join(raw_metadata_deep %>% 
+              select(sample_name, Env, Description, Host_General, 
+                     Host_Genus, Host_Common, Age, total_unmapped_reads), 
+            by = c("sample" = "sample_name")
+            ) %>%
+    filter(Host_Genus != "Control")
+
+## Find all Streptococcus and set ordering
+superreference_data_meta_actinostrep <- superreference_data_meta %>% 
+  filter(genus == "Streptococcus" | genus == "Actinomyces") %>%
+  mutate(Host_Genus = factor(Host_Genus, levels = host_genus_order),
+         Host_General = factor(Host_General, levels = host_general_order)
+  ) %>%
+  arrange(Host_Genus, Host_General) %>%
+  ungroup() %>%
+  mutate(sample = as_factor(sample),
+         percent_reads_dataset = (total_no_reads / total_dataset_reads) * 100)
+
+## Remove some lower-level taxa that make up <1 of the whole dataset
+## Also clean up some names to remove strain info when named species
+
+clean_name <- function(x) {
+  out <- if_else(grepl("_sp_", x), 
+            x, 
+            paste0(str_split(x, "_")[[1]][1:2], 
+                   collapse = "_"))
+  return(out)
+}
+
+# superreference_wide <- superreference_data_meta_actinostrep %>% 
+#   filter(percent_reads_dataset > 0.5) %>%
+#   mutate(species = map(species, clean_name) %>% unlist) %>%
+#   select(sample, species, percent_reads_dataset) %>% 
+#   spread(sample, percent_reads_dataset, fill = 0) 
+
+superreference_wide <- superreference_data_meta_actinostrep %>% 
+  #mutate(species = map(species, clean_name) %>% unlist) %>%
+  filter(mean_mean_depth_coverage > 1) %>%
+  select(sample, species, mean_mean_depth_coverage) %>% 
+  spread(sample, mean_mean_depth_coverage, fill = 0)
+
+## remove taxa that have no hits anywhere
+
+
+superreference_matrix <- superreference_wide %>%
+  data.matrix() %>% 
+  .[,2:ncol(.)]
+
+rownames(superreference_matrix) <- superreference_wide$species
+
+## NEXT: Do clustering 
+## LATER: Might need to switch mapped reads to something more clearer
+
+superref_hclust_sam <- perform_hclust(t(superreference_matrix))
+superref_hclust_tax <- perform_hclust(superreference_matrix)
+
+superref_pvclust_sam <- pvclust::pvclust(superreference_matrix,
+                                             method.hclust = superref_hclust_sam$best_method,
+                                             method.dist = "euclidean",
+                                             nboot = 1000,
+                                             parallel = T)
+
+superref_ordered <- set_ordering(superref_pvclust_sam, superref_hclust_tax)
+
+prepare_heatmap_data2 <- function(base, order){
+  base %>%  
+    as_tibble(rownames = "Taxon") %>%
+    gather(Individual, mean_mean_depth_coverage, 2:ncol(.)) %>%
+    left_join(raw_metadata_deep %>% rename(Individual = sample_name)) %>%
+    left_join(common_colours_tbl) %>%
+    mutate(Individual = factor(Individual, levels = order$list_individual), 
+           Taxon = factor(Taxon, levels = order$list_taxa)) %>%
+    arrange(Individual) %>%
+    mutate(Host_Common = as_factor(Host_Common),
+           Colour = as_factor(Colour))
+}
+
+superref_heatmapdata <- prepare_heatmap_data2(superreference_matrix, superref_ordered)
+superref_colour  <- set_colour(superref_heatmapdata)
+
+plot_heatmap_superref <- function(x, vector_colour) {
+  
+  vector_colour_tax <- x$Taxon %>% 
+    levels %>% 
+    enframe(name = NULL, value = "Taxon") %>% 
+    left_join(strep_db) %>% 
+    mutate(NewColour = if_else(is.na(NewColour), "darkgrey", NewColour),
+           Taxon = factor(Taxon, levels = levels(x$Taxon))) %>%
+    mutate(Genus = map(Taxon, ~str_split(.x, "_")[[1]][1]) %>% unlist) %>%
+    filter(Genus == "Streptococcus" | Genus == "Actinomyces" | Genus == "Veillonella" | Genus == "Neisseria" | Genus == "Corynebacterium" | Genus == "Parvimonas") %>%
+    pull(NewColour)
+    
+  heatmap_base <- ggplot(x, aes(Individual, Taxon, fill = mean_mean_depth_coverage)) +
+  geom_tile() +
+  coord_equal() +
+  scale_fill_distiller(palette = "Spectral") +
+  scale_colour_manual(values = NA) +
+  ggtitle("Percent dataset reads intensity heatmap subset to Streptococci and Actinomyces taxa",
+          subtitle = paste0("Red: abp-related Streptoccci group; Pink: non-abp-related Streptococci group.")) +
+  scale_x_discrete(position = "top") +
+  theme_minimal(base_family = "Roboto", base_size = 10) +
+  theme(axis.text.x = element_text(angle = 90, hjust = -0.001, colour = vector_colour),
+        axis.text.y = element_text(colour = vector_colour_tax),
+        plot.margin = margin(0, 0, 0, 0, "pt"),
+        axis.title.y = element_blank(),
+        legend.position = "right")
+  return(heatmap_base)
+}
+
+plot_heatmap_superref(superref_heatmapdata, superref_colour)
+
+```
+
+
+
+
