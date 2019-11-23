@@ -1,0 +1,959 @@
+---
+title: "Deep Evolution - Red Complex Virulence Investigation"
+output: html_notebook
+---
+
+This notebook aims to characterise the presence/absence of virulence
+factors for the two Red Complex taxa that were mapped to with the deep 
+sequencing data.
+
+## Preparation
+
+### Packages
+
+Load libraries
+
+```{r}
+library(tidyverse)
+library(rentrez)
+library(ggbeeswarm)
+library(patchwork)
+#library(fuzzyjoin)
+```
+
+### Metadata
+
+Load our standard metadata
+
+
+```{r}
+metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv") %>% select(sample_name, Env, Host_Genus, Host_Common) %>%
+rename(sample = sample_name)
+```
+
+### Aesthetics
+
+```{r}
+env_colours <- c("#1f78b4", 
+                 "#6a3d9a", 
+                 "#6a3d9a", 
+                 "#6a3d9a", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#e31a1c", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#d9d9d9", 
+                 "#d9d9d9",
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9",
+                 "#d9d9d9")
+
+names(env_colours) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "urbanGut",
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque",
+           "EnvironmentalControl"
+           )
+
+ env_shapes <- c(8,
+                0,
+                1,
+                2,
+                0,
+                1,
+                2,
+                5,
+                11,
+                0,
+                12,
+                1,
+                10,
+                2,
+                6,
+                10,
+                13,
+                7,
+                8,
+                14,
+                3,
+                4,
+                12,
+                0)
+
+ 
+ names(env_shapes) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque", 
+           "urbanGut",
+           "EnvironmentalControl"
+          )
+ 
+common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 10, LibraryControl = 13, Plaque = 9, 
+          Gut = 4, Skin = 14, Sediment = 7, EnvironmentalControl = 12)
+
+
+
+```
+
+### Virulence Factor List
+
+Get Irina's list (with my addition/modifications) from a literature review of
+_T. forsythia_ and _P. gingivalis_ virulence factors, and find the original gene 
+locus tag for the assembly (not the reference genome!)
+
+```{r, eval = F}
+dat <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/virulence_investigation.backup/red_complex_virulence_factors.tsv") %>% filter(!Species == "Treponema_denticola")
+
+
+find_old_locustag <- function(x){
+  entrez_search(x, db = "gene") %>%
+    pluck("ids") %>%
+    entrez_summary(db = "gene", id = .) %>%
+    pluck("otheraliases")
+}
+
+results <- dat %>% mutate(old_locus_tag = map(Locus_tag, ~find_old_locustag(.x))) %>% unnest
+
+results_clean <- results %>% mutate(old_locus_tag = map(old_locus_tag, ~str_remove_all(.x, "\ ")) %>% unlist) %>% separate(old_locus_tag, c("New", "Old"), sep = ",")
+
+write_tsv(results_clean, "
+          /home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/virulence_investigation.backup/red_complex_virulence_factors_GCA.tsv")
+```
+
+Then I manually converted the results into bed format, stored here:
+
+`/projects1/microbiome_calculus/evolution/04-analysis/deep/virulence_investigation.backup/tf_pg_virulence.bed`
+
+Loaded here (from is in bed format)
+
+```{r}
+data_virulence_pos <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/virulence_investigation.backup/tf_pg_virulence.bed", col_names = c("chrom", "start", "end", "desc", "empty")) %>%
+  mutate(chrom = map(chrom, ~str_split(.x ,"_") %>% pluck(1) %>% tail(n = length(.) -1) %>% paste0(collapse = "_")) %>% unlist) %>%
+  select(-empty)
+```
+
+And then ran bedtools with the script `055-bedtools_stats_array_samtoolsdepth_binning.sh`, which
+uses `samtools depth` to generate per-position depth coverage statistics. This is 
+then passed to a small `Rscript` which bins these into 100bp bins.
+
+## Mapping Data
+
+### Genome stats
+
+Load genome stats
+
+```{r}
+eager_cleaner <- function(x){
+  out <- x
+  out[out == "NF"] <- 0
+  out <- out %>%
+    rename(sample_number = `Sample number`,
+           sample_name = `Sample Name`,
+           number_reads_after_clipmerge_prior_mapping = `# reads after C&M prior mapping`,
+           number_reads_mapped_prior_rmdup = `# mapped reads prior RMDup`,
+           number_duplicates_removed = `# of Duplicates removed`,
+           number_reads_mapped_after_rmdup = `Mapped Reads after RMDup`,
+           percent_endogenous_dna = `Endogenous DNA (%)`,
+           cluster_factor = `Cluster Factor`,
+           mean_fold_coverage = `Mean Coverage`,
+           std_dev_coverage = `std. dev. Coverage`,
+           percent_coverage_morethan_1x = `Coverage >= 1X in %`,
+           percent_coverage_morethan_2x = `Coverage >= 2X in %`,
+           percent_coverage_morethan_3x = `Coverage >= 3X in %`,
+           percent_coverage_morethan_4x = `Coverage >= 4X in %`,
+           percent_coverage_morethan_5x = `Coverage >= 5X in %`,
+           frequency_damage_1st_base_3prime = `DMG 1st Base 3'`,
+           frequency_damage_2nd_base_3prime = `DMG 2nd Base 3'`,
+           frequency_damage_1st_base_5prime = `DMG 1st Base 5'`,
+           frequency_damage_2nd_base_5prime = `DMG 2nd Base 5'`,
+           average_fragment_length = `average fragment length`,
+           median_fragment_length = `median fragment length`,
+           percent_gc_content = `GC content in %`
+    ) %>%
+    mutate(number_reads_after_clipmerge_prior_mapping = as.numeric(number_reads_after_clipmerge_prior_mapping)) %>%
+    mutate(number_reads_mapped_prior_rmdup = as.numeric(number_reads_mapped_prior_rmdup)) %>%
+    mutate(number_duplicates_removed = as.numeric(number_duplicates_removed)) %>% 
+    mutate(number_reads_mapped_after_rmdup = as.numeric(number_reads_mapped_after_rmdup)) %>% 
+    mutate(percent_endogenous_dna = as.numeric(percent_endogenous_dna)) %>% 
+    mutate(cluster_factor = as.numeric(cluster_factor)) %>%
+    mutate(mean_fold_coverage = as.numeric(mean_fold_coverage)) %>%
+    mutate(std_dev_coverage = as.numeric(std_dev_coverage)) %>%
+    mutate(percent_coverage_morethan_1x = as.numeric(percent_coverage_morethan_1x)) %>%
+    mutate(percent_coverage_morethan_2x = as.numeric(percent_coverage_morethan_2x)) %>%
+    mutate(percent_coverage_morethan_3x = as.numeric(percent_coverage_morethan_3x)) %>%
+    mutate(percent_coverage_morethan_4x = as.numeric(percent_coverage_morethan_4x)) %>%
+    mutate(percent_coverage_morethan_5x = as.numeric(percent_coverage_morethan_5x)) %>%
+    mutate(frequency_damage_1st_base_3prime = as.numeric(frequency_damage_1st_base_3prime)) %>%
+    mutate(frequency_damage_2nd_base_3prime = as.numeric(frequency_damage_2nd_base_3prime)) %>%
+    mutate(frequency_damage_1st_base_5prime = as.numeric(frequency_damage_1st_base_5prime)) %>%
+    mutate(frequency_damage_2nd_base_5prime = as.numeric(frequency_damage_2nd_base_5prime)) %>%
+    mutate(median_fragment_length = as.numeric(median_fragment_length)) %>%
+    mutate(average_fragment_length = as.numeric(average_fragment_length)) %>%
+    mutate(percent_gc_content = as.numeric(percent_gc_content))
+  return(out)
+}
+
+
+genome_data <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/*/") %>%
+  list.files("*csv", full.names = T) %>%
+  enframe(name = NULL, value = "file_name") %>%
+  filter(grepl("Tannerella|Porphyromonas", file_name)) %>%
+  mutate(file_contents = map(file_name, ~read_csv(.x) %>% eager_cleaner)) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist) %>%
+  unnest() %>%
+  select(reference, sample_name, mean_fold_coverage, percent_coverage_morethan_1x) %>%
+  rename(chrom = reference,
+         sample = sample_name,
+         mean_genome_depth = mean_fold_coverage,
+         genome_breadth = percent_coverage_morethan_1x)
+
+
+```
+
+### Depth-Breadth Plot
+
+Is there a relationship between genome depth and breadth? Could we use this
+to detect whether we have the right reference genome in a given sample?
+
+```{r, fig.height=3.5, fig.width=7}
+genome_coverage_combined <- left_join(genome_data, metadata) 
+
+ggplot(genome_coverage_combined, aes(genome_breadth, mean_genome_depth,  colour = Host_Common, shape = Host_Common)) + 
+  geom_point(size = 2) + 
+  scale_colour_manual(values = common_colours) +
+  scale_shape_manual(values = common_shapes) +
+  facet_wrap(~chrom) +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(legend.position = "bottom")
+
+
+
+```
+
+This shows a certain level of reference genome bias. 
+
+In the case of _T. forsythia_, we see there are two distinct curves 
+representing different level of reference completeness - even when there is 
+equivalent depth coverage. Chimpanzees and _Gorilla_ high coverage mappings 
+consistently have around 70% of the genome covered.
+
+_Porphyromonas gingivalis_ also somewhat shows this although less clearly. In
+this case it appears Humans and _Pan_ have the same level of completeness with
+high coverage mapping, while _Alouatta_ has lower reference completeness. 
+
+Another observation is that genomes with >= 50% completeness have 
+higher levels of mean depth coverage (which makes sense), however, we can use
+that as a threshold to remove lower coverage mappings which would be difficult 
+to say whether a species is actually present or not, let alone the gene. 
+
+### Gene stats
+
+Now lets look at the gene (Gene) coverages themselves.
+
+Load gene stats
+
+```{r}
+breadth <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/*/*/5-DeDup") %>%
+  list.files("*virulence_breadth*", full.names = T) %>%
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_names = c("chrom", "start", "stop", "Gene", "reads", "bases_covered", "Gene_length", "fraction_covered"))))) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  select(-file_name, reference, sample, file_contents) %>%
+  unnest()
+
+depth <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/*/*/5-DeDup") %>%
+  list.files("*virulence_depth*", full.names = T) %>%
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_names = c("chrom", "start", "stop", "Gene", "depth"))))) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  select(-file_name, reference, sample, file_contents) %>%
+  unnest()
+
+
+```
+
+Clean up
+
+```{r}
+depth_clean <- depth %>% mutate(Gene = map(Gene, ~str_split(.x, ";") %>% 
+                                       pluck(1) %>% 
+                                       .[grepl("common_name", .)] %>% 
+                                       str_remove("common_name="))  %>% unlist,
+                          chrom = map(chrom, ~str_split(.x, "_") %>% 
+                                        pluck(1) %>% 
+                                        tail(n = length(.) - 1) %>% 
+                                        paste0(collapse = "_")) %>% unlist) %>%
+  filter(reference == chrom) %>%
+  select(-start, -stop, -reference) %>%
+  rename(mean_Gene_depth = depth)
+
+breadth_clean <- breadth %>% mutate(Gene = map(Gene, ~str_split(.x, ";") %>% 
+                                       pluck(1) %>% 
+                                       .[grepl("common_name", .)] %>% 
+                                       str_remove("common_name="))  %>% unlist,
+                          chrom = map(chrom, ~str_split(.x, "_") %>% 
+                                        pluck(1) %>% 
+                                        tail(n = length(.) - 1) %>% 
+                                        paste0(collapse = "_")) %>% unlist) %>%
+  filter(reference == chrom) %>%
+  select(-start, -stop, -reference, -bases_covered, -Gene_length) %>%
+  rename(Gene_reads = reads,
+         Gene_fraction_covered = fraction_covered) %>%
+  mutate(Gene_fraction_covered = Gene_fraction_covered * 100)
+
+
+breadth_pg <- breadth_clean %>% 
+  group_split(chrom) %>% 
+  pluck(1)
+
+breadth_tf <- breadth_clean %>% 
+  group_split(chrom) %>% 
+  pluck(2)
+
+
+combined_pg <- depth_clean %>% 
+  group_split(chrom) %>% 
+  pluck(1) %>%
+  left_join(breadth_pg) %>%
+  left_join(genome_data) %>%
+  left_join(metadata)  %>%
+  mutate(Host_Common = factor(Host_Common, levels = names(rev(common_colours)))) %>%
+  arrange(Host_Common) %>%
+  mutate(sample = as_factor(sample))
+
+combined_tf <- depth_clean %>% 
+  group_split(chrom) %>% 
+  pluck(2) %>%
+  left_join(breadth_tf) %>%
+  left_join(genome_data)  %>%
+  left_join(metadata)  %>%
+  mutate(Host_Common = factor(Host_Common, levels = names(rev(common_colours)))) %>%
+  arrange(Host_Common) %>%
+  mutate(sample = as_factor(sample))
+
+```
+
+We can here filter out any genome with less than 50% reference completeness.
+
+```{r}
+combined_pg <- combined_pg %>% filter(genome_breadth >= 50)
+combined_tf <- combined_tf %>% filter(genome_breadth >= 50)
+```
+
+Now we can compare the ratio of Genes of the well-covered mappings
+
+```{r}
+pg_ratio_data <- combined_pg %>% 
+  select(sample, Gene, mean_Gene_depth, mean_Gene_depth, mean_genome_depth, Gene_fraction_covered, Host_Common) %>% 
+  mutate(coverage_ratio = mean_genome_depth / mean_Gene_depth) %>% 
+  select(-contains("mean")) %>% 
+  mutate(coverage_ratio = ifelse(is.infinite(coverage_ratio), NA, coverage_ratio))
+
+tf_ratio_data <- combined_tf %>% 
+  select(sample, Gene, mean_Gene_depth, mean_Gene_depth, mean_genome_depth, Gene_fraction_covered, Host_Common) %>% 
+  mutate(coverage_ratio = mean_genome_depth / mean_Gene_depth) %>% 
+  select(-contains("mean")) %>% 
+  mutate(coverage_ratio = ifelse(is.infinite(coverage_ratio), NA, coverage_ratio))
+```
+
+### Ratio Plot
+
+And plot
+
+```{r, fig.height=3.5, fig.width=3}
+## Get host genus colours for each sample
+ind_colour <- metadata %>% 
+  select(sample, Host_Common) %>% 
+  left_join(enframe(common_colours, name = "Host_Common", value = "colours")) %>% 
+  select(sample, colours) %>% 
+  deframe()
+
+pg_colours <- ind_colour[pg_ratio_data %>% pull(sample) %>% unique %>% as.vector]
+tf_colours <- ind_colour[tf_ratio_data %>% pull(sample) %>% unique %>% as.vector]
+
+
+plot_pg_ratio <- ggplot(pg_ratio_data, aes(Gene, sample, fill = coverage_ratio)) + 
+  geom_point(pch = 22, aes(size = Gene_fraction_covered )) + 
+  scale_fill_viridis_c(option = "inferno", trans = "log10", direction = -1) + 
+  xlab("Gene") +
+  ylab("Individual") +
+  labs(title = "P. gingivalis", 
+       subtitle = "Ratio - reference coverage / reference coverage ", 
+       fill = "Ratio 1:",
+       size = "% Gene\nCovered") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_text(colour = pg_colours), 
+        plot.title = element_text(face = "italic"),
+        panel.grid.major =  element_blank()) +  
+  guides(fill = guide_colourbar(reverse = T))
+
+plot_tf_ratio <- ggplot(tf_ratio_data, aes(Gene, sample, fill = coverage_ratio)) + 
+  geom_point(pch = 22, aes(size = Gene_fraction_covered)) + 
+  scale_fill_viridis_c(option = "inferno", trans = "log10", direction = -1) + 
+  xlab("Gene") +
+  ylab("Individual") +
+  labs(title = "T. forsythia", 
+       subtitle = "Ratio - reference coverage / reference coverage ", 
+       fill = "Ratio 1:",
+       size = "% Gene\nCovered") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_text(colour = tf_colours), 
+        plot.title = element_text(face = "italic"), 
+        panel.grid.major =  element_blank()) + 
+  guides(fill = guide_colourbar(reverse = T))
+
+plot_pg_ratio
+plot_tf_ratio
+
+```
+
+The heatmaps display the ratio of reference coverage to each gene coverage.
+Grey means no Gene coverage (i.e. X divided by 0).
+
+We expect that assuming we have a single species, a 1:1 ratio (i.e. the 
+gene and reference have equal coverage). In the colour spectrum above, this 
+means we hope to see a blue/green ( _Porphyromonas_) or green/yellow colour 
+( _Tannerella_) in each cell.
+
+For _P. gingivalis_ while we see for example that Chimpanzees are missing the
+Mfa series of virulence factors, they still have e.g. the Rgp seies, as well 
+as HagA and Kgp. A single gorilla may also display this, although the ratio
+is not so close to 1:1, representing low-coverage data.
+
+For _T.forsythia_ we see a pretty even coverage for all individuals, suggesting
+virulence factors are found aross all host genera.
+
+### Genome Bin Stats
+
+We can then load the binned coverage data with. This was generated by running
+`samtools depth` and then a little R script which calculated the average depth
+of each non-overlapping 100bp window of the genome.
+
+```{r}
+raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/*/*/5-DeDup") %>%
+  list.files("*.binned.tsv.gz", full.names = T) %>%
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x)))) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  select(-file_name, reference, sample, file_contents) %>%
+  unnest()
+
+bins_pg <- raw %>% filter(reference == "Porphyromonas_gingivalis_ATCC_33277")
+bins_tf <- raw %>% filter(reference == "Tannerella_forsythia_92A2")
+
+
+```
+
+Next we need to remove samples where they have less than 50% reference coverage
+
+```{r}
+pg_keep <- genome_data %>% filter(chrom == "Porphyromonas_gingivalis_ATCC_33277", genome_breadth >= 50) %>% pull(sample)
+tf_keep <- genome_data %>% filter(chrom == "Tannerella_forsythia_92A2", genome_breadth >= 50) %>% pull(sample)
+
+```
+
+### Quantile Presence Absence Plot
+
+To give further validation
+
+Now we can calculate quantiles for each species/sample combination
+
+```{r}
+low_q <- 0.3
+upp_q <- 0.7
+
+all_quantiles <- raw %>% 
+  group_by(reference, sample) %>%
+  summarise(bins_depth_quant_lower = quantile(mean_bin_depth, low_q),
+            bins_depth_quant_50 = quantile(mean_bin_depth, 0.5),
+            bins_depth_quant_upper = quantile(mean_bin_depth, upp_q),
+            average_bin_depth = mean(mean_bin_depth)) %>%
+  rename(chrom = reference)
+
+combined_pg <- left_join(combined_pg, all_quantiles) %>% 
+  left_join(metadata) %>% 
+  mutate(Host_Common = factor(Host_Common, levels = names(rev(common_colours)))) %>%
+  arrange(Host_Common) %>%
+  mutate(sample = as_factor(sample)) %>%
+  filter(sample %in% pg_keep)
+
+combined_tf <- left_join(combined_tf, all_quantiles) %>% 
+  left_join(metadata) %>% 
+  mutate(Host_Common = factor(Host_Common, levels = names(rev(common_colours)))) %>%
+  arrange(Host_Common) %>%
+  mutate(sample = as_factor(sample)) %>% 
+  filter(sample %in% tf_keep)
+```
+
+Here we see if gene falls within quantiles of all windows of genome.
+
+We remove anything with a mean coverage of 1x, as we assume this
+suggests that breadth coverage is therefore too low to say whether that 
+particular species is even present (let alone specific genes).
+
+```{r}
+combined_pg_presabs <- combined_pg %>% 
+  select(chrom, sample, Gene, mean_Gene_depth, Gene_fraction_covered, mean_genome_depth, bins_depth_quant_lower, bins_depth_quant_upper, genome_breadth) %>% 
+  mutate(putative_present = pmap(list(a = mean_Gene_depth, x = bins_depth_quant_lower, y = bins_depth_quant_upper), function(a, x, y) {if_else(a >= x && a <= y, T, F)}) %>% unlist)
+
+
+combined_tf_presabs <- combined_tf %>% 
+  select(chrom, sample, Gene, mean_Gene_depth, Gene_fraction_covered, mean_genome_depth, bins_depth_quant_lower, bins_depth_quant_upper, genome_breadth) %>% 
+  mutate(putative_present = pmap(list(a = mean_Gene_depth, x = bins_depth_quant_lower, y = bins_depth_quant_upper), function(a, x, y) {if_else(a >= x && a <= y, T, F)}) %>% unlist)
+```
+
+
+Now plot this heatmap. Tiles represent whether the coverage of the Gene
+falls between the 10%-90% quantiles of window bins.
+
+```{r, fig.height=3.5, fig.width=3.0}
+
+plot_pg_presabs <- ggplot(combined_pg_presabs, aes(Gene, sample, fill = putative_present)) + 
+  geom_point(pch = 22, aes(size = Gene_fraction_covered )) + 
+  scale_fill_manual(values = c("black", "yellow")) + 
+  xlab("Gene") +
+  ylab("Individual") +
+  labs(title = "P. gingivalis", 
+       subtitle = paste0("Gene depth within ", as.character(low_q * 100) ,"-", as.character(upp_q * 100),"% quantiles of 100bp bins"), 
+       fill = "Putatively\nPresent",
+       size = "% Gene\nCovered") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_text(colour = pg_colours), 
+        plot.title = element_text(face = "italic"),
+        panel.grid.major = element_blank())
+
+plot_tf_presabs <- ggplot(combined_tf_presabs, aes(Gene, sample, fill = putative_present)) + 
+  geom_point(pch = 22, aes(size = Gene_fraction_covered )) +
+  scale_fill_manual(values = c("black", "yellow")) + 
+  xlab("Gene") +
+  ylab("Individual") +
+  labs(title = "T. forsythia", 
+       subtitle = paste0("Gene depth within ", as.character(low_q * 100) ,"-", as.character(upp_q * 100),"% quantiles of 100bp bins"), 
+       fill = "Putatively\nPresent",
+       size = "% Gene\nCovered") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_text(colour = tf_colours), 
+        plot.title = element_text(face = "italic"),
+        panel.grid.major = element_blank())
+
+plot_pg_presabs
+plot_tf_presabs
+
+```
+
+To compare the two methods
+
+```{r, fig.height=3.5, fig.width=7}
+plot_pg_ratio + plot_pg_presabs
+plot_tf_ratio + plot_tf_presabs
+
+```
+
+This didn't really work for the quantiles as the binary method doesn't work
+with low breadth genomes (the lower quantile is also 0)
+
+
+### Quantile Range Plot
+
+Lets instead display in which quantile of the reference bins 
+a Gene actually falls.
+
+```{r}
+all_quantiles_2 <- raw %>% 
+  group_by(reference, sample) %>%
+  summarise(bins_depth_quant_00 = quantile(mean_bin_depth, 0.0),
+            bins_depth_quant_10 = quantile(mean_bin_depth, 0.1),
+            bins_depth_quant_20 = quantile(mean_bin_depth, 0.2),
+            bins_depth_quant_30 = quantile(mean_bin_depth, 0.3),
+            bins_depth_quant_40 = quantile(mean_bin_depth, 0.4),
+            bins_depth_quant_50 = quantile(mean_bin_depth, 0.5),
+            bins_depth_quant_60 = quantile(mean_bin_depth, 0.6),
+            bins_depth_quant_70 = quantile(mean_bin_depth, 0.7),
+            bins_depth_quant_80 = quantile(mean_bin_depth, 0.8),
+            bins_depth_quant_90 = quantile(mean_bin_depth, 0.9),
+            bins_depth_quant_100 = quantile(mean_bin_depth, 1),
+            average_bin_depth = mean(mean_bin_depth)) %>%
+  filter(average_bin_depth >= 0.1) %>% 
+  rename(chrom = reference)
+
+combined_pg_2 <- left_join(combined_pg %>% select(-contains("quant"), -average_bin_depth), all_quantiles_2) %>% 
+  left_join(metadata) %>% 
+  mutate(Host_Common = factor(Host_Common, levels = names(rev(common_colours)))) %>%
+  arrange(Host_Common) %>%
+  mutate(sample = as_factor(sample)) %>%
+  filter(sample %in% pg_keep)
+
+combined_tf_2 <- left_join(combined_tf %>% select(-contains("quant"), -average_bin_depth), all_quantiles_2) %>% 
+  left_join(metadata) %>% 
+  mutate(Host_Common = factor(Host_Common, levels = names(rev(common_colours)))) %>%
+  arrange(Host_Common) %>%
+  mutate(sample = as_factor(sample)) %>% 
+  filter(sample %in% tf_keep)
+```
+
+Find which quantile a Gene coverage falls in
+
+```{r, fig.height=3.5, fig.width=3}
+range <- c(0,0.15,0.3,0.5,0.7,0.85,1) 
+colours <- c("white", "#fcbba1", "#ef3b2c", "#a50f15", "#ef3b2c", "#fcbba1", "white")
+
+
+combined_pg_quantiles <- combined_pg_2 %>% 
+  select(sample, chrom, Gene, mean_Gene_depth, Gene_fraction_covered, contains("quant")) %>% 
+  gather(quantile, value, contains("quant")) %>% 
+  mutate(quantile = as.numeric(str_remove(quantile, "bins_depth_quant_"))) %>% 
+  arrange(Gene, sample, quantile) %>% group_by(Gene, sample) %>% 
+  mutate(in_quantile = if_else(mean_Gene_depth >= value & mean_Gene_depth <= lead(value), T, F)) %>%
+  filter(in_quantile)
+
+combined_tf_quantiles <- combined_tf_2 %>% 
+  select(sample, chrom, Gene, mean_Gene_depth, Gene_fraction_covered, contains("quant")) %>% 
+  gather(quantile, value, contains("quant")) %>% 
+  mutate(quantile = as.numeric(str_remove(quantile, "bins_depth_quant_"))) %>% 
+  arrange(Gene, sample, quantile) %>% group_by(Gene, sample) %>% 
+  mutate(in_quantile = if_else(mean_Gene_depth >= value & mean_Gene_depth <= lead(value), T, F)) %>%
+  filter(in_quantile)
+
+plot_pg_quantiles <- ggplot(combined_pg_quantiles, aes(Gene, sample, fill = quantile)) +
+  geom_point(pch = 22, aes(size = Gene_fraction_covered )) + 
+  scale_fill_gradientn(values = range, colours = colours, na.value = "grey50", breaks = seq(0, 100, 10)) +
+  xlab("Gene") +
+  ylab("Individual") +
+  labs(title = "P. gingivalis", 
+       subtitle = "Quantile bin gene falls in, of quantiles of 100bp windows",
+       fill = "Quantile",
+       size = "% Gene\nCovered") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_text(colour = pg_colours), 
+        plot.title = element_text(face = "italic"), 
+        panel.grid.major = element_blank())
+
+plot_tf_quantiles <- ggplot(combined_tf_quantiles, aes(Gene, sample, fill = quantile)) +
+  geom_point(pch = 22, aes(size = Gene_fraction_covered )) + 
+  scale_fill_gradientn(values = range, colours = colours, na.value = "grey50", breaks = seq(0, 100, 10)) +
+  xlab("Gene") +
+  ylab("Individual") +
+  labs(title = "T. forsythia", 
+       subtitle = "Quantile bin gene falls in, of quantiles of 100bp windows",
+       fill = "Quantile",
+       
+       size = "% Gene\nCovered") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_text(colour = tf_colours), 
+        plot.title = element_text(face = "italic"), 
+        panel.grid.major = element_blank())
+
+plot_pg_quantiles
+plot_tf_quantiles
+```
+
+```{r, fig.height=3.5, fig.width=9}
+plot_pg_ratio + plot_pg_presabs + plot_pg_quantiles
+plot_tf_ratio + plot_tf_presabs + plot_tf_quantiles
+
+```
+
+There are still some issues with the quantiles approach, due to large numbers of
+0 windows which were filtered out.
+
+## Ratio Version 2
+
+Alex suggested an alternative way of calculating the ratio, to account for the
+reference bias. Due to the large chunks of missing breadth in the chimps 
+(e.g. for _T. forsythia_) using the whole reference depth coverage as the 
+numerator for the ratio calculation, this could artificially decrease the 
+overall mean coverage. Alex instead suggested to use the coverage of actually
+'present' regions of the genome - also those that are likely 'conserved' across
+all host genera (versus the inter-genic regions which might be quite diverged).
+
+To do this, I re-ran bedtools with `052-bedtools_stats_array_porphyromonasall.sh`
+but using the GFF of all annotations.
+
+We can then load this into R, filter for just gene CDS regions, calculate the 
+median and standard deviation of the gene coverages - removing those that fall
+outside the stadard deivation as dubious genes that may not in fact be derived
+from the same species that is mapping to our reference, then calculate the 
+mean coverage of this 'supported' genes as the numerator.
+
+This is performed as follows.
+
+### Data loading
+
+Firstly load the depths of all genes.
+
+```{r}
+breadth_all <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/*/*/5-DeDup") %>%
+  list.files("*all_breadth*", full.names = T) %>%
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_names = c("chrom", "source", "feature", "start", "stop", "score", "strand", "frame", "Gene", "reads", "bases_covered", "Gene_length", "fraction_covered"))))) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  select(-file_name, reference, sample, file_contents) %>%
+  unnest() %>%
+  filter(feature == "gene")
+
+depth_all <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/*/*/5-DeDup") %>%
+  list.files("*all_depth*", full.names = T) %>%
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_names = c("chrom", "source", "feature", "start", "stop", "score", "strand", "frame", "Gene", "depth"))))) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  select(-file_name, reference, sample, file_contents) %>%
+  unnest() %>%
+  filter(feature == "gene")
+
+```
+
+### Genome coverage distribution
+
+We can out of curiosity look at the distribution of coverages of the genes
+
+```{r}
+ggplot(depth_all, aes(sample, depth)) +
+  geom_boxplot() +
+  facet_wrap(~reference) +
+  coord_flip()
+```
+
+We can now calculate the median, and standard deviation with the upper and
+lower bounds around the median.
+
+```{r}
+
+genes_all_breadthfiltered <- left_join(depth_all, breadth_all) %>% 
+  filter(fraction_covered >= 0.7)
+
+
+genes_all_bounds <- genes_all_breadthfiltered %>% 
+  group_by(reference, sample) %>%
+  summarise(sd_allgenes_coverage = sd(depth),
+            median_allgenes_coverage = median(depth)) %>%
+  mutate(upper = median_allgenes_coverage + ceiling(sd_allgenes_coverage),
+         lower = median_allgenes_coverage - ceiling(sd_allgenes_coverage))
+
+```
+
+We note some lower bounds can go negative, suggesting very large deviation here.
+
+However, we will also remove later any genome than has less than 50 overall 
+breadth coverage, given the observations made above.
+
+Now can remove any gene for each species/mapping that falls the range.
+
+```{r}
+genes_all_final <- left_join(genes_all_breadthfiltered, genes_all_bounds) %>%
+  select(reference, sample, Gene, depth, upper, lower) %>%
+  mutate(within_range = pmap(list(d = depth, l = lower, u = upper), function(d,l,u){if_else((d >= l & d <= u), T, F)}) %>% unlist) %>%
+  select(-Gene) %>%
+  filter(within_range)
+
+
+genes_all_final_pg <- genes_all_final %>% filter(reference == "Porphyromonas_gingivalis_ATCC_33277")
+genes_all_final_tf <- genes_all_final %>% filter(reference == "Tannerella_forsythia_92A2")
+
+```
+
+### Gene filtering threshold
+
+Validation for the number of genes that will be going into the numerator 
+calculation
+
+```{r, fig.width=7, fig.height=3.5}
+
+gene_filter_plot_pg <- genes_all_final_pg %>% 
+  group_by(reference, sample) %>% 
+  summarise(N_Genes = n()) %>%
+  arrange(desc(N_Genes)) %>%
+  mutate(sample = as_factor(sample)) %>%
+  ggplot(aes(sample, N_Genes)) +
+    geom_bar(stat = "identity") +
+    ggtitle("Porphyromonas gingivalis") +
+    xlab("Number of Genes Passing Breadth Filter (>= 70)") +
+    ylab("Individual") +
+    theme_minimal(base_size = 7, base_family = "Roboto") +
+    geom_hline(yintercept = 500) +
+    coord_flip() +
+    theme(plot.title = element_text(face = "italic"))
+
+gene_filter_plot_tf <- genes_all_final_tf %>% 
+  group_by(reference, sample) %>% 
+  summarise(N_Genes = n()) %>%
+  arrange(desc(N_Genes)) %>%
+  mutate(sample = as_factor(sample)) %>%
+  ggplot(aes(sample, N_Genes)) +
+    geom_bar(stat = "identity") +
+    ggtitle("Tannerella forsythia") +
+    xlab("Number of Genes Passing Breadth Filter (>= 70)") +
+    ylab("Individual") +
+    theme_minimal(base_size = 7, base_family = "Roboto") +
+    geom_hline(yintercept = 500) +
+    coord_flip() +
+    theme(plot.title = element_text(face = "italic"))
+
+gene_filter_plot_both <- gene_filter_plot_pg + gene_filter_plot_tf
+
+gene_filter_plot_both
+
+ggplot2::ggsave("FigSX_VirulenceNormalisation_Breadth_GeneFilter.pdf", plot = gene_filter_plot_both, path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/VirulenceFactors", device = cairo_pdf, width = 7, height = 3.5, units = "in")
+ggplot2::ggsave("FigSX_VirulenceNormalisation_Breadth_GeneFilter.png", plot = gene_filter_plot_both, path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/VirulenceFactors", width = 7, height = 3.5, units = "in", dpi = 600)
+```
+
+In both cases, we see there is a massive increase in the number of genes
+that passed the gene-based median depth/SD filter at above 500 in both cases.
+
+```{r}
+keep_pg_all <- genes_all_final_pg %>% 
+  group_by(reference, sample) %>% 
+  summarise(N_Genes = n()) %>%
+  filter(N_Genes >= 500) %>%
+  pull(sample)
+
+keep_tf_all <- genes_all_final_tf %>% 
+  group_by(reference, sample) %>% 
+  summarise(N_Genes = n()) %>%
+  filter(N_Genes >= 500) %>%
+  pull(sample)
+```
+
+We can then remove all samples following below that.
+
+```{r}
+genes_all_final_pg <- genes_all_final_pg %>% filter(sample %in% keep_pg_all) 
+genes_all_final_tf <- genes_all_final_tf %>% filter(sample %in% keep_tf_all) 
+
+```
+
+Now we can get the average depth of these genes with
+
+```{r}
+genes_all_means_pg <- genes_all_final_pg %>% group_by(sample) %>% summarise(mean_hq_genes_depth = mean(depth))
+genes_all_means_tf <- genes_all_final_tf %>% group_by(sample) %>% summarise(mean_hq_genes_depth = mean(depth))
+
+```
+
+And join this with our feature data
+
+```{r}
+data_all_vir_plot_pg <- combined_pg %>% select(-contains("bin"), -contains("genome")) %>% 
+  left_join(genes_all_means_pg) %>% 
+  mutate(Ratio = mean_hq_genes_depth / mean_Gene_depth) %>%
+  mutate(Host_Common = factor(Host_Common, levels = names(rev(common_colours)))) %>%
+  arrange(Host_Common) %>%
+  mutate(sample = as_factor(sample))
+
+data_all_vir_plot_tf <- combined_tf %>% 
+  select(-contains("bin"), -contains("genome")) %>% 
+  left_join(genes_all_means_tf) %>% 
+  mutate(Ratio = mean_hq_genes_depth / mean_Gene_depth) %>%
+  mutate(Host_Common = factor(Host_Common, levels = names(rev(common_colours)))) %>%
+  arrange(Host_Common) %>%
+  mutate(sample = as_factor(sample))
+
+```
+
+### Plot ratios
+
+And plot
+
+```{r, fig.width=7, fig.height=3.5}
+pg_colours2 <- ind_colour[data_all_vir_plot_pg %>% pull(sample) %>% unique %>% as.vector]
+tf_colours2 <- ind_colour[data_all_vir_plot_tf %>% pull(sample) %>% unique %>% as.vector]
+
+
+plot_pg_ratio2 <- ggplot(data_all_vir_plot_pg, aes(Gene, sample, fill = Ratio)) + 
+  geom_point(pch = 22, aes(size = Gene_fraction_covered )) + 
+  scale_fill_viridis_c(option = "inferno", trans = "log10", direction = -1) + 
+  xlab("Gene") +
+  ylab("Individual") +
+  labs(title = "Porphyromonas gingivalis", 
+       fill = "Ratio 1:",
+       size = "% Gene\nCovered") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_text(colour = pg_colours2), 
+        plot.title = element_text(face = "italic"),
+        panel.grid.major =  element_blank()) +  
+  guides(fill = guide_colourbar(reverse = T))
+
+plot_tf_ratio2 <- ggplot(data_all_vir_plot_tf, aes(Gene, sample, fill = Ratio)) + 
+  geom_point(pch = 22, aes(size = Gene_fraction_covered)) + 
+  scale_fill_viridis_c(option = "inferno", trans = "log10", direction = -1) + 
+  xlab("Gene") +
+  ylab("Individual") +
+  labs(title = "Tannerella forsythia", 
+       fill = "Ratio 1:",
+       size = "% Gene\nCovered") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.y = element_text(colour = tf_colours2), 
+        plot.title = element_text(face = "italic"), 
+        panel.grid.major =  element_blank()) + 
+  guides(fill = guide_colourbar(reverse = T))
+
+final_ratio_plot2_both <- plot_pg_ratio2 + plot_tf_ratio2
+
+ggplot2::ggsave("FigSX_Virulence_AllAnnotatedGene_Virulence_Ratios.pdf", plot = final_ratio_plot2_both, path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/VirulenceFactors", device = cairo_pdf, width = 7, height = 3.5, units = "in")
+ggplot2::ggsave("FigSX_Virulence_AllAnnotatedGene_Virulence_Ratios.png", plot = final_ratio_plot2_both, path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/VirulenceFactors", width = 7, height = 3.5, units = "in", dpi = 600)
+```
+
+
+TO DO:
+Check that there is not a clear ratio cut off (for strokes indicating present/absence)

@@ -1679,7 +1679,45 @@ repository.
 
 **UP TO HERE**
 
+### Super-reference construction
+
+### Super-reference Alignment and species selection
+
+### Performance of super-reference vs. single reference mapping
+
+### Single reference genome mapping statistics
+
+### Variant calling and single-allelic position assessment
+
 ## Functional Analysis
+
+### Virulence Factors
+
+Given that we identified in the production dataset significant numbers of reads
+mapping to reference genomes of classically considered and well-studied 
+'red complex' pathogenic bacteria across most host genera, we were interested 
+to see if we would observe any change in pathogenicity based on gain/loss of 
+identified virulence factors in human strains.
+
+For this we can first use the production mapping datasets to the references of
+_Tannerella forsythia_ and _Porphyromonas gingivalis_. 
+
+We can take the deduplicated bedfiles and run bedtools coverage on them, using
+a collection of virulence factors described in the literature 
+**@ivelsko to describe how collected**
+
+```bash
+bedtools coverage -a <REFERENCE>.gff -b <BAM> > <OUT FILE>.tsv
+bedtools coverage -a <REFERENCE>.gff -b <BAM> > <OUT FILE>.tsv -mean
+```
+
+For the actual filtering and identification of presence/absence, we load the
+ resulting TSV files into R with the notebook 
+ `02-scripts.backu[/054-virulence_investigation.Rmd`
+
+**UP TO HERE - checking input files for 054, adding eager reports** 
+
+### Amylase
 
 ### HUMANn2
 
