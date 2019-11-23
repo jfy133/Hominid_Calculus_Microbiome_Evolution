@@ -1,0 +1,191 @@
+Taxon Genus	Taxon	Block ID (nt)	Host Genus Grouping (nt)
+Propionibacterium	Propionibacterium_propionicum	1	Hominid core
+Desulfobulbus	Desulfobulbus_sp_oral_taxon_041	1	Hominid core
+Streptococcus	Streptococcus_sanguinis	2	Homo specific
+Lautropia	Lautropia_mirabilis	2	Homo specific
+Rothia	Rothia_unclassified	3	Gorilla/Alouatta specific
+Neisseria	Neisseria_unclassified	3	Gorilla/Alouatta specific
+Bacteroidetes	Bacteroidetes_oral_taxon_274	4	Pan/Homo specific
+Tannerella	Tannerella_forsythia	4	Pan/Homo specific
+Fretibacterium	Fretibacterium_fastidiosum	4	Pan/Homo specific
+Bacteroidetes	Bacteroidetes_bacterium_oral_taxon_272	4	Pan/Homo specific
+Pseudoramibacter	Pseudoramibacter_alactolyticus	5	Pan dominant (weak in modern day humans)
+Pyramidobacter	Pyramidobacter_piscolens	5	Pan dominant (weak in modern day humans)
+Olsenella	Olsenella_uli	5	Pan dominant (weak in modern day humans)
+Dialister	Dialister_invisus	5	Pan dominant (weak in modern day humans)
+Anaeroglobus	Anaeroglobus_geminatus	5	Pan dominant (weak in modern day humans)
+Corynebacterium	Corynebacterium_matruchotii	6	Homo specific (modern and non-pan assoicated humans)
+Methanobrevibacter	Methanobrevibacter_unclassified	7	Homo specific (most ancient humans)
+Aggregatibacter	Aggregatibacter_actinomycetemcomitans	8	Gorilla/Alouatta specific
+Actinomyces	Actinomyces_massiliensis	9	Pan/Homo specific
+Propionibacterium	Propionibacterium_sp_oral_taxon_192	10	Homo specific (ancient humans only)
+Actinomyces	Actinomyces_cardiffensis	10	Homo specific (ancient humans only)
+Rothia	Rothia_dentocariosa	11	Gorilla/Homo specific (not Alouatta)
+Aggregatibacter	Aggregatibacter_unclassified	12	Gorilla specific (not Alouatta)
+Rothia	Rothia_aeria	13	Homo specific
+Abiotrophia	Abiotrophia_defectiva	13	Homo specific
+Eikenella	Eikenella_corrodens	13	Homo specific
+Capnocytophaga	Capnocytophaga_unclassified	13	Homo specific
+Johnsonella	Johnsonella_ignava	NA	
+Mogibacterium	Mogibacterium_sp_CM50	NA	
+Eubacterium	Eubacterium_saphenum	NA	
+Treponema	Treponema_socranskii	14	Pan/Homo specific
+Treponema	Treponema_maltophilum	14	Pan/Homo specific
+Treponema	Treponema_denticola	14	Pan/Homo specific
+Eubacterium	Eubacterium_brachy	14	Pan/Homo specific
+Parvimonas	Parvimonas_unclassified	14	Pan/Homo specific
+Fusobacterium	Fusobacterium_nucleatum	14	Pan/Homo specific
+Aggregatibacter	Aggregatibacter_aphrophilus	15	Homo specific (modern day human only)
+Capnocytophaga	Capnocytophaga_gingivalis	15	Homo specific (modern day human only)
+Actinomyces	Actinomyces_odontolyticus	15	Homo specific (modern day human only)
+Capnocytophaga	Capnocytophaga_sp_oral_taxon_329	15	Homo specific (modern day human only)
+Neisseria	Neisseria_sicca	15	Homo specific (modern day human only)
+Neisseria	Neisseria_elongata	15	Homo specific (modern day human only)
+Slackia	Slackia_unclassified	16	Pan/Homo specific (pan and pan-associated ancient humans)
+Porphyromonas	Porphyromonas_gingivalis	16	Pan/Homo specific (pan and pan-associated ancient humans)
+Pseudomonas	Pseudomonas_unclassified	NA	
+Brevibacterium	Brevibacterium_unclassified	NA	
+Veillonella	Veillonella_unclassified	NA	
+Olsenella	Olsenella_unclassified	NA	
+Corynebacterium	Corynebacterium_durum	17	Homo specific (modern day and non-pan ancient humans)
+Cardiobacterium	Cardiobacterium_hominis	17	Homo specific (modern day and non-pan ancient humans)
+Cardiobacterium	Cardiobacterium_valvarum	17	Homo specific (modern day and non-pan ancient humans)
+Campylobacter	Campylobacter_gracilis	17	Homo specific (modern day and non-pan ancient humans)
+Actinomyces	Actinomyces_johnsonii	17	Homo specific (modern day and non-pan ancient humans)
+Actinomyces	Actinomyces_oris	17	Homo specific (modern day and non-pan ancient humans)
+Actinomyces	Actinomyces_naeslundii	17	Homo specific (modern day and non-pan ancient humans)
+Gemella	Gemella_morbillorum	17	Homo specific (modern day and non-pan ancient humans)
+Eubacterium	Eubacterium_yurii	17	Homo specific (modern day and non-pan ancient humans)
+Campylobacter	Campylobacter_showae	NA	
+Streptococcus	Streptococcus_mutans	NA	
+Slackia	Slackia_exigua	NA	
+Campylobacter	Campylobacter_rectus	NA	
+candidate	candidate_division_TM7_single_cell_isolate_TM7c	NA	
+Streptococcus	Streptococcus_oligofermentans	NA	
+Peptostreptococcus	Peptostreptococcus_stomatis	NA	
+Pseudomonas	Pseudomonas_putida	NA	
+Actinomyces	Actinomyces_viscosus	NA	
+Olsenella	Olsenella_profusa	NA	
+Haemophilus	Haemophilus_parainfluenzae	NA	
+Granulicatella	Granulicatella_adiacens	NA	
+Cryptobacterium	Cryptobacterium_curtum	NA	
+Actinobaculum	Actinobaculum_unclassified	NA	
+Kingella	Kingella_denitrificans	NA	
+Shuttleworthia	Shuttleworthia_satelles	NA	
+Bifidobacterium	Bifidobacterium_dentium	NA	
+Neisseria	Neisseria_bacilliformis	NA	
+Kingella	Kingella_oralis	NA	
+Streptococcus	Streptococcus_gordonii	NA	
+Atopobium	Atopobium_parvulum	NA	
+Filifactor	Filifactor_alocis	NA	
+Treponema	Treponema_lecithinolyticum	NA	
+Parvimonas	Parvimonas_micra	NA	
+Megasphaera	Megasphaera_unclassified	NA	
+Oribacterium	Oribacterium_sp_oral_taxon_078	NA	
+Saccharopolyspora	Saccharopolyspora_unclassified	NA	
+Selenomonas	Selenomonas_noxia	NA	
+Leptotrichia	Leptotrichia_unclassified	NA	
+Streptococcus	Streptococcus_cristatus	NA	
+candidate	candidate_division_TM7_single_cell_isolate_TM7b	NA	
+Porphyromonas	Porphyromonas_catoniae	NA	
+Capnocytophaga	Capnocytophaga_sp_oral_taxon_332	NA	
+Porphyromonas	Porphyromonas_endodontalis	NA	
+Veillonella	Veillonella_parvula	NA	
+Prevotella	Prevotella_loescheii	NA	
+Neisseria	Neisseria_macacae	NA	
+Actinomyces	Actinomyces_georgiae	NA	
+Staphylococcus	Staphylococcus_saprophyticus	NA	
+Methanobrevibacter	Methanobrevibacter_smithii	NA	
+Aggregatibacter	Aggregatibacter_segnis	NA	
+Eubacterium	Eubacterium_infirmum	NA	
+Erysipelothrix	Erysipelothrix_rhusiopathiae	NA	
+Streptococcus	Streptococcus_parasanguinis	NA	
+Escherichia	Escherichia_unclassified	NA	
+Actinomyces	Actinomyces_timonensis	NA	
+Actinobacillus	Actinobacillus_unclassified	NA	
+Sphingobacterium	Sphingobacterium_unclassified	NA	
+Kingella	Kingella_unclassified	NA	
+Streptococcus	Streptococcus_constellatus	NA	
+Mitsuokella	Mitsuokella_unclassified	NA	
+Prevotella	Prevotella_saccharolytica	NA	
+Catonella	Catonella_morbi	NA	
+Porphyromonas	Porphyromonas_sp_oral_taxon_279	NA	
+Capnocytophaga	Capnocytophaga_granulosa	NA	
+Riemerella	Riemerella_unclassified	NA	
+Prevotella	Prevotella_oralis	NA	
+Alloprevotella	Alloprevotella_tannerae	NA	
+Subdoligranulum	Subdoligranulum_unclassified	NA	
+Gemella	Gemella_bergeri	NA	
+Streptococcus	Streptococcus_infantis	NA	
+Enterococcus	Enterococcus_faecalis	NA	
+Acinetobacter	Acinetobacter_unclassified	NA	
+Enterobacter	Enterobacter_cloacae	NA	
+Neisseria	Neisseria_meningitidis	NA	
+Desulfovibrio	Desulfovibrio_desulfuricans	NA	
+Capnocytophaga	Capnocytophaga_ochracea	NA	
+Leptotrichia	Leptotrichia_buccalis	NA	
+Streptococcus	Streptococcus_anginosus	NA	
+Polaromonas	Polaromonas_unclassified	NA	
+Comamonas	Comamonas_unclassified	NA	
+Prevotella	Prevotella_intermedia	NA	
+Dasheen	Dasheen_mosaic_virus	NA	
+Oxalobacter	Oxalobacter_formigenes	NA	
+Collinsella	Collinsella_unclassified	NA	
+Atopobium	Atopobium_rimae	NA	
+Rothia	Rothia_mucilaginosa	NA	
+Eggerthia	Eggerthia_catenaformis	NA	
+Prevotella	Prevotella_pleuritidis	NA	
+Stenotrophomonas	Stenotrophomonas_maltophilia	NA	
+Thiomonas	Thiomonas_unclassified	NA	
+Sphingobium	Sphingobium_unclassified	NA	
+Brevundimonas	Brevundimonas_unclassified	NA	
+Prevotella	Prevotella_buccae	NA	
+Prevotella	Prevotella_baroniae	NA	
+Treponema	Treponema_medium	NA	
+Selenomonas	Selenomonas_sputigena	NA	
+Solobacterium	Solobacterium_moorei	NA	
+Lachnospiraceae	Lachnospiraceae_oral_taxon_107	NA	
+Kocuria	Kocuria_unclassified	NA	
+Halomonas	Halomonas_unclassified	NA	
+Acinetobacter	Acinetobacter_lwoffii	NA	
+Cyclovirus	Cyclovirus_NGchicken15_NGA_2009	NA	
+Selenomonas	Selenomonas_artemidis	NA	
+Prevotella	Prevotella_maculosa	NA	
+Candidatus	Candidatus_Prevotella_conceptionensis	NA	
+Gemella	Gemella_unclassified	NA	
+Neisseria	Neisseria_flavescens	NA	
+Prevotella	Prevotella_micans	NA	
+Centipeda	Centipeda_periodontii	NA	
+Treponema	Treponema_vincentii	NA	
+Pusillimonas	Pusillimonas_unclassified	NA	
+Limnohabitans	Limnohabitans_unclassified	NA	
+Fusobacterium	Fusobacterium_periodonticum	NA	
+Rhodospirillum	Rhodospirillum_unclassified	NA	
+Aeromonas	Aeromonas_unclassified	NA	
+Caulobacter	Caulobacter_unclassified	NA	
+Agromyces	Agromyces_unclassified	NA	
+Streptococcus	Streptococcus_tigurinus	NA	
+Gemella	Gemella_haemolysans	NA	
+Bartonella	Bartonella_unclassified	NA	
+Selenomonas	Selenomonas_infelix	NA	
+Prevotella	Prevotella_dentalis	NA	
+Eubacteriaceae	Eubacteriaceae_bacterium_OBRC8	NA	
+Anaerotruncus	Anaerotruncus_unclassified	NA	
+Granulicatella	Granulicatella_unclassified	NA	
+Prevotella	Prevotella_marshii	NA	
+Bulleidia	Bulleidia_extructa	NA	
+Neisseria	Neisseria_gonorrhoeae	NA	
+Pasteurella	Pasteurella_unclassified	NA	
+Streptococcus	Streptococcus_mitis_oralis_pneumoniae	NA	
+Leptotrichia	Leptotrichia_wadei	NA	
+Leptotrichia	Leptotrichia_hofstadii	NA	
+Eubacteriaceae	Eubacteriaceae_bacterium_CM5	NA	
+Streptococcus	Streptococcus_australis	NA	
+Gemella	Gemella_sanguinis	NA	
+Prevotella	Prevotella_oulorum	NA	
+Haemophilus	Haemophilus_haemolyticus	NA	
+Lachnospiraceae	Lachnospiraceae_bacterium_ICM7	NA	
+Selenomonas	Selenomonas_flueggei	NA	
+Eubacteriaceae	Eubacteriaceae_bacterium_ACC19a	NA	
+Leptotrichia	Leptotrichia_shahii	NA	
+Campylobacter	Campylobacter_concisus	NA	

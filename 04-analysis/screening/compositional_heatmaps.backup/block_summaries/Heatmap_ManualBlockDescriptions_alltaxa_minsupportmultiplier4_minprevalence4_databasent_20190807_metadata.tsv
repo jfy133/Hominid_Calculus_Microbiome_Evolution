@@ -1,0 +1,124 @@
+Taxon	aggregate_oxygen_tol	aggregate_gram_stain	oral_related
+Acidipropionibacterium_acidipropionici	anaerobe	NA	NA
+Actinobacillus_pleuropneumoniae	microaerophile	NA	NA
+Actinobacillus_succinogenes	aerobe	NA	NA
+Actinomyces_hongkongensis	anaerobe	NA	NA
+Actinomyces_meyeri	anaerobe	positive	NA
+Actinomyces_naeslundii	anaerobe	NA	NA
+Actinomyces_radicidentis	microaerophile	NA	NA
+Adlercreutzia_equolifaciens	anaerobe	positive	NA
+Aggregatibacter_actinomycetemcomitans	microaerophile	NA	NA
+Aggregatibacter_aphrophilus	microaerophile	NA	NA
+Atopobium_parvulum	anaerobe	NA	NA
+Bacteroides_fragilis	anaerobe	NA	NA
+Bacteroides_salanitronis	anaerobe	NA	NA
+Bibersteinia_trehalosi	microaerophile	NA	NA
+Bifidobacterium_dentium	anaerobe	NA	TRUE
+Campylobacter_concisus	anaerobe/microaerophile	NA	TRUE
+Campylobacter_curvus	anaerobe/microaerophile	NA	NA
+Campylobacter_gracilis	anaerobe	NA	TRUE
+Capnocytophaga_gingivalis	anaerobe/microaerophile	NA	TRUE
+Capnocytophaga_leadbetteri	microaerophile/anaerobe	negative	TRUE
+Capnocytophaga_ochracea	anaerobe/microaerophile	NA	TRUE
+Capnocytophaga_sputigena	anaerobe/microaerophile	NA	TRUE
+Cloacibacillus_porcorum	anaerobe	negative	NA
+Clostridioides_difficile	anaerobe	NA	NA
+Cryptobacterium_curtum	anaerobe/obligate anaerobe	positive	TRUE
+Cutibacterium_avidum	anaerobe/microaerophile	NA	NA
+Denitrobacterium_detoxificans	anaerobe	NA	NA
+Desulfobulbus_propionicus	anaerobe	NA	NA
+Desulfomicrobium_orale	anaerobe	NA	TRUE
+Desulfovibrio_fairfieldensis	anaerobe	NA	NA
+Dialister_pneumosintes	anaerobe	NA	NA
+Eggerthella_lenta	anaerobe	NA	NA
+Enterobacter_cloacae	aerobe	NA	NA
+Enterococcus_faecalis	microaerophile	NA	NA
+Eubacterium_limosum	anaerobe	NA	NA
+Faecalibacterium_prausnitzii	anaerobe	NA	NA
+Fermentimonas_caenicola	facultative anaerobe	negative	NA
+Filifactor_alocis	anaerobe	NA	TRUE
+Finegoldia_magna	anaerobe	NA	NA
+Flavonifractor_plautii	anaerobe	NA	NA
+Fretibacterium_fastidiosum	anaerobe	negative	TRUE
+Fusobacterium_nucleatum	anaerobe	NA	TRUE
+Gordonibacter_pamelaeae	anaerobe	positive	NA
+Gordonibacter_urolithinfaciens	anaerobe	NA	NA
+Haemophilus_influenzae	microaerophile	NA	NA
+Haemophilus_parainfluenzae	microaerophile	NA	NA
+Haemophilus_pittmaniae	microaerophile	NA	TRUE
+Histophilus_somni	microaerophile	NA	NA
+Intestinimonas_butyriciproducens	anaerobe	positive	NA
+Kingella_kingae	microaerophile	NA	NA
+Lawsonella_clevelandensis	anaerobe	positive	NA
+Leptotrichia_buccalis	anaerobe/microaerophile	NA	TRUE
+Mageeibacillus_indolicus	anaerobe	NA	NA
+Megasphaera_elsdenii	anaerobe	NA	NA
+Methanobrevibacter_millerae	anaerobe	NA	NA
+Methanobrevibacter_olleyae	anaerobe	NA	NA
+Methanobrevibacter_ruminantium	anaerobe	NA	NA
+Methanobrevibacter_smithii	anaerobe	NA	NA
+Neisseria_elongata	microaerophile	NA	NA
+Neisseria_gonorrhoeae	microaerophile	NA	NA
+Neisseria_lactamica	microaerophile	NA	NA
+Neisseria_meningitidis	microaerophile	NA	NA
+Neisseria_sicca	microaerophile	NA	NA
+Neisseria_weaveri	aerobe	NA	NA
+Neisseria_zoodegmatis	facultative anaerobe	negative	NA
+Odoribacter_splanchnicus	anaerobe	NA	NA
+Olsenella_uli	obligate anaerobe/anaerobe	NA	TRUE
+Olsenella_umbonata	obligate anaerobe/anaerobe	NA	NA
+Parvimonas_micra	anaerobe	NA	NA
+Porphyromonas_gingivalis	anaerobe	NA	TRUE
+Prevotella_dentalis	anaerobe	NA	TRUE
+Prevotella_denticola	anaerobe	NA	TRUE
+Prevotella_intermedia	anaerobe	NA	NA
+Prevotella_melaninogenica	anaerobe	NA	NA
+Propionibacterium_freudenreichii	anaerobe/microaerophile	NA	NA
+Pseudomonas_koreensis	aerobe	NA	NA
+Pseudopropionibacterium_propionicum	anaerobe/microaerophile	NA	NA
+Pyramidobacter_piscolens	anaerobe	negative	TRUE
+Rothia_aeria	aerobe/microaerophile	positive	NA
+Rothia_dentocariosa	anaerobe/microaerophile	NA	TRUE
+Rothia_mucilaginosa	microaerophile	NA	NA
+Salmonella_enterica	aerobe	"NA"	NA
+Selenomonas_sputigena	anaerobe	NA	TRUE
+Slackia_heliotrinireducens	anaerobe	NA	NA
+Staphylococcus_nepalensis	aerobe	NA	NA
+Staphylococcus_xylosus	aerobe	NA	NA
+Streptococcus_acidominimus	microaerophile/aerobe	NA	NA
+Streptococcus_agalactiae	microaerophile/aerobe	NA	NA
+Streptococcus_anginosus	microaerophile/anaerobe	NA	NA
+Streptococcus_constellatus	microaerophile/anaerobe	NA	NA
+Streptococcus_cristatus	microaerophile	NA	TRUE
+Streptococcus_dysgalactiae	microaerophile	NA	NA
+Streptococcus_equi	microaerophile	NA	NA
+Streptococcus_gallolyticus	microaerophile/aerobe	NA	NA
+Streptococcus_gordonii	microaerophile	NA	NA
+Streptococcus_himalayensis	facultative anaerobe	positive	NA
+Streptococcus_intermedius	microaerophile/anaerobe	NA	NA
+Streptococcus_marmotae	facultative anaerobe	positive	NA
+Streptococcus_merionis	microaerophile/facultative anaerobe	positive	NA
+Streptococcus_mitis	microaerophile	NA	TRUE
+Streptococcus_mutans	microaerophile	NA	TRUE
+Streptococcus_oralis	microaerophile/facultative anaerobe	positive	TRUE
+Streptococcus_pantholopis	facultative anaerobe	positive	NA
+Streptococcus_parasanguinis	microaerophile	NA	NA
+Streptococcus_parauberis	microaerophile	NA	NA
+Streptococcus_pneumoniae	microaerophile	NA	NA
+Streptococcus_pseudopneumoniae	microaerophile	NA	NA
+Streptococcus_pyogenes	microaerophile	NA	NA
+Streptococcus_salivarius	microaerophile/aerobe	NA	NA
+Streptococcus_sanguinis	microaerophile	NA	NA
+Streptococcus_suis	anaerobe/microaerophile/aerobe	NA	NA
+Streptococcus_thermophilus	microaerophile/aerobe	NA	NA
+Streptococcus_troglodytae	microaerophile/facultative anaerobe	positive	TRUE
+Tannerella_forsythia	anaerobe	NA	TRUE
+Tessaracoccus_flavescens	facultative anaerobe	positive	NA
+Tessaracoccus_flavus	facultative anaerobe	positive	NA
+Treponema_denticola	anaerobe	NA	TRUE
+Treponema_pedis	anaerobe	negative	NA
+Treponema_putidum	anaerobe	"NA"	TRUE
+Trueperella_pyogenes	anaerobe	"NA"	NA
+Veillonella_atypica	anaerobe	NA	TRUE
+Veillonella_parvula	anaerobe	NA	TRUE
+Veillonella_rodentium	anaerobe	NA	TRUE

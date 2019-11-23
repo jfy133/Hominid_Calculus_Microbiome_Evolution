@@ -1,0 +1,95 @@
+"nt"	"characteristic"	"characteristic_value"	"No_Taxa"
+1	"aggregate_gram_stain"	"NA"	18
+1	"aggregate_gram_stain"	"negative"	1
+1	"aggregate_oxygen_tol"	"anaerobe"	9
+1	"aggregate_oxygen_tol"	"NA"	8
+1	"aggregate_oxygen_tol"	"microaerophile/anaerobe"	1
+1	"aggregate_oxygen_tol"	"obligate anaerobe/anaerobe"	1
+1	"Complex"	"NA"	13
+1	"Complex"	"Orange"	3
+1	"Complex"	"Red"	3
+2	"aggregate_gram_stain"	"NA"	13
+2	"aggregate_gram_stain"	"positive"	1
+2	"aggregate_oxygen_tol"	"NA"	5
+2	"aggregate_oxygen_tol"	"anaerobe"	5
+2	"aggregate_oxygen_tol"	"microaerophile/anaerobe"	2
+2	"aggregate_oxygen_tol"	"anaerobe/microaerophile"	1
+2	"aggregate_oxygen_tol"	"microaerophile"	1
+2	"Complex"	"NA"	11
+2	"Complex"	"Orange"	2
+2	"Complex"	"Yellow"	1
+3	"aggregate_gram_stain"	"NA"	10
+3	"aggregate_oxygen_tol"	"NA"	4
+3	"aggregate_oxygen_tol"	"anaerobe/microaerophile"	4
+3	"aggregate_oxygen_tol"	"anaerobe"	2
+3	"Complex"	"NA"	7
+3	"Complex"	"Green"	2
+3	"Complex"	"Purple"	1
+4	"aggregate_gram_stain"	"NA"	9
+4	"aggregate_gram_stain"	"positive"	1
+4	"aggregate_oxygen_tol"	"microaerophile"	8
+4	"aggregate_oxygen_tol"	"NA"	1
+4	"aggregate_oxygen_tol"	"microaerophile/facultative anaerobe"	1
+4	"Complex"	"NA"	6
+4	"Complex"	"Yellow"	3
+4	"Complex"	"Green"	1
+5	"aggregate_gram_stain"	"NA"	15
+5	"aggregate_gram_stain"	"negative"	1
+5	"aggregate_gram_stain"	"positive"	1
+5	"aggregate_oxygen_tol"	"NA"	6
+5	"aggregate_oxygen_tol"	"microaerophile"	6
+5	"aggregate_oxygen_tol"	"anaerobe/microaerophile"	3
+5	"aggregate_oxygen_tol"	"aerobe/microaerophile"	1
+5	"aggregate_oxygen_tol"	"microaerophile/anaerobe"	1
+5	"Complex"	"NA"	14
+5	"Complex"	"Green"	2
+5	"Complex"	"Yellow"	1
+6	"aggregate_gram_stain"	"NA"	2
+6	"aggregate_oxygen_tol"	"microaerophile"	2
+6	"Complex"	"NA"	2
+7	"aggregate_gram_stain"	"NA"	3
+7	"aggregate_oxygen_tol"	"anaerobe"	2
+7	"aggregate_oxygen_tol"	"NA"	1
+7	"Complex"	"NA"	3
+8	"aggregate_gram_stain"	"NA"	5
+8	"aggregate_gram_stain"	"negative"	1
+8	"aggregate_oxygen_tol"	"anaerobe"	3
+8	"aggregate_oxygen_tol"	"NA"	2
+8	"aggregate_oxygen_tol"	"anaerobe/microaerophile"	1
+8	"Complex"	"NA"	6
+9	"aggregate_gram_stain"	"NA"	19
+9	"aggregate_gram_stain"	"positive"	4
+9	"aggregate_oxygen_tol"	"anaerobe"	11
+9	"aggregate_oxygen_tol"	"NA"	10
+9	"aggregate_oxygen_tol"	"anaerobe/obligate anaerobe"	1
+9	"aggregate_oxygen_tol"	"obligate anaerobe/anaerobe"	1
+9	"Complex"	"NA"	23
+10	"aggregate_gram_stain"	"NA"	13
+10	"aggregate_gram_stain"	"negative"	1
+10	"aggregate_gram_stain"	"positive"	1
+10	"aggregate_oxygen_tol"	"microaerophile"	6
+10	"aggregate_oxygen_tol"	"NA"	4
+10	"aggregate_oxygen_tol"	"anaerobe"	1
+10	"aggregate_oxygen_tol"	"anaerobe/microaerophile/aerobe"	1
+10	"aggregate_oxygen_tol"	"facultative anaerobe"	1
+10	"aggregate_oxygen_tol"	"microaerophile/aerobe"	1
+10	"aggregate_oxygen_tol"	"microaerophile/facultative anaerobe"	1
+10	"Complex"	"NA"	15
+11	"aggregate_gram_stain"	"NA"	15
+11	"aggregate_gram_stain"	"negative"	3
+11	"aggregate_gram_stain"	"positive"	1
+11	"aggregate_oxygen_tol"	"anaerobe"	15
+11	"aggregate_oxygen_tol"	"NA"	3
+11	"aggregate_oxygen_tol"	"facultative anaerobe"	1
+11	"Complex"	"NA"	19
+12	"aggregate_gram_stain"	"NA"	34
+12	"aggregate_gram_stain"	"positive"	6
+12	"aggregate_oxygen_tol"	"NA"	15
+12	"aggregate_oxygen_tol"	"aerobe"	7
+12	"aggregate_oxygen_tol"	"microaerophile"	6
+12	"aggregate_oxygen_tol"	"facultative anaerobe"	5
+12	"aggregate_oxygen_tol"	"microaerophile/aerobe"	4
+12	"aggregate_oxygen_tol"	"anaerobe"	1
+12	"aggregate_oxygen_tol"	"anaerobe/microaerophile"	1
+12	"aggregate_oxygen_tol"	"microaerophile/facultative anaerobe"	1
+12	"Complex"	"NA"	40

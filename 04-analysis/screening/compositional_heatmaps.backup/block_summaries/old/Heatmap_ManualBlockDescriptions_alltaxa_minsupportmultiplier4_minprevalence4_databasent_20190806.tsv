@@ -1,0 +1,185 @@
+Taxon Genus	Taxon	Block ID (nt)	Host Genus Grouping (nt)
+Anaerolineaceae	Anaerolineaceae_bacterium_oral_taxon_439	1	Homo/Pan Dominant
+Candidatus	Candidatus_Saccharibacteria_oral_taxon_TM7x	1	Homo/Pan Dominant
+Desulfomicrobium	Desulfomicrobium_orale	1	Homo/Pan Dominant
+Filifactor	Filifactor_alocis	1	Homo/Pan Dominant
+Fretibacterium	Fretibacterium_fastidiosum	1	Homo/Pan Dominant
+Gemella	Gemella_sp._oral_taxon_928	1	Homo/Pan Dominant
+Mogibacterium	Mogibacterium_pumilum	1	Homo/Pan Dominant
+Olsenella	Olsenella_uli	1	Homo/Pan Dominant
+Olsenella	Olsenella_sp._oral_taxon_807	1	Homo/Pan Dominant
+Ottowia	Ottowia_sp._oral_taxon_894	1	Homo/Pan Dominant
+Parvimonas	Parvimonas_micra	1	Homo/Pan Dominant
+Porphyromonas	Porphyromonas_gingivalis	1	Homo/Pan Dominant
+Prevotella	Prevotella_intermedia	1	Homo/Pan Dominant
+Streptococcus	Streptococcus_constellatus	1	Homo/Pan Dominant
+Tannerella	Tannerella_sp._oral_taxon_HOT-286	1	Homo/Pan Dominant
+Tannerella	Tannerella_forsythia	1	Homo/Pan Dominant
+Treponema	Treponema_sp._OMZ_838	1	Homo/Pan Dominant
+Treponema	Treponema_putidum	1	Homo/Pan Dominant
+Treponema	Treponema_denticola	1	Homo/Pan Dominant
+Actinomyces	Actinomyces_sp._oral_taxon_414	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Actinomyces	Actinomyces_meyeri	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Actinomyces	Actinomyces_hongkongensis	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Actinomyces	Actinomyces_oris	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Actinomyces	Actinomyces_naeslundii	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Actinomyces	Actinomyces_sp._Chiba101	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Actinomyces	Actinomyces_succiniciruminis	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Actinomyces	Actinomyces_radicidentis	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Campylobacter	Campylobacter_gracilis	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Fusobacterium	Fusobacterium_nucleatum	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Pseudopropionibacterium	Pseudopropionibacterium_propionicum	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Streptococcus	Streptococcus_intermedius	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Streptococcus	Streptococcus_anginosus	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+uncultured	uncultured_bacterium	2	Anthropoid Core (Reduced in Gorilla/Alouatta)
+Campylobacter	Campylobacter_curvus	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Campylobacter	Campylobacter_concisus	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Capnocytophaga	Capnocytophaga_sp._oral_taxon_323	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Capnocytophaga	Capnocytophaga_ochracea	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Fusobacterium	Fusobacterium_hwasookii	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Leptotrichia	Leptotrichia_buccalis	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Selenomonas	Selenomonas_sputigena	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Selenomonas	Selenomonas_sp._oral_taxon_920	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Selenomonas	Selenomonas_sp._oral_taxon_126	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Veillonella	Veillonella_parvula	3	Homo Specific (Modern Day Dominant; Ancient Sporadic)
+Aggregatibacter	Aggregatibacter_aphrophilus	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Eikenella	Eikenella_corrodens	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Neisseria	Neisseria_sicca	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Neisseria	Neisseria_meningitidis	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Neisseria	Neisseria_elongata	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Streptococcus	Streptococcus_pneumoniae	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Streptococcus	Streptococcus_oralis	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Streptococcus	Streptococcus_cristatus	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Streptococcus	Streptococcus_sanguinis	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Streptococcus	Streptococcus_gordonii	4	Homo/Gorilla/Alouatta (Modern Day Human Dominant; missing in one clade of ancient)
+Capnocytophaga	Capnocytophaga_sp._ChDC_OS43	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Capnocytophaga	Capnocytophaga_leadbetteri	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Capnocytophaga	Capnocytophaga_sputigena	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Capnocytophaga	Capnocytophaga_gingivalis	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Haemophilus	Haemophilus_pittmaniae	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Haemophilus	Haemophilus_inuenzae	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Haemophilus	Haemophilus_parainfluenzae	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Leptotrichia	Leptotrichia_sp._oral_taxon_212	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Neisseria	Neisseria_gonorrhoeae	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Neisseria	Neisseria_sp._KEM232	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Neisseria	Neisseria_lactamica	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Rothia	Rothia_dentocariosa	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Rothia	Rothia_aeria	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Streptococcus	Streptococcus_mitis	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Streptococcus	Streptococcus_sp._oral_taxon_064	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Streptococcus	Streptococcus_sp._VT_162	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Streptococcus	Streptococcus_sp._NPS_308	5	Homo/Gorilla/Alouatta (Modern Day Human Dominant; Gorilla/Alouattas/Ancient humans sporadic)
+Aggregatibacter	Aggregatibacter_actinomycetemcomitans	6	Gorilla/Alouatta specific
+Rothia	Rothia_mucilaginosa	6	Gorilla/Alouatta specific
+Methanobrevibacter	Methanobrevibacter_smithii	7	Homo specific (Ancient humans only; missing in modern day)
+Methanobrevibacter	Methanobrevibacter_sp._YE315	7	Homo specific (Ancient humans only; missing in modern day)
+Methanobrevibacter	Methanobrevibacter_millerae	7	Homo specific (Ancient humans only; missing in modern day)
+Acidipropionibacterium	Acidipropionibacterium_acidipropionici	8	Pan/Homo dominant (Ancient humans only; missing in modern day)
+Desulfobulbus	Desulfobulbus_propionicus	8	Pan/Homo dominant (Ancient humans only; missing in modern day)
+Fusobacterium	Fusobacterium_sp._oral_taxon_203	8	Pan/Homo dominant (Ancient humans only; missing in modern day)
+Murdochiella	Murdochiella_vaginalis	8	Pan/Homo dominant (Ancient humans only; missing in modern day)
+Propionibacterium	Propionibacterium_freudenreichii	8	Pan/Homo dominant (Ancient humans only; missing in modern day)
+Treponema	Treponema_pedis	8	Pan/Homo dominant (Ancient humans only; missing in modern day)
+Actinomyces	Actinomyces_pacaensis	9	Pan specific
+Adlercreutzia	Adlercreutzia_equolifaciens	9	Pan specific
+Atopobium	Atopobium_parvulum	9	Pan specific
+Candidatus	Candidatus_Methanomethylophilus_alvus	9	Pan specific
+Clostridioides	Clostridioides_difficile	9	Pan specific
+Coriobacteriaceae	Coriobacteriaceae_bacterium_68-1-3	9	Pan specific
+Cryptobacterium	Cryptobacterium_curtum	9	Pan specific
+Denitrobacterium	Denitrobacterium_detoxificans	9	Pan specific
+Eggerthella	Eggerthella_lenta	9	Pan specific
+Faecalibacterium	Faecalibacterium_prausnitzii	9	Pan specific
+Gordonibacter	Gordonibacter_pamelaeae	9	Pan specific
+Gordonibacter	Gordonibacter_massiliensis	9	Pan specific
+Gordonibacter	Gordonibacter_urolithinfaciens	9	Pan specific
+Lawsonella	Lawsonella_clevelandensis	9	Pan specific
+Libanicoccus	Libanicoccus_massiliensis	9	Pan specific
+methanogenic	methanogenic_archaeon_mixed_culture_ISO4-G1	9	Pan specific
+methanogenic	methanogenic_archaeon_ISO4-H5	9	Pan specific
+Olsenella	Olsenella_umbonata	9	Pan specific
+Olsenella	Olsenella_sp._Marseille-P2300	9	Pan specific
+Prevotella	Prevotella_enoeca	9	Pan specific
+Prevotella	Prevotella_dentalis	9	Pan specific
+Slackia	Slackia_heliotrinireducens	9	Pan specific
+Thermoplasmatales	Thermoplasmatales_archaeon_BRNA1	9	Pan specific
+Kingella	Kingella_kingae	10	Gorilla/Alouatta specific
+Neisseria	Neisseria_zoodegmatis	10	Gorilla/Alouatta specific
+Neisseria	Neisseria_sp._10023	10	Gorilla/Alouatta specific
+Selenomonas	Selenomonas_sp._oral_taxon_478	10	Gorilla/Alouatta specific
+Selenomonas	Selenomonas_sp._oral_taxon_136	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_equi	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_dysgalactiae	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_pyogenes	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_agalactiae	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_sp._oral_taxon_431	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_parasanguinis	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_suis	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_troglodytae	10	Gorilla/Alouatta specific
+Streptococcus	Streptococcus_mutans	10	Gorilla/Alouatta specific
+Veillonella	Veillonella_rodentium	10	Gorilla/Alouatta specific
+Bacteroides	Bacteroides_fragilis	11	Pan Specific
+Bacteroides	Bacteroides_salanitronis	11	Pan Specific
+Cloacibacillus	Cloacibacillus_porcorum	11	Pan Specific
+Dialister	Dialister_pneumosintes	11	Pan Specific
+Eggerthella	Eggerthella_sp._YY7918	11	Pan Specific
+Eubacterium	Eubacterium_limosum	11	Pan Specific
+Fermentimonas	Fermentimonas_caenicola	11	Pan Specific
+Finegoldia	Finegoldia_magna	11	Pan Specific
+Flavonifractor	Flavonifractor_plautii	11	Pan Specific
+Intestinimonas	Intestinimonas_butyriciproducens	11	Pan Specific
+Lachnoclostridium	Lachnoclostridium_phocaeense	11	Pan Specific
+Mageeibacillus	Mageeibacillus_indolicus	11	Pan Specific
+Megasphaera	Megasphaera_elsdenii	11	Pan Specific
+Ndongobacter	Ndongobacter_massiliensis	11	Pan Specific
+Odoribacter	Odoribacter_splanchnicus	11	Pan Specific
+Prevotella	Prevotella_melaninogenica	11	Pan Specific
+Prevotella	Prevotella_denticola	11	Pan Specific
+Pyramidobacter	Pyramidobacter_piscolens	11	Pan Specific
+Trueperella	Trueperella_pyogenes	11	Pan Specific
+Actinobacillus	Actinobacillus_pleuropneumoniae	12	Gorilla/Alouatta Specific
+Actinobacillus	Actinobacillus_succinogenes	12	Gorilla/Alouatta Specific
+Actinomyces	Actinomyces_radingae	12	Gorilla/Alouatta Specific
+Bibersteinia	Bibersteinia_trehalosi	12	Gorilla/Alouatta Specific
+Cutibacterium	Cutibacterium_avidum	12	Gorilla/Alouatta Specific
+Enterobacter	Enterobacter_cloacae	12	Gorilla/Alouatta Specific
+Enterococcus	Enterococcus_faecalis	12	Gorilla/Alouatta Specific
+Gallibacterium	Gallibacterium_anatis	12	Gorilla/Alouatta Specific
+Glaesserella	Glaesserella_parasuis	12	Gorilla/Alouatta Specific
+Histophilus	Histophilus_somni	12	Gorilla/Alouatta Specific
+Mannheimia	Mannheimia_varigena	12	Gorilla/Alouatta Specific
+Mannheimia	Mannheimia_haemolytica	12	Gorilla/Alouatta Specific
+Neisseria	Neisseria_weaveri	12	Gorilla/Alouatta Specific
+Neisseria	Neisseria_sp._10022	12	Gorilla/Alouatta Specific
+Pasteurella	Pasteurella_dagmatis	12	Gorilla/Alouatta Specific
+Pasteurella	Pasteurella_multocida	12	Gorilla/Alouatta Specific
+Pasteurellaceae	Pasteurellaceae_bacterium_NI1060	12	Gorilla/Alouatta Specific
+Pseudomonas	Pseudomonas_koreensis	12	Gorilla/Alouatta Specific
+Salmonella	Salmonella_enterica	12	Gorilla/Alouatta Specific
+Staphylococcus	Staphylococcus_xylosus	12	Gorilla/Alouatta Specific
+Staphylococcus	Staphylococcus_saprophyticus	12	Gorilla/Alouatta Specific
+Staphylococcus	Staphylococcus_nepalensis	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_parauberis	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_salivarius	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_gallolyticus	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_thermophilus	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_merionis	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_himalayensis	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_sp._A12	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_pantholopis	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_acidominimus	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_pseudopneumoniae	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_sp._I-G2	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_sp._I-P16	12	Gorilla/Alouatta Specific
+Streptococcus	Streptococcus_marmotae	12	Gorilla/Alouatta Specific
+Tessaracoccus	Tessaracoccus_sp._T2.5-30	12	Gorilla/Alouatta Specific
+Tessaracoccus	Tessaracoccus_aquimaris	12	Gorilla/Alouatta Specific
+Tessaracoccus	Tessaracoccus_flavus	12	Gorilla/Alouatta Specific
+Tessaracoccus	Tessaracoccus_flavescens	12	Gorilla/Alouatta Specific
+Veillonella	Veillonella_atypica	12	Gorilla/Alouatta Specific
+Bifidobacterium	Bifidobacterium_dentium	NA	
+Candidatus	Candidatus_Saccharimonas_aalborgensis	NA	
+Desulfovibrio	Desulfovibrio_fairfieldensis	NA	
+Methanobrevibacter	Methanobrevibacter_olleyae	NA	
+Methanobrevibacter	Methanobrevibacter_sp._AbM4	NA	
+Methanobrevibacter	Methanobrevibacter_ruminantium	NA	

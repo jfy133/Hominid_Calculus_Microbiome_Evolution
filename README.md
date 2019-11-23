@@ -1671,7 +1671,7 @@ MaltExtract \
 ```
 
 MaltExtract results were viewed using [MEx-IPA](https://github.com/jfy133/MEx-IPA).
-The results files for this analysis ar are stored in the MEx-IPA GitHub 
+The results files for this analysis are are stored in the MEx-IPA GitHub 
 repository. 
 
 
