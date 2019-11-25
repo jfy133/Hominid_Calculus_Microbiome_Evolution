@@ -1,0 +1,392 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Load Libraries
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(rentrez)
+library(XML)
+library(textutils)
+```
+
+Load NCBI assembly database. We use assembly as otherwise we are missing quite 
+a few newly cultivated genomes but not yet officially named (e.g. Tannerella).
+
+```{r}
+raw_ncbi_data <-fread("ftp://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/assembly_summary_genbank.txt", skip = 1) %>% 
+  as_tibble() 
+```
+
+Download the broken HOMD file and do some clean up due to odd windows carriage 
+returns and other bad formatting issues. In brief, convert to utf-8 text 
+encoding, remove the windows carrige return, remove the broken line split from 
+the previous, and finally select the first 15 columns which have the 'tidy' 
+metadata (ignoring the annotation info and 16s sequences), then load this and 
+fix a couple of ID number column to numeric and remove the temporary files.
+
+```{r}
+system("wget 'http://homd.org/index.php?name=Download&file=download&table=meta&format=text' -O tmp.txt")
+system("iconv -f iso-8859-1 -t utf-8 tmp.txt > tmp_clean.txt")
+system("tr -d '\015' <tmp_clean.txt >tmp_clean2.txt")
+system("grep -v '^Strain sequenced by TIGR' tmp_clean2.txt > tmp_clean3.txt")
+system("cut -f1-15 tmp_clean3.txt > tmp_clean4.txt")
+raw_homd_data  <- fread("tmp_clean4.txt", fill = TRUE, sep = "\t") %>%
+  as_tibble() %>%
+  filter(is.numeric(`Oral Taxon ID`)) %>%
+  mutate(`NCBI Taxonomy ID` = as.integer(`NCBI Taxonomy ID`))
+system("rm tmp.txt tmp_clean.txt tmp_clean2.txt tmp_clean3.txt tmp_clean4.txt")
+```
+
+Next we can join the two tables together using the NCBI taxonomy ID, and reduce
+the number of columns to the ones that are potentially useful.
+
+```{r}
+comb_data <- full_join(raw_ncbi_data, raw_homd_data, by = c("taxid" = "NCBI Taxonomy ID")) %>%
+  select(`organism_name`, `Organism Name (Genus, Species)`, `# assembly_accession`, `refseq_category`, `taxid`, `version_status`, `assembly_level`, `release_type`, `genome_rep`, `seq_rel_date`, `ftp_path`, `Oral Taxon ID`, `HOMD Sequence ID`, `Culture Collection Entry Number`, `Sequencing Status` , `NCBI Genome Survey Sequence Accession ID`, species_taxid, infraspecific_name)
+```
+
+Next we need to do lots of rounds of filtering to reduce thousands of 
+assemblies to one representative of each species (or subspecies).
+
+The procedure can be read as follows:
+
+1. Filter the list to a vector of taxa of interest
+2. Remove any hits to taxa associated phages, virus or uncultured bacteria
+3. Convert various assembly quality info to scores
+4. Per species (defined by NCBI tax_id), extra the assembly with the highest 
+   refseq category (i.e. is it reference or representative), by highest 
+   assembly score (e.g. Complete > Contigs).
+5. If multiple assemblies of the above with the same quality, then pick one at
+   random
+6. Use HOMD names as official names, if no HOMD name then use NCBI name (this 
+   is because some MAGs or assemblies were erroenously assigned as an indepent
+   species but HOMD checked is already existing)
+7. After this renaming, once again filter the organism list for taxa of 
+   interest
+8. Remove anything from mass-MAG submission - all of which likely have not 
+   been checked for quality.
+
+```{r}
+genome_lookup <- function(dat, taxon){
+  dat %>% 
+    filter(grepl(taxon, organism_name, ignore.case = T)) %>%
+    filter(!grepl(" phage", organism_name),
+           !grepl(" virus", organism_name),
+           !grepl("uncultured", organism_name),
+           !grepl("endosymbiont", organism_name)
+           ) %>%
+    mutate(Assembly_Level_Score = case_when(assembly_level == "Complete Genome" ~ 4,
+                                            assembly_level == "Chromosome" ~ 3,
+                                            assembly_level == "Scaffold" ~ 2,
+                                            assembly_level == "Contig" ~ 1,
+                                            TRUE ~ 0),
+           Refseq_Category_Score = case_when(refseq_category == "reference genome" ~ 2,
+                                             refseq_category == "representative genome" ~ 1, 
+                                             TRUE ~ 0),
+           Sequencing_Status_Score = case_when(`Sequencing Status` == "Complete" ~ 3,
+                                               `Sequencing Status` == "High Coverage" ~ 2,
+                                               `Sequencing Status` == "Survey" ~ 1,
+                                               TRUE ~ 0)) %>%
+    group_by(species_taxid) %>% 
+    filter(Refseq_Category_Score == max(Refseq_Category_Score)) %>% 
+    filter(Assembly_Level_Score == max(Assembly_Level_Score)) %>% 
+    sample_n(size = 1) %>%
+    mutate(Organism = `Organism Name (Genus, Species)`) %>%
+    mutate(Organism = if_else(is.na(Organism), organism_name, Organism)) %>%
+    group_by(Organism) %>%
+    filter(Refseq_Category_Score == max(Refseq_Category_Score)) %>% 
+    filter(Assembly_Level_Score == max(Assembly_Level_Score)) %>% 
+    sample_n(size = 1) %>%
+    arrange(Organism) %>%
+    filter(grepl(taxon, Organism)) %>%
+    filter(!grepl("sp. UBA", Organism),
+           !grepl("sp. HMSC", Organism),
+           !grepl("sp. CAG", Organism)
+           ) %>%
+    mutate(genus = taxon) %>%
+    select(genus, everything())
+}
+```
+
+Now we get our list of taxa, in this case of core genera (minus Streptomyces
+and Mycobacterium because the are more likely environmental and have insane 
+numbers of assemblies (999, 256 respectively). I also add spaces after the 
+name to ensure I am search for species associated with that specific genus, and 
+not family named species (e.g. Prevotellaceae).
+
+And then we apply our filtering function on the assembly table using each
+genus as a separate search term and join the table together, and then remove
+the spaces in the genus column.
+
+```{r}
+core_taxa_list <- c("Actinomyces ", "Campylobacter", "Capnocytophaga ", 
+                    "Corynebacterium ",
+                    "Fretibacterium ", "Fusobacterium ",
+                    "Pseudopropionibacterium ", "Streptococcus ", "Olsenella ",
+                    "Ottowia",
+                    "Prevotella ", "Selenomonas ", "Tannerella ", "Treponema ",
+                    "Porphyromonas")
+
+core_genome_list <- map(core_taxa_list, 
+                        function(x){genome_lookup(comb_data, x)}) %>% 
+  reduce(rbind) %>% 
+  mutate(genus = gsub(" ", "", genus))
+```
+
+Now we can summarise this in a plot looking at the number of assemblies that
+have been selected and also the percentages of these that are at which
+assembly level.
+
+```{r}
+## Summary
+core_genome_list_summary <- core_genome_list %>% 
+  group_by(genus) %>% 
+  summarise(Num_Genomes = n(), 
+            Complete_Genome = (sum(assembly_level == "Complete Genome") / n()) * 100,
+            Chromosome = (sum(assembly_level == "Chromosome")) / n() * 100,
+            Scaffold = (sum(assembly_level == "Scaffold")) / n() * 100,
+            Contig = (sum(assembly_level == "Contig")) / n() * 100
+            ) %>%
+  gather(Category, Percent, 3:ncol(.)) %>%
+  arrange(Num_Genomes)
+
+core_genome_list_summary$Category <- factor(core_genome_list_summary$Category, levels = c(
+  "Complete_Genome", "Chromosome", "Scaffold", "Contig")
+  )
+
+core_genome_list_summary$genus <- factor(core_genome_list_summary$genus, levels = unique(core_genome_list_summary$genus))
+
+ggplot(core_genome_list_summary, aes(genus, Percent, fill = Category)) +
+  geom_bar(stat = "identity") + 
+  geom_text(data = distinct(core_genome_list_summary, genus, .keep_all = TRUE), 
+            y = 102, 
+            size = 2,
+            aes(x = genus, label = Num_Genomes)) +
+  scale_fill_brewer(palette = "Set1") +
+  coord_flip() + 
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+However, in the case of Pseudopionibacterium, we know that there are common
+cross contaminants from closely related skin taxa (only being recently separated
+into different clades, Scholz and Kilian 2016). In this case we will generate 
+a separate list for these.
+
+```{r eval = F}
+propionibacterium_taxa_list <- c("Pseudopropionibacterium", "Cutibacterium", "Acidipropionibacterium", "Propionibacterium")
+propionibacterium_genome_list <- map(propionibacterium_taxa_list, function(x){genome_lookup(comb_data, x)}) %>% reduce(rbind) %>% mutate(genus = gsub(" ", "", genus)) 
+propionibacterium_genome_list
+
+## and for Irina
+porphyromonas_taxa_list <- c("Porphyromonas") 
+porphyromonas_genome_list <- map(porphyromonas_taxa_list, function(x){genome_lookup(comb_data, x)}) %>% reduce(rbind) %>% mutate(genus = gsub(" ", "", genus)) 
+porphyromonas_genome_list
+```
+
+
+And we can save this list with
+
+```{r eval = F}
+write_tsv(core_genome_list, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+
+write_tsv(propionibacterium_genome_list, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_propionibacterium_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+
+write_tsv(porphyromonas_genome_list, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_porphyromonas_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+```
+
+
+Next we want to do some extra checks, to remove taxa from wierd sources (i.e.
+soil rather than mammalian associated).
+
+```{bash eval = FALSE}
+
+## slurm script is in 02-scripts.backup/99-edirect_assembly_metadata_download.sh
+awk -F "\t" '{print $4}' /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126.tsv | parallel -j 16 "esearch -db assembly -query {} | elink -db assembly -target nuccore | efetch -format docsum | xtract -pattern DocumentSummary -tab "@" -element TaxId -tab "@" -element Organism -tab "@" -element SubType -tab "@" -element SubName >> /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv"
+
+
+cat /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv | uniq  >> /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata_clean.tsv
+
+rm /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv
+
+```
+
+We can then load this file
+
+```{r eval = F}
+metadata <- fread("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20190516_extra_metadata_clean.tsv", sep = '#') %>% as_tibble()
+colnames(metadata) <- c("tax_id", "Organism", "keys", "values")
+```
+
+```{r}
+mod_data <- metadata %>% 
+  mutate(keys_vec = str_split(metadata$keys, '\\|'),
+         values_vec = str_split(metadata$values, '\\|')) %>%
+  rowwise %>%
+  mutate(iso_source_pos =  match("isolation_source", unlist(keys_vec)),
+         host_source_pos = match("host", unlist(keys_vec))) %>%
+  mutate(Isolation_Source = unlist(values_vec)[iso_source_pos],
+         Host_Source = unlist(values_vec)[host_source_pos]) %>%
+  select(-keys, -values, -keys_vec, -values_vec, -iso_source_pos, -host_source_pos) %>%
+  distinct()
+
+```
+
+We can then manually check for isolation sources or host sources which may 
+indicate stuff we can further remove (e.g. soil)
+
+```{r}
+mod_data$Isolation_Source %>% unique
+```
+
+List of isolation source stuff we detect and filter them out
+
+```{r}
+
+iso_source_exclude <- c("nylon brush", "ESA spacecraft assembly clean room", "mixed sand sample", 
+  "Coolant lubricant; Germany, Giessen", "coastal sediment", "cassava leaf", 
+  "seawater", "Soil from a stable", "traditional greek kasseri cheese", 
+  "Glycerine", "fruit residues", "kefir", "fermentation", "Hunter's Hot Spring", "groundwater", "activated sludge",
+  "Rifle well", "hospital shower hose biofilm", "organic chicken farm", 
+  "deep-sea", "crude oil", "Mine wastewater", "cellulose-degrading anaerobic digesters", 
+  "Sikhae")
+
+mod_data_temp <- filter(mod_data, !grepl(paste(iso_source_exclude, collapse = "|"), Isolation_Source))
+
+
+```
+
+On the filtered data, do again but with host 
+
+```{r}
+mod_data_temp$Host_Source %>% unique
+```
+
+There isn't any wierd stuff here so we can keep these taxa.
+
+Lets double check the host sources of the things we excluded.
+
+```{r}
+mod_data %>% filter(grepl(paste(iso_source_exclude, collapse = "|"), Isolation_Source))
+```
+
+We can see a couple of false positives in my manual filtering. A himalyanan
+marmot could be kept despite the isolation source being from 'Glycerine',
+Pan toglodytes also comes up under 'fruit residues (memencylon), possible 
+as these represents chewing cuds and could be microbial taxa derived from the
+oral cavity. Finally 'Actinomyces sp. oral taxon 897' has a host of Homo sapiens
+being isolated from 'nylon brush' which possibly suggests coming from a tooth
+brush. So we can remove these from our list, and save the final microbial 
+taxa to remove.
+
+```{r}
+iso_source_exclude <- c("ESA spacecraft assembly clean room", "mixed sand sample", 
+  "Coolant lubricant; Germany, Giessen", "coastal sediment", "cassava leaf", 
+  "seawater", "Soil from a stable", "traditional greek kasseri cheese", 
+  "kefir", "fermentation", "Hunter's Hot Spring", "groundwater", "activated sludge",
+  "Rifle well", "hospital shower hose biofilm", "organic chicken farm", 
+  "deep-sea", "crude oil", "Mine wastewater", "cellulose-degrading anaerobic digesters", 
+  "Sikhae")
+
+taxa_to_exclude <- filter(mod_data, grepl(paste(iso_source_exclude, collapse = "|"), Isolation_Source)) %>%
+  pull(Organism)
+```
+
+Our final list of taxa then is as follows
+
+```{r eval = F}
+core_genome_list_final <- core_genome_list %>% filter(!organism_name %in% taxa_to_exclude)
+
+write_tsv(core_genome_list_final, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_filtered_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+
+```
+
+To download
+
+```{bash eval =F}
+#!/usr/bin/env bash
+
+cat /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_filtered_20190516_extra.tsv | while read -r LINE; do
+        genus=$(echo "$LINE" | awk -F '\t' '{print $1}') 
+        species=$(echo "$LINE" | awk -F '\t' '{print $2}' | sed 's/ /_/g' | sed 's/\.//g' | sed 's#\"##g') 
+        ftp=$(echo "$LINE" | awk -F '\t' '{print $12}') 
+        mkdir -p /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/
+        wget "$ftp"/*fna.gz -P /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/
+        wget "$ftp"/*gff.gz -P /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/
+        rm /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/*_cds_from_genomic*
+        rm /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/*_rna_from_genomic*
+done
+
+```
+
+
+Note that after downloading you have to remove the header folder (as I forgot 
+to skip the first line of the `core_genome_list_final` folder i.e. remove the 
+folder "genus"), and fix 'Streptococcus agalactiae 2603V/R' as the "/R" is read 
+as a directory, so you have to move the files up directory and remove the 
+`R/` directory. I also renamed the actual folder name replacing "/" with "_".
+
+Next we need to append the species name to the accession number in each header
+of each fasta file, as `samtools` only indexes with the first field before a 
+space or tab for some reason. This was resulting in us having only the 
+NCBI genbank or assembly accession ID. For this I have made a small script 
+which does this for us.
+
+```{bash eval = F}
+cd /projects1/microbiome_calculus/evolution/01-data/genomes/
+
+find . -name '*.fna.gz' | parallel -j 16 "../../02-scripts.backup/099-fasta_header_replacer.sh {}"
+```
+
+Next for our our initial phylogeny screening, we want to make a super-reference
+per genus, on which we index, map our samples to, then check the coverage across
+each species to see which taxa we more likely have.
+
+However, MultiVCFAnalyer, which we will use for SNP calling and consensus caller
+for phylogenetic analysis, cannot accept multiple fasta entries. Therefore,
+we need to combine all the contigs of each reference genome, and reference 
+genomes themselves into a single file with a single header. However we need
+to record the coordinates (or positions) where each reference starts/stops 
+in the super reference.
+
+One thing to note is that this will possibly lead to false mapping of reads that
+by chance can map across contig junctions - but we expect these to be rare and
+will not majorly affect the results (if we see indications of this, we can
+mask ~100bp up and downstream of these junctions).
+
+To make the super reference
+
+```{bash eval = F}
+cd /projects1/microbiome_calculus/evolution/01-data/genomes/
+for i in */; do 
+  name="$(echo $i | rev | cut -d/ -f 2 | rev)"
+  echo "$name"
+  /projects1/microbiome_calculus/evolution/02-scripts.backup/099-collapse_fastas.sh "$name"_superreference "$i" "$i"/*/*.fna.gz
+done
+```
+
+Then we can index these with
+
+```{bash eval = F}
+find "$(pwd)" -name '*_superreference.fa.gz' -type f | parallel -j 4 "gunzip {}"
+find "$(pwd)" -name '*_superreference.fa' -type f | parallel -j 4 "bwa index {} && samtools faidx {} && picard CreateSequenceDictionary R={} O={}.dict"
+
+```
+
+For downstream analysis, we can also generate a bed file for region 
+specification.
+
+```{bash eval = F}
+cd /projects1/microbiome_calculus/evolution/01-data/genomes/
+for i in */collapsed_*coords; do
+  awk -F "[/\t]" '{bed_start=$7-1} {print $1"\t"bed_start"\t"$8"\t"$3"/"$4"/"$5}' "$i" > "${i%%.coords}".bed
+done
+```
+
+With this we can now proceed with mapping with EAGER - so see the walkthrough
+to continue. 
+

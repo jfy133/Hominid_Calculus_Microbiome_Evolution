@@ -12,9 +12,6 @@ library(vegan) ## for statistical testing
 library(patchwork) ## for further visualisation assistance
 library(cowplot) ## further visualisation assistance
 
-######MAP########
-
-
 data_meta_raw <- read_csv("00-documentation.backup/01-calculus_microbiome_deep_evolution_samplescontrols_metadata_20191112.csv")
 
 data_meta_filtered <- filter(data_meta_raw, !grepl("Blank", Group)) %>%

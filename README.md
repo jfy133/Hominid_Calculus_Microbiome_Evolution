@@ -1406,8 +1406,8 @@ For plotting of these for comparison with the cumulative percent decay plots,
 
 To generate additional confirmation of damage patterns in oral taxa, the 
 screening data was mapped to a subset of observed core microbiome reference 
-genomes (see below), using EAGER and with the same settings as in the 
-pre-processing step.
+genomes (see [below](#production-dataset-sequencing-depth-calculatons)), using 
+EAGER.
 
 DamageProfiler results were collated and visualised in the R script
 `02-scripts.backup/099-Coretaxa_SubSet_DamageProfiler_Summary.R`.
@@ -1677,9 +1677,133 @@ repository.
 
 ## Genome Reconstruction and Phylogenetics
 
-**UP TO HERE**
+We next want to test whether the phylogenies of specific oral taxa also
+'mimic' the phylogenetic histories of the host. A common problem from 
+genome construction from metagenomic sources - particularly with microbiome data - is cross-mapping from related strains and species. This
+makes genotyping difficult when dealing with the low coverage data, because
+the confidence in the SNP calling is very low.
+
+As a strategy to try and reduce cross-mapping, I came up with the idea to 
+map the production dataset to a 'super-reference' of all relevent species of
+a genus (including the target species of interest), and then only genotype on
+the section of the super-reference including the target species of interest. The
+predicted effect would be reads from off-target reads would be attracted to
+the related strains/species and thus would not be present on the reference of
+interest.
+
+### Production dataset sequencing depth calculations
+
+For optimal phylogenetic reconstruction, high coverage genomes are generally
+preferred to improve confidence in genotyping. The screening dataset 
+generally yields low coverage genomes, and we wanted to work out which samples
+would provide the best chance of producing multiple higher-coverage genomes of
+species of interest.
+
+To calculate this, we map to a range of taxa of interest (either from 
+observations in the dataset or from broad literature review). We selected
+the following species - downloaded the reference or representative strains
+from NCBI, and indexed as [above](#bwa).
+
+The Intitial species that were selected are:
+
+  * Pseudopropionibacterium propionicum
+  * Treponema socranskii (<- only scaffolds)
+  * Rothia dentocariosa 
+  * Desulfobulbus sp. oral taxon 041 (<- only contigs)
+    - For this selected the sp. oral taxon 041 assembly with the largest  
+    assembly size, Desulfobulbus sp. oral taxon 041 str. Dsb1-5. 
+    - Downloaded from the Genbank FTP server the contigs from here: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/403/865/GCA_000403865.1_Dsb1-5
+  * Fusobacterium nucleatum
+  * Aggregatibacter aphrophilus
+  * Streptococcus gordonii
+ * Treponema denticola
+ * Tannerella forsythia
+ * Treponema denticola
+
+We can then map all our samples to the references listed above with EAGER.
+
+```
+Organism: Bacteria/Other
+Age: Ancient
+Treated Data: non-UDG
+Pairment: Single End
+Input is already concatenated (skip merging): Y
+
+Reference: [listed above]
+Name of mitocondrial chromosome: [none]
+
+FastQC: Off
+AdapterRemoval: Off
+Mapping: BWA
+  Seedlength: 32
+  Max # diff: 0.1
+  Qualityfilter: 37
+  Filter unmapped: On
+  Extract Mapped/Unmapped: Off
+Complexity Estimation: Off
+Remove Duplicates: DeDup
+  Treat all reads as merged: On
+Damage Calculation: Damageprofiler
+SNP Calling: Unified Genotyper
+  Emit All Sites: On
+CleanUp: On
+Create Report: On
+```
+
+> EAGER Results files are not included here due to large size
+
+We initially tried running PreSeq, but (un)fortunately the library complexity
+was too high and not enough duplicates were found in most of the mappings to 
+yield enough information for extrapolation.
+
+Instead, we can do a linear estimation in an spreadsheet. For this we took the
+following steps.
+
+1. Concurrently Multiplying the current number of reads and depth coverage 
+   until target depth coverage is reached (5x)
+2. Remove any mapping that required more >100 million reads
+3. Remove any mapping with a cluster factor (reads before mapped deduplication / 
+   mapped reads after deduplication) above 1.2 - suggesting lower complexity library
+4. Select any sample with at least 3 mappings retained above above filtering
+  * If a host genus did not have enough samples, we went with the next highest
+
+Extracts of the selected samples were sent for UDG treatment and deep sequencing.
 
 ### Super-reference construction
+
+We decided to generate phylogenies based on the core genera 
+[identified above](#core-microbiome-analysis). To generate the super-reference,
+we can use the notebook `02-scripts.backup/99-phylogeny_reference_genome_collection.Rmd`. 
+This notebook downloads the NCBI Genome assembly reports, performs filtering 
+based on sequencing level, quality, whether it is representative or not - and 
+selects one strain for species within the genus.
+
+Within the notebook we also perform more manual filtering of isolation source
+to remove species that are very unlikely derived from the human body or in
+contact with archaeological samples (such as activated sludge).
+
+The outcome of these filtering steps can be seen in the files 
+`00-documentation.backup/18-Core_Microbiome_AssemblyDownload_*`, with the final 
+files used for downloading ending with  "*filtered". This files were downloaded 
+as above with `wget` 
+
+> Pseudopropionbacterium is generated in a differnet manner due to recent clade
+> renaming, but the desire to retain common skin taxa which now have new genus
+> names (see [Scholz and Kilian 2016](http://dx.doi.org/10.1099/ijsem.0.001367))
+
+We convert the FASTA headers to a format suitable for Samtools (given we 
+don't have chromosomes) with 
+`02-scripts.backup/099-fasta_header_replacer.sh <FASTA>`.
+
+For downstream processing (in particular MultiVCFAnalyzer), we need to convert
+the multiple FASTA files into a single one, with FASTA headers removed. For
+this we can use the script `02-scripts.backup/099-collapse_fastas.sh`, which
+combines them but exporting coordinates (also in bed format) indicating where
+each species FASTA entry is present in the super-refereence FASTA.
+
+FASTAs were indexed as [above](#bwa)
+
+> Reference files and indices are not included due to large size
 
 ### Super-reference Alignment and species selection
 
@@ -1791,7 +1915,7 @@ bedtools intersect \
 The resulting files wre then loaded into to assess the ratio of all streptococus reads to amylase binding protein-like reads as in `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`
 
 ### HUMANn2
-
+**NOT COMPLETE**
 #### MetaPhlan2
 
 In prepraration for HUMANn2, we ran MetaPhlan2.
