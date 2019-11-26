@@ -1679,7 +1679,8 @@ repository.
 
 We next want to test whether the phylogenies of specific oral taxa also
 'mimic' the phylogenetic histories of the host. A common problem from 
-genome construction from metagenomic sources - particularly with microbiome data - is cross-mapping from related strains and species. This
+genome construction from metagenomic sources - particularly with microbiome
+data - is cross-mapping from related strains and species. This
 makes genotyping difficult when dealing with the low coverage data, because
 the confidence in the SNP calling is very low.
 
@@ -1712,7 +1713,8 @@ The Intitial species that were selected are:
   * Desulfobulbus sp. oral taxon 041 (<- only contigs)
     - For this selected the sp. oral taxon 041 assembly with the largest  
     assembly size, Desulfobulbus sp. oral taxon 041 str. Dsb1-5. 
-    - Downloaded from the Genbank FTP server the contigs from here: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/403/865/GCA_000403865.1_Dsb1-5
+    - Downloaded from the Genbank FTP server the contigs from here: 
+      ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/403/865/GCA_000403865.1_Dsb1-5
   * Fusobacterium nucleatum
   * Aggregatibacter aphrophilus
   * Streptococcus gordonii
@@ -1762,7 +1764,9 @@ following steps.
 1. Concurrently Multiplying the current number of reads and depth coverage 
    until target depth coverage is reached (5x)
 2. Remove any mapping that required more >100 million reads
-3. Remove any mapping with a cluster factor (reads before mapped deduplication / mapped reads after deduplication) above 1.2 - suggesting lower complexity library
+3. Remove any mapping with a cluster factor 
+   (reads before mapped deduplication / mapped reads after deduplication) 
+   above 1.2 - suggesting lower complexity library
 4. Select any sample with at least 3 mappings retained above above filtering
   * If a host genus did not have enough samples, we went with the next highest
 
@@ -1772,7 +1776,8 @@ Extracts of the selected samples were sent for UDG treatment and deep sequencing
 
 We decided to generate phylogenies based on the core genera 
 [identified above](#core-microbiome-analysis). To generate the super-reference,
-we can use the notebook `02-scripts.backup/99-phylogeny_reference_genome_collection.Rmd`. 
+we can use the notebook 
+`02-scripts.backup/99-phylogeny_reference_genome_collection.Rmd`. 
 This notebook downloads the NCBI Genome assembly reports, performs filtering 
 based on sequencing level, quality, whether it is representative or not - and 
 selects one strain for species within the genus.
@@ -1806,7 +1811,8 @@ FASTAs were indexed as [above](#bwa)
 
 ### Super-reference alignment and species selection
 
-The production dataset was then mapped to each of the core genus super-references with EAGER, with the following settings.
+The production dataset was then mapped to each of the core genus 
+super-references with EAGER, with the following settings.
 
 ```
 Organism: Bacteria/Other
@@ -1839,7 +1845,8 @@ Create Report: On
 > The EAGER mapping results files are not provided here due to the large size, 
 > other than the ReportTable files.
 
-The EAGER runs are stored in `04-analysis/deep/eager/superreference_mapping/output`
+The EAGER runs are stored in 
+`04-analysis/deep/eager/superreference_mapping/output`
 
 To generate breadth and depth statistics for each species reference in
 the super-reference we can use bedtools, using the BED coordinates as provided
@@ -1852,12 +1859,55 @@ bedtools coverage -a 01-data/genomes/"$genus"/collapsed_"$genus"_superreference.
 
 > This was adapted from a SLURM array script and should be adapted accordingly.
 
-Output results for this statistics can also be see under `04-analysis/deep/eager/superreference_mapping/output`
+Output results for this statistics can also be see under 
+`04-analysis/deep/eager/superreference_mapping/output`
 
 ### Comparative single reference mapping
 
 To compare the effect on genotyping when using a super-reference rather than a 
 single representative genome, we also need a single genome to compare to.
+Furthermore, as we wish to run phylogenies of the outcome - we want to find
+taxa which are both prevelant across all host genera, as well as displaying 
+sufficient coverage for genotyping.
+
+For this we can calculate a variety of metrics, and select the best fitting
+species for the two requirements above. This is described in
+`02-scripts.backup/031-superreferencemapped_genotyping_stats.Rmd`.
+
+The finally selected taxa were as follows
+
+Genus                    | Majority Vote                                
+-------------------------|-----------------------------------------------
+Actinomyces              | Actinomyces_dentalis_DSM_19115 
+Campylobacter            | Campylobacter_gracilis
+Capnocytophaga           | Capnocytophaga_gingivalis_ATCC_33624
+Corynebacterium          | Corynebacterium_matruchotii_ATCC_14266
+Fretibacterium           | Fretibacterium_fastidiosum
+Fusobacterium            | Fusobacterium_hwasookii_ChDC_F206
+Olsenella                | Olsenella_sp_oral_taxon_807
+Ottowia                  | Ottowia_sp_oral_taxon_894
+Porphyromonas            | Porphyromonas_gingivalis_ATCC_33277
+Prevotella               | Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930
+Pseudopropionibacterium  | Pseudopropionibacterium_propionicum_F0230a
+Selenomonas              | Selenomonas_sp_F0473
+Streptococcus            | Streptococcus_sanguinis_SK36
+Tannerella               | Tannerella_forsythia_92A2
+Treponema                | Treponema_socranskii_subsp_paredis_ATCC_35535
+
+> Output from the species selection can be seen in 
+> `04-analysis/deep/competitive_mapping.backup/species_selection`
+
+The reference genomes of the selected taxa can be copied from the 
+[super-reference downloaded files](#super-reference-construction), 
+and multiple chromosomes are collapsed as again described in 
+`02-scripts.backup/99-phylogeny_reference_genome_collection.Rmd`.
+
+EAGER can then be run again with the same settings for the 
+[Super-reference mapping]((#sper-reference-alignment-and-species selection)), 
+but with the single 
+representative genome taxa FASTAs instead.
+
+> The reference genome files are not provided here due to the large size, 
 
 
 ### Performance of super-reference vs. single genome mapping
