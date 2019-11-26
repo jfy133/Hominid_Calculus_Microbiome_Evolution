@@ -1762,8 +1762,7 @@ following steps.
 1. Concurrently Multiplying the current number of reads and depth coverage 
    until target depth coverage is reached (5x)
 2. Remove any mapping that required more >100 million reads
-3. Remove any mapping with a cluster factor (reads before mapped deduplication / 
-   mapped reads after deduplication) above 1.2 - suggesting lower complexity library
+3. Remove any mapping with a cluster factor (reads before mapped deduplication / mapped reads after deduplication) above 1.2 - suggesting lower complexity library
 4. Select any sample with at least 3 mappings retained above above filtering
   * If a host genus did not have enough samples, we went with the next highest
 
@@ -1805,13 +1804,67 @@ FASTAs were indexed as [above](#bwa)
 
 > Reference files and indices are not included due to large size
 
-### Super-reference Alignment and species selection
+### Super-reference alignment and species selection
 
-### Performance of super-reference vs. single reference mapping
+The production dataset was then mapped to each of the core genus super-references with EAGER, with the following settings.
 
-### Single reference genome mapping statistics
+```
+Organism: Bacteria/Other
+Age: Ancient
+Treated Data: UDG
+Pairment: Single End
+Input is already concatenated (skip merging): Y
+
+Reference: [listed above]
+Name of mitocondrial chromosome: [none]
+
+FastQC: Off
+AdapterRemoval: Off
+Mapping: BWA
+  Seedlength: 32 
+  Max # diff: 0.1
+  Qualityfilter: 0
+  Filter unmapped: On
+  Extract Mapped/Unmapped: Off
+Complexity Estimation: Off
+Remove Duplicates: DeDup
+  Treat all reads as merged: On
+Damage Calculation: On
+SNP Calling: On
+  Emit All Sites: Y
+CleanUp: On
+Create Report: On
+```
+
+> The EAGER mapping results files are not provided here due to the large size, 
+> other than the ReportTable files.
+
+The EAGER runs are stored in `04-analysis/deep/eager/superreference_mapping/output`
+
+To generate breadth and depth statistics for each species reference in
+the super-reference we can use bedtools, using the BED coordinates as provided
+by the `02-scripts.backup/099-collapse_fastas.sh` script.
+
+```bash
+bedtools coverage -a 01-data/genomes/"$genus"/collapsed_"$genus"_superreference.bed -b "$BAM" | pigz -p 1 > "$BAM".bedtoolsbreadth.tsv.gz 
+bedtools coverage -a 01-data/genomes/"$genus"/collapsed_"$genus"_superreference.bed -b "$BAM" -mean | pigz -p 1 > "$BAM".bedtoolsdepth.tsv.gz
+```
+
+> This was adapted from a SLURM array script and should be adapted accordingly.
+
+Output results for this statistics can also be see under `04-analysis/deep/eager/superreference_mapping/output`
+
+### Comparative single reference mapping
+
+To compare the effect on genotyping when using a super-reference rather than a 
+single representative genome, we also need a single genome to compare to.
+
+
+### Performance of super-reference vs. single genome mapping
 
 ### Variant calling and single-allelic position assessment
+
+### Phylogenies
 
 ## Functional Analysis
 
