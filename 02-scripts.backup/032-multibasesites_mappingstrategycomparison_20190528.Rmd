@@ -1,0 +1,499 @@
+---
+title: "Evolution Deep Sequence Data Competitive Mapping Results"
+output:
+html_notebook: default
+---
+
+# Data Loading
+
+Libraries and metadata (mapping data loaded below, but further down can load
+'I made earlier' data).
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(patchwork)
+library(ggridges)
+library(viridis)
+library(tictoc)
+
+## Metadata
+data_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+```
+
+# Multi Allelic SNP Comparison 
+
+After running MutiVCFAnalyzer for both the single genome and superreference
+mappings, we need to subset the SNP table of the superreference mapping to 
+that if the same genome in the single genome mapping.
+
+```{bash eval = F}
+for i in /projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.9_0.1/*; do 
+  species="$(basename $i)"
+  genus="$(echo $species | cut -d_ -f 1)"
+  Rscript /projects1/microbiome_calculus/evolution/02-scripts.backup/036-generate_multiVCFanalyzer_subset_statistics_20190404.R \
+  /projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/"$genus"/ \
+  /projects1/microbiome_calculus/evolution/04-analysis/deep/eager/superreference_mapping/references/"$genus"/collapsed_"$genus"_superreference.bed \
+  "$species"
+done
+
+## For prevotella which has the problematic `=`s
+Rscript /projects1/microbiome_calculus/evolution/02-scripts.backup/036-generate_multiVCFanalyzer_subset_statistics_20190404.R \
+  /projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/Prevotella/ \
+  /projects1/microbiome_calculus/evolution/04-analysis/deep/eager/superreference_mapping/references/Prevotella/collapsed_Prevotella_superreference.bed \
+  'Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930'
+
+```
+
+
+Collect SNP Statistics from MultiVCFAnalyzer
+
+```{r}
+## MultiVCFAnalyzer Data
+snps_dir_ini <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.9_0.1/*")
+snps_dir_sup <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/*/")
+
+input_files_snps_ini <- list.files(snps_dir_ini, pattern = 'snpStatistics.tsv', full.names = TRUE, recursive = FALSE)
+input_files_snps_sup <- list.files(snps_dir_sup, pattern = 'snpStatistics_subset.tsv', full.names = TRUE, recursive = FALSE)
+
+## Load standard MVA snpStatistics.tsv table, so skip first 4 lines
+
+data_mva_snps_ini <- enframe(input_files_snps_ini, name = NULL, value = "filename") %>%
+  mutate(file_contents = map(filename, function(x) read_tsv(x, skip = 4))) %>%
+  mutate(mapping_strategy = map(filename, function(x) str_split(x, "/")[[1]][[10]]) %>% unlist,
+         reference = map(filename, function(x) str_split(x, "/")[[1]][[13]]) %>% unlist,
+         genus = map(reference, function(x) str_split(x, "_")[[1]][[1]]) %>% unlist) %>%
+  unnest() %>%
+  mutate(percent_het_over_all = (`SNP Calls (het)` / `SNP Calls (all)`) * 100) %>%
+  select(mapping_strategy, genus, reference, everything(), -filename)
+  
+
+data_mva_snps_sup <- enframe(input_files_snps_sup, name = NULL, value = "filename") %>%
+  mutate(file_contents = map(filename, function(x) read_tsv(x))) %>%
+  mutate(mapping_strategy = map(filename, function(x) str_split(x, "/")[[1]][[10]]) %>% unlist,
+         reference = map(filename, function(x) str_split(x, "/")[[1]][[13]]) %>% unlist,
+         genus = map(reference, function(x) str_split(x, "_")[[1]][[1]]) %>% unlist) %>%
+  unnest() %>%
+  mutate(percent_het_over_all = (`SNP Calls (het)` / `SNP Calls (all)`) * 100) %>%
+  select(mapping_strategy, genus, reference, everything(), -filename)
+
+## Join together
+data_mva_snps <- bind_rows(data_mva_snps_sup, data_mva_snps_ini)
+
+remove(data_mva_snps_ini)
+remove(data_mva_snps_sup)
+
+```
+
+Add metadata, reorder, and apply a pseudocount for log transformation of the
+number of SNPs (for plotting only, to make it easier to see informatic SNP loss)
+
+```{r}
+data_mva_snps_meta <- data_mva_snps %>% 
+  left_join(select_if(data_meta, is.character), by = c("sample" = "sample_name")) %>%
+  mutate(Host_Common = factor(Host_Common, levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Control"))) %>%
+  arrange(Host_Common, sample) %>%
+  mutate(sample = factor(sample, levels = .$sample %>% unique %>% rev)) %>%
+  mutate(`Log SNP Calls (all)` = log(`SNP Calls (all)` + 1)) %>%
+  filter(reference != "Streptococcus_gordonii_str_Challis_substr_CH1", Host_Common != "Control") %>%
+  rename(Individual = sample, `Percentage Polymorphic of All Sites` = percent_het_over_all,
+         `Host Genus` = Host_Common, `Mapping Strategy` = mapping_strategy,
+         `SNV Calls (all)` = `SNP Calls (all)`,
+         `SNV Calls (het)` = `SNP Calls (het)`) %>%
+  print()
+
+remove(data_mva_snps)
+
+```
+
+To save
+
+```{r eval = F}
+write_tsv(data_mva_snps_meta %>% select(`Mapping Strategy`, genus, reference, `Individual`, contains("SNV "), `Percentage Polymorphic of All Sites`), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/multiallelicsnprate_singlevssuperreferencegenome_rawdata.tsv")
+```
+
+Some general stats
+
+```{r}
+data_mva_snps_meta %>% 
+  select(`Mapping Strategy`,  genus, Individual, `Percentage Polymorphic of All Sites`) %>% 
+  spread(`Mapping Strategy`, `Percentage Polymorphic of All Sites`) %>% 
+  mutate(difference = initial_single_genome - superreference_mapping) %>%
+  group_by(genus) %>%
+  summarise(mean(difference),
+            min(difference),
+            max(difference),
+            sd(difference))
+
+```
+
+Set some aesthetics
+
+```{r}
+common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 3, LibraryControl = 7, Plaque = 9, 
+          Gut = 7, Skin = 14, Sediment = 10, EnvironmentalControl = 12)
+```
+
+
+Make the plots
+
+```{r}
+
+zolfoesque_plot_transformnone <- ggplot(data_mva_snps_meta %>% filter(`Host Genus` != "Control"), 
+                                        aes(Individual, `Percentage Polymorphic of All Sites`, 
+                                            shape = `Mapping Strategy`, 
+                                            fill = `Host Genus`, 
+                                            size = `SNV Calls (all)`, 
+                                            group = Individual)) + 
+  geom_point(alpha = 0.50) +
+  geom_line(size = 0.3, linetype = 3, arrow = arrow(angle = 10, 
+                                                    length = unit(2, "mm"), 
+                                                    ends = "first", 
+                                                    type = "closed")) +
+  scale_shape_manual(values = c(23, 21)) +
+  scale_fill_manual(values = common_colours) +
+  scale_size_continuous(limits = c(0, data_mva_snps_meta$`SNV Calls (all)` %>% max),
+                        breaks = seq(0, data_mva_snps_meta$`SNV Calls (all)` %>% max, data_mva_snps_meta$`SNV Calls (all)` %>% max / 5) %>% round) +
+  facet_wrap(~ genus) + 
+  coord_flip() + 
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(legend.position = "bottom") + 
+  guides(fill = guide_legend(ncol = 2, title.position = "top", 
+                             override.aes = list(shape = 21, alpha = 1, size = 2)), 
+         size = guide_legend(ncol = 2, title.position = "top"), 
+         shape = guide_legend(ncol = 1, title.position = "top"))
+
+zolfoesque_plot_transformlog <- ggplot(data_mva_snps_meta, 
+                                       aes(Individual, `Percentage Polymorphic of All Sites`, 
+                                           shape = `Mapping Strategy`, 
+                                           fill = `Host Genus`, 
+                                           size = `Log SNP Calls (all)`, 
+                                           group = Individual)) + 
+  geom_point(alpha = 0.50) +
+  geom_line(size = 0.3, linetype = 3, arrow = arrow(angle = 10, 
+                                                    length = unit(2, "mm"), 
+                                                    ends = "first", 
+                                                    type = "closed")) +
+  scale_shape_manual(values = c(23, 21)) +
+  scale_fill_manual(values = common_colours) +
+  scale_size_continuous(limits = c(0, data_mva_snps_meta$`Log SNP Calls (all)` %>% max),
+                        breaks = seq(0, data_mva_snps_meta$`Log SNP Calls (all)` %>% max, data_mva_snps_meta$`Log SNP Calls (all)` %>% max / 5) %>% round) +
+  facet_wrap(~ genus) + 
+  coord_flip() + 
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(legend.position = "bottom") + 
+  guides(fill = guide_legend(ncol = 2, title.position = "top", 
+                             override.aes = list(shape = 21, alpha = 1, size = 2)), 
+         size = guide_legend(ncol = 2, title.position = "top"), 
+         shape = guide_legend(ncol = 1, title.position = "top"))
+
+zolfoesque_plot_transformnone
+zolfoesque_plot_transformlog
+```
+
+To save
+
+```{r eval=F}
+ggsave(paste("multiallelicsnprate_singlevssuperreferencegenome_transformnone_", 
+             format(Sys.Date(), "%Y%m%d"), 
+             ".pdf", 
+             sep = ""), 
+       plot = zolfoesque_plot_transformnone,
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 7, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste("multiallelicsnprate_singlevssuperreferencegenome_transformlog_", 
+             format(Sys.Date(), "%Y%m%d"), 
+             ".pdf", 
+             sep = ""), 
+       plot = zolfoesque_plot_transformlog,
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 7, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste("multiallelicsnprate_singlevssuperreferencegenome_transformnone_", 
+             format(Sys.Date(), "%Y%m%d"), 
+             ".png", 
+             sep = ""), 
+       plot = zolfoesque_plot_transformnone,
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       device = "png", 
+       width = 7, 
+       height = 7, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste("multiallelicsnprate_singlevssuperreferencegenome_transformlog_", 
+             format(Sys.Date(), "%Y%m%d"), 
+             ".png", 
+             sep = ""), 
+       plot = zolfoesque_plot_transformlog,
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       device = "png", 
+       width = 7, 
+       height = 7, 
+       units = "in", 
+       dpi = 600)
+
+```
+
+# Sample Specific Plots
+
+## Data Preparation
+
+We can also look at finer resolution by looking at the polymorphic site
+frequencys per sample.
+
+For this we need to firstly load all the SNP tables, specifically the subset
+snpTables for superreference.
+
+```{r}
+
+input_files_snpsTab_ini <- list.files(snps_dir_ini, pattern = 'snpTable.tsv.gz', full.names = TRUE, recursive = FALSE) %>% .[grep("gordonii", ., invert = T)]
+input_files_snpsTab_sup <- list.files(snps_dir_sup, pattern = 'snpTable_subset.tsv.gz', full.names = TRUE, recursive = FALSE)
+
+
+data_mva_snpsTab_ini <- enframe(input_files_snpsTab_ini, name = NULL, value = "filename") %>%
+  mutate(file_contents = map(filename, function(x) suppressMessages(read_tsv(x)))) %>%
+  mutate(`Mapping Strategy` = map(filename, function(x) str_split(x, "/")[[1]][[10]]) %>% unlist,
+         Reference = map(filename, function(x) str_split(x, "/")[[1]][[13]]) %>% unlist,
+         Genus = map(Reference, function(x) str_split(x, "_")[[1]][[1]]) %>% unlist) %>%
+  unnest() %>%
+  select(`Mapping Strategy`, Genus, Reference, everything(), -filename) %>%
+  gather(sample, call, 6:ncol(.)) %>%
+  mutate(contains_number = grepl("[[:digit:]]", call)) %>% 
+  filter(contains_number == T) %>%
+  separate(call, c("call", "frequency")) %>% 
+  mutate(frequency = as.numeric(frequency)) %>%
+  select(`Mapping Strategy`, Genus, Reference, sample, frequency) %>% 
+  filter(frequency < 90) %>%
+  rename(Frequency = frequency, Sample = sample)
+  
+
+data_mva_snpsTab_sup <- enframe(input_files_snpsTab_sup, name = NULL, value = "filename") %>%
+  mutate(file_contents = map(filename, function(x) suppressMessages(read_tsv(x)))) %>%
+  mutate(`Mapping Strategy` = map(filename, function(x) str_split(x, "/")[[1]][[10]]) %>% unlist,
+         Reference = map(filename, function(x) str_split(x, "/")[[1]][[13]]) %>% unlist,
+         Genus = map(Reference, function(x) str_split(x, "_")[[1]][[1]]) %>% unlist) %>%
+  unnest() %>%
+  select(`Mapping Strategy`, Genus, Reference, everything(), -filename) %>%
+  gather(sample, call, 6:ncol(.)) %>%
+  mutate(contains_number = grepl("[[:digit:]]", call)) %>% 
+  filter(contains_number == T) %>%
+  separate(call, c("call", "frequency")) %>% 
+  mutate(frequency = as.numeric(frequency)) %>%
+  select(`Mapping Strategy`, Genus, Reference, sample, frequency) %>% 
+  filter(frequency < 90) %>%
+  rename(Frequency = frequency, Sample = sample)
+
+data_mva_snpsTab_ini_summary <- data_mva_snpsTab_ini %>% 
+  group_by(Genus, Reference, Sample) %>% 
+  summarise(`No. Positions` = n())
+
+data_mva_snpsTab_sup_summary <- data_mva_snpsTab_sup %>% 
+  group_by(Genus, Reference, Sample) %>% 
+  summarise(`No. Positions` = n())
+
+data_mva_snpsTab_all <- bind_rows(data_mva_snpsTab_ini, data_mva_snpsTab_sup)
+
+remove(data_mva_snpsTab_ini)
+remove(data_mva_snpsTab_sup)
+
+data_mva_snpsTab_all_summary <- bind_rows(data_mva_snpsTab_ini_summary,
+                                          data_mva_snpsTab_sup_summary)
+
+remove(data_mva_snpsTab_ini_summary)
+remove(data_mva_snpsTab_sup_summary)
+  
+data_mva_snpsTab_all <- data_mva_snpsTab_all %>%
+  left_join(data_mva_snpsTab_all_summary) %>%
+  left_join(data_meta, by = c("Sample" = "sample_name")) %>%
+  mutate(Host_Common = factor(Host_Common, levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Control"))) %>%
+  arrange(Host_Common, Sample) %>%
+  mutate(Sample = as_factor(Sample))
+```
+
+## Histograms
+
+Then plot the histograms
+
+```{r eval=F}
+
+for (i in unique(data_mva_snpsTab_all$Genus)) {
+  print(i)
+  hist_plot <- ggplot(data_mva_snpsTab_all %>% filter(Genus == i), aes(Frequency)) +
+    geom_histogram(bins = 20) +
+    ggtitle(i) +
+    facet_wrap(Sample ~ `Mapping Strategy`, scales = "free_y", ncol = 8) +
+    theme_minimal(base_size = 7, base_family = "Roboto")
+  
+  print(hist_plot)    
+  
+  ggsave(paste("superreferencemapping_singlereferencemapping_comparison_histograms_", 
+                 i , "_", 
+                 format(Sys.Date(), "%Y%m%d"), 
+                 ".pdf", 
+                 sep = ""), plot = hist_plot,
+           "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping/multiallelic_snps/", 
+           device = cairo_pdf, 
+           width = 7, 
+           height = 7, 
+           units = "in", 
+           dpi = 600)
+  
+}
+
+```
+
+## Ridge
+
+Instead we can view as ridges
+
+```{r, fig.width = 3.5, fig.height = 7, eval = F}
+
+for (i in unique(data_mva_snpsTab_all$Genus)) {
+  print(i)
+  ridge_plot <- ggplot(data_mva_snpsTab_all %>% 
+                         filter(Genus == i) %>% 
+                         mutate(Sample = fct_rev(Sample)), 
+                       aes(Frequency, Sample, fill = `No. Positions`)) +
+    geom_density_ridges(alpha = 0.7, panel_scaling = F) +
+  facet_wrap(~ `Mapping Strategy`, nrow = 2) +
+  scale_fill_viridis(name = "Total SNP Calls") +
+  scale_x_continuous(breaks = seq(0,100, 10)) +
+  ggtitle("Allele frequency distribution of 'heterozygous' SNP calls",
+          subtitle = paste(i, "called at 2X depth. Homozygous calls > 0.9 frequency")) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+    theme(legend.position = "bottom")
+  
+  print(ridge_plot)co
+  
+      ggsave(paste("superreferencemapping_singlereferencemapping_comparison_densityridges_", 
+                 i , "_", 
+                 format(Sys.Date(), "%Y%m%d"), 
+                 ".pdf", 
+                 sep = ""), plot = ridge_plot,
+           "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping/multiallelic_snps/", 
+           device = cairo_pdf, 
+           width = 3.5, 
+           height = 7, 
+           units = "in", 
+           dpi = 600)
+  
+}
+
+
+# ggplot(data_mva_snpsTab_all, aes(Frequency, Sample, fill = `No. Positions`)) +
+#   geom_density_ridges(alpha = 0.7, panel_scaling = F) +
+#   facet_wrap(`Mapping Strategy` ~ Reference, nrow = 2) +
+#   scale_fill_viridis(name = "Total SNP Calls") +
+#   ggtitle("Allele frequency distribution of 'heterozygous' SNP calls",
+#           subtitle = "Called at 2X depth. Homozygous calls > 0.9 frequency") +
+#   theme_minimal(base_size = 7, base_family = "Roboto")
+```
+
+## SNP Call Threshold selection
+
+We can see from the plots above that we have lots of different distributions
+of potential SNP allele frequencies, e.g. a dominant and minor strain mixture
+(e.g. peak at 25% for minor and 75% at major), a low-level background 
+(e.g. ~20%) background strain. We also see extreme cross mapping of many strains
+and species (very wide normal distribution).
+
+However, for those with a major strain peak, it would be good to see if there
+is a certain level of consistency in where this threshold falls. Visual 
+inspection of the histogram and density plots seems to indicate there is a
+often a peak around 70-80%.
+
+We can try and check this by selecting the per-sample peak, when looking at 
+above 50% allele frequency, by running a manual binning of the alleles 
+frequencies, and picking the bin with the highest frequency.
+
+```{r}
+summary_snpthreshold <- data_mva_snpsTab_all %>% 
+  select(`Mapping Strategy`, Genus, Reference, Sample, Frequency) %>% 
+  filter(Frequency >= 50) %>% 
+  mutate(Bin = cut(Frequency, seq(0, 100, 10))) %>% 
+  group_by(`Mapping Strategy`, Genus, Reference, Sample, Bin) %>% 
+  summarise(Bin_Frequency = n()) %>% 
+  ungroup() %>% 
+  group_by(`Mapping Strategy`, Genus, Reference, Sample) %>% 
+  filter(Bin_Frequency == max(Bin_Frequency)) %>%
+  ungroup() %>%
+  mutate(`Mapping Strategy` = factor(`Mapping Strategy`, 
+                                     levels = c("initial_single_genome", 
+                                                "superreference_mapping")))
+
+
+ggplot(summary_snpthreshold, aes(Bin)) +
+  geom_histogram(stat = "count") + 
+  facet_wrap(Genus ~ `Mapping Strategy`) +
+  theme_minimal(base_size = 7, base_family = "Roboto")
+```
+
+In most cases we see that the 70-80% bin is most commonly found dominant peak
+across all taxa and mapping strategy. In fact the only one that does not
+follow this trend is Actinomyces with a single genome.
+
+To look at just the single genome
+
+```{r}
+summary_snpthreshold_ini <- 
+  summary_snpthreshold %>% 
+  filter(`Mapping Strategy` == "initial_single_genome",
+         Sample != "LIB025.A0301")
+
+selection_plot <- ggplot(summary_snpthreshold_ini, aes(Bin)) +
+  geom_histogram(stat = "count") + 
+  facet_wrap(~ Genus) +
+  xlab("Peak Allele Frequency Bin (%)") +
+  ylab("Number of  Mappings") +
+  theme_minimal(base_size = 7, base_family = "Roboto")
+
+ggsave(paste("singlereferencemapping_SNPcallingthreshold_selection_", 
+             format(Sys.Date(), "%Y%m%d"), 
+             ".pdf", 
+             sep = ""), plot = selection_plot,
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 7, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste("singlereferencemapping_SNPcallingthreshold_selection_", 
+             format(Sys.Date(), "%Y%m%d"), 
+             ".png", 
+             sep = ""), plot = selection_plot,
+       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       device = "png", 
+       width = 7, 
+       height = 7, 
+       units = "in", 
+       dpi = 600)
+```
+
+
+Further, we do see a slight shifting of the distribution towards higher 
+bins when following the superreference mapping strategy (as seen above),
+however we have lost resolution in terms of the number positions.
+
+For final phylogenies we will run generate MultiVCFAnalyzer SNP alingmets with 
+2X coverage and a SNP calling allele frequency of 0.7 (i.e. the 70% lower bound
+from the bins above).
+

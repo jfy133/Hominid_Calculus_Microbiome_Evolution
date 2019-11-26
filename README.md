@@ -1573,7 +1573,7 @@ host genera combinations. This was performed with the R notebook
 This was run using the command with
 
 ```bash
-Rscript /projects1/microbiome_calculus/evolution/02-scripts.backup/21-Indicator_analysis.R
+Rscript 02-scripts.backup/21-Indicator_analysis.R
 ```
 
 and the results are saved in `04-analysis/screening/indicspecies.backup`.
@@ -1903,14 +1903,70 @@ and multiple chromosomes are collapsed as again described in
 `02-scripts.backup/99-phylogeny_reference_genome_collection.Rmd`.
 
 EAGER can then be run again with the same settings for the 
-[Super-reference mapping]((#sper-reference-alignment-and-species selection)), 
+[Super-reference mapping]((#super-reference-alignment-and-species selection)), 
 but with the single 
 representative genome taxa FASTAs instead.
 
-> The reference genome files are not provided here due to the large size, 
-
+> The reference genome files are not provided here due to the large size
 
 ### Performance of super-reference vs. single genome mapping
+
+As the main target of this comparison of mapping strategies is to see if we 
+can reduce the level of cross-mapping, we need a way of assessing the level
+of multi-allelic positions occur in each mapping.
+
+For this we can use MultiVCFAnalyzer, which when given a GATK UnifiedGenotyper 
+VCF file where the reference ploidy was (pretendedly) set to 2, will report
+the fraction of reads that hold an allele in 'heterozygous' sites (i.e. 
+positions where there is a possible reference and a possible alternative allele - which is not expected in haploid bacteria).
+
+We can run MultiVCFAnalyzer as follows for each reference species of the two
+mapping strategies.
+
+```bash
+java -Xmx32g -jar MultiVCFanalyzer_0-87.jar \
+NA \
+"$FASTA" \
+NA \
+<OUTDIR> \
+T \
+30 \
+2 \
+0.9 \
+0.1 \
+NA \
+<VCF_1> \
+<VCF_2> \
+<VCF_3>
+
+```
+
+We set `T` to turn on saving of the allele frequencies in the outputted SNP 
+Table, minimum coverage of 2 (to ensure at least two independent reads support
+a call), a minimum fraction of reads required to have a base to be considered 
+a single-allelic reference or SNP call as 0.9, and a minimum of 0.1 (but below 0.9) to be considered heterogzous.
+
+> only the snpStatistics files are provided here due to the large size of the 
+> other MultiVCFAnalyzer output files.
+
+For super-reference mappings, we still need to get the statistics for just the
+positions representing the target species of interest. We can use the following
+script to extract these.
+
+```bash
+for i in 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/*; do 
+  species="$(basename $i)"
+  genus="$(echo $species | cut -d_ -f 1)"
+  Rscript 02-scripts.backup/036-generate_multiVCFanalyzer_subset_statistics_20190322.R \
+  04-analysis/deep/multivcfanalyzer/superreference_mapping/output/"$genus"/ \
+  04-analysis/deep/eager/superreference_mapping/references/"$genus"/collapsed_"$genus"_superreference.bed \
+  "$species"
+done
+```
+
+To compare the level of heterozygosity as reported in MultiVCFAnalyzer between 
+the two mapping strategies, we can look in the R notebook
+`02-scripts.backup/032-multibasesites_mappingstrategycomparison_20190528.Rmd`.
 
 ### Variant calling and single-allelic position assessment
 

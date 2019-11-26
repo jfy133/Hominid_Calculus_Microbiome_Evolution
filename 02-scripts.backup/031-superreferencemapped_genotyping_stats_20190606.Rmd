@@ -1,0 +1,766 @@
+---
+title: "Evolution Deep Sequence Data Competitive Mapping Results"
+output:
+html_notebook: default
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Data Loading
+
+Libraries and metadata (mapping data loaded below, but further down can load
+'I made earlier' data).
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(patchwork)
+library(tictoc)
+library(rentrez)
+
+## Metadata
+data_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+```
+
+# General Mapping Statistics
+
+Firstly we can check the general range of overall mapping statistics between
+the two mapping strategies (i.e. prior genome selection from the superreference
+mapping).
+
+## Clean up
+
+Set clean up functions
+
+```{r}
+eager_cleaner <- function(x){
+  out <- x
+  out[out == "NF"] <- 0
+  out <- out %>%
+    rename(sample_number = `Sample number`,
+           sample_name = `Sample Name`,
+           number_reads_after_clipmerge_prior_mapping = `# reads after C&M prior mapping`,
+           number_reads_mapped_prior_rmdup = `# mapped reads prior RMDup`,
+           number_duplicates_removed = `# of Duplicates removed`,
+           number_reads_mapped_after_rmdup = `Mapped Reads after RMDup`,
+           percent_endogenous_dna = `Endogenous DNA (%)`,
+           cluster_factor = `Cluster Factor`,
+           mean_fold_coverage = `Mean Coverage`,
+           std_dev_coverage = `std. dev. Coverage`,
+           percent_coverage_morethan_1x = `Coverage >= 1X in %`,
+           percent_coverage_morethan_2x = `Coverage >= 2X in %`,
+           percent_coverage_morethan_3x = `Coverage >= 3X in %`,
+           percent_coverage_morethan_4x = `Coverage >= 4X in %`,
+           percent_coverage_morethan_5x = `Coverage >= 5X in %`,
+           frequency_damage_1st_base_3prime = `DMG 1st Base 3'`,
+           frequency_damage_2nd_base_3prime = `DMG 2nd Base 3'`,
+           frequency_damage_1st_base_5prime = `DMG 1st Base 5'`,
+           frequency_damage_2nd_base_5prime = `DMG 2nd Base 5'`,
+           average_fragment_length = `average fragment length`,
+           median_fragment_length = `median fragment length`,
+           percent_gc_content = `GC content in %`
+    ) %>%
+    mutate(number_reads_after_clipmerge_prior_mapping = as.numeric(number_reads_after_clipmerge_prior_mapping)) %>%
+    mutate(number_reads_mapped_prior_rmdup = as.numeric(number_reads_mapped_prior_rmdup)) %>%
+    mutate(number_duplicates_removed = as.numeric(number_duplicates_removed)) %>% 
+    mutate(number_reads_mapped_after_rmdup = as.numeric(number_reads_mapped_after_rmdup)) %>% 
+    mutate(percent_endogenous_dna = as.numeric(percent_endogenous_dna)) %>% 
+    mutate(cluster_factor = as.numeric(cluster_factor)) %>%
+    mutate(mean_fold_coverage = as.numeric(mean_fold_coverage)) %>%
+    mutate(std_dev_coverage = as.numeric(std_dev_coverage)) %>%
+    mutate(percent_coverage_morethan_1x = as.numeric(percent_coverage_morethan_1x)) %>%
+    mutate(percent_coverage_morethan_2x = as.numeric(percent_coverage_morethan_2x)) %>%
+    mutate(percent_coverage_morethan_3x = as.numeric(percent_coverage_morethan_3x)) %>%
+    mutate(percent_coverage_morethan_4x = as.numeric(percent_coverage_morethan_4x)) %>%
+    mutate(percent_coverage_morethan_5x = as.numeric(percent_coverage_morethan_5x)) %>%
+    mutate(frequency_damage_1st_base_3prime = as.numeric(frequency_damage_1st_base_3prime)) %>%
+    mutate(frequency_damage_2nd_base_3prime = as.numeric(frequency_damage_2nd_base_3prime)) %>%
+    mutate(frequency_damage_1st_base_5prime = as.numeric(frequency_damage_1st_base_5prime)) %>%
+    mutate(frequency_damage_2nd_base_5prime = as.numeric(frequency_damage_2nd_base_5prime)) %>%
+    mutate(median_fragment_length = as.numeric(median_fragment_length)) %>%
+    mutate(average_fragment_length = as.numeric(average_fragment_length)) %>%
+    mutate(percent_gc_content = as.numeric(percent_gc_content))
+  return(out)
+}
+
+```
+
+
+Load EAGER ReportTables for single genome mapping
+
+```{r}
+data_representativemapping_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/*/output/*") %>%
+  list.files("*.csv", full.names = T) %>%
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, function(x) suppressMessages(read_csv(x)))) %>%
+  mutate(mapping_type = map(file_name, function(x) {str_split(x, "/")[[1]][10]}) %>% unlist,
+         species = map(file_name, function(x) str_split(x, "/")[[1]][12]) %>% unlist,
+         genus = map(species, function(x) str_split(x, "_")[[1]][1]) %>% unlist) %>%
+  select(mapping_type, genus, species, file_contents, -file_name) %>%
+  mutate(file_contents = map(file_contents, eager_cleaner)) %>%
+  unnest() %>%
+  left_join(data_meta) %>%
+  filter(mapping_type != "authenticity_check")
+
+data_representativemapping_clean <- data_representativemapping_raw %>% 
+  mutate(Env = factor(Env, levels = c(
+  "Howler_Monkey",
+  "Gorilla_1",
+  "Gorilla_2",
+  "Gorilla_3",
+  "Chimp_1",
+  "Chimp_2",
+  "Chimp_3",
+  "Chimp_4",
+  "Neanderthal",
+  "PreagriculturalHuman_1",
+  "PreagriculturalHuman_2",
+  "PreantibioticHuman_1",
+  "PreantibioticHuman_2",
+  "ModernDayHuman_1",
+  "ModernDayHuman_2",
+  "ExtractionControl",
+  "LibraryControl",
+  "ruralGut",
+  "sediment",
+  "skin",
+  "subPlaque",
+  "supPlaque",
+  "urbanGut",
+  "EnvironmentalControl"
+))) %>%
+  arrange(Env) %>%
+  mutate(sample_name = as_factor(sample_name),
+         Host_Common = as_factor(Host_Common))
+```
+
+## Visualisation
+
+Things that we can compare (i.e. that are specific 'genome' agnostic) are 
+metrics such as GC content, damage, and fragment length. By this, I mean
+we are interested in just the reads themselves that have been captured by the
+two methods, not the similarity to a particular genome.
+
+For example, do we see a change in fragment lengths in the types of reads we 
+attract by expanding the diversity of potential genomes?
+
+```{r, fig.width=20, fig.height=20}
+data_representativemapping_clean %>% 
+  filter(Host_Genus != "Control") %>%
+    ggplot(aes(mapping_type, median_fragment_length)) +
+      geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+      facet_wrap(genus ~ Host_Common) +
+      theme_minimal()
+```
+
+Generally, we do not seem to see major changes. We can also see if there
+are any specific sample with very different average read length differences.
+
+```{r}
+data_representativemapping_clean %>%
+  ggplot(aes(sample_name, median_fragment_length, colour = mapping_type)) +
+  geom_boxplot() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+
+```{r}
+data_representativemapping_clean %>%
+  ggplot(aes(sample_name, median_fragment_length, fill = mapping_type)) +
+  geom_histogram(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  facet_wrap(~genus) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+# Data Clean Up
+
+Now we can look at specific coverage metrics for single genomes from the 
+superreference mapping.
+
+Find and stats from `bedtools`, and clean up the data.
+
+```{r eval = F}
+## Set dir
+main_dir <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/superreference_mapping/output/*/*/5-DeDup/")
+
+## find files
+input_files_depth <- list.files(main_dir, pattern = '*bedtoolsdepth.tsv.gz', full.names = TRUE, recursive = FALSE)
+input_files_breadth <- list.files(main_dir, pattern = '*bedtoolsbreadth.tsv.gz', full.names = TRUE, recursive = FALSE)
+
+## Load depth stats
+tic()
+data_depth <- input_files_depth %>% 
+  enframe(name = NULL, value = "filename") %>%
+  mutate(file_contents = purrr::map(filename, 
+                                    ~ fread(., col.names = c("chromosome", "start", "end", "feature_name", "mean_depth_coverage")) %>% as_tibble())) %>% 
+  unnest() %>% 
+  mutate(sample = map(filename, function(x) str_split(x, "/")[[1]][[13]]) %>% unlist,
+         genus = map(feature_name, function(x) str_split(x, "/")[[1]][[1]]) %>% unlist,
+         species = map(feature_name, function(x) str_split(x, "/")[[1]][[3]]) %>% unlist,
+         contig = map(feature_name, function(x) str_split(x, "/")[[1]][[4]]) %>% unlist
+         ) %>%
+  select(genus, sample, species, contig, mean_depth_coverage)
+toc()
+
+## Load breadth and read count stats
+tic()
+data_breadth <- input_files_breadth %>% 
+  enframe(name = NULL, value = "filename") %>%
+  mutate(file_contents = purrr::map(filename, 
+                                    ~ fread(., col.names = c("chromosome", "start", "end", "feature_name", "no_reads", "no_bases_covered", "feature_length", "percent_covered")) %>% as_tibble())) %>% 
+  unnest() %>% 
+  mutate(sample = map(filename, function(x) str_split(x, "/")[[1]][[13]]) %>% unlist,
+         genus = map(feature_name, function(x) str_split(x, "/")[[1]][[1]]) %>% unlist,
+         species = map(feature_name, function(x) str_split(x, "/")[[1]][[3]]) %>% unlist,
+         contig = map(feature_name, function(x) str_split(x, "/")[[1]][[4]]) %>% unlist
+         ) %>%
+  select(genus, sample, species, contig, no_reads, no_bases_covered, feature_length, percent_covered)
+toc()
+
+```
+
+We can now join these two together, and remove the contig information (we 
+will collapse by species anyway)
+
+```{r eval = F}
+data_all <- left_join(data_breadth, data_depth) %>%
+  select(-contig)
+
+```
+
+Save for reloading
+
+```{r eval = F}
+write_tsv(data_all, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_", format(Sys.Date(), "%Y%m%d"), ".tsv.gz", sep = ""))
+```
+
+
+# Competitive Mapping Statistics
+
+## Summarising
+
+Now we need to collapse multi-contigs and generate some statistics.
+
+Load from earlier.
+
+> Make sure to restart R as these files are big and fill memory. Also ensure
+you update the file name to the latest date.
+
+```{r}
+data_all <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz") %>%
+  print()
+```
+
+Collapse all contigs for each species, summing or averaging metric, and also 
+find total number of reads per genus.
+
+```{r}
+data_all_collapsed <- data_all %>% 
+  group_by(genus, sample, species) %>%
+  summarise(total_no_reads = sum(no_reads),
+             total_no_bases_covered = sum(no_bases_covered),
+             total_species_length = sum(feature_length),
+             mean_mean_depth_coverage = mean(mean_depth_coverage)
+             ) %>%
+    mutate(percent_covered = (total_no_bases_covered / total_species_length) * 100) %>%
+  group_by(genus, sample) %>%
+  mutate(total_genus_reads = sum(total_no_reads)) %>%
+  print()
+```
+
+Add extra metadata and calculate competitive mapping score. The score
+is the total number of reads of a species, minus the remaining genus reads
+and normalised by the post-adapter removal read depth of the sample.
+
+```{r}
+data_all_collapsed_meta <- left_join(data_all_collapsed, 
+                                     data_meta %>% 
+                                       select(sample_name, Env, Description, 
+                                              Host_General, Host_Genus, 
+                                              Host_Common, Age, Location, 
+                                              total_number_reads_after_clipmerge_prior_mapping ), 
+                                     by = c("sample" = "sample_name")) %>%
+  mutate(percent_total_genus_reads = (total_no_reads / total_genus_reads) * 100,
+         competitive_mapping.backup_score = total_no_reads - total_genus_reads / total_number_reads_after_clipmerge_prior_mapping) %>%
+  select(genus, species, sample, total_no_reads, total_no_bases_covered, total_species_length, mean_mean_depth_coverage, percent_covered, total_genus_reads, percent_total_genus_reads, total_number_reads_after_clipmerge_prior_mapping, competitive_mapping.backup_score, Env, Description, contains("Host"), Age, Location) %>%
+  print()
+```
+
+Calculate boundaries of average and standard deviations
+
+
+```{r}
+data_all_boundaries <- data_all_collapsed_meta %>%
+  group_by(genus) %>%
+  summarise(mean_genus_reads = mean(total_no_reads),
+            upper_sd_genus_reads = mean(total_no_reads) + sd(total_no_reads),
+            mean_genus_breadth = mean(percent_covered),
+            upper_sd_genus_breadth = mean(percent_covered) + sd(percent_covered),
+            mean_genus_depth = mean(mean_mean_depth_coverage),
+            upper_sd_genus_depth = mean(mean_mean_depth_coverage) + sd(mean_mean_depth_coverage),
+            mean_genus_score = mean(competitive_mapping.backup_score),
+            upper_sd_genus_score = mean(competitive_mapping.backup_score) + sd(competitive_mapping.backup_score),
+            mean_genus_percent_reads = mean(percent_total_genus_reads),
+            upper_sd_genus_percent_reads = mean(percent_total_genus_reads) + sd(percent_total_genus_reads)
+            ) %>%
+  print()
+```
+
+Set factors for ordering
+
+```{r}
+data_all_collapsed_meta$Env <- factor(data_all_collapsed_meta$Env, 
+                                  levels = c("Howler_Monkey", "Gorilla_1", 
+                                             "Gorilla_2", "Chimp_2", 
+                                             "Neanderthal", "PreagriculturalHuman_1",
+                                             "PreagriculturalHuman_2", "ModernDayHuman_1",
+                                             "ModernDayHuman_2", "LibraryBlank")
+                               )
+
+data_all_collapsed_meta$Host_Common <- factor(data_all_collapsed_meta$Host_Common, levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Control"))
+
+data_all_collapsed_meta <- data_all_collapsed_meta %>% arrange(Env)
+
+data_all_collapsed_meta$sample <- factor(data_all_collapsed_meta$sample, levels = unique(data_all_collapsed_meta$sample))
+```
+
+And save
+
+```{r eval = F}
+write_tsv(data_all_collapsed_meta, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_final_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+```
+
+## Final Statistics
+
+To re-load
+
+```{r}
+data_all_collapsed_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_final_20190522.tsv")
+
+data_all_collapsed_meta$Env <- factor(data_all_collapsed_meta$Env, 
+                                  levels = c("Howler_Monkey", "Gorilla_1", 
+                                             "Gorilla_2", "Chimp_2", 
+                                             "Neanderthal", "PreagriculturalHuman_1",
+                                             "PreagriculturalHuman_2", "ModernDayHuman_1",
+                                             "ModernDayHuman_2", "LibraryBlank")
+                               )
+
+data_all_collapsed_meta$Host_Common <- factor(data_all_collapsed_meta$Host_Common, levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Control"))
+
+data_all_collapsed_meta <- data_all_collapsed_meta %>% arrange(Env)
+
+data_all_collapsed_meta$sample <- factor(data_all_collapsed_meta$sample, levels = unique(data_all_collapsed_meta$sample))
+```
+
+Re-collect boundaries
+
+```{r}
+data_all_boundaries <- data_all_collapsed_meta %>%
+  group_by(genus) %>%
+  summarise(mean_genus_reads = mean(total_no_reads),
+            upper_sd_genus_reads = mean(total_no_reads) + sd(total_no_reads),
+            mean_genus_breadth = mean(percent_covered),
+            upper_sd_genus_breadth = mean(percent_covered) + sd(percent_covered),
+            mean_genus_depth = mean(mean_mean_depth_coverage),
+            upper_sd_genus_depth = mean(mean_mean_depth_coverage) + sd(mean_mean_depth_coverage),
+            mean_genus_score = mean(competitive_mapping_score),
+            upper_sd_genus_score = mean(competitive_mapping_score) + sd(competitive_mapping_score),
+            mean_genus_percent_reads = mean(percent_total_genus_reads),
+            upper_sd_genus_percent_reads = mean(percent_total_genus_reads) + sd(percent_total_genus_reads)
+            ) %>%
+  print()
+```
+
+Set some general plotting aesthetics
+
+```{r}
+common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 3, LibraryControl = 7, Plaque = 14, 
+          Gut = 7, Skin = 9, Sediment = 10, EnvironmentalControl = 12)
+
+```
+
+# General Mapping Statistics Comparison
+
+We can compare the general differences between the two mapping strategies,
+outside of the effects of SNV calling.
+
+```{r}
+data_mappingstats_single <- data_representativemapping_clean %>% 
+  filter(mapping_type == "initial_single_genome",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>%
+  mutate(mapping_strategy = "initial_single_genome") %>% 
+  select(-mapping_type) %>% 
+  rename(individual = sample_name) %>%
+  select(mapping_strategy, genus, individual, species, 
+         number_reads_mapped_after_rmdup, 
+         mean_fold_coverage, percent_coverage_morethan_1x) %>%
+  print()
+
+species_list <- data_mappingstats_single$species %>% unique
+
+data_mappingstats_super <- data_all_collapsed %>% 
+  mutate(mapping_strategy = "superreference") %>%
+  filter(species %in% species_list) %>%
+  rename(number_reads_mapped_after_rmdup = total_no_reads,
+         mean_fold_coverage = mean_mean_depth_coverage,
+         percent_coverage_morethan_1x = percent_covered,
+         individual = sample) %>%
+  select(mapping_strategy, genus, individual, species, 
+         number_reads_mapped_after_rmdup, 
+         mean_fold_coverage, percent_coverage_morethan_1x) %>%
+  print
+
+data_mappingstats_all <- bind_rows(data_mappingstats_single, data_mappingstats_super)
+
+data_mappingstats_all <- data_mappingstats_all %>% 
+  gather(metric, value, 5:ncol(.)) %>% 
+  spread(mapping_strategy, value) %>%
+  mutate(difference = initial_single_genome - superreference)
+
+write_tsv(data_mappingstats_all, paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_singlegenome_mappingstats_comparison", format(Sys.Date(), "%Y%m%d"), ".tsv"))
+```
+
+
+
+# Competitive Mapping Plotting
+
+## Line charts
+
+And plot, firstly by number of reads
+
+```{r eval}
+plot_linegraph <- function(my_genus, metric_col, mean_col, sd_col){
+  
+  out_plot <- ggplot(data_all_collapsed_meta %>% filter(genus == my_genus), aes_string("species", 
+                                                                metric_col, 
+                                                                group = "sample")) +
+    geom_point(aes(colour = Host_Common, shape = Host_Common), stroke = 1.2) +
+    geom_line(aes(colour = Host_Common)) +
+    scale_colour_manual(values = common_colours) +
+    scale_shape_manual(values = common_shapes) +
+    scale_fill_manual(values = common_colours) +
+    geom_hline(data = data_all_boundaries %>% filter(genus == my_genus), aes_string(yintercept = mean_col), colour = "grey", linetype = 1) +
+    geom_hline(data = data_all_boundaries %>% filter(genus == my_genus), aes_string(yintercept = sd_col), colour = "grey", linetype = 2) +
+    facet_wrap(~ sample, nrow = 1) +
+    labs(title = my_genus) +
+    theme_minimal(base_family = "Roboto", base_size = 7) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), strip.text.y = element_text(angle = 45)) +
+    coord_flip()
+  
+    ggsave(paste("superreferencemapping_statistics_lineplot_", 
+                 my_genus , "_", 
+                 metric_col, "_", 
+                 format(Sys.Date(), "%Y%m%d"), 
+                 ".pdf", 
+                 sep = ""), plot = out_plot,
+           "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/species_selection/", 
+           device = cairo_pdf, 
+           width = 14, 
+           height = 7, 
+           units = "in", 
+           dpi = 600)
+}
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "total_no_reads",
+         mean_col = "mean_genus_reads",
+         sd_col = "upper_sd_genus_reads"
+         ), 
+    plot_linegraph)
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "percent_covered",
+         mean_col = "mean_genus_breadth",
+         sd_col = "upper_sd_genus_breadth"
+         ), 
+    plot_linegraph)
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "mean_mean_depth_coverage",
+         mean_col = "mean_genus_depth",
+         sd_col = "upper_sd_genus_depth"
+         ), 
+    plot_linegraph)
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "competitive_mapping_score",
+         mean_col = "mean_genus_score",
+         sd_col = "upper_sd_genus_score"
+         ), 
+    plot_linegraph)
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "percent_total_genus_reads",
+         mean_col = "mean_genus_percent_reads",
+         sd_col = "upper_sd_genus_percent_reads"
+         ), 
+    plot_linegraph)
+
+
+```
+
+Note that consistency between each metric and each plot is not due to order
+of reference genomes in FASTA file (if mapquality 0 read placement was not 
+actually random). The reference fasta file is in alphabetical
+order, and if there was a bias to random selection of reads, this would likely
+always select the species name with first few latin alphabet characters.
+For example, we would expect 'Actinomyces_bouchesdurhonensis' to have a more 
+reads than the other genomes,  
+
+## Heatmap
+
+```{r}
+
+data_all_collapsed_meta %>% 
+  group_by(genus) %>% 
+  mutate(total_genus_reads = sum(total_no_reads)) %>%
+  ungroup() %>%
+  mutate(percent_species_over_allgenus = (total_no_reads / total_genus_reads * 100)) %>%
+  filter(genus == "Streptococcus") %>% 
+  ggplot(aes(sample, species, fill = percent_species_over_allgenus )) +
+    geom_tile() +
+  scale_fill_distiller(palette = "Spectral") + 
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+plot_heatmap <- function(my_genus, metric_col, mean_col, sd_col){
+  
+  out_plot <- ggplot(data_all_collapsed_meta %>% 
+                       filter(genus == my_genus), aes_string("sample", 
+                                                                "species", 
+                                                              fill = metric_col)) +
+    geom_tile() +
+    scale_fill_distiller(palette = "Spectral") + 
+    labs(title = my_genus) +
+    theme_minimal(base_family = "Roboto", base_size = 7) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  
+    ggsave(paste("superreferencemapping_statistics_heatmap_", 
+                 my_genus , "_", 
+                 metric_col, "_",
+                 format(Sys.Date(), "%Y%m%d"), 
+                 ".pdf", 
+                 sep = ""), plot = out_plot,
+           "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/species_selection/", 
+           device = cairo_pdf, 
+           width = 7, 
+           height = 14, 
+           units = "in", 
+           dpi = 600)
+}
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "total_no_reads",
+         mean_col = "mean_genus_reads",
+         sd_col = "upper_sd_genus_reads"
+         ), 
+    plot_heatmap)
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "percent_covered",
+         mean_col = "mean_genus_breadth",
+         sd_col = "upper_sd_genus_breadth"
+         ), 
+    plot_heatmap)
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "mean_mean_depth_coverage",
+         mean_col = "mean_genus_depth",
+         sd_col = "upper_sd_genus_depth"
+         ), 
+    plot_heatmap)
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "competitive_mapping_score",
+         mean_col = "mean_genus_score",
+         sd_col = "upper_sd_genus_score"
+         ), 
+    plot_heatmap)
+
+pmap(list(my_genus = unique(data_all_collapsed_meta$genus),
+         metric_col = "percent_total_genus_reads",
+         mean_col = "mean_genus_percent_reads",
+         sd_col = "upper_sd_genus_percent_reads"
+         ), 
+    plot_heatmap)
+
+
+```
+
+# Downstream Reference Selection Threshold - Initial Single Genome
+
+## Automated Selection
+Next we next to select the best reference for single reference mapping to
+get a baseline for comparing how good the competititve mapping cleans up
+multiallelic SNPs.
+
+As we are aiming for phylogenies, we first want to select taxa that have good
+'prevalence' (i.e. in as many samples as possible), but also at higher enough
+abundance to be able to get enough of the genome covered for sample 
+clustering.
+
+We will do this firstly by an automated procedure then via visual inspection.
+
+The automated version is as follows: remove all samples that do not go
+above the standard deviation (above the mean) of the metric across all samples,
+this removes 'low abundant' mappings. Then we count the number of individuals 
+that are retained after this filtering.
+
+Then, we count 
+
+```{r}
+filter_by_threshold <- function(table, buffer, metric){
+  table_filtered <- table %>% 
+    left_join(buffer)
+  
+  if (metric == "depth") {
+    table_filtered <- table_filtered %>% 
+      filter(mean_mean_depth_coverage >= upper_sd_genus_depth)
+  } else if (metric == "breadth") {
+    table_filtered <- table_filtered %>%
+      filter(percent_covered >= upper_sd_genus_breadth)
+  } else if (metric == "score") {
+    table_filtered <- table_filtered %>% 
+      filter(competitive_mapping_score >= upper_sd_genus_score)
+  } else if (metric == "reads") {
+    table_filtered <- table_filtered %>% 
+      filter(total_no_reads >= upper_sd_genus_reads)
+  } else if (metric == "percent") {
+    table_filtered <- table_filtered %>% 
+      filter(percent_total_genus_reads >= upper_sd_genus_percent_reads)
+  } else {
+    stop("Unknown metric")
+  }
+  
+  hostgenus_summary <- table_filtered %>% 
+    group_by(genus, Host_Common, species) %>% 
+    summarise(No_Individuals = n()) %>%
+    group_by(genus, species) %>%
+    summarise(no_hostgroups_with_min_1_ind = n()) %>%
+    group_by(genus) %>%
+    filter(no_hostgroups_with_min_1_ind == max(no_hostgroups_with_min_1_ind))
+  
+  totalindividuals_summary <- table_filtered %>% 
+    filter(Host_Genus != "Control") %>%
+    group_by(genus, species) %>% 
+    summarise(Number_Individuals = n()) %>% 
+    arrange(Number_Individuals) %>%
+    group_by(genus) %>%
+    filter(Number_Individuals == max(Number_Individuals))    
+    
+  result <- list(table_filtered, hostgenus_summary, totalindividuals_summary)
+  names(result) <- c("table_filtered", "hostgenus_summary", "totalindividuals_summary")
+  
+  return(result)
+}
+
+results_filter <- filter_by_threshold(data_all_collapsed_meta, data_all_boundaries, "depth")$totalindividuals_summary %>% rename(depth = Number_Individuals) %>% 
+  full_join(filter_by_threshold(data_all_collapsed_meta, data_all_boundaries, "breadth")$totalindividuals_summary %>% rename(breadth = Number_Individuals)) %>%
+  full_join(filter_by_threshold(data_all_collapsed_meta, data_all_boundaries, "score")$totalindividuals_summary %>% rename(score = Number_Individuals)) %>%
+  full_join(filter_by_threshold(data_all_collapsed_meta, data_all_boundaries, "reads")$totalindividuals_summary %>% rename(reads = Number_Individuals)) %>%
+  full_join(filter_by_threshold(data_all_collapsed_meta, data_all_boundaries, "percent")$totalindividuals_summary %>% rename(percent = Number_Individuals)) %>%
+  replace_na(list(depth = 0, breadth = 0, score = 0, reads = 0, percent = 0)) %>%
+  gather(Metric, Number_Individuals, 3:7) %>%
+  filter(Number_Individuals != 0) %>%
+  group_by(genus, species) %>%
+  summarise(Metrics_Passed = n()) %>%
+  arrange(genus, -Metrics_Passed) %>%
+  filter(Metrics_Passed > 1) %>%
+  print()
+
+write_tsv(results_filter, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_speciespassingfilter.tsv")
+
+```
+
+In most cases the top hit i.e. the one that is most prevalent and has 
+individuals higher than the standard deviation from mean in a given metric, 
+appears to be well known/characterised (i.e. has a name/in HOMD) oral taxa. In
+the cases there are hits with the same number of metrics passed, I will pick 
+the named one.
+
+The only unsure ones I have are Campylobacter, Ottowia, and Selenomonas. After 
+checking NCBI genome for completeness and isolation source I select the following:
+  * Campylobacter - I pick gracilis because it is named, and that strain is from the oral cavity (the AAHUC is from a gut biopsy)
+  * Ottowia - I pick the oral taxon one as it is a complete genome and the Marseille is isolatd from stool https://www.ncbi.nlm.nih.gov/nuccore/NZ_OEQA00000000.1
+  * Selenomonas - pick F0473 as it is slightly more complete (scaffolds not contigs) 
+
+## Visual Selection
+
+We can also check visually if the assignments make sense,
+or if there are alternatives which are more reliable (as in better 
+characteristed to be true oral taxa).
+
+We do this by looking at the heatmaps or line plots, and look for taxa which
+are prevleent across all samples and these are at higher prevalence.
+
+The visual inspection results are as follows:
+
+> Note: I noticed that in quite a few cases that Mean Depth was consistently 
+not in agreement with the other metrics. I have dropped that here as it seems
+to be biased towards smaller genomes.
+
+genus                   | Total Number of Reads                     | Percent Total Genus Reads                 | Percent Genome Covered                    | Competitive Mapping Score                | Visual Consensus
+------------------------|-------------------------------------------|-------------------------------------------|-------------------------------------------|------------------------------------------|-----------------
+Actinomyces             | Actinomyces_dentalis_DSM_19115            | Actinomyces_dentalis_DSM_19115            | Actinomyces_dentalis_DSM_19115            | Actinomyces_dentalis_DSM_19115           | A. dentalis
+Campylobacter           | Campylobacter_gracilis                    | Campylobacter_gracilis                    | Campylobacter_gracilis                    | Campylobacter_gracilis                   | C. gracilis
+Capnocytophaga          | Capnocytophaga_gingivalis_ATCC_33624      | Capnocytophaga_gingivalis_ATCC_33624      | Capnocytophaga_gingivalis_ATCC_33624      | Capnocytophaga_gingivalis_ATCC_33624     | C. gingivalis
+Corynebacterium         | Corynebacterium_matruchotii_ATCC_14266    | Corynebacterium_durum_F0235               | Corynebacterium_durum_F0235               | Corynebacterium_matruchotii_ATCC_14266   | C. matruc./durum
+Fretibacterium          | Fretibacterium_fastidiosum                | Fretibacterium_fastidiosum                | Fretibacterium_fastidiosum                | Fretibacterium_fastidiosum               | F. fastidiosum
+Fusobacterium           | Unsure                                    | Unsure                                    | Unsure                                    | Unsure                                   | Unsure
+Olsenella               | Olsenella_sp_oral_taxon_807               | Olsenella_sp_oral_taxon_807               | Olsenella_sp_oral_taxon_807               | Olsenella_sp_oral_taxon_807              | oral taxon 807
+Ottowia                 | Unsure                                    | Ottowia_sp_oral_taxon_894                 | Unsure                                    | Unsure                                   | oral taxon 894
+Porphyromonas           | Porphyromonas_gingivalis_ATCC_33277       | Porphyromonas_gingivalis_ATCC_33277       | Porphyromonas_gingivalis_ATCC_33277       | Porphyromonas_gingivalis_ATCC_33277      | P. gingivalis
+Prevotella              | Prevotella_loescheii_DSM_19665_[...]      | Prevotella_loescheii_DSM_19665_[...]      | Prevotella_intermedia_ATCC_25611_[...]    | Prevotella_loescheii_DSM_19665_[...]     | P. loescheii
+Pseudopropionibacterium | Pseudopropionibacterium_propionicum_[...] | Pseudopropionibacterium_propionicum_[...] | Pseudopropionibacterium_propionicum_[...] | Pseudopropionibacterium_propionicum_[..] | P. propionicum
+Selenomonas             | Unsure                                    | Unsure                                    | Unsure                                    | Unsure                                   | Unsure
+Streptococcus           | Streptococcus_sanguinis_SK36              | Streptococcus_sanguinis_SK36              | Streptococcus_sanguinis_SK36              | Streptococcus_sanguinis_SK36             | S. sanguinis
+Tannerella              | Tannerella_forsythia_92A2                 | Tannerella_forsythia_92A2                 | Tannerella_forsythia_92A2                 | Tannerella_forsythia_92A2                | T. forsythia
+Treponema               | Treponema_socranskii_subsp_paredis_[...]  | Treponema_socranskii_subsp_paredis_[...]  | Treponema_socranskii_subsp_paredis_[...]  | Treponema_socranskii_subsp_paredis_[...] | T. denticola
+ 
+Comments (abundance == strength of signal i.e. greater metric; prevalence = if metric higher than background across as many samples as possible)
+ * Actinomyces: A. dentalis is often co-prevalent with oral taxon 414, but abundance greater in dentalis.
+ * Campylobacter: C. gracilis is often co-prevalent with Campylobacter_sp_AAUH-44UCsig-a, but AAUH also prevalent in blanks which gracilis is not, and abundance greater in gracilis. Sp.1 also smaller genome possibly why higher mean depth? C. rectus and CSUNSWCD possibly same species ut less abundant.
+ * Capnocytophaga: C. gingivalis slightly more equal abundance across greater prevalence, C. suptigena is overrepresented in fewer samples. Also better representative across non-humans vs C. sputigena (although proportion of genus reads in blanks)
+ * Corynebacterium: C. durum and C. matruchotii very similar, but durum slightly better prevalence in non-humans (C. matruchotii Homo only?)
+ * Fretibacterium: Single Genome
+ * Fusobacterium: Difficult to say, few genomes with very equal prevalence and abundance - Hwasooki very high in modern day. Pattern in others very similar - unnamed same genome? Go for F. nucleatum as most well-known in oral microbiology
+ * Olsenella: sp. oral taxon 807 very abundant and preavlent in Hominids, uli other option but less prevalence and lower abundance.
+ * Ottowia: Ottowia_sp_oral_taxon_894 and sp. Marseille are very very similar, 894 slightly more reads
+ * Porphyromonas: P. gingivalis most prevalent; Porphyromonas_sp_oral_taxon_278_str_W7784 in couple of metrics (mean depth - does it have a short genome?) also but often in blanks and lower abundance. 
+ * Prevotella: Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930 same as Prevotella_sp_oral_taxon_472_str_F0295? In percent genus reads, oral taxon 472 and SP7 more prevalent but also in blanks. P. saccharolytica best prevalent but while equal abundance, abundance is low. Percent covered, many similar, P intermedia is lower abundance but better prevalence and more equal abundance 
+ * Pseudopropionibacterium: Pseudopropionibacterium_propionicum_F0230a almost always, Propionibacterium_sp_JGI_0001002-M06 has small genome (see above), which is why mean depth off.
+ * Selenomonas: Many equal in most cases. S. ruminatum subsp. lactycia preavleent across everything but not modern day humans. Sputigena is realtively equal in abundance and preavelence (and not in not blanks )
+ * Streptococcus: Streptococcus_sanguinis_SK36 same as Streptococcus_sp_AS14. Percent covered, many same in Homo, but sanguinis greater abundance
+ * Tannerella: Tannerella_forsythia_92A2 in all cases just as prevalent but more abundant
+ * Treponema: Treponema_socranskii_subsp_paredis_ATCC_35535 is more prevalent despite equalish abundance to T. denticola
+ 
+ 
+ ## Final List
+ 
+ Genus                   | Automated Selection                                     | Visual Selection                                                    | Final Selection
+ ------------------------|---------------------------------------------------------|---------------------------------------------------------------------|----------------------------- 
+ Actinomyces             | Actinomyces_dentalis_DSM_19115                          | Actinomyces_dentalis_DSM_19115                                      | Actinomyces_dentalis_DSM_19115
+ Campylobacter           | Campylobacter_gracilis*                                 | Campylobacter_gracilis                                              | Campylobacter_gracilis
+ Capnocytophaga          | Capnocytophaga_gingivalis_ATCC_33624                    | Capnocytophaga_gingivalis_ATCC_33624                                | Capnocytophaga_gingivalis_ATCC_33624
+ Corynebacterium         | Corynebacterium_matruchotii_ATCC_14266                  | Corynebacterium_matruchotii_ATCC_14266/Corynebacterium_durum_F0235  | Corynebacterium_matruchotii_ATCC_14266
+ Fretibacterium          | Fretibacterium_fastidiosum                              | Fretibacterium_fastidiosum                                          | Fretibacterium_fastidiosum
+ Fusobacterium           | Fusobacterium_hwasookii_ChDC_F206                       | Unsure                                                              | Fusobacterium_hwasookii_ChDC_F206
+ Olsenella               | Olsenella_sp_oral_taxon_807                             | Olsenella_sp_oral_taxon_807                                         | Olsenella_sp_oral_taxon_807
+ Ottowia                 | Ottowia_sp_oral_taxon_894                               | Ottowia_sp_oral_taxon_894                                           | Ottowia_sp_oral_taxon_894
+ Porpyromonas            | Porphyromonas_gingivalis_ATCC_33277                     | Porphyromonas_gingivalis_ATCC_33277                                 | Porphyromonas_gingivalis_ATCC_33277
+ Prevotella              | Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930 | Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930             | Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930 
+ Pseudopropionibacterium | Pseudopropionibacterium_propionicum_F0230a              | Pseudopropionibacterium_propionicum_F0230a                          | Pseudopropionibacterium_propionicum_F0230a
+ Selenomonas             | Selenomonas_sp_F0473                                    | Unsure                                                              | Selenomonas_sp_F0473
+ Streptococcus           | Streptococcus_sanguinis_SK36                            | Streptococcus_sanguinis_SK36                                        | Streptococcus_sanguinis_SK36
+ Tannerella              | Tannerella_forsythia_92A2                               | Tannerella_forsythia_92A2                                           | Tannerella_forsythia_92A2
+ Treponema               | Treponema_socranskii_subsp_paredis_ATCC_35535           | Treponema_socranskii_subsp_paredis_ATCC_35535                       | Treponema_socranskii_subsp_paredis_ATCC_35535
