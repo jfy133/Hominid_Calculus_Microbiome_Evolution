@@ -1907,6 +1907,9 @@ EAGER can then be run again with the same settings for the
 but with the single 
 representative genome taxa FASTAs instead.
 
+Summary plots of the single genome mappings can be seen under 
+`02-scripts/099-SingleGenome_MappingStatistics_Summary.Rmd`.
+
 > The reference genome files are not provided here due to the large size
 
 ### Performance of super-reference vs. single genome mapping
@@ -1946,9 +1949,6 @@ Table, minimum coverage of 2 (to ensure at least two independent reads support
 a call), a minimum fraction of reads required to have a base to be considered 
 a single-allelic reference or SNP call as 0.9, and a minimum of 0.1 (but below 0.9) to be considered heterogzous.
 
-> only the snpStatistics files are provided here due to the large size of the 
-> other MultiVCFAnalyzer output files.
-
 For super-reference mappings, we still need to get the statistics for just the
 positions representing the target species of interest. We can use the following
 script to extract these.
@@ -1964,11 +1964,54 @@ for i in 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/*; do
 done
 ```
 
+Output files can be seen under `04-analysis/deep/multivcfanalyzer/superreference_mapping/output/`
+
+> Only the snpStatistics files are provided here due to the large size of the 
+> other MultiVCFAnalyzer output files.
+
 To compare the level of heterozygosity as reported in MultiVCFAnalyzer between 
 the two mapping strategies, we can look in the R notebook
 `02-scripts.backup/032-multibasesites_mappingstrategycomparison_20190528.Rmd`.
 
+From this script we see the super-reference mapping strategy doesn't work 
+very often it reducing the number of multi-allelic SNPs, and 
+further results in often a large decrease in the number of positions overall 
+on the reference itself - therefore reducing the phylogenetically-informative
+data. We therefore selected the single representative genome mappings for
+downstream analysis.
+
+Additionally, in the notebook we also show that we identified the most common fraction of a majority allele was 0.7, therefore we can use this to
+increase the number of semi-confident SNP positions 
+
 ### Variant calling and single-allelic position assessment
+
+We now re-run MultiVCFAnalyzer to create our final SNP Alignments for 
+phylogenetic analysis.
+
+We run the same MultiVCFAnalyzer command as above, but with the slightly 
+relaxed homozygous fraction parameter and turning off reporting of heterozygous
+positions by setting the heterozygous parameter to the same as the homozygous.
+
+```bash
+java -Xmx32g -jar MultiVCFanalyzer_0-87.jar \
+NA \
+"$FASTA" \
+NA \
+<OUTDIR> \
+T \
+30 \
+2 \
+0.7 \
+0.7 \
+NA \
+<VCF_1> \
+<VCF_2> \
+<VCF_3>
+```
+
+The final SNP alignments and snpStatistics can be seen in XXX
+
+> The remaining MultiVCFAnalyzer results are not provided here due to large size.
 
 ### Phylogenies
 

@@ -1,0 +1,255 @@
+---
+title: "Deep Evolution - Summary Stats Single Genome Mapping"
+---
+
+# Data Loading
+
+Libraries and metadata (mapping data loaded below, but further down can load
+'I made earlier' data).
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(patchwork)
+library(tictoc)
+library(rentrez)
+library(scales)
+library(ggbeeswarm)
+
+## Metadata
+data_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+```
+
+# General Mapping Statistics
+
+Firstly we can check the general range of overall mapping statistics between
+the two mapping strategies (i.e. prior genome selection from the superreference
+mapping).
+
+## Clean up
+
+Set clean up functions
+
+```{r}
+eager_cleaner <- function(x){
+  out <- x
+  out[out == "NF"] <- 0
+  out <- out %>%
+    rename(sample_number = `Sample number`,
+           sample_name = `Sample Name`,
+           number_reads_after_clipmerge_prior_mapping = `# reads after C&M prior mapping`,
+           number_reads_mapped_prior_rmdup = `# mapped reads prior RMDup`,
+           number_duplicates_removed = `# of Duplicates removed`,
+           number_reads_mapped_after_rmdup = `Mapped Reads after RMDup`,
+           percent_endogenous_dna = `Endogenous DNA (%)`,
+           cluster_factor = `Cluster Factor`,
+           mean_fold_coverage = `Mean Coverage`,
+           std_dev_coverage = `std. dev. Coverage`,
+           percent_coverage_morethan_1x = `Coverage >= 1X in %`,
+           percent_coverage_morethan_2x = `Coverage >= 2X in %`,
+           percent_coverage_morethan_3x = `Coverage >= 3X in %`,
+           percent_coverage_morethan_4x = `Coverage >= 4X in %`,
+           percent_coverage_morethan_5x = `Coverage >= 5X in %`,
+           frequency_damage_1st_base_3prime = `DMG 1st Base 3'`,
+           frequency_damage_2nd_base_3prime = `DMG 2nd Base 3'`,
+           frequency_damage_1st_base_5prime = `DMG 1st Base 5'`,
+           frequency_damage_2nd_base_5prime = `DMG 2nd Base 5'`,
+           average_fragment_length = `average fragment length`,
+           median_fragment_length = `median fragment length`,
+           percent_gc_content = `GC content in %`
+    ) %>%
+    mutate(number_reads_after_clipmerge_prior_mapping = as.numeric(number_reads_after_clipmerge_prior_mapping)) %>%
+    mutate(number_reads_mapped_prior_rmdup = as.numeric(number_reads_mapped_prior_rmdup)) %>%
+    mutate(number_duplicates_removed = as.numeric(number_duplicates_removed)) %>% 
+    mutate(number_reads_mapped_after_rmdup = as.numeric(number_reads_mapped_after_rmdup)) %>% 
+    mutate(percent_endogenous_dna = as.numeric(percent_endogenous_dna)) %>% 
+    mutate(cluster_factor = as.numeric(cluster_factor)) %>%
+    mutate(mean_fold_coverage = as.numeric(mean_fold_coverage)) %>%
+    mutate(std_dev_coverage = as.numeric(std_dev_coverage)) %>%
+    mutate(percent_coverage_morethan_1x = as.numeric(percent_coverage_morethan_1x)) %>%
+    mutate(percent_coverage_morethan_2x = as.numeric(percent_coverage_morethan_2x)) %>%
+    mutate(percent_coverage_morethan_3x = as.numeric(percent_coverage_morethan_3x)) %>%
+    mutate(percent_coverage_morethan_4x = as.numeric(percent_coverage_morethan_4x)) %>%
+    mutate(percent_coverage_morethan_5x = as.numeric(percent_coverage_morethan_5x)) %>%
+    mutate(frequency_damage_1st_base_3prime = as.numeric(frequency_damage_1st_base_3prime)) %>%
+    mutate(frequency_damage_2nd_base_3prime = as.numeric(frequency_damage_2nd_base_3prime)) %>%
+    mutate(frequency_damage_1st_base_5prime = as.numeric(frequency_damage_1st_base_5prime)) %>%
+    mutate(frequency_damage_2nd_base_5prime = as.numeric(frequency_damage_2nd_base_5prime)) %>%
+    mutate(median_fragment_length = as.numeric(median_fragment_length)) %>%
+    mutate(average_fragment_length = as.numeric(average_fragment_length)) %>%
+    mutate(percent_gc_content = as.numeric(percent_gc_content))
+  return(out)
+}
+
+```
+
+
+Load EAGER ReportTables for single genome mapping
+
+```{r}
+data_representativemapping_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/*") %>%
+  list.files("*.csv", full.names = T) %>%
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, function(x) suppressMessages(read_csv(x)))) %>%
+  mutate(mapping_type = map(file_name, function(x) {str_split(x, "/")[[1]][10]}) %>% unlist,
+         species = map(file_name, function(x) str_split(x, "/")[[1]][12]) %>% unlist,
+         genus = map(species, function(x) str_split(x, "_")[[1]][1]) %>% unlist) %>%
+  select(mapping_type, genus, species, file_contents, -file_name) %>%
+  mutate(file_contents = map(file_contents, eager_cleaner)) %>%
+  unnest() %>%
+  left_join(data_meta)
+
+data_representativemapping_clean <- data_representativemapping_raw %>% 
+  mutate(Env = factor(Env, levels = c(
+  "Howler_Monkey",
+  "Gorilla_1",
+  "Gorilla_2",
+  "Gorilla_3",
+  "Chimp_1",
+  "Chimp_2",
+  "Chimp_3",
+  "Chimp_4",
+  "Neanderthal",
+  "PreagriculturalHuman_1",
+  "PreagriculturalHuman_2",
+  "PreantibioticHuman_1",
+  "PreantibioticHuman_2",
+  "ModernDayHuman_1",
+  "ModernDayHuman_2",
+  "ExtractionControl",
+  "LibraryControl",
+  "ruralGut",
+  "sediment",
+  "skin",
+  "subPlaque",
+  "supPlaque",
+  "urbanGut",
+  "EnvironmentalControl"
+))) %>%
+  arrange(Env) %>%
+  mutate(sample_name = as_factor(sample_name),
+         Host_Common = as_factor(Host_Common))
+```
+
+To save
+
+```{r eval = F}
+data_representativemapping_clean %>% write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/aggregated_eagerresults_", format(Sys.Date(), "%Y%m%d"),".tsv"))
+```
+
+
+To summarise
+
+```{r}
+data_representativemapping_clean %>% 
+  filter(Host_Common != "LibraryBlank",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>%
+  group_by(species) %>% 
+  dplyr::summarise(mean_depth = mean(mean_fold_coverage), 
+                   sd_depth = sd(mean_fold_coverage), 
+                   min_depth = min(mean_fold_coverage),
+                   max_depth = max(mean_fold_coverage),
+                   mean_breadth = mean(percent_coverage_morethan_1x), 
+                   sd_breadth = sd(percent_coverage_morethan_1x), 
+                   min_breadth = min(percent_coverage_morethan_1x),
+                   max_breadth = max(percent_coverage_morethan_1x)
+                   ) %>% arrange(desc(mean_depth))
+                   
+
+```
+
+```{r}
+data_representativemapping_clean %>% 
+  filter(Host_Common != "LibraryBlank",
+         Age != "ModernDay",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>%
+  mutate(depth_morethan_3x = if_else(mean_fold_coverage >= 3, T, F),
+         depth_morethan_10x = if_else(mean_fold_coverage >= 10, T, F),
+         depth_morethan_20x = if_else(mean_fold_coverage >= 20, T, F)) %>%
+  gather(threshold, value, contains("depth_morethan")) %>%
+  group_by(threshold, value) %>%
+  summarise(no_mappings = n())
+```
+
+Looking at cluster factor in ancient samples
+
+```{r}
+data_representativemapping_clean %>% 
+  filter(Host_Common != "LibraryBlank",
+         Age != "ModernDay",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>%
+  pull(cluster_factor) %>% 
+  length %>% 
+  paste("Number of ancient mappings:", .)
+
+data_representativemapping_clean %>% 
+  filter(Host_Common != "LibraryBlank",
+         Age != "ModernDay",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>% 
+  pull(cluster_factor) %>% mean %>% paste("Average CF:", .)
+
+data_representativemapping_clean %>% 
+  filter(Host_Common != "LibraryBlank",
+         Age != "ModernDay",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>% 
+  pull(cluster_factor) %>% max %>% paste("Max CF:", .)
+
+
+data_representativemapping_clean %>% 
+  filter(Host_Common != "LibraryBlank",
+         Age != "ModernDay",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>% 
+  pull(cluster_factor) %>% .[. < 1.5] %>% length %>% paste("CF Less than 1.5:", .)
+```
+
+## Coverage distributions
+
+```{r, fig.width=7, fig.height=3.5}
+coverage_distributions <- data_representativemapping_clean %>% 
+  filter(Host_Common != "LibraryBlank",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>%
+  ggplot(aes(mean_fold_coverage)) +
+  geom_histogram() +
+  xlab("Mean Fold Coverage") +
+  ylab("Number of Mappings") +
+  labs(tag = "a") +
+  theme_minimal(base_family = "Roboto", base_size = 7) + 
+  facet_wrap(~ genus, scales = "free_x")
+
+coverage_distributions
+
+clusterfactor_distributions <- data_representativemapping_clean %>% 
+  filter(Host_Common != "LibraryBlank",
+         species != "Streptococcus_gordonii_str_Challis_substr_CH1") %>%
+  ggplot(aes(cluster_factor)) +
+  geom_histogram() +
+  xlab("Cluster Factor") +
+  ylab("Number of Mappings") +
+  labs(tag = "b") +
+  theme_minimal(base_family = "Roboto", base_size = 7) + 
+  facet_wrap(~ genus)
+
+clusterfactor_distributions
+
+combined_distributions <- coverage_distributions + clusterfactor_distributions + plot_layout(nrow = 1)
+
+ggsave("FigureSX_meanfoldcoverage_clusterfactor_distributions_allcalculussamples_noblanks.pdf", 
+       plot = combined_distributions, 
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/Phylogenies_MappingStatistics", 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 3.5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave("FigureSX_meanfoldcoverage_clusterfactor_distributions_allcalculussamples_noblanks.png", 
+       plot = combined_distributions, 
+       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/Phylogenies_MappingStatistics", 
+       device = "png", 
+       width = 7, 
+       height = 3.5, 
+       units = "in", 
+       dpi = 600)
+
+```
+
