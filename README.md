@@ -2009,11 +2009,44 @@ NA \
 <VCF_3>
 ```
 
-The final SNP alignments and snpStatistics can be seen in XXX
+The final snpAlignment and snpStatistics files can be seen in `04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/`
 
 > The remaining MultiVCFAnalyzer results are not provided here due to large size.
 
 ### Phylogenies
+
+For the phylogenies themselves, I wrote a custom R script that allows for 
+generating a few summary statisics for the alignment, filtering based on the 
+number of positions, and then pairwise-deletion neighbour-joining phylogenies.
+
+To ensure a enough positions are present for distance calculations between 
+samples we require a minimum 1000 of called positions for each sample XXX
+
+```bash
+
+## Initial Single Genomes
+for i in 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/*/snpAlignment.fasta.gz; do
+  echo "$i"
+  Rscript 02-scripts.backup/042-generate_NJ_tree.R "$i" 1000 JC69 100 none
+  echo ""
+done
+
+Rscript 02-scripts.backup/042-generate_NJ_tree.R 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/Porphyromonas_gingivalis_ATCC_33277/snpAlignment.fasta.gz 2000 JC69 100 OME003
+```
+
+> We had to re-run Porphyromonas with a higher minimum  position threshold, 
+> and excluded a sample. The higher position here was due to some samples having
+> insufficient posiiton overlap to calculate a genetic distance, and inclusion
+> OME003 caused bootstrapping to fail as it had an unusually higher number of
+>  SNPs which ended up violating the equal base frequencies of the JC69 model.
+
+The final newick files and filtering statistics can be seen in 
+`04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/`
+
+Visualisation was carried out with the R notebook `02-scripts.backup/026-Tree_visualisation_20190611.Rmd` and PDF files of each phylogeny for each
+of the taxa under `04-analysis/deep/phylogenies/plots`.
+
+### Pre- and Post-14k BP Observation Verification
 
 ## Functional Analysis
 

@@ -1,0 +1,614 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+
+# Infrastucture
+
+## Libraries
+
+Load libraries
+
+```{r}
+library(tidyverse)
+library(ape)
+library(phangorn)
+library(ggtree)
+library(ggridges)
+library(broom)
+
+```
+
+## Functions
+
+### Wrangling Helpers
+
+Parse files to collect filenames and split up informative info in them.
+
+For tree plotting, bootstrap node labels to numeric as described here: 
+https://guangchuangyu.github.io/software/ggtree/faq/.
+
+```{r}
+
+parse_files <- function(in_glob, pattern){
+  in_glob %>%
+    list.files(path = ., pattern = pattern, full.names = T) %>%
+    gsub("//", "/", .) %>%
+    enframe(name = NULL, value = "path") %>%
+    mutate(
+         taxon = map(path, function(x) str_split(x, "/")[[1]] %>% 
+                      tail(n = 2) %>% 
+                      head(n = 1)) %>% 
+           unlist,
+         mapping_strategy = map(path, function(x) str_split(x, "/")[[1]] %>% 
+                      tail(n = 3) %>% 
+                      head(n = 1)) %>% 
+           unlist,
+         filename = map(path, function(x) str_split(x, "/")[[1]] %>% 
+                      unlist() %>%
+                      tail(n = 1)) %>% 
+           unlist) %>%
+    mutate(minimum_positions_threshold = map(filename, function(x) str_split(x, "_")[[1]] %>% 
+             unlist %>%
+             tail(7) %>%
+             head(1)) %>%           
+             unlist %>% 
+             str_replace("minSamplePositions", ""),
+           method = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(6) %>%
+             head(1)) %>%           
+             unlist %>% 
+             str_replace("method", ""),
+           model = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(5) %>%
+             head(1)) %>%
+             unlist %>% 
+             str_replace("model", ""),
+           bootstraps = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(4) %>%
+             head(1)) %>%
+             unlist %>% 
+             str_replace("bootstraps", "") %>% 
+             as.numeric(),
+           samples_excluded = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(4) %>%
+             head(1)) %>%
+             unlist %>% 
+             str_replace("samplesexcluded", "") %>% 
+             as.logical(),
+           missing_data = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(2) %>%
+             head(1)) %>%
+             unlist,
+           min_base_coverage = map(mapping_strategy, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(3) %>%
+             head(1)) %>%
+             unlist,
+           call_fraction = map(mapping_strategy, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(1)) %>%
+             unlist,
+           genus = map(taxon, function(x) str_split(x, "_")[[1]][1]) %>% 
+             unlist,
+           ) %>%
+    mutate(mapping_strategy = map(mapping_strategy, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             head(1)) %>% 
+             unlist
+           ) %>%
+    select(filename, genus, taxon, mapping_strategy, min_base_coverage, 
+           call_fraction, minimum_positions_threshold, method, model, 
+           bootstraps, missing_data, path, -filename)
+}
+
+
+
+```
+
+
+### Plotting Helpers
+
+````{r}
+  plot_my_tree <- function(raw_tree, taxon_name, mapping_strategy, base_thres, 
+                         method, model, missing_data, min_base_coverage, 
+                         call_frac, bootstraps) {
+  if (grep("OME", raw_tree$tip.label) %>% length > 0) {
+    if (is.monophyletic(raw_tree, grep("OME", raw_tree$tip.label))) {
+      status_rooted <- "Rooted on OME parent branch."
+      my_tree <- root(raw_tree, outgroup = grep("OME", raw_tree$tip.label), resolve.root = T)
+    } else {
+    my_tree <- midpoint(raw_tree)
+   status_rooted <- "Midpoint rooted."
+    }
+  } else {
+  my_tree <- midpoint(raw_tree)
+  status_rooted <- "Midpoint rooted."
+  }
+    
+  my_tree$node.label <- round(as.numeric(my_tree$node.label), 2)
+  
+  tree_metadata <- samplebases_raw %>% 
+    filter(taxon == taxon_name) %>% 
+    right_join(sample_metadata, by = c("Sample_Name" = "sample_name")) %>% 
+    select(Sample_Name, Number_of_Positions, Env, Host_Common)
+  
+  final_tree <- ggtree(my_tree, 
+                     right = T, 
+                     ladderize = F) %<+% 
+      tree_metadata + 
+    geom_tippoint(aes(shape = Env, colour = Host_Common, size = Number_of_Positions), stroke = 1) +
+    geom_tiplab(aes(colour = Host_Common, label = label), hjust = -0.3, size = 2.5) + 
+    geom_label2(aes(subset = !isTip, label = label), size = 2, label.padding = unit(0.1, "lines"), alpha = 0.7) +
+    scale_shape_manual(values = my_shapes) +
+    scale_colour_manual(values = common_colours) +
+    ggtitle(label = gsub("_", " ", taxon_name), 
+            subtitle = paste0("Min. no. of positions: ", base_thres, ". ", 
+                              status_rooted)) +
+    theme_tree2(text = element_text(size = 7, family = "Roboto")) +
+    theme(legend.position = "bottom", legend.box = "vertical") +
+    guides(colour = F,
+          shape = F,
+          size = guide_legend(ncol = 2))
+  
+    
+    final_tree <- final_tree +
+      xlim(0, final_tree$data$x %>% max * 1.2)
+    
+    ggsave(paste0(taxon_name, "-", 
+                  mapping_strategy, "-",
+                  base_thres, "-",
+                  method, "-",
+                  model,  "-",
+                  missing_data, "-",
+                  min_base_coverage, "-",
+                  call_frac, "-",
+                  bootstraps, "-",
+                  status_rooted, "-",
+                  format(Sys.Date(), "%Y%m%d"),
+                  ".pdf"),
+           path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/phylogenies/plots/",
+           final_tree,
+           device = cairo_pdf,
+           width = 3.5,
+           height = 5,
+           units = "in"
+           )
+    return(final_tree)
+  }
+```
+
+
+## Data Loading
+
+Load trees
+
+```{r, message=F, warning=F}
+analysis_dirs <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/*/output/*_2X_0.7_0.7/*/")
+
+trees <- parse_files(analysis_dirs, "*.nwk") %>%
+  mutate(file_contents = map(path, read.tree)) %>%
+  select(-path)
+
+samplebases_raw <- parse_files(analysis_dirs, "*sampleFilteringReport*") %>%
+  mutate(file_contents = map(path, read_csv)) %>% 
+  unnest() %>%
+  select(-path, -X1)
+
+pairwisesnps_raw <- parse_files(analysis_dirs, "*overlappingNucleotidesReport*") %>%
+  mutate(file_contents = map(path, read_csv)) %>% 
+  unnest() %>%
+  select(-path, -X1)
+
+
+
+```
+
+Load metadata
+
+```{r}
+sample_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+```
+
+## Plotting Aesthetics
+
+Assign manual colours
+
+```{r}
+## Set group ordering
+sample_metadata$Env <- factor(sample_metadata$Env, levels = c(
+  "Howler_Monkey",
+  "Gorilla_1",
+  "Gorilla_2",
+  "Gorilla_3",
+  "Chimp_1",
+  "Chimp_2",
+  "Chimp_3",
+  "Chimp_4",
+  "Neanderthal",
+  "PreagriculturalHuman_1",
+  "PreagriculturalHuman_2",
+  "PreantibioticHuman_1",
+  "PreantibioticHuman_2",
+  "ModernDayHuman_1",
+  "ModernDayHuman_2",
+  "ExtractionControl",
+  "LibraryControl",
+  "ruralGut",
+  "sediment",
+  "skin",
+  "subPlaque",
+  "supPlaque",
+  "urbanGut",
+  "EnvironmentalControl"
+))
+
+
+sample_metadata$Host_General <- factor(sample_metadata$Host_General, levels = c(
+  "Howler",
+  "Gorilla",
+  "Chimp",
+  "Neanderthal",
+  "PreagriculturalHuman",
+  "PreantibioticHuman",
+  "ModernDayHuman",
+  "ExtractionControl",
+  "LibraryControl",
+  "ruralGut",
+  "sediment",
+  "skin",
+  "subPlaque",
+  "supPlaque",
+  "urbanGut",
+  "EnvironmentalControl"
+))
+
+sample_metadata$Host_Common <- factor(sample_metadata$Host_Common, levels = c(
+  "Alouatta",
+  "Gorilla",
+  "Pan",
+  "Homo (Neanderthal)",
+  "Homo (Modern Human)",
+  "ExtractionControl",
+  "LibraryControl",
+  "Plaque",
+  "Gut",
+  "Skin",
+  "EnvironmentalControl",
+  "Sediment"
+))
+
+sample_metadata$Host_Genus <- factor(sample_metadata$Host_Genus, levels = c(
+  "Alouatta",
+  "Gorilla",
+  "Pan",
+  "Homo",
+  "Control",
+  NA
+))
+
+## define shapes for each sample group based on the 'Env' column, and assign
+my_colours <- c("#1f78b4", 
+                 "#6a3d9a", 
+                 "#6a3d9a", 
+                 "#6a3d9a", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#33a02c", 
+                 "#e31a1c", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#ff7f00", 
+                 "#d9d9d9", 
+                 "#d9d9d9",
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9", 
+                 "#d9d9d9",
+                 "#d9d9d9")
+
+names(my_colours) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "urbanGut",
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque",
+           "EnvironmentalControl"
+           )
+
+ my_shapes <- c(8,
+                0,
+                1,
+                2,
+                0,
+                1,
+                2,
+                5,
+                11,
+                0,
+                12,
+                1,
+                10,
+                2,
+                6,
+                10,
+                13,
+                7,
+                8,
+                14,
+                3,
+                4,
+                12,
+                0)
+
+names(my_shapes) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque", 
+           "urbanGut",
+           "EnvironmentalControl")
+
+common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 3, LibraryControl = 7, Plaque = 9, 
+          Gut = 7, Skin = 14, Sediment = 10, EnvironmentalControl = 12)
+
+
+ 
+
+```
+
+# Data Wrangling
+
+For number of positions per sample
+
+```{r}
+samplebases_ordered <- samplebases_raw %>% 
+  arrange(mapping_strategy, taxon, Number_of_Positions) %>% 
+  group_by(mapping_strategy, taxon) %>% 
+  mutate(rowid = row_number())
+```
+
+Number of overlapping SNPs
+
+```{r}
+pairwisesnps_raw
+```
+
+
+# Data Visualisation (phylogenetic trees)
+
+## Sample nucleotide content distribution
+
+```{r fig.width=7, fig.height=3.5}
+ggplot(samplebases_ordered %>% 
+         filter(taxon != "Streptococcus_gordonii_str_Challis_substr_CH1"), aes(Number_of_Positions, genus)) + 
+  geom_density_ridges() +
+  scale_shape_manual(values = c(1, 4)) +
+  ggtitle("Number of Positions Distribution", 
+          subtitle = "Comparison between mapping strategies.") +
+  xlab("Number of Positions Called (bp)") +
+  ylab("Number of Individuals") +
+  facet_wrap(~ mapping_strategy) +
+  theme_bw(base_size = 7, base_family = "Roboto")
+```
+
+## Trees
+
+Test tree
+
+```{r, eval = F}
+plot_my_tree(raw_tree = trees$file_contents[[1]],
+taxon_name = "Actinomyces",
+mapping_strategy = "blub",
+base_thres = "blub",
+method = "blub",
+model = "blub",
+missing_data = "blub",
+min_base_coverage = "blub",
+call_frac = "blub",
+bootstraps = "blub")
+
+plot_midroot_tree(raw_tree = trees$file_contents[[1]],
+taxon_name = "Actinomyces",
+mapping_strategy = "blub",
+base_thres = "blub",
+method = "blub",
+model = "blub",
+missing_data = "blub",
+min_base_coverage = "blub",
+call_frac = "blub",
+bootstraps = "blub")
+
+```
+Run trees
+
+```{r}
+pmap(list(raw_tree = trees$file_contents, 
+          taxon_name = trees$taxon,
+          mapping_strategy = trees$mapping_strategy,
+          base_thres = trees$minimum_positions_threshold,
+          method = trees$method,
+          model = trees$model,
+          missing_data = trees$missing_data,
+          min_base_coverage = trees$min_base_coverage,
+          call_frac = trees$call_fraction,
+          bootstraps = trees$bootstraps
+          ), 
+     plot_my_tree)
+```
+
+## Bootstrap Comparison
+
+We also want to see if the superreference mapping improves the quality of
+phylogeny by having more reliable SNP calls, even if the amount of input
+data is reduced.
+
+### Visualisation
+
+We can do this by looking at the distibution of bootstrap values per 
+genus, comparing the initial vs super-reference distributions. Note that
+the number of bootstrap values will vary as more samples were removed with the 
+SNP threshold in the super-reference mappings than the initial mapping.
+
+> We remove S. gordonii here because it is not our main strep species.
+
+
+```{r fig.width=7, fig.height=7}
+data_bootstraps <- trees %>% 
+  filter(taxon != "Streptococcus_gordonii_str_Challis_substr_CH1") %>%
+  mutate(Bootstrap_Distribution = map(file_contents, function(x) x$node.label %>% enframe(name = NULL, value = "Bootstrap")),
+         Bootstrap_Distribution = map(Bootstrap_Distribution, function(x) mutate(x, Bootstrap = as.numeric(Bootstrap)))) %>%
+  select(genus, taxon, mapping_strategy, Bootstrap_Distribution)
+
+ggplot(data_bootstraps %>% unnest, aes(Bootstrap)) +
+  geom_histogram() +
+  facet_wrap(genus ~ mapping_strategy, ncol = 8) + 
+  theme_minimal(base_size = 7, base_family = "Roboto")
+
+
+```
+
+ 
+### Distribution comparison
+
+Wikipedia: In statistics, the Mann–Whitney U test (also called the 
+Mann–Whitney–Wilcoxon (MWW), Wilcoxon rank-sum test, or Wilcoxon–Mann–Whitney 
+test) is a nonparametric test of the null hypothesis that it is equally likely 
+that a randomly selected value from one sample will be less than or greater 
+than a randomly selected value from a second sample.
+
+`?wilcoxon.rank`: "Otherwise, if both x and y are given and paired is FALSE, a
+Wilcoxon rank sum test (equivalent to the Mann-Whitney test: see the Note)
+is carried out. In this case, the null hypothesis is that the distributions
+of x and y  differ by a location shift of mu and the alternative is that
+they differ by some other location shift (and the one-sided alternative
+"greater" is that x is shifted to the right of y)."
+
+We want to know if superreference is greater than initial
+
+Note: are the bootstraps independent from same distribution? From different
+mappings and phylogenies, so yes?
+
+```{r}
+data_bootstraps %>% filter(genus == "Tannerella") %>% unnest() %>% filter(mapping_strategy == "initial") %>% pull(Bootstrap) -> boots_ini
+data_bootstraps %>% filter(genus == "Tannerella") %>% unnest() %>% filter(mapping_strategy == "superreference") %>% pull(Bootstrap) -> boots_sup
+
+test_orig <- wilcox.test(boots_sup, boots_ini,  
+            alternative = "greater", paired = F) %>% broom::tidy()
+
+test_orig
+```
+
+We can then convert this specific test to a function which we can apply 
+for every genus, checking it gets the same value as the manual one.
+
+```{r}
+## Function
+run_wilcoxon_ranksum_function <- function(base_group, greater_group){
+  out <- wilcox.test(greater_group %>% unlist, base_group %>% unlist, alternative = "greater", paired = F, exact = F) %>% tidy
+  return(out)
+}
+
+test_func <- run_wilcoxon_ranksum_function(boots_ini, boots_sup)
+
+test_func
+```
+
+Now we can apply function to every genus on the dataframe.
+
+> We remove _Selenomonas_ as we were unable to generate a superreference mapping 
+phylogeny
+
+```{r}
+data_bootstraps_mww <- data_bootstraps %>%
+  select(genus, Bootstrap_Distribution, mapping_strategy) %>% 
+  spread(mapping_strategy, Bootstrap_Distribution) %>%
+  filter(genus != "Selenomonas") %>%
+  mutate(test = pmap(list(base_group = initial,
+                          greater_group = superreference),
+                     run_wilcoxon_ranksum_function)) %>%
+  select(genus, test) %>%
+  unnest() %>%
+  print()
+```
+
+We can ask how many trees where the probability that the distribution of 
+the superreference bootstraps is overall higher than initial genome mapping, 
+by filtering for p.values that are less than an alpha of 0.05.
+
+```{r}
+data_bootstraps_mww %>% 
+  summarise(Superreference_Greater = sum(p.value <= 0.05),
+            No_Difference = sum(p.value > 0.05))
+```
+
+In all but one, the bootstrap distribution is not different.
+
+The one that is, is 
+
+```{r}
+data_bootstraps_mww %>% filter(p.value <= 0.05)
+```
+
+Manual checking of the _Corynebacterium_ trees suggests that this is likely
+true, but becase the number of samples is much reduced in the superreference
+tree, meaning there are very few bootstrapped nodes (all of which are 100). 
+Whereas, the intitial genome mapping has many samples (but with few positions
+each), and about half the nodes are quite worse.
