@@ -1,0 +1,16 @@
+
+	Homogeneity of multivariate dispersions
+
+Call: betadisper(d = ps_data.dist, group = ind_groups, type = "centroid")
+
+No. of Positive Eigenvalues: 145
+No. of Negative Eigenvalues: 0
+
+Average distance to centroid:
+Alouatta  Control  Gorilla      Gut     Homo      Pan   Plaque Sediment     Skin 
+   177.4    175.4    157.0    140.4    162.7    164.8    179.0    207.2    172.6 
+
+Eigenvalues for PCoA axes:
+(Showing 8 of 145 eigenvalues)
+  PCoA1   PCoA2   PCoA3   PCoA4   PCoA5   PCoA6   PCoA7   PCoA8 
+4529786 1663332 1320114  842612  310432  289266  193548  153563 

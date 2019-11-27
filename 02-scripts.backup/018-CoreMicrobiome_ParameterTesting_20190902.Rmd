@@ -22,7 +22,7 @@ library(patchwork)
 Load data
 
 ```{r}
-data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup") %>%
+data_raw <- Sys.glob("../04-analysis/screening/presenceabsence_intersection.backup") %>%
   list.files("08a-*", full.names = T) %>% 
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
@@ -39,7 +39,7 @@ data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-a
          !Min_Supp %in% c(0.08, 0.09) ) %>%
   unnest()
 
-data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup") %>%
+data_raw <- Sys.glob("../04-analysis/screening/presenceabsence_intersection.backup") %>%
   list.files("08b-*", full.names = T) %>% 
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
@@ -150,7 +150,7 @@ plot_mhc
 
  ggsave(paste("99-coremicrobiome_presenceabsence_alluival_minsupportcomparison_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), 
         plot_mhc, 
-        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        path = "../04-analysis/screening/presenceabsence_intersection.backup/", 
         device = cairo_pdf, 
         width = 7,
         height = 5, 
@@ -159,14 +159,14 @@ plot_mhc
  
   ggsave(paste("99-coremicrobiome_presenceabsence_alluival_minsupportcomparison_", format(Sys.Date(), "%Y%m%d"),".png", sep = ""), 
         plot_mhc, 
-        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        path = "../04-analysis/screening/presenceabsence_intersection.backup/", 
         device = "png", 
         width = 7,
         height = 5, 
         units = "in",
         dpi = 600)
   
-write_tsv(data_minsup_mhc, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_table_minsupportcomparison_", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+write_tsv(data_minsup_mhc, paste("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_table_minsupportcomparison_", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
 ```
 
 We we confirm that increasing our minimum support from 0.04 to 0.07 we remove 
@@ -265,7 +265,7 @@ plot_singpop
 
  ggsave(paste("99-coremicrobiome_presenceabsence_alluival_singleindpopcomparison_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), 
         plot_singpop, 
-        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        path = "../04-analysis/screening/presenceabsence_intersection.backup/", 
         device = cairo_pdf, 
         width = 7,
         height = 5, 
@@ -274,7 +274,7 @@ plot_singpop
  
   ggsave(paste("99-coremicrobiome_presenceabsence_alluival_singleindpopcomparison_", format(Sys.Date(), "%Y%m%d"),".png", sep = ""), 
         plot_singpop, 
-        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        path = "../04-analysis/screening/presenceabsence_intersection.backup/", 
         device = "png", 
         width = 7,
         height = 5, 
@@ -310,7 +310,7 @@ data_singpop_save <- data_raw %>%
          #Combination %in% c("Pan:Homo", "Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo:Control")) %>%
   select(Database, Min_Supp, Combination, Single_Pops_Dropped, Taxon, Tax_Level)
 
-write_tsv(data_singpop_save, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_table_singleindpopcomparison_", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+write_tsv(data_singpop_save, paste("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_table_singleindpopcomparison_", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
 
 ```
 
@@ -344,19 +344,19 @@ are not passing the MinSupport threshold.
 We can check this more specifically.
 
 ```{r}
-metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>%
+metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>%
  rename(Individual = `#SampleID`)
 
-  data_out_sampfil <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv")
+  data_out_sampfil <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv")
   
   bad_samples <- data_out_sampfil %>% 
       filter(!withinfluctuationvariation_pass) %>%
       pull(sample)
   
-   contaminants_species <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+   contaminants_species <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
    
    ## At Species Level
- raw_malt_species <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+ raw_malt_species <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
  
    minsupp_malt <- "Min_Support_Reads_Threshold_MALT"
    minsupp_multiplier <- 1
@@ -499,7 +499,7 @@ myco_final <- myco_per_group + myco_per_indiviudal
 
  ggsave(paste("99-coremicrobiome_presenceabsence_mycobacterium_investigation_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), 
         plot = myco_final, 
-        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        path = "../04-analysis/screening/presenceabsence_intersection.backup/", 
         device = cairo_pdf, 
         width = 7,
         height = 3.5, 
@@ -508,7 +508,7 @@ myco_final <- myco_per_group + myco_per_indiviudal
  
   ggsave(paste("99-coremicrobiome_presenceabsene_mycobacterium_investigation_", format(Sys.Date(), "%Y%m%d"),".png", sep = ""), 
         plot = myco_final, 
-        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        path = "../04-analysis/screening/presenceabsence_intersection.backup/", 
         device = "png", 
         width = 7,
         height = 3.5, 

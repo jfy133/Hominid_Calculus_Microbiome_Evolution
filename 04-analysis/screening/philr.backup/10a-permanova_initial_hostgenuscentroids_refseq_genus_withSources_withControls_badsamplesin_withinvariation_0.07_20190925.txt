@@ -1,0 +1,15 @@
+
+Call:
+adonis(formula = ps_data.dist ~ ind_groups) 
+
+Permutation: free
+Number of permutations: 999
+
+Terms added sequentially (first to last)
+
+            Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+ind_groups   8   2737154  342144  7.5151 0.21462  0.001 ***
+Residuals  220  10016065   45528         0.78538           
+Total      228  12753219                 1.00000           
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

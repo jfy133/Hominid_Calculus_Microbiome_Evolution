@@ -80,14 +80,14 @@ library(scales) ## for colour
 library(amap) ## alternative for correlation distance matrix
 library(patchwork)
 
-metadata <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>%
+metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>%
  rename(Individual = `#SampleID`)
 
 
 ## Bad Samples
 if (db == "nt") {
   
-  data_out_sampfil <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv")
+  data_out_sampfil <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv")
   
   bad_samples <- data_out_sampfil %>% 
       filter(!withinfluctuationvariation_pass) %>%
@@ -95,7 +95,7 @@ if (db == "nt") {
       pull(sample)
 } else if (db == "refseq") {
   
-  data_out_sampfil <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv")
+  data_out_sampfil <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv")
   
   bad_samples <- data_out_sampfil %>% 
       filter(!withinfluctuationvariation_pass) %>%
@@ -105,27 +105,27 @@ if (db == "nt") {
 
 ## Contaminants
 if (db == "nt") {
- contaminants_species <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
- contaminants_genus <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_genus_combined_0.99_190411.tsv")
+ contaminants_species <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+ contaminants_genus <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_genus_combined_0.99_190411.tsv")
 } else if (db == "refseq") {
- contaminants_species <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
- contaminants_genus <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_genus_combined_0.99_190411.tsv")
+ contaminants_species <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
+ contaminants_genus <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_genus_combined_0.99_190411.tsv")
 }
 
 ## Load OTU tables
 
 if (db == "nt") {
- raw_malt_genus <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_prokaryotes_summarised_nt.txt")
+ raw_malt_genus <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_prokaryotes_summarised_nt.txt")
 
 ## At Species Level
- raw_malt_species <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+ raw_malt_species <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
 
  
 } else if (db == "refseq") {
- raw_malt_genus <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_prokaryotes_summarised_refseq.txt")
+ raw_malt_genus <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_prokaryotes_summarised_refseq.txt")
  
  ## At Species Level
- raw_malt_species <- read_tsv("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_prokaryotes_summarised_refseq.txt")
+ raw_malt_species <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_prokaryotes_summarised_refseq.txt")
 
 }
 
@@ -499,7 +499,7 @@ ggsave(paste("01a-coremicrobiome_presenceabsence_shannondiversity_analysis_malt_
   sep = ""
 ),
 plot = shannon_plot_malt_genus,
-"/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/",
+"../04-analysis/screening/presenceabsence_intersection.backup/",
 device = cairo_pdf,
 width = 7,
 height = 3.5,
@@ -522,7 +522,7 @@ ggsave(paste("01b-coremicrobiome_presenceabsence_shannondiversity_analysis_malt_
 ".pdf", 
 sep = ""),
 plot = shannon_plot_malt_species,
-       "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+       "../04-analysis/screening/presenceabsence_intersection.backup/", 
 device = cairo_pdf, 
        width = 7, 
        height = 3.5, 
@@ -623,7 +623,7 @@ ggsave(paste("02a-coremicrobiome_presenceabsence_equitability_analysis_malt",
  "_genus_", format(Sys.Date(), "%Y%m%d"),
 ".pdf", 
 sep = ""), 
-plot = equitability_plot_malt_genus, "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+plot = equitability_plot_malt_genus, "../04-analysis/screening/presenceabsence_intersection.backup/", 
 device = cairo_pdf, width = 7, 
 height = 3.5, 
 units = "in", 
@@ -642,7 +642,7 @@ minsupp_threshold,
  "_species_", format(Sys.Date(), "%Y%m%d"),
 ".pdf", 
 sep = ""), 
-plot = equitability_plot_malt_species, "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+plot = equitability_plot_malt_species, "../04-analysis/screening/presenceabsence_intersection.backup/", 
 device = cairo_pdf, width = 7, 
 height = 3.5, 
 units = "in", 
@@ -756,7 +756,7 @@ ggsave(paste("03a-coremicrobiome_presenceabsence_taxonabundancedistribution_anal
    "_genus_", format(Sys.Date(), "%Y%m%d"),
   ".pdf", 
   sep = ""), 
-plot = distribution_plot_malt_genus, "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+plot = distribution_plot_malt_genus, "../04-analysis/screening/presenceabsence_intersection.backup/", 
 device = cairo_pdf, 
 width = 3.5, 
 height = 3.5, 
@@ -776,7 +776,7 @@ ggsave(paste("03b-coremicrobiome_presenceabsence_taxonabundancedistribution_anal
    "_species_", format(Sys.Date(), "%Y%m%d"),
   ".pdf", 
   sep = ""), 
-plot = distribution_plot_malt_species, "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+plot = distribution_plot_malt_species, "../04-analysis/screening/presenceabsence_intersection.backup/", 
 device = cairo_pdf, 
 width = 3.5, 
 height = 3.5, 
@@ -806,7 +806,7 @@ full_data_meta %>%
  summarise(No_Individuals = n()) %>%
  mutate(Threshold = fraction_individuals,
  Individuals_Passing_Threshold = No_Individuals * fraction_individuals) %>%
- write_tsv(paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/04-coremicrobiome_samplenumberthresholdcalculation_hostpopulations_maltdb", db,"_allthresholdlevels_alltaxalevels_fracinds", fraction_individuals,
+ write_tsv(paste("../04-analysis/screening/presenceabsence_intersection.backup/04-coremicrobiome_samplenumberthresholdcalculation_hostpopulations_maltdb", db,"_allthresholdlevels_alltaxalevels_fracinds", fraction_individuals,
  "_fracpops", 
  fraction_populations,
  "_singleindpopsdropped",
@@ -883,7 +883,7 @@ summary_data %>%
  filter(Presence_Proportion_Per_Pop >= (fraction_individuals * 100)) %>%
  group_by(Software, Tax_Level, Env, Host_Common, Host_Genus) %>%
  summarise(No_Taxa_Per_Pop = n()) %>%
- write_tsv(paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/05-coremicrobiome_samplenumberthresholdpassed_hostpopulation_maltdb",
+ write_tsv(paste("../04-analysis/screening/presenceabsence_intersection.backup/05-coremicrobiome_samplenumberthresholdpassed_hostpopulation_maltdb",
  db,
  "_",
  minsupp_threshold,
@@ -948,7 +948,7 @@ cat("Contaminant removal and save\n")
 final_taxa_hostgenus <- final_taxa_hostgenus %>% 
  filter(!Taxon %in% pull(contaminants_genus)) %>% 
  filter(!Taxon %in% pull(contaminants_species)) %>%
- write_tsv(paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/06-coremicrobiome_microbialtaxapassingthreshold_hostgenus_allsoftware_maltdb", db ,"_", minsupp_threshold,
+ write_tsv(paste("../04-analysis/screening/presenceabsence_intersection.backup/06-coremicrobiome_microbialtaxapassingthreshold_hostgenus_allsoftware_maltdb", db ,"_", minsupp_threshold,
  "_fracinds",
  fraction_individuals,
  "_fracpops", 
@@ -1041,7 +1041,7 @@ cat("Upset\n")
 
 
 
-cairo_pdf(filename = paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/07a-coremicrobiome_presenceabsence_upsetplot_malt_",
+cairo_pdf(filename = paste("../04-analysis/screening/presenceabsence_intersection.backup/07a-coremicrobiome_presenceabsence_upsetplot_malt_",
      db,
      "_", 
     minsupp_threshold,
@@ -1059,7 +1059,7 @@ cairo_pdf(filename = paste("/home/james/projects1/microbiome_calculus/evolution/
 malt_genus_hostgenus
 dev.off()
 
-cairo_pdf(filename = paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/07a-coremicrobiome_presenceabsence_upsetplot_malt_",
+cairo_pdf(filename = paste("../04-analysis/screening/presenceabsence_intersection.backup/07a-coremicrobiome_presenceabsence_upsetplot_malt_",
      db,
      "_", 
     minsupp_threshold,
@@ -1077,7 +1077,7 @@ cairo_pdf(filename = paste("/home/james/projects1/microbiome_calculus/evolution/
 malt_species_hostgenus
 dev.off()
 
-cairo_pdf(filename = paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/07a-coremicrobiome_presenceabsence_upsetplot_malt_",
+cairo_pdf(filename = paste("../04-analysis/screening/presenceabsence_intersection.backup/07a-coremicrobiome_presenceabsence_upsetplot_malt_",
      db,
      "_", 
     minsupp_threshold,
@@ -1095,7 +1095,7 @@ cairo_pdf(filename = paste("/home/james/projects1/microbiome_calculus/evolution/
 malt_genus_hostenv
 dev.off()
 
-cairo_pdf(filename = paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/07a-coremicrobiome_presenceabsence_upsetplot_malt_",
+cairo_pdf(filename = paste("../04-analysis/screening/presenceabsence_intersection.backup/07a-coremicrobiome_presenceabsence_upsetplot_malt_",
      db,
      "_", 
     minsupp_threshold,
@@ -1129,7 +1129,7 @@ dev.off()
 #     ".pdf", 
 #     sep = ""), 
 #   plot = upset(fromList(venn_malt_genus_hostgenus), nsets = length(venn_malt_genus_hostgenus), nintersects = NA, keep.order = T)
-#   , "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+#   , "../04-analysis/screening/presenceabsence_intersection.backup/", 
 #   device = cairo_pdf, 
 #   width = 3.5, 
 #   height = 3.5, 
@@ -1150,7 +1150,7 @@ dev.off()
 #     ".pdf", 
 #     sep = ""), 
 #   plot = upset(fromList(venn_malt_species_hostgenus), nsets = length(venn_malt_species_hostgenus), nintersects = NA, keep.order = T)
-#   , "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+#   , "../04-analysis/screening/presenceabsence_intersection.backup/", 
 #   device = cairo_pdf, 
 #   width = 3.5, 
 #   height = 3.5, 
@@ -1173,7 +1173,7 @@ dev.off()
 #     ".pdf", 
 #     sep = ""), 
 #   plot = upset(fromList(venn_malt_genus_hostenv), nsets = length(venn_malt_genus_hostenv), nintersects = NA, keep.order = T)
-#   , "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+#   , "../04-analysis/screening/presenceabsence_intersection.backup/", 
 #   device = cairo_pdf, 
 #   width = 3.5, 
 #   height = 3.5, 
@@ -1194,7 +1194,7 @@ dev.off()
 #     ".pdf", 
 #     sep = ""), 
 #   plot = upset(fromList(venn_malt_species_hostenv), nsets = length(venn_malt_species_hostenv), nintersects = NA, keep.order = T)
-#   , "/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+#   , "../04-analysis/screening/presenceabsence_intersection.backup/", 
 #   device = cairo_pdf, 
 #   width = 3.5, 
 #   height = 3.5, 
@@ -1272,7 +1272,7 @@ core_taxa_list_hostenv <- bind_rows(overlaptaxa_malt_genus_hostenv,
 bind_rows(overlaptaxa_malt_genus_hostgenus) %>% 
  mutate(Taxon = gsub(" ", "_", 
  Taxon)) %>%
- write_tsv(paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/08a-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdb",
+ write_tsv(paste("../04-analysis/screening/presenceabsence_intersection.backup/08a-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdb",
  db,
  "_", minsupp_threshold,
  "_fracinds",
@@ -1287,7 +1287,7 @@ sep = ""))
 bind_rows(overlaptaxa_malt_species_hostgenus) %>% 
  mutate(Taxon = gsub(" ", "_", 
  Taxon)) %>%
-  write_tsv(paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/08b-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdb",
+  write_tsv(paste("../04-analysis/screening/presenceabsence_intersection.backup/08b-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdb",
  db,
 "_", minsupp_threshold,
  "_fracinds",
@@ -1303,7 +1303,7 @@ sep = ""))
 bind_rows(overlaptaxa_malt_genus_hostenv) %>% 
  mutate(Taxon = gsub(" ", "_", 
  Taxon)) %>%
- write_tsv(paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/08c-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdb",
+ write_tsv(paste("../04-analysis/screening/presenceabsence_intersection.backup/08c-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdb",
  db,
  "_", minsupp_threshold,
  "_fracinds",
@@ -1318,7 +1318,7 @@ sep = ""))
 bind_rows(overlaptaxa_malt_species_hostenv) %>% 
  mutate(Taxon = gsub(" ", "_", 
  Taxon)) %>%
-  write_tsv(paste("/home/james/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/08d-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdb",
+  write_tsv(paste("../04-analysis/screening/presenceabsence_intersection.backup/08d-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdb",
  db,
 "_", minsupp_threshold,
  "_fracinds",
@@ -1467,6 +1467,6 @@ names(my_colours) <- c("Alouatta",
 ## ----eval = F------------------------------------------------------------
 ## cat("script gen\n")
 ## 
-## knitr::purl("/home/james/projects1/microbiome_calculus/evolution/02-scripts.backup/018-CoreMicrobiome_20190902.Rmd", "/home/james/projects1/microbiome_calculus/evolution/02-scripts.backup/018-CoreMicrobiome_20190902_script.R", documentation = 2)
+## knitr::purl("../02-scripts.backup/018-CoreMicrobiome_20190902.Rmd", "../02-scripts.backup/018-CoreMicrobiome_20190902_script.R", documentation = 2)
 
 #' 

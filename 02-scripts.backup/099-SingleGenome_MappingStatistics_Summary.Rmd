@@ -17,7 +17,7 @@ library(scales)
 library(ggbeeswarm)
 
 ## Metadata
-data_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+data_meta <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
 ```
 
 # General Mapping Statistics
@@ -87,7 +87,7 @@ eager_cleaner <- function(x){
 Load EAGER ReportTables for single genome mapping
 
 ```{r}
-data_representativemapping_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/*") %>%
+data_representativemapping_raw <- Sys.glob("../04-analysis/deep/eager/initial_single_genome/output/*") %>%
   list.files("*.csv", full.names = T) %>%
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, function(x) suppressMessages(read_csv(x)))) %>%
@@ -134,7 +134,7 @@ data_representativemapping_clean <- data_representativemapping_raw %>%
 To save
 
 ```{r eval = F}
-data_representativemapping_clean %>% write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/initial_single_genome/output/aggregated_eagerresults_", format(Sys.Date(), "%Y%m%d"),".tsv"))
+data_representativemapping_clean %>% write_tsv(paste0("../04-analysis/deep/eager/initial_single_genome/output/aggregated_eagerresults_", format(Sys.Date(), "%Y%m%d"),".tsv"))
 ```
 
 
@@ -235,7 +235,7 @@ combined_distributions <- coverage_distributions + clusterfactor_distributions +
 
 ggsave("FigureSX_meanfoldcoverage_clusterfactor_distributions_allcalculussamples_noblanks.pdf", 
        plot = combined_distributions, 
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/Phylogenies_MappingStatistics", 
+       path = "../04-analysis/deep/eager/initial_single_genome/summary_plots/", 
        device = cairo_pdf, 
        width = 7, 
        height = 3.5, 
@@ -244,7 +244,7 @@ ggsave("FigureSX_meanfoldcoverage_clusterfactor_distributions_allcalculussamples
 
 ggsave("FigureSX_meanfoldcoverage_clusterfactor_distributions_allcalculussamples_noblanks.png", 
        plot = combined_distributions, 
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/Phylogenies_MappingStatistics", 
+       path = "../04-analysis/deep/eager/initial_single_genome/summary_plots/", 
        device = "png", 
        width = 7, 
        height = 3.5, 

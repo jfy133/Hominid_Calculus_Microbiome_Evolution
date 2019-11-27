@@ -67,7 +67,7 @@ eager_cleaner <- function(x){
 Load all the EAGER data and clean
 
 ```{r}
-eager_results <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/EMN_Neanderthal_phylogeny_check/eager/output/*") %>%
+eager_results <- Sys.glob("../04-analysis/screening/EMN_Neanderthal_phylogeny_check/eager/output/*") %>%
   list.files("*csv", full.names = T) %>%
   enframe(name = NULL, value = "file_path") %>%
   mutate(file_content = map(file_path, function(x){read_csv(x) %>% eager_cleaner}),

@@ -1,0 +1,24 @@
+
+Permutation test for homogeneity of multivariate dispersions
+Permutation: free
+Number of permutations: 999
+
+Response: Distances
+           Df Sum Sq Mean Sq      F N.Perm Pr(>F)  
+Groups      8  55831  6978.9 2.4171    999  0.021 *
+Residuals 185 534153  2887.3                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Pairwise comparisons:
+(Observed p-value below diagonal, permuted p-value above diagonal)
+          Alouatta   Control   Gorilla       Gut      Homo       Pan    Plaque  Sediment  Skin
+Alouatta           0.6850000 0.9880000 0.6250000 0.5740000 0.5970000 0.8490000 0.6720000 0.177
+Control  0.6643028           0.3900000 0.8910000 0.1440000 0.8850000 0.3650000 0.8440000 0.244
+Gorilla  0.9832413 0.3866911           0.3330000 0.2340000 0.3030000 0.7220000 0.5170000 0.004
+Gut      0.6174709 0.8866375 0.3301448           0.0660000 0.9830000 0.2740000 0.8970000 0.072
+Homo     0.5863960 0.1482003 0.2343854 0.0689491           0.0730000 0.4990000 0.2390000 0.004
+Pan      0.6088134 0.8945829 0.3148076 0.9865293 0.0610346           0.2960000 0.8800000 0.078
+Plaque   0.8347806 0.3706867 0.7197730 0.2847394 0.5016386 0.2717916           0.4410000 0.015
+Sediment 0.6381611 0.8256568 0.4821789 0.8898737 0.2120101 0.8776811 0.4177722           0.132
+Skin     0.1707556 0.2464118 0.0053503 0.0744681 0.0010208 0.0718730 0.0152672 0.1177012      

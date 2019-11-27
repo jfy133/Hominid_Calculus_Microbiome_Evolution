@@ -39,7 +39,7 @@ the 8 well-resolved trees, the ones that have enough individuals are
 
 ```{r message=F, warnings=F}
 
-data_overlap_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/*") %>%
+data_overlap_raw <- Sys.glob("../04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/*") %>%
   list.files("*overlapping*", full.names = T, recursive = T) %>%
   enframe(name = NULL, value = "path") %>%
   mutate(file_contents = map(path, read_csv),
@@ -436,7 +436,7 @@ plot_distribution <- function(x) {
 }
 
 for (i in data_overlap_reduced$genus %>% unique) {
-  plot_distribution(i) %>% print %>% ggsave(filename = paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_", i, ".pdf"), device = cairo_pdf)
+  plot_distribution(i) %>% print %>% ggsave(filename = paste0("../04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_", i, ".pdf"), device = cairo_pdf)
 }
 
 letsago <- map(data_overlap_reduced$genus %>% unique, ~plot_distribution(.x))
@@ -454,7 +454,7 @@ mammamia <- letsago$Actinomyces +
   letsago$Tannerella + plot_layout(ncol = 2)
 
 ggsave(plot = mammamia,
-       filename = paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_COMBINED.pdf"), 
+       filename = paste0("../04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_COMBINED.pdf"), 
        device = cairo_pdf,
        width = 5,
        height = 7,
@@ -462,7 +462,7 @@ ggsave(plot = mammamia,
        dpi = 600)
 
 ggsave(plot = mammamia,
-       filename = paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_COMBINED.png"), 
+       filename = paste0("../04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_COMBINED.png"), 
        device = "png",
        width = 5,
        height = 7,

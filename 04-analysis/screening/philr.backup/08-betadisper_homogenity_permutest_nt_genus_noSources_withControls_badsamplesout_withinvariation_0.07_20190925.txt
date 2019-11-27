@@ -1,0 +1,20 @@
+
+Permutation test for homogeneity of multivariate dispersions
+Permutation: free
+Number of permutations: 999
+
+Response: Distances
+           Df  Sum Sq Mean Sq      F N.Perm Pr(>F)   
+Groups      4  133647   33412 3.8916    999   0.01 **
+Residuals 118 1013095    8586                        
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Pairwise comparisons:
+(Observed p-value below diagonal, permuted p-value above diagonal)
+          Alouatta   Control   Gorilla      Homo   Pan
+Alouatta           0.0090000 0.0160000 0.0070000 0.040
+Control  0.0040362           0.1020000 0.2270000 0.378
+Gorilla  0.0110469 0.1104126           0.3840000 0.068
+Homo     0.0015427 0.2211905 0.3857418           0.086
+Pan      0.0298631 0.3702870 0.0714927 0.0748144      

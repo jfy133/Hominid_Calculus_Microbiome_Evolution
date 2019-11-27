@@ -6,9 +6,9 @@ library(gridExtra)
 ## Load files ##
 ################
 
-main_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection/"
+main_dir <- "../04-analysis/screening/presenceabsence_intersection/"
 
-individual_thresholds <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection/04-coremicrobiome_samplenumberthresholdcalculation_hostpopulations_alldbs_allthresholdlevels_alltaxalevels_20190204.tsv")
+individual_thresholds <- read_tsv("../04-analysis/screening/presenceabsence_intersection/04-coremicrobiome_samplenumberthresholdcalculation_hostpopulations_alldbs_allthresholdlevels_alltaxalevels_20190204.tsv")
 
 files_taxapassedthresholdstats <- list.files(main_dir, pattern = '05-coremicrobiome_samplenumberthresholdpassed_hostpopulation_*', full.names = T, recursive = F)
 files_taxapassedthresholdslist <- list.files(main_dir, pattern = '06-coremicrobiome_microbialtaxapassingthreshold_hostgenus_*', full.names = T, recursive = F)
@@ -46,7 +46,7 @@ summary_taxapopulationprevalence <- collate_data(files_taxapassedthresholdslist)
   replace_na(list(MALT_DB = "", MetaPhlAn2_DB = "")) %>%
   unite(Database, MALT_DB, MetaPhlAn2_DB, sep = "") 
 
-# write_tsv(paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/24-intersection_proktaxapassingthresholdstaxalist_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""), summary_taxapopulationprevalence ) %>% 
+# write_tsv(paste("../00-documentation.backup/24-intersection_proktaxapassingthresholdstaxalist_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""), summary_taxapopulationprevalence ) %>% 
 #   print()
 
 ###############################################################
@@ -71,7 +71,7 @@ summary_taxapassedthresholdstats <- data_taxapassedthresholdstats %>%
   select(-Grouping, -SoftwareIncluded, -MetaPhlAn2_DB) %>%
   select(Software, MALT_DB, Tax_Level, Host_Genus, Host_Common, Env, `0.01`, `0.02`, `0.05`)
 
-# write_tsv(summary_taxapassedthresholdstats, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/23-intersection_proktaxapassingthresholdsstats_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+# write_tsv(summary_taxapassedthresholdstats, paste("../00-documentation.backup/23-intersection_proktaxapassingthresholdsstats_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
 
 summary_taxapassedthresholdstats2 <- summary_taxapassedthresholdstats %>%
   mutate(Host_Genus = as_factor(Host_Genus)) %>% 
@@ -87,7 +87,7 @@ summary_taxapassedthresholdstats_plot <- ggplot(summary_taxapassedthresholdstats
 
  ggsave(paste("11-coremicrobiome_presenceabsence_filterthresholdbarpot_nt_alldb_alltaxlevel_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), 
         summary_taxapassedthresholdstats_plot, 
-        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection/", 
+        path = "../04-analysis/screening/presenceabsence_intersection/", 
         device = cairo_pdf, 
         width = 3.5, 
         height = 3.5, 
@@ -155,12 +155,12 @@ data_cleaner <- function(x, meta_dat, supp_col){
 }
 
 
-raw_malt_genus <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20180817-ex_absolute_genus_prokaryotes_summarised.txt")
+raw_malt_genus <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20180817-ex_absolute_genus_prokaryotes_summarised.txt")
 
-metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190228.tsv.tsv") %>%
+metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190228.tsv.tsv") %>%
   rename(Individual = `#SampleID`)
 
-bad_samples <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/06-sourcetracker_samples_to_filter_out_181112.tsv") 
+bad_samples <- read_tsv("../00-documentation.backup/06-sourcetracker_samples_to_filter_out_181112.tsv") 
 
 minsupp_malt <- "Min_Support_Reads_Threshold_MALT"
 
@@ -215,7 +215,7 @@ summary_intersectiontables$Avg_Read_Count <- factor(summary_intersectiontables$A
 
 ## Assign Source Categories
 
-out <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/99-results_bacdive_ohne_references.tsv.gz")
+out <- read_tsv("../00-documentation.backup/99-results_bacdive_ohne_references.tsv.gz")
 
 filter(out, field == "sample_type", search_term == "")
 
@@ -446,7 +446,7 @@ alluvial_plot <- summary_intersectiontables3 %>%
 alluvial_plot
   
   
-# ggsave(paste("12-coremicrobiome_presenceabsence_filterthresholdalluvial_malt_nt_genus_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), alluvial_plot, path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
+# ggsave(paste("12-coremicrobiome_presenceabsence_filterthresholdalluvial_malt_nt_genus_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), alluvial_plot, path = "../04-analysis/screening/presenceabsence_intersection/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
 
 
 #####################################################################################
@@ -601,7 +601,7 @@ final_dbcompare_plot <- grid.arrange(dat$plot, tableGrob(dat$table %>% select(Ta
   
 ggsave(paste("13-coremicrobiome_presenceabsence_databasecomparisonalluvial_malt_0.05_genus_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), 
        final_dbcompare_plot, 
-       path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection/", 
+       path = "../04-analysis/screening/presenceabsence_intersection/", 
        device = cairo_pdf, 
        width = 7, 
        height = 3.5, 

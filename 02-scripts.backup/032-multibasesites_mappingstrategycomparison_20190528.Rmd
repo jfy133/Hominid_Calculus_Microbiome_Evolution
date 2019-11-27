@@ -18,7 +18,7 @@ library(viridis)
 library(tictoc)
 
 ## Metadata
-data_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+data_meta <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
 ```
 
 # Multi Allelic SNP Comparison 
@@ -28,19 +28,19 @@ mappings, we need to subset the SNP table of the superreference mapping to
 that if the same genome in the single genome mapping.
 
 ```{bash eval = F}
-for i in /projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.9_0.1/*; do 
+for i in ../04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.9_0.1/*; do 
   species="$(basename $i)"
   genus="$(echo $species | cut -d_ -f 1)"
-  Rscript /projects1/microbiome_calculus/evolution/02-scripts.backup/036-generate_multiVCFanalyzer_subset_statistics_20190404.R \
-  /projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/"$genus"/ \
-  /projects1/microbiome_calculus/evolution/04-analysis/deep/eager/superreference_mapping/references/"$genus"/collapsed_"$genus"_superreference.bed \
+  Rscript ../02-scripts.backup/036-generate_multiVCFanalyzer_subset_statistics_20190404.R \
+  ../04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/"$genus"/ \
+  ../04-analysis/deep/eager/superreference_mapping/references/"$genus"/collapsed_"$genus"_superreference.bed \
   "$species"
 done
 
 ## For prevotella which has the problematic `=`s
-Rscript /projects1/microbiome_calculus/evolution/02-scripts.backup/036-generate_multiVCFanalyzer_subset_statistics_20190404.R \
-  /projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/Prevotella/ \
-  /projects1/microbiome_calculus/evolution/04-analysis/deep/eager/superreference_mapping/references/Prevotella/collapsed_Prevotella_superreference.bed \
+Rscript ../02-scripts.backup/036-generate_multiVCFanalyzer_subset_statistics_20190404.R \
+  ../04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/Prevotella/ \
+  ../04-analysis/deep/eager/superreference_mapping/references/Prevotella/collapsed_Prevotella_superreference.bed \
   'Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930'
 
 ```
@@ -50,8 +50,8 @@ Collect SNP Statistics from MultiVCFAnalyzer
 
 ```{r}
 ## MultiVCFAnalyzer Data
-snps_dir_ini <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.9_0.1/*")
-snps_dir_sup <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/*/")
+snps_dir_ini <- Sys.glob("../04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.9_0.1/*")
+snps_dir_sup <- Sys.glob("../04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.9_0.1/*/")
 
 input_files_snps_ini <- list.files(snps_dir_ini, pattern = 'snpStatistics.tsv', full.names = TRUE, recursive = FALSE)
 input_files_snps_sup <- list.files(snps_dir_sup, pattern = 'snpStatistics_subset.tsv', full.names = TRUE, recursive = FALSE)
@@ -109,7 +109,7 @@ remove(data_mva_snps)
 To save
 
 ```{r eval = F}
-write_tsv(data_mva_snps_meta %>% select(`Mapping Strategy`, genus, reference, `Individual`, contains("SNV "), `Percentage Polymorphic of All Sites`), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/multiallelicsnprate_singlevssuperreferencegenome_rawdata.tsv")
+write_tsv(data_mva_snps_meta %>% select(`Mapping Strategy`, genus, reference, `Individual`, contains("SNV "), `Percentage Polymorphic of All Sites`), "../04-analysis/deep/competitive_mapping.backup/multiallelic_snps/multiallelicsnprate_singlevssuperreferencegenome_rawdata.tsv")
 ```
 
 Some general stats
@@ -207,7 +207,7 @@ ggsave(paste("multiallelicsnprate_singlevssuperreferencegenome_transformnone_",
              ".pdf", 
              sep = ""), 
        plot = zolfoesque_plot_transformnone,
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       "../04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
        device = cairo_pdf, 
        width = 7, 
        height = 7, 
@@ -219,7 +219,7 @@ ggsave(paste("multiallelicsnprate_singlevssuperreferencegenome_transformlog_",
              ".pdf", 
              sep = ""), 
        plot = zolfoesque_plot_transformlog,
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       "../04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
        device = cairo_pdf, 
        width = 7, 
        height = 7, 
@@ -231,7 +231,7 @@ ggsave(paste("multiallelicsnprate_singlevssuperreferencegenome_transformnone_",
              ".png", 
              sep = ""), 
        plot = zolfoesque_plot_transformnone,
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       "../04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
        device = "png", 
        width = 7, 
        height = 7, 
@@ -243,7 +243,7 @@ ggsave(paste("multiallelicsnprate_singlevssuperreferencegenome_transformlog_",
              ".png", 
              sep = ""), 
        plot = zolfoesque_plot_transformlog,
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       "../04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
        device = "png", 
        width = 7, 
        height = 7, 
@@ -349,7 +349,7 @@ for (i in unique(data_mva_snpsTab_all$Genus)) {
                  format(Sys.Date(), "%Y%m%d"), 
                  ".pdf", 
                  sep = ""), plot = hist_plot,
-           "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping/multiallelic_snps/", 
+           "../04-analysis/deep/competitive_mapping/multiallelic_snps/", 
            device = cairo_pdf, 
            width = 7, 
            height = 7, 
@@ -388,7 +388,7 @@ for (i in unique(data_mva_snpsTab_all$Genus)) {
                  format(Sys.Date(), "%Y%m%d"), 
                  ".pdf", 
                  sep = ""), plot = ridge_plot,
-           "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping/multiallelic_snps/", 
+           "../04-analysis/deep/competitive_mapping/multiallelic_snps/", 
            device = cairo_pdf, 
            width = 3.5, 
            height = 7, 
@@ -469,7 +469,7 @@ ggsave(paste("singlereferencemapping_SNPcallingthreshold_selection_",
              format(Sys.Date(), "%Y%m%d"), 
              ".pdf", 
              sep = ""), plot = selection_plot,
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       "../04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
        device = cairo_pdf, 
        width = 7, 
        height = 7, 
@@ -480,7 +480,7 @@ ggsave(paste("singlereferencemapping_SNPcallingthreshold_selection_",
              format(Sys.Date(), "%Y%m%d"), 
              ".png", 
              sep = ""), plot = selection_plot,
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
+       "../04-analysis/deep/competitive_mapping.backup/multiallelic_snps/", 
        device = "png", 
        width = 7, 
        height = 7, 

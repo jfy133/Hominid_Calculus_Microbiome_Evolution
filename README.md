@@ -1110,7 +1110,7 @@ is recorded in `00-documentation.backup/05-MALT_taxonomic_binning_summary_statis
 and for RefSeq in 
 `00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics_refseq_bacharchhomo_gcs_20181122.tsv`
 
-The MinSupport value column(s) was then manually added to the indiviudals column of
+The MinSupport value column(s) was then manually added to the individuals column of
 our main screening metadata file 
 `00-documentation/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv`.
 
@@ -1149,7 +1149,7 @@ directory.
 
 Visualisation and statistical testing of whether the ratio of prokaryotic to 
 eukyarotic reads differs between well-preserved and badly-preserved samples can 
-be seen in `02-scripts/099-cumulativedecay_vs_sourcetracker.Rmd`
+be seen in `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`
 
 ### Database Comparison
 
@@ -1175,7 +1175,7 @@ requires manual curation over time. This database is stored under
 `00-documentation` as `07-master_oralgenome_isolationsource_database.tsv`
 
 With these two things, the R notebook 
-`02-scripts/014-cumulative_proportion_decay_curves.Rmd` shows you how to generate
+`02-scripts.backup/014-cumulative_proportion_decay_curves.Rmd` shows you how to generate
 the visualisation.
 
 These are saved in `04-analysis/screening/cumulative_decay.backup`
@@ -1436,11 +1436,8 @@ script, and also described here `015-decontam_contamination_detection_analysis.R
 To explore if we have a structure in our data that can describe differences 
 between each group we want to explore, we can perform a Principal Coordinate 
 Analysis to reduce
-the variation between the samples to human-readable dimensions.
-
-We perform a Phylogenetic Isometric-Log-Ratio transform (Silverman et al. 2017 
-_eLife_), for 'proper' CoDa ordination as described in the notebook
-`22-PhILR_PC0A.Rmd`.
+the variation between the samples to human-readable dimensions, using 
+Compositional Data (CoDA) principles - here implemented with PhILR.
 
 Due to the notebook ending up having lots of options, I also used `knitr::purl()`
 to create a Script version of the R notebook that accepts arguments.
@@ -1506,6 +1503,7 @@ The R script for summarising the results across all runs is named
 `017-PhILR_PCoA_summaries.R`, and the output files for each combination are in 
   `00-documentation` under `philr_permanova_*_summary.tsv`.
 
+Individual plots can be seen in `04-analysis/screening/philr.backup`
 
 ### Hierarchical Clustering Heatmaps
 
@@ -1514,7 +1512,7 @@ host genera, we applied hierarchical clustering on the contaminant and
 preservation filtered MALT OTU tables.
 
 This is performed in the R notebook and script 
-`02-scripts/045-Compositional_Heatmaps.R(md)``
+`02-scripts.backup/045-Compositional_Heatmaps.R(md)`
 
 The procedure script that performs CLR transformation of the OTU matrix (rather
  than PhILR, to retain actual taxa classes driving differences)
@@ -1544,9 +1542,11 @@ showing 'cleanest' clustering of individuals of the same host genus falling
 together.
 
 Generation of phenotyping data was performed via 
-`02-scripts/046-bacdive_searcher.R`, and added manually to the heatmap plots 
+`02-scripts.backup/046-bacdive_searcher.R`, and added manually to the heatmap plots 
 using Inkscape, which was recorded in the file
 `00-documentation.backup/99-Heatmap_ManualBlockDescriptions_alltaxa_minsupportmultiplier4_minprevalence4_databasent_metadata.tsv`
+
+Figures can be seen in `04-analysis/screening/compositional_heatmaps.backup`
 
 #### Zero replacement validation
 
@@ -1908,7 +1908,7 @@ but with the single
 representative genome taxa FASTAs instead.
 
 Summary plots of the single genome mappings can be seen under 
-`02-scripts/099-SingleGenome_MappingStatistics_Summary.Rmd`.
+`02-scripts.backup/099-SingleGenome_MappingStatistics_Summary.Rmd`.
 
 > The reference genome files are not provided here due to the large size
 
@@ -1981,7 +1981,10 @@ data. We therefore selected the single representative genome mappings for
 downstream analysis.
 
 Additionally, in the notebook we also show that we identified the most common fraction of a majority allele was 0.7, therefore we can use this to
-increase the number of semi-confident SNP positions 
+increase the number of semi-confident SNP positions.
+
+Aggregation of this across all mappings can be seen in 
+`04-analysis/deep/competitive_mapping.backup/multiallelic_snps/`.
 
 ### Variant calling and single-allelic position assessment
 
@@ -2043,8 +2046,14 @@ Rscript 02-scripts.backup/042-generate_NJ_tree.R 04-analysis/deep/multivcfanalyz
 The final newick files and filtering statistics can be seen in 
 `04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/`
 
-Visualisation was carried out with the R notebook `02-scripts.backup/026-Tree_visualisation_20190611.Rmd` and PDF files of each phylogeny for each
-of the taxa under `04-analysis/deep/phylogenies/plots`.
+Visualisation of the phylogenies was carried out with the R notebook 
+`02-scripts.backup/026-Tree_visualisation_20190611.Rmd` and PDF files of each
+phylogeny for each of the taxa under `04-analysis/deep/phylogenies/plots`.
+
+Comparison of the median fold depth of all mappings of a host genus, and
+the pairwise number of overlapping bases between each sample can be seen in 
+`02-scripts.backup/099-Phylogenies_SharedOverlappingSNPS.Rmd`
+
 
 > You may need to `gunzip` the `.nwk` files before loading
 
@@ -2071,7 +2080,9 @@ and the same for each Human individual - and see if the
 MN001/Neanderthal median falls outside the range of the EMN001/Human and 
 Human/Human combinations.
 
-This is implemented in version three within `02-scripts.backup/044-SNPAlignment_SharedData_Analysis_20190915.Rmd`
+This is implemented in version three within `02-scripts.backup/044-SNPAlignment_SharedData_Analysis_20190915.Rmd`.
+
+The output files for can be seen in `04-analysis/deep/phylogenies`
 
 #### Screening datasets phylogenies
 
@@ -2086,7 +2097,7 @@ We set up EAGER the same way as [above](#production-dataset-sequencing-depth-cal
 (retaining the stricter alignment parameters to try and reduce the effect of damage).
 
 Once completed, we check the coverage statistics of each EAGER run as in
-`02-scripts/056-Phylogenies_Screening_EMNCheck_EAGERResults.Rmd`. Although
+`02-scripts.backup/056-Phylogenies_Screening_EMNCheck_EAGERResults.Rmd`. Although
 we have very low coverage overall, we can try anyway to build phylogenies.
 
 The individual ReportTables can be seen in 
@@ -2239,8 +2250,10 @@ bedtools intersect \
 The resulting files wre then loaded into to assess the ratio of all streptococus reads to amylase binding protein-like reads as in `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`
 
 ### HUMANn2
-**NOT COMPLETE**
-#### MetaPhlan2
+
+**short intro by @ivelsko**
+
+#### MetaPhlAn2
 
 In prepraration for HUMANn2, we ran MetaPhlan2.
 

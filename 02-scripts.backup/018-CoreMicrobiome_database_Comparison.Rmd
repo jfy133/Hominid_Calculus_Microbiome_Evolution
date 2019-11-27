@@ -22,7 +22,7 @@ library(patchwork)
 Load the data
 
 ```{r}
-data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup") %>%
+data_raw <- Sys.glob("../04-analysis/screening/presenceabsence_intersection.backup") %>%
   list.files("08a-*", full.names = T) %>% 
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
@@ -39,7 +39,7 @@ data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-a
          !Min_Supp %in% c(0.08, 0.09) ) %>%
   unnest()
 
-data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup") %>%
+data_raw <- Sys.glob("../04-analysis/screening/presenceabsence_intersection.backup") %>%
   list.files("08b-*", full.names = T) %>% 
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
@@ -74,7 +74,7 @@ data_match <- data_raw %>% distinct() %>%
 
 data_match %>% 
   replace_na(list(nt = "DidNotPassPrevalenceThreshold", refseq = "DidNotPassPrevalenceThreshold", Match = "DidNotPassPrevalenceThreshold")) %>%
-  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_databasecomparison_table_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
+  write_tsv(paste0("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_databasecomparison_table_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
 ```
 
 To summarise
