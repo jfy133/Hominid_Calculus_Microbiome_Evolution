@@ -1,0 +1,91 @@
+---
+title: "Screening Data Phylogenies"
+output: html_notebook
+---
+
+Load libraries
+
+```{r}
+library(tidyverse)
+```
+
+Custom functions
+
+```{r}
+eager_cleaner <- function(x){
+  out <- x
+  out[out == "NF"] <- 0
+  out <- out %>%
+    rename(sample_number = `Sample number`,
+           sample_name = `Sample Name`,
+           number_reads_after_clipmerge_prior_mapping = `# reads after C&M prior mapping`,
+           number_reads_mapped_prior_rmdup = `# mapped reads prior RMDup`,
+           number_duplicates_removed = `# of Duplicates removed`,
+           number_reads_mapped_after_rmdup = `Mapped Reads after RMDup`,
+           percent_endogenous_dna = `Endogenous DNA (%)`,
+           cluster_factor = `Cluster Factor`,
+           mean_fold_coverage = `Mean Coverage`,
+           std_dev_coverage = `std. dev. Coverage`,
+           percent_coverage_morethan_1x = `Coverage >= 1X in %`,
+           percent_coverage_morethan_2x = `Coverage >= 2X in %`,
+           percent_coverage_morethan_3x = `Coverage >= 3X in %`,
+           percent_coverage_morethan_4x = `Coverage >= 4X in %`,
+           percent_coverage_morethan_5x = `Coverage >= 5X in %`,
+           frequency_damage_1st_base_3prime = `DMG 1st Base 3'`,
+           frequency_damage_2nd_base_3prime = `DMG 2nd Base 3'`,
+           frequency_damage_1st_base_5prime = `DMG 1st Base 5'`,
+           frequency_damage_2nd_base_5prime = `DMG 2nd Base 5'`,
+           average_fragment_length = `average fragment length`,
+           median_fragment_length = `median fragment length`,
+           percent_gc_content = `GC content in %`
+    ) %>%
+    mutate(number_reads_after_clipmerge_prior_mapping = as.numeric(number_reads_after_clipmerge_prior_mapping)) %>%
+    mutate(number_reads_mapped_prior_rmdup = as.numeric(number_reads_mapped_prior_rmdup)) %>%
+    mutate(number_duplicates_removed = as.numeric(number_duplicates_removed)) %>% 
+    mutate(number_reads_mapped_after_rmdup = as.numeric(number_reads_mapped_after_rmdup)) %>% 
+    mutate(percent_endogenous_dna = as.numeric(percent_endogenous_dna)) %>% 
+    mutate(cluster_factor = as.numeric(cluster_factor)) %>%
+    mutate(mean_fold_coverage = as.numeric(mean_fold_coverage)) %>%
+    mutate(std_dev_coverage = as.numeric(std_dev_coverage)) %>%
+    mutate(percent_coverage_morethan_1x = as.numeric(percent_coverage_morethan_1x)) %>%
+    mutate(percent_coverage_morethan_2x = as.numeric(percent_coverage_morethan_2x)) %>%
+    mutate(percent_coverage_morethan_3x = as.numeric(percent_coverage_morethan_3x)) %>%
+    mutate(percent_coverage_morethan_4x = as.numeric(percent_coverage_morethan_4x)) %>%
+    mutate(percent_coverage_morethan_5x = as.numeric(percent_coverage_morethan_5x)) %>%
+    mutate(frequency_damage_1st_base_3prime = as.numeric(frequency_damage_1st_base_3prime)) %>%
+    mutate(frequency_damage_2nd_base_3prime = as.numeric(frequency_damage_2nd_base_3prime)) %>%
+    mutate(frequency_damage_1st_base_5prime = as.numeric(frequency_damage_1st_base_5prime)) %>%
+    mutate(frequency_damage_2nd_base_5prime = as.numeric(frequency_damage_2nd_base_5prime)) %>%
+    mutate(median_fragment_length = as.numeric(median_fragment_length)) %>%
+    mutate(average_fragment_length = as.numeric(average_fragment_length)) %>%
+    mutate(percent_gc_content = as.numeric(percent_gc_content))
+  return(out)
+}
+```
+
+
+Load all the EAGER data and clean
+
+```{r}
+eager_results <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/EMN_Neanderthal_phylogeny_check/eager/output/*") %>%
+  list.files("*csv", full.names = T) %>%
+  enframe(name = NULL, value = "file_path") %>%
+  mutate(file_content = map(file_path, function(x){read_csv(x) %>% eager_cleaner}),
+         species = map(file_path, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist) %>%
+  select(-file_path) %>%
+  unnest()
+```
+
+Lets look at the results
+
+```{r}
+select(eager_results, species, sample_name, mean_fold_coverage, percent_coverage_morethan_1x, percent_coverage_morethan_2x) %>%
+  ggplot(aes(sample_name, mean_fold_coverage, label = sample_name)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~species) +
+  coord_flip() +
+  theme_minimal(base_size = 7, base_family = "Roboto")
+```
+
+General coverage is very low, so I don't expect much. But we will proceed 
+anyway.

@@ -1997,7 +1997,7 @@ java -Xmx32g -jar MultiVCFanalyzer_0-87.jar \
 NA \
 "$FASTA" \
 NA \
-<OUTDIR> \
+04-analysis/deep/multivcfanalyzer/superreference_mapping/output/superreference_mapping_2X_0.7_0.7/"$SPECIES" \
 T \
 30 \
 2 \
@@ -2046,7 +2046,96 @@ The final newick files and filtering statistics can be seen in
 Visualisation was carried out with the R notebook `02-scripts.backup/026-Tree_visualisation_20190611.Rmd` and PDF files of each phylogeny for each
 of the taxa under `04-analysis/deep/phylogenies/plots`.
 
+> You may need to `gunzip` the `.nwk` files before loading
+
 ### Pre- and Post-14k BP Observation Verification
+
+In the trees generated above, we observed that single deep sequenced pre-14ky
+BP individual (Red Lady/EMN001) _always_ clustered with Neanderthals, whereas 
+post-14ky BP individuals mostly fell with modern day humans. 
+
+#### Production dataset overlapping positions analysis
+
+One possible cause of this clustering could be that the two clades could 
+represent differnet species (due to sub-optimal reference selection), and the
+clustering of the Red Lady of El Mirón (EMN001)  with the Neanderthals is 
+because they share the same regions of the genome which are not present in 
+the other clade (leading to more similar distance calculations). Alternatively, 
+the Neanderthals and EMN001 may have very small regions of the genome covered (given their age) and the distance calculated is just highly conserved regions 
+with low diversity.
+
+To check this, we can build a distribution of the numbers of positions 
+present in both of of all pair-wise combinations of humans. Then we can 
+calculate the median number of overlapping SNPs of EMN001 with each Neanderthals,
+and the same for each Human individual - and see if the 
+MN001/Neanderthal median falls outside the range of the EMN001/Human and 
+Human/Human combinations.
+
+This is implemented in version three within `02-scripts.backup/044-SNPAlignment_SharedData_Analysis_20190915.Rmd`
+
+#### Screening datasets phylogenies
+
+We also wanted to see if this held when adding additional European individuals.
+
+For this, even though we will be going even _lower_ resolution, we can try
+building the same phylogenies but with the screening counterparts of each sample
+(i.e. with damage, and lower coverage), with a few extra individuals i.e. PLV001
+and RIG001 for pre-14ky BP, and OFN001 for post-14ky BP.
+
+We set up EAGER the same way as [above](#production-dataset-sequencing-depth-calculations) 
+(retaining the stricter alignment parameters to try and reduce the effect of damage).
+
+Once completed, we check the coverage statistics of each EAGER run as in
+`02-scripts/056-Phylogenies_Screening_EMNCheck_EAGERResults.Rmd`. Although
+we have very low coverage overall, we can try anyway to build phylogenies.
+
+The individual ReportTables can be seen in 
+`04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanayzer/output`
+
+> The EAGER mapping results files are not provided here due to the large size, 
+> other than the ReportTable files.
+
+We again run MultiVCFAnalyzer with the same parameters above but to a new
+directory.
+
+```bash
+java -Xmx32g -jar MultiVCFanalyzer_0-87.jar \
+NA \
+"$FASTA" \
+NA \
+04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanalyzer/output/"$SPECIES" \
+T \
+30 \
+2 \
+0.7 \
+0.7 \
+NA \
+<VCF_1> \
+<VCF_2> \
+<VCF_3>
+```
+
+Then same as above, we attempt to make the same 8 better supported phylogenies 
+with:
+
+```bash
+for i in 04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanalyzer/output/*/snpAlignment.fasta.gz; do
+  echo "$i"
+  Rscript 02-scripts.backup/042-generate_NJ_tree.R "$i" 1000 JC69 100 none
+  echo ""
+done
+```
+
+The results can be seen in `04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanayzer/output`
+
+> Only a subset of MultiVCFAnalyzer files are uploaded here, due to large size
+
+With these we can load into the R markdown document 
+`058-Tree_visualisation_20191025_screening.Rmd` to see the trees. The PDF
+figures can be seen under `04-analysis/screening/EMN_Neanderthal_phylogeny_check/phylogenies`
+
+> You may need to `gunzip` the `.nwk` files before loading
+
 
 ## Functional Analysis
 

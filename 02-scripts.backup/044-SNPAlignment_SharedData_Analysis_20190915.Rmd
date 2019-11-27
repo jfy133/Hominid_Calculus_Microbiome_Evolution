@@ -1,0 +1,488 @@
+---
+title: "SNP Alignment Shared Data Analysis"
+output: html_notebook
+---
+
+# Background
+
+Issue: is the tendency of EMN to fall with Neanderthals rather than 
+other Modern humans because they have polymorphic divergence, or missing 
+regions (suggesting this is just reference bias)
+
+Suggestion from Alex: Is the average number of overlapping positions in pairwise
+sample comparison within-clades equal to between clade pairings. Idea being, 
+if number of overlapping postions within clades higher than between clade pairings,
+this suggests within clades share similar regions with eachother, and do not
+share the same regions as individuals not within the clade.
+
+These distributions can then be compared via e.g. an ANOVA
+
+# Libraries
+
+```{r}
+library(tidyverse)
+library(ggbeeswarm)
+library(broom)
+library(scales)
+library(patchwork)
+```
+
+# Load Data
+
+Only going to run on 'well-resolved' trees that have bootstraps higher than 70%
+on the first two level of bifurcation nodes, to ensure quality of trees.
+
+
+Further, I will require at least three individuals per clade of interest. Of
+the 8 well-resolved trees, the ones that have enough individuals are
+
+
+```{r message=F, warnings=F}
+
+data_overlap_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/*") %>%
+  list.files("*overlapping*", full.names = T, recursive = T) %>%
+  enframe(name = NULL, value = "path") %>%
+  mutate(file_contents = map(path, read_csv),
+         file_contents = map(file_contents, function(x) x %>% select(-X1))) %>%
+mutate(taxon = map(path, function(x) str_split(x, "/")[[1]] %>% 
+                      tail(n = 2) %>% 
+                      head(n = 1)) %>% 
+           unlist,
+         mapping_strategy = map(path, function(x) str_split(x, "/")[[1]] %>% 
+                      tail(n = 3) %>% 
+                      head(n = 1)) %>% 
+           unlist,
+         filename = map(path, function(x) str_split(x, "/")[[1]] %>% 
+                      unlist() %>%
+                      tail(n = 1)) %>% 
+           unlist) %>%
+    mutate(minimum_positions_threshold = map(filename, function(x) str_split(x, "_")[[1]] %>% 
+             unlist %>%
+             tail(7) %>%
+             head(1)) %>%           
+             unlist %>% 
+             str_replace("minSamplePositions", ""),
+           method = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(6) %>%
+             head(1)) %>%           
+             unlist %>% 
+             str_replace("method", ""),
+           model = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(5) %>%
+             head(1)) %>%
+             unlist %>% 
+             str_replace("model", ""),
+           bootstraps = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(4) %>%
+             head(1)) %>%
+             unlist %>% 
+             str_replace("bootstraps", "") %>% 
+             as.numeric(),
+           samples_excluded = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(4) %>%
+             head(1)) %>%
+             unlist %>% 
+             str_replace("samplesexcluded", "") %>% 
+             as.logical(),
+           missing_data = map(filename, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(2) %>%
+             head(1)) %>%
+             unlist,
+           min_base_coverage = map(mapping_strategy, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(3) %>%
+             head(1)) %>%
+             unlist,
+           call_fraction = map(mapping_strategy, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             tail(1)) %>%
+             unlist,
+           genus = map(taxon, function(x) str_split(x, "_")[[1]][1]) %>% 
+             unlist,
+           ) %>%
+    mutate(mapping_strategy = map(mapping_strategy, function(x) str_split(x, "_")[[1]] %>%
+             unlist %>%
+             head(1)) %>% 
+             unlist
+           ) %>%
+    select(filename, genus, taxon, mapping_strategy, min_base_coverage, 
+           call_fraction, minimum_positions_threshold, method, model, 
+           bootstraps, missing_data, file_contents, -path, -filename)
+
+data_overlap_raw
+
+```
+
+Define individuals that will be a part of the Neanderthal category
+
+```{r}
+samples_neanderthals <- c("PES001", "FUM002", "GOY005")
+```
+
+# Version 1
+
+## Clean Data
+
+Clean up data to just comparison to EMN001, and the categories of the 
+comparative sample (contains sample in vector `samples_neanderthals` then 
+Neanderthal, otherwise assigned 'human').
+
+Also calculate mean pairwise overlapping positions per each category.
+
+```{r}
+
+data_overlap_compare <- data_overlap_raw %>%
+  unnest %>% 
+  select(genus, taxon, minimum_positions_threshold, Combination, 
+         contains("bases")) %>%
+  separate(Combination, c("Sample_1", "Sample_2"), "_") %>%
+  filter(Sample_1 == "EMN001" | Sample_2 == "EMN001") %>%
+  mutate(Sample_1 = if_else(Sample_1 == "EMN001", NA_character_, Sample_1),
+         Sample_2 = if_else(Sample_2 == "EMN001", NA_character_, Sample_2)) %>%
+  unite(col = "Comparator_Sample", 
+        c(Sample_1, Sample_2), 
+        sep = "_") %>%
+  mutate(Comparator_Sample = str_replace(Comparator_Sample, "_NA|NA_", ""),
+         Category = if_else(Comparator_Sample %in% samples_neanderthals, 
+                            "Neanderthal", "ModernHuman")) %>%
+  filter(!grepl("VLC|JAE", Comparator_Sample))
+
+data_overlap_compare
+
+data_overlap_means <- data_overlap_compare %>% 
+  group_by(taxon, Category) %>% 
+  summarise(Median_Overlapping_Bases = median(total_overlapping_bases),
+            Median_Overlapping_Bases = median(total_overlapping_bases))
+
+data_overlap_means
+  
+```
+
+
+## Overlapping Position Distributions
+
+Make density plots to check distributions of the overlapping positions
+per category to be compared.
+
+```{r}
+
+ggplot(data_overlap_compare, aes(total_overlapping_bases, fill = Category)) + 
+  geom_density(alpha = 0.7) +
+  geom_vline(data = data_overlap_means, 
+             aes(xintercept = Median_Overlapping_Bases,linetype = Category)) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  facet_wrap(~ taxon, scales = "free")
+
+```
+
+## Hypothesis Testing
+
+
+Now perform a Wilcoxon ranked sum test as we do not have normally distributed
+data.
+
+Null hypothesis, there is no difference in the number of overlapping 
+bases between El Mirón and modern humans, and Neanderthals independently.
+
+```{r}
+data_overlap_compare %>% 
+  group_by(taxon) %>% 
+  do(w = wilcox.test(total_overlapping_bases ~ Category, data = .)) %>%
+  group_by(taxon) %>%
+  mutate(w = map(w, broom::tidy)) %>%
+  unnest 
+  
+```
+
+In all cases the null hypothesis is not rejected (alpha = 0.05; _p_-value < 0.1). 
+Thus suggesting that the the consistent clustering of El Mirón to Neanderthals 
+is not just because they share a greater number of positions than El Mirón 
+with modern humans. 
+
+In otherwords, the clustering is not because El Mirón and Neanderthals have an 
+entirely different species which modern humans do not have (resulting in 
+overlapping SNPs are exlusive to the El Mirón/Neanderthal).
+
+# Version 2
+
+Apparently I misunderstood what Alex meant. Here is round two, of what he 
+_actually_ meant.
+
+Firstly, we have the main function which calculuates the median SNVs of a sample
+shared with all the other samples of each group (Neanderthals and non-Neanderthals).
+
+Then we have a helper function that allows this to be applied to each taxon.
+
+## Functions
+
+```{r}
+
+## Function to make pairwise 'correlation'-like matrix of all sample combinations, and calcualte median shared SNVs
+calculate_medians <- function(x, nea){
+  ## split between Neanderthals + EMN and Non-Neanderthals + EMN
+  if (isTRUE(nea)) {
+    data_overlap_test2 <- x %>% 
+      select(Sample_A, Sample_B, total_shared_bases) %>% 
+      mutate(Neanderthal = if_else(grepl("GOY|PES|FUM|EMN", Sample_A) & grepl("GOY|PES|FUM|EMN", Sample_B), T, F)) %>%
+      group_split(Neanderthal)
+  } else {
+    data_overlap_test2 <- x %>% 
+      select(Sample_A, Sample_B, total_shared_bases) %>% 
+      mutate(Neanderthal = if_else(!grepl("GOY|PES|FUM", Sample_A) & !grepl("GOY|PES|FUM", Sample_B), T, F)) %>%
+      group_split(Neanderthal)
+  }
+
+  ## Create base pairwise matrix thing
+  base <- c(data_overlap_test2[[2]] %>% 
+              pull(Sample_A), data_overlap_test2[[2]] %>% 
+              pull(Sample_B)) %>% 
+    unique %>% 
+    enframe(name = NULL, value = "Sample")
+  
+  base <- base %>% 
+    mutate(Sample_B = Sample, Value = NA) %>% 
+    spread(Sample_B, Value)
+  
+  base_matrix <- as.matrix(base %>% select(-Sample))
+  rownames(base_matrix) <- base$Sample
+  
+  ## Find each combination of samples and assign to matrix
+  for (i in 1:nrow(data_overlap_test2[[2]])) {
+    a <- data_overlap_test2[[2]][i,1] %>% pull(Sample_A)
+    b <- data_overlap_test2[[2]][i,2] %>% pull(Sample_B)
+    result <- filter(data_overlap_test2[[2]], 
+                     Sample_A == a, Sample_B == b) %>% 
+      pull(total_shared_bases)
+    if (length(result) == 0) {
+      base_matrix[a, b] <- NA
+      base_matrix[b, a] <- NA
+  } else {
+      base_matrix[a, b] <- result
+      base_matrix[b, a] <- result
+  
+    }
+  }
+  
+  ## Convert to long, calculate medians
+  result <- base_matrix %>% 
+    as_tibble(rownames = "Sample") %>% 
+    gather(Sample, Shared_Positions, 2:ncol(.)) %>% 
+    filter(!is.na(Shared_Positions)) %>%
+    group_by(Sample) %>% 
+    summarise(Median_Shared_Positions = median(Shared_Positions))
+  
+  return(result)
+}
+
+## Helper function to assist in applying median calculations to all taxa and plot
+# compare_distributions <- function(x) {
+#
+# 
+#   ## Clean up SNV stats data
+#   taxon_name <- x %>% pull(genus) %>% unique
+#   data_overlap_species_raw <- x %>% 
+#     pull(file_contents) %>% 
+#     .[[1]] %>% 
+#     unnest %>% 
+#     separate(Combination, into = c("Sample_A", "Sample_B"), sep = "_") %>% 
+#     select(Sample_A, Sample_B, total_shared_bases)
+# 
+#   ## Calculate medians
+#   nea_dist <- calculate_medians(data_overlap_species_raw, T)
+#   nonea_dist <- calculate_medians(data_overlap_species_raw, F)
+#   
+#   ## Plot median distributions with EMN indicated
+#   dist_plot_nonea <- ggplot(nonea_dist %>% filter(Sample != "EMN001"), aes(Median_Shared_Positions)) + 
+#     geom_histogram(bins = 30) + 
+#     geom_vline(xintercept = nonea_dist %>% 
+#                  filter(Sample == "EMN001") %>% 
+#                  pull(Median_Shared_Positions), colour = "red") +
+#     scale_x_continuous(labels = comma) +
+#     ggtitle(paste("Median Shared Positions of Non-Neanderthal Individuals and El Mirón \nPairwise Combinations for", taxon_name), 
+#             subtitle = "Line indicates El Miron Median") +
+#     theme_minimal(base_family = "Roboto", base_size = 7)
+#   
+#   dist_plot_nea <- ggplot(nea_dist %>% filter(Sample != "EMN001"), aes(Median_Shared_Positions)) + 
+#     geom_histogram(bins = 30) + 
+#     geom_vline(xintercept = nonea_dist %>% 
+#                  filter(Sample == "EMN001") %>% 
+#                  pull(Median_Shared_Positions), colour = "red") +
+#     scale_x_continuous(labels = comma) +
+#     ggtitle(paste("Median Shared Positions of Neanderthal Individuals and El Mirón \nPairwise Combinations for", taxon_name), 
+#             subtitle = "Line indicates El Miron Median") +
+#     theme_minimal(base_family = "Roboto", base_size = 7)
+#   
+#   result <- list(dist_nea = nea_dist, dist_nonea = nonea_dist, 
+#                  dist_plot_nea = dist_plot_nea, dist_plot_nonea = dist_plot_nonea)
+#   
+#   return(result)
+# }
+```
+
+## Data analysis
+
+Now we apply this to all valid phylogenies
+
+```{r}
+data_overlap_split <- data_overlap_raw %>% 
+  filter(genus != "Selenomonas",
+         !genus == "Porphyromonas" && minimum_positions_threshold == 1000) %>%
+  group_by(taxon) %>% 
+  group_map(~c(.x))
+
+names(data_overlap_split) <- data_overlap_raw %>% 
+  filter(genus != "Selenomonas") %>% 
+  pull(taxon) %>% 
+  unique
+
+```
+
+## Plotting
+
+And display the two distributions for all taxa side my side.
+
+```{r}
+for (i in names(data_overlap_split)) {
+  plot <- data_overlap_split[[i]]$dist_plot_nea + data_overlap_split[[i]]$dist_plot_nonea
+  print(plot)
+}
+```
+
+I think this is what he wanted. So now we can look through the trees to see 
+if the median number of shared SNVs El Mirón has with the other samples, falls
+as an outlier in either distribution (suggesting clustering bias), or falls 
+outside (suggesting different-species bias).
+
+Taxon                                               | Neanderthal Distribution | Non-Neanderthal Distribution | Notes
+----------------------------------------------------|--------------------------|------------------------------|------
+Actinomyces_dentalis_DSM_19115                      | Middle                   | Middle                       |
+Campylobacter_gracilis                              | Middle                   | Middle                       |
+Capnocytophaga_gingivalis_ATCC_33624                | Outlier (low)            | Low-Middle                   | Two Neanderthals
+Corynebacterium_matruchotii_ATCC_14266              | Outlier (low)            | Middle                       |
+Fretibacterium_fastidiosum                          | Outlier (high)           | Middle                       |
+Fusobacterium_hwasookii_ChDC_F206                   | Outlier (low)            | Middle                       | Two Neanderthals
+Olsenella_sp_oral_taxon_807                         | Outlier (low)            | Low-Middle                   |
+Ottowia_sp_oral_taxon_894                           | Outlier (high)           | Low-Middle                   |
+Porphyromonas_gingivalis_ATCC_33277                 | Outlier (high)           | Middle                       |
+Prevotella_loescheii_DSM_19665_JCM_12249_ATCC_15930 | Outlier (low)            | Middle                       | Two Neanderthals
+Pseudopropionibacterium_propionicum_F0230a          | Middle                   | Middle-High                  |
+Streptococcus_gordonii_str_Challis_substr_CH1       | Outlier (low)            | Middle                       |
+Streptococcus_sanguinis_SK36                        | Middle                   | Middle-High                  |
+Tannerella_forsythia_92A2                           | Middle                   | Low                          |
+Treponema_socranskii_subsp_paredis_ATCC_35535       | Outlier (high)           | Low                          |
+
+The Red Lady's relationship with Non-Neanderthals is that the median number of 
+shared SNPs it has with the other samples is that it is normally falling 
+somewhere in the middle. For the relationship with the Neanderthals, it is 
+about evently split 1/3 between being somwhere in the middle ( _n_ = 5), being 
+a low-end outlier (has fewer shared SNVs than between the other Neanderthals,
+_n_ = 6) and being a high-end outlier (having more shared SNVs with the other 
+Neanderthals). In all cases where there is only a single Neanderthal to 
+compare to - it has fewer shared SNPs.
+
+As the Red Lady seems to fall in the shared SNP variation of humans in almost
+all cases, and equally being higher or lower as an outlier across the dataset,
+that the consistent clustering of the Red Lady with Neanderthals in the 
+pylogeny is not due to reference bias (i.e. the same species in Neanderthals
+and El Mirón mapping to the reference, and a different species in the Humans) 
+
+# Version 3
+
+Alex agreed that this was a bit weak because we had so few Neanderthals. To 
+account for this, the following version was agreed upon.
+
+```{r}
+
+data_overlap_reduced <- data_overlap_raw %>%
+  unnest %>%
+  separate(Combination, into = c("Sample_A", "Sample_B"), sep = "_") %>%
+  select(genus, taxon, Sample_A, Sample_B, total_shared_bases) %>%
+  filter(!grepl("DJA|EBO|KNP|MTM|OME", Sample_A),
+         !grepl("DJA|EBO|KNP|MTM|OME", Sample_B),
+         taxon != "Streptococcus_gordonii_str_Challis_substr_CH1") %>%
+  mutate(Neanderthal = if_else(grepl("GOY|PES|FUM|EMN", Sample_A) & grepl("GOY|PES|FUM|EMN", Sample_B), T, F))
+
+data_overlap_reduced_medians <- data_overlap_reduced %>% 
+  filter(Sample_A == "EMN001" | Sample_B == "EMN001") %>%
+  group_by(genus, Neanderthal) %>%
+  summarise(median_shared_with_EMN = median(total_shared_bases))
+
+
+plot_distribution <- function(x) {
+ data_filtered <- data_overlap_reduced %>% 
+    filter(genus == x,
+           Neanderthal == "FALSE")
+ 
+ data_lines <- data_overlap_reduced %>% 
+  filter(genus == x) %>%
+   group_by(genus, Neanderthal) %>%
+   summarise(median_shared_with_EMN = median(total_shared_bases))
+ 
+ ggplot(data_filtered, aes(total_shared_bases)) +
+   geom_histogram(bins = 30) +
+   geom_vline(xintercept = data_lines %>% filter(Neanderthal) %>% pull(median_shared_with_EMN), linetype = 2, colour = "red") +
+   geom_vline(xintercept = data_lines %>% filter(!Neanderthal) %>% pull(median_shared_with_EMN), colour = "orange") +
+   ggtitle(x) +
+   xlab("Number Shared Bases") +
+   ylab("Count of Pairwise Combinations") +
+   theme_minimal(base_family = "Roboto", base_size = 7) +
+   theme(plot.title = element_text(face = "italic"))
+
+}
+
+for (i in data_overlap_reduced$genus %>% unique) {
+  plot_distribution(i) %>% print %>% ggsave(filename = paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_", i, ".pdf"), device = cairo_pdf)
+}
+
+letsago <- map(data_overlap_reduced$genus %>% unique, ~plot_distribution(.x))
+
+names(letsago) <- data_overlap_reduced$genus %>% unique
+
+
+mammamia <- letsago$Actinomyces +
+  letsago$Fretibacterium +
+  letsago$Fusobacterium +
+  letsago$Olsenella +
+  letsago$Ottowia +
+  letsago$Pseudopropionibacterium +
+  letsago$Streptococcus +
+  letsago$Tannerella + plot_layout(ncol = 2)
+
+ggsave(plot = mammamia,
+       filename = paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_COMBINED.pdf"), 
+       device = cairo_pdf,
+       width = 5,
+       height = 7,
+       units = "in",
+       dpi = 600)
+
+ggsave(plot = mammamia,
+       filename = paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/phylogenies/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_COMBINED.png"), 
+       device = "png",
+       width = 5,
+       height = 7,
+       units = "in",
+       dpi = 600)
+
+```
+
+The histogram represents the shared number of bases of all pairwise combinations
+of humans. The orange solid line represents the median number of shared SNPs
+of EMN to all the humans. The red dashed line is the median of EMN to all
+Neanderthals.
+
+We observed there does not appear to be a bias towards EMN and Neanderthals 
+having fewer SNPs, that may lead to long-branch attraction from having little
+data. In most cases the two medians are close to each other; in cases
+where it does not, the Neanderthal median still falls within the human 
+distribution.
+
+
+
+
+
