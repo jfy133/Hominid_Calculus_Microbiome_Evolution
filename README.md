@@ -273,17 +273,15 @@ the command block.
 
 ## Database and Genome Indexing
 
-### MALT
+### MALT Database
 
 The MALT nt databases was downloaded and generated as follows.
 
 ```bash
-DBDIR=<PATH_TO_CLONED_REPOSITORY>/01-data/databases
-MALTDIR=<PATH_TO>
 
 ## MALT indexed NT database
-mkdir -p $DBDIR/malt/raw $DBDIR/malt/indexed
-cd $DBDIR/malt
+mkdir -p 01-data/databases/malt/raw 01-data/databases/malt/indexed
+cd 01-data/databases/malt/raw 
 
 ### Download nucleotide database fasta and md5sum file into a database directory
 wget ftp://ftp-trace.ncbi.nih.gov/blast/db/FASTA/nt.gz .
@@ -296,10 +294,12 @@ cat nt.gz.md5
 
 ### Download into a different directory the accession to taxonomy mapping file
 ### as provided on the MEGAN6 website, and unzip
+mkdir 01-data/databases/malt/acc2bin
+cd !$
 wget http://ab.inf.uni-tuebingen.de/data/software/megan6/download/nucl_acc2tax-May2017.abin.zip
 unzip nucl_acc2tax-May2017.abin.zip
 
-"$MALT"/malt-build \
+malt-build \
 --step 2 \
 -i "$DBDIR"/malt/raw/nt.gz \
 -s DNA \
@@ -309,7 +309,21 @@ unzip nucl_acc2tax-May2017.abin.zip
 
 > The database files are not provided here due to the large size.
 
-### BWA
+
+For the custom NCBI Genome RefSeq database containing bacterial and archaea
+assemblies at scaffold, chromosome and complete levels - we follow the
+R ntoebook  here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_walkthrough_20181029.Rmd`
+
+### AADDER Database
+
+To build the `aadder` database for functional analysis - based on the RefSeq
+MALT database above, we run the command
+`01-data/027-aadder_build_refseqCGS_bacarch_sbatch_script_20181104.sh`. This 
+calls the `adder-build` command as provided in the MEGAN install directory's
+`tools` folder. Note we have to change the `MEGAN.vmoptions` to have a large 
+enough memory allocation in the MEGAN install directory.
+
+### BWA Indexing
 
 The SILVA reference database, and all single genomes (HG19, bacterial etc.) were
 indexed as follows - with the SILVA database FASTA file as an example.
@@ -331,36 +345,39 @@ O=SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.dict
 
 ```
 
-For the custom NCBI Genome RefSeq database containing bacterial and archaea
-assemblies at scaffold, chromosome and complete levels - we follow the
-notebook here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_walkthrough_20181029.r`
+> The database files are not provided here due to the large size.
 
-To build the `aadder` database for functional analysis, we run the command
-`01-data/027-aadder_build_refseqCGS_bacarch_sbatch_script_20181104.sh`. This 
-calls the `adder-build` command as provided in the MEGAN install directory's
-`tools` folder. Note we have to change the `MEGAN.vmoptions` to have a large 
-enough memory allocation in the MEGAN install directory.
+### UniRef Database
+
+For acquire the UniRef database for [HUMANn2](#humann2), we used the script
+that comes with HUMANn2, and run as follows:
+
+```bash
+humann2_databases --download uniref uniref90_ec_filtered_diamond 01-data/databases/uniref90
+```
+
+## Database analysis profile
 
 For the scripts using `analysis_profile` file, ensure to update the paths to in
- the analysis profile to your correpsonding location.
+the analysis profile to your correpsonding location.
 
 ```bash
 ## MALT DB Directory containing all database files
-MALTDB=<PATH_TO>//malt/databases/indexed/index038/full-nt_2017-10
+MALTDB=<PATH_TO>/malt/databases/indexed/index038/full-nt_2017-10
 ## SILVA DB directory containing the converted U to T FASTA file and associated bwa indexed files
-SILVADB=<PATH_TO>//microbiome_sciences/reference_databases/silva/release_128_DNA/
+SILVADB=<PATH_TO>01/databases/silva/release_128_DNA/
 ## GreenGenes DB directory, as provided in QIIME
-GREENGENESDB=<PATH_TO>//tools/qiime-environment/1.9.1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus
+GREENGENESDB=<PATH_TO>/tools/qiime-environment/1.9.1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus
 
 HG19REF=<PATH_TO>/Reference_Genomes/Human/HG19/hg19_complete.fasta
 ```
-
-> The database files are not provided here due to the large size.
 
 ## Data Acquisition
 
 All raw FASTQ files should be downloaded sample specific directories in
  `01-data/public_data/raw`.
+
+
 
 ### Additional Individuals
 
@@ -1072,14 +1089,7 @@ a input directory with wildcards to all the files and an output directory.
 04-analysis/screening/malt/nt
 ```
 
-For the CustomRefSeq database, we did the same command but with the RefSeq
-script and output directory.
-
-```bash
-02-scripts.backup/008-malt-genbank-refseq_bacarchhomo_gcs_20181122_4step_85pc_supp_0.01 \
-03-preprocessing/screening/library_merging/*/*.fq.gz \
-04-analysis/screening/malt/nt/refseq_bacarchhomo_gcs_20181122
-```
+For the CustomRefSeq database, see [below](#aadder-analysis)
 
 > The RMA6 files are not provided here due to the large size.
 
@@ -1141,7 +1151,7 @@ These are saved in `04-analysis/screening/megan.backup`
 ### Additional Raw OTU Tables
 
 Raw MALT OTU tables with and without bad samples and at different min-support
-values are generated by the Notebook `016-MALT_otutable_generation.Rmd`. These
+values are generated by the Notebook `02-scripts.backup/016-MALT_otutable_generation.Rmd`. These
 tables are stored as `.tsv` files in the `04-analysis/screening/megan.backup` 
 directory.
 
@@ -1703,7 +1713,7 @@ species of interest.
 To calculate this, we map to a range of taxa of interest (either from 
 observations in the dataset or from broad literature review). We selected
 the following species - downloaded the reference or representative strains
-from NCBI, and indexed as [above](#bwa).
+from NCBI, and indexed as [above](#bwa-indexing).
 
 The Intitial species that were selected are:
 
@@ -1805,7 +1815,7 @@ this we can use the script `02-scripts.backup/099-collapse_fastas.sh`, which
 combines them but exporting coordinates (also in bed format) indicating where
 each species FASTA entry is present in the super-refereence FASTA.
 
-FASTAs were indexed as [above](#bwa)
+FASTAs were indexed as [above](#bwa-indexing)
 
 > Reference files and indices are not included due to large size
 
@@ -2255,10 +2265,10 @@ The resulting files wre then loaded into to assess the ratio of all streptococus
 
 #### MetaPhlAn2
 
-In prepraration for HUMANn2, we ran MetaPhlan2.
+In prepraration for HUMANn2, we ran MetaPhlan2, running on the whole screening
+dataset.
 
 ```bash
-METAPHLAN2=biobakery-metaphlan2-7898bf1/metaphlan2.py
 
 INDIR=04-analysis/screening/metaphlan2/input
 OUTDIR=04-analysis/screening/metaphlan2/output
@@ -2269,7 +2279,7 @@ for LIBFILE in "$INDIR"/*/*.fq.gz; do
     printf "\n $LIBNAME already Processed \n\n"
   else
     mkdir "$OUTDIR"/"$LIBNAME"
-    $METAPHLAN2 $LIBFILE \
+    metaphlan2.py $LIBFILE \
     -o $OUTDIR/$LIBNAME/$LIBNAME.mp2profile.tsv \
     --input_type fastq \
     --nproc 2 \
@@ -2278,8 +2288,6 @@ for LIBFILE in "$INDIR"/*/*.fq.gz; do
 done
 
 ## if re-running with different parameters, here changing fastq to bowtie2out
-
-METAPHLAN2=biobakery-metaphlan2-7898bf1/metaphlan2.py
 
 INDIR=04-analysis/screening/metaphlan2/input
 OUTDIR=04-analysis/screening/metaphlan2/output
@@ -2290,7 +2298,7 @@ for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
     printf "\n $LIBNAME already Processed \n\n"
   else
     mkdir "$OUTDIR"/"$LIBNAME"
-    $METAPHLAN2 $LIBFILE \
+    metaphlan2.py $LIBFILE \
     -o $OUTDIR/$LIBNAME/$LIBNAME.mp2profile.tsv \
     --input_type bowtie2out \
     --nproc 2 \
@@ -2300,7 +2308,6 @@ done
 
 ## Re-running to get estimated read counts with rel_ab to rel_ab_w_read_stats
 
-METAPHLAN2=biobakery-metaphlan2-7898bf1/metaphlan2.py
 INDIR=04-analysis/screening/metaphlan2/input
 OUTDIR=04-analysis/screening/metaphlan2/output_readcounts
 
@@ -2310,7 +2317,7 @@ for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
     printf "\n $LIBNAME already Processed \n\n"
   else
     mkdir "$OUTDIR"/"$LIBNAME"
-    $METAPHLAN2 $LIBFILE \
+    metaphlan2.py $LIBFILE \
     -o $OUTDIR/$LIBNAME/$LIBNAME.mp2profile_readstats.tsv \
     --input_type bowtie2out \
     --nproc 2 \
@@ -2321,7 +2328,6 @@ done
 
 ## Re-running to get actual rad counts with rel_ab to rel_ab_w_read_stats
 
-METAPHLAN2=biobakery-metaphlan2-7898bf1/metaphlan2.py
 INDIR=04-analysis/screening/metaphlan2/input
 OUTDIR=04-analysis/screening/metaphlan2/output_readmappedcounts
 
@@ -2331,7 +2337,7 @@ for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
     printf "\n $LIBNAME already Processed \n\n"
   else
     mkdir "$OUTDIR"/"$LIBNAME"
-    $METAPHLAN2 $LIBFILE \
+    metaphlan2.py $LIBFILE \
     -o $OUTDIR/$LIBNAME/$LIBNAME.mp2profile_readsmappedstats.tsv \
     --input_type bowtie2out \
     --nproc 2 \
@@ -2376,3 +2382,152 @@ Note that all of those files need to be -1 because the count includes a header.
 Finally, some read statistics by applying the same 0.01% threshold used in MALT
 are gained via the `099-MetaPhlan2_Summary_statistics.R` script. These were
 then manually added to the metadata file.
+
+#### Running HUMANn2
+
+Once we have the MetaPhlAn2 profiles, we can run HUMANn2 with the following
+command, running on the S
+
+```bash
+
+humann2 \
+--input <INPUT_SAMPLE>.fq.gz \
+--output 04-analysis/screening/humann2/output/"$SAMPLENAME"/  \
+--taxonomic-profile <INPUT_MP2_PROFILE>.tsv \
+--threads 8 \
+--memory-use maximum
+
+```
+
+> This was adapted from a SLURM array script and should be adjusted accordingly
+> to run on each sample
+
+:warning: The output temporary files (which don't appear to be removed) are HUGE.
+We need to remove them after successful running by doing the following:
+
+```bash
+cd 04-analysis/screening/humann2/output
+rm -r */*_temp/
+```
+
+which reduces our footprint from 4.9 TERABYTES(!?!?!) down to 3.9 gigabytes.
+This is mostly due to the uncompressed SAM files.
+
+Next we need to normalise the data of each file. We only need
+to do this on the genefamilies and pathabundance data, as you don't have to
+do this for the [pathwaycoverage](https://bitbucket.org/biobakery/biobakery/wiki/humann2#rst-header-manipulating-humann2-output-tables)
+
+```bash
+
+cd 04-analysis/screening/humann2/output
+
+for SAMPLE in */*_genefamilies.tsv; do
+    humann2_renorm_table --input $SAMPLE --output ${SAMPLE%.tsv}_cpm.tsv --units cpm --update-snames
+done
+
+for SAMPLE in */*_pathabundance.tsv; do
+    humann2_renorm_table --input $SAMPLE --output ${SAMPLE%.tsv}_cpm.tsv --units cpm --update-snames
+done
+
+rm */*_genefamilies.tsv
+rm */*_pathabundance.tsv
+
+# -s to search subdirectories of current directory to look for the files
+humann2_join_tables --input . --output humann2_genefamilies.tsv --file_name genefamilies_cpm -s 
+humann2_join_tables --input . --output humann2_pathcoverage.tsv --file_name pathcoverage -s 
+humann2_join_tables --input . --output humann2_pathabundance.tsv --file_name pathabundance_cpm -s
+
+```
+
+We want also want to put the output in KEGG format. To do this we firstly need 
+to download the re-grouping database
+
+```bash
+humann2_databases --download utility_mapping full 01-data/databases/humann2
+
+```
+
+Then we can regroup our table(s)
+
+```bash
+humann2_regroup_table -i humann2_pathabundance.tsv -g uniref90_ko -o humann2_pathabundance_ko.tsv
+humann2_regroup_table -i humann2_genefamilies.tsv -g uniref90_ko -o humann2_genefamilies_ko.tsv
+```
+
+> HUMANn2 output files are not provided here due to large size
+
+**IRINA FROM HERE**
+
+### AADDER Analysis
+
+As a validation, we also want to use AADDERR - a tool which infers functional
+characteristics based on the annotations of a MALT/MEGAN reference database. 
+
+This uses `.gff` files to compare taxonomic assignments with annotations, which
+we downloaded [above](#aadder-database). 
+
+We will run this against the filtered RefSeq genomes we built above both
+with MALT (fasta files) and AADDER (gff files).
+
+### MALT RefSeq
+
+We then run MALT but instead of immediately producing RMA6 files, we 
+generate SAM files. This can be run with the following:
+
+```bash
+02-scripts.backup/008-malt-genbank-refseq_bacarchhomo_gcs_20181122_4step_85pc_supp_0.01 \
+04-analysis/screening/malt/temp_input/*/*.fq.gz \
+04-analysis/screening/malt/refseq_bacarchhomo_gcs_20181122/
+```
+
+To extract the summary statistics for the Refseq runs, we can run
+the following on the MALT logs.
+
+```bash
+grep -e "Loading MEGAN File:" \
+-e "Total reads:" \
+-e "With hits:" \
+-e "Alignments:" \
+-e "Assig. Taxonomy" \
+-e "Min-supp. changes" \
+-e "Numb. Tax. classes:" \
+-e "Class. Taxonomy:" \
+-e "Num. of queries:" \
+-e "Aligned queries:" \
+-e "Num. alignments:" \
+-e "MinSupport set to:" \
+04-analysis/screening/malt/refseq_bacarchhomo_gcs_20181122/*log | cut -d":" -f 2-99 > 00-documentation.backup/99-maltAlignedReadsSummary_raw_refseq_bacarchhomo_gcs_20181122_$(date "+%Y%m%d").txt
+```
+
+### Running AADDER
+
+Then we run AADDER
+
+```bash
+aadder-run \
+-i 04-analysis/screening/aadder/input/*.sam.gz \
+-d 01-data/databases/aadder/ \
+-o 04-analysis/screening/aadder/output/ \
+-v
+pigz -p 112 04-analysis/screening/aadder/output/*
+```
+
+> AADDERR output files are not provided here due to large size
+
+Finally run blast2rma to make it loadable into MEGAN
+
+```bash
+blast2rma \
+--format SAM \
+-i 04-analysis/screening/aadder/output/*out.gz \
+-o 04-analysis/screening/aadder/rma6_2/ \
+-a2seed 01-data/databases/acc2seed/acc2seed-May2015XX.abin \
+-a2t 01-data/databases/acc2tax/nucl_acc2tax-Nov2018.abin \
+-v
+```
+
+Once completed, the resulting RMA6 files were opened in MEGAN6CE (v6.15.2) via 
+MEGAN SERVER, opened in compare mode using absolute counts and 
+'ignore all unassigned reads'. I then switched to the 'SEED' categories, 
+'uncollapse-all', select everythign then exported the table as TSV with 
+seedPath_to_count.

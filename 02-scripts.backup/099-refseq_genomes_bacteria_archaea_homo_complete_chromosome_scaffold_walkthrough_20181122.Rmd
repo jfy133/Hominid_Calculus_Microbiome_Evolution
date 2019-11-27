@@ -96,7 +96,7 @@ final_assembly_list <- assembly_summary_filtered %>%
 And we can save this to a file
 
 ```{r eval = FALSE}
-write_tsv(final_assembly_list, "01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/docs/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_downloadtable_20181122.txt")
+write_tsv(final_assembly_list, "/home/fellows/projects1/microbiome_sciences/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/docs/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_downloadtable_20181122.txt")
 ```
 
 
@@ -110,13 +110,13 @@ parallel.
 
 ```{bash eval = FALSE}
 
-sbatch 02-scripts/99-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_downloadtable.sh
+sbatch /projects1/microbiome_sciences/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_downloadtable.sh
 
 ```
 
 To check
 ```{bash}
-cd 01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw
+cd /projects1/microbiome_sciences/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw
 function lister () { while read line1; do echo "$line1"/*fna.gz >> list.txt; done }
 ls | lister
 cat list.txt | wc -l
@@ -125,6 +125,7 @@ cat list.txt | wc -l
 cat ../docs/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_downloadtable_20181122.txt | wc -l
 
 ```
+
 
 Once this is completed, we need to make a 'mega fasta' file of all the 
 entries as apparently ~50,000 genomes given as independent arguments to
@@ -137,11 +138,11 @@ sbatch \
 --mem 4G \
 --partition=short \
 -t 02:00:00 \
--o slurm.%j.out \
--e slurm.%j.err \
+-o /projects1/clusterhomes/fellows/slurm_logs/slurm.%j.out \
+-e /projects1/clusterhomes/fellows/slurm_logs/slurm.%j.err \
 --mail-type=fail \
 --mail-type=time_limit \
 --mail-use=fellows@shh.mpg.de \
 -J "cat_cause_23k_genomes_too_much_for_malt-build" \
---wrap="find 01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw/ -name \*.fna.gz -print0 | xargs -0 cat >> 01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_20181122.fna.gz && find 01-data/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw/ -name \*.fna.gz -print0 | xargs -0 rm"
+--wrap="find /projects1/microbiome_sciences/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw/ -name \*.fna.gz -print0 | xargs -0 cat >> /projects1/microbiome_sciences/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_20181122.fna.gz && find /projects1/microbiome_sciences/reference_databases/refseq/genomes/bacteria_archea_homo_20181122/raw/ -name \*.fna.gz -print0 | xargs -0 rm"
 ```
