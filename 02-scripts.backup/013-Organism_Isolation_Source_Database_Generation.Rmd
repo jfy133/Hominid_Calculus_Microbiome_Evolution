@@ -162,7 +162,7 @@ Now I want to switch to R, as it is easier to deal with tabular data (at least
 for me).
 
 ```{r eval=F}
-setwd("Downloads/Genome_Isolation_source_Experiment")
+setwd("../04-analysis/screening/Genome_Isolation_source_Experiment.backup")
 library(tidyverse)
 
 ## Prep
