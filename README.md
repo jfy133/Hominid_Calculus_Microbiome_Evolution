@@ -24,8 +24,15 @@ should always check this for each command and script.
 > re-rerunable or readable - if you encounter any issues please leave 
 > an [issue](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/issues) 
 > and we will endevour to clarify.
+
+> We have tried to auto replace all file paths to make it relative to this 
+> repository. This may not have been perfect, so please check the path 
+> begins with `../0{1,2,4}`. If it does not, let us know and we will fix
+> this accordingly.
  
-This README section acts as **walkthrough** guidence of the order of analyses. It also includes commands where the a program was intiated directly from the command line.
+This README section acts as **walkthrough** guidance of the order of analyses, 
+and which R notebooks and scripts were used. It also includes commands where a
+program was intiated directly from the command line.
 
 ## Resources
 

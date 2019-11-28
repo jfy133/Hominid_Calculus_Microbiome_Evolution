@@ -20,7 +20,7 @@ Set your input path to the output directory of `MetaPhlAn2` run with
 the `-t` flag as 'rel_ab_w_read_stats`, **with** the path as trailing /
 
 ```{r}
-input_path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/metaphlan2/output_readcounts/"
+input_path = "../04-analysis/screening/metaphlan2/output_readcounts/"
 ```
 
 Load MetaPhlAn2 profiles into single dataframe using map and clean up.

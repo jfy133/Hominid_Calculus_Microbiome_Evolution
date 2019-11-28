@@ -192,11 +192,11 @@ porphyromonas_genome_list
 And we can save this list with
 
 ```{r eval = F}
-write_tsv(core_genome_list, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+write_tsv(core_genome_list, paste("../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
 
-write_tsv(propionibacterium_genome_list, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_propionibacterium_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+write_tsv(propionibacterium_genome_list, paste("../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_propionibacterium_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
 
-write_tsv(porphyromonas_genome_list, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_porphyromonas_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+write_tsv(porphyromonas_genome_list, paste("../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_porphyromonas_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
 ```
 
 
@@ -206,19 +206,19 @@ soil rather than mammalian associated).
 ```{bash eval = FALSE}
 
 ## slurm script is in 02-scripts.backup/99-edirect_assembly_metadata_download.sh
-awk -F "\t" '{print $4}' /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126.tsv | parallel -j 16 "esearch -db assembly -query {} | elink -db assembly -target nuccore | efetch -format docsum | xtract -pattern DocumentSummary -tab "@" -element TaxId -tab "@" -element Organism -tab "@" -element SubType -tab "@" -element SubName >> /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv"
+awk -F "\t" '{print $4}' ../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126.tsv | parallel -j 16 "esearch -db assembly -query {} | elink -db assembly -target nuccore | efetch -format docsum | xtract -pattern DocumentSummary -tab "@" -element TaxId -tab "@" -element Organism -tab "@" -element SubType -tab "@" -element SubName >> /00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv"
 
 
-cat /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv | uniq  >> /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata_clean.tsv
+cat ../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv | uniq  >> /00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata_clean.tsv
 
-rm /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv
+rm "../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20181126_metadata.tsv
 
 ```
 
 We can then load this file
 
 ```{r eval = F}
-metadata <- fread("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20190516_extra_metadata_clean.tsv", sep = '#') %>% as_tibble()
+metadata <- fread("../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_20190516_extra_metadata_clean.tsv", sep = '#') %>% as_tibble()
 colnames(metadata) <- c("tax_id", "Organism", "keys", "values")
 ```
 
@@ -301,7 +301,7 @@ Our final list of taxa then is as follows
 ```{r eval = F}
 core_genome_list_final <- core_genome_list %>% filter(!organism_name %in% taxa_to_exclude)
 
-write_tsv(core_genome_list_final, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_filtered_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+write_tsv(core_genome_list_final, paste("../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_filtered_",format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
 
 ```
 
@@ -310,15 +310,15 @@ To download
 ```{bash eval =F}
 #!/usr/bin/env bash
 
-cat /projects1/microbiome_calculus/evolution/00-documentation.backup/18-Core_Microbiome_AssemblyDownload_filtered_20190516_extra.tsv | while read -r LINE; do
+cat ../00-documentation.backup/18-Core_Microbiome_AssemblyDownload_filtered_20190516_extra.tsv | while read -r LINE; do
         genus=$(echo "$LINE" | awk -F '\t' '{print $1}') 
         species=$(echo "$LINE" | awk -F '\t' '{print $2}' | sed 's/ /_/g' | sed 's/\.//g' | sed 's#\"##g') 
         ftp=$(echo "$LINE" | awk -F '\t' '{print $12}') 
-        mkdir -p /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/
-        wget "$ftp"/*fna.gz -P /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/
-        wget "$ftp"/*gff.gz -P /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/
-        rm /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/*_cds_from_genomic*
-        rm /projects1/microbiome_calculus/evolution/01-data/genomes/"$genus"/"$species"/*_rna_from_genomic*
+        mkdir -p ../01-data/genomes/"$genus"/"$species"/
+        wget "$ftp"/*fna.gz -P ../01-data/genomes/"$genus"/"$species"/
+        wget "$ftp"/*gff.gz -P ../01-data/genomes/"$genus"/"$species"/
+        rm ../01-data/genomes/"$genus"/"$species"/*_cds_from_genomic*
+        rm ../01-data/genomes/"$genus"/"$species"/*_rna_from_genomic*
 done
 
 ```
@@ -337,7 +337,7 @@ NCBI genbank or assembly accession ID. For this I have made a small script
 which does this for us.
 
 ```{bash eval = F}
-cd /projects1/microbiome_calculus/evolution/01-data/genomes/
+cd ../01-data/genomes/
 
 find . -name '*.fna.gz' | parallel -j 16 "../../02-scripts.backup/099-fasta_header_replacer.sh {}"
 ```
@@ -361,11 +361,11 @@ mask ~100bp up and downstream of these junctions).
 To make the super reference
 
 ```{bash eval = F}
-cd /projects1/microbiome_calculus/evolution/01-data/genomes/
+cd ../01-data/genomes/
 for i in */; do 
   name="$(echo $i | rev | cut -d/ -f 2 | rev)"
   echo "$name"
-  /projects1/microbiome_calculus/evolution/02-scripts.backup/099-collapse_fastas.sh "$name"_superreference "$i" "$i"/*/*.fna.gz
+  ../02-scripts.backup/099-collapse_fastas.sh "$name"_superreference "$i" "$i"/*/*.fna.gz
 done
 ```
 
@@ -381,7 +381,7 @@ For downstream analysis, we can also generate a bed file for region
 specification.
 
 ```{bash eval = F}
-cd /projects1/microbiome_calculus/evolution/01-data/genomes/
+cd ../01-data/genomes/
 for i in */collapsed_*coords; do
   awk -F "[/\t]" '{bed_start=$7-1} {print $1"\t"bed_start"\t"$8"\t"$3"/"$4"/"$5}' "$i" > "${i%%.coords}".bed
 done

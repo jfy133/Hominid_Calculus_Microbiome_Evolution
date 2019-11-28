@@ -49,17 +49,17 @@ minimum support values (0.01 and 0.04).
 Load compositional data and associated data.
 
 ```{r}
- otu_tree_nt <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_species.nwk")
-  otu_tree_rs <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_species.nwk")
- otu_table_nt <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
- otu_table_rs <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
- taxa_to_remove_nt <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
- taxa_to_remove_rs <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
+ otu_tree_nt <- read.tree("../04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_species.nwk")
+  otu_tree_rs <- read.tree("../04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_species.nwk")
+ otu_table_nt <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+ otu_table_rs <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+ taxa_to_remove_nt <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+ taxa_to_remove_rs <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
 
- samples_to_remove_nt <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv") %>% filter(more_env == T)
- samples_to_remove_rs <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv") %>% filter(more_env == T)
+ samples_to_remove_nt <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv") %>% filter(more_env == T)
+ samples_to_remove_rs <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv") %>% filter(more_env == T)
  
- raw_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
+ raw_metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
 
 ```
 
@@ -377,7 +377,7 @@ genus_colours <- c(None = "black", Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pa
           Skin = "#d9d9d9", Sediment = "#d9d9d9")
 
 
-strep_db <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/25-streptococcus_cladegroup_amylasegroup_database.tsv")
+strep_db <- read_tsv("../00-documentation.backup/25-streptococcus_cladegroup_amylasegroup_database.tsv")
 
 ## Drop salivarius as not normally considered abp carrying, and only single strain with possible activity
 strep_db <- strep_db %>% 
@@ -691,7 +691,7 @@ save_stackedbar <- function(x, db, minsup, clustering) {
     sep = ""
   ),
   plot = x,
-  "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/streptococcus_investigation.backup/",
+  "../04-analysis/screening/streptococcus_investigation.backup/",
   device = cairo_pdf,
   width = 7,
   height = 3.5,
@@ -1060,9 +1060,9 @@ Load genus/stats superrefernece stats (previously generated in notebook
 `031-supperferencemapped_stats`)
 
 ```{r}
-superreference_data <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz")
+superreference_data <- read_tsv("../04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz")
 
-raw_metadata_deep <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+raw_metadata_deep <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
 ```
 
 ## Ordering

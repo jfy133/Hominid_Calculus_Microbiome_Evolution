@@ -22,7 +22,7 @@ library(patchwork)
 Set project directory (if required!)
 
 ```{r}
-proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
+proj_dir <- "../"
 ```
 
 Load files to be analysed
@@ -31,9 +31,9 @@ Load files to be analysed
 ## Screening
 
 ```{r}
-metadata_sample <- read_csv(paste0(proj_dir, "00-documentation.backup/01-calculus_microbiome_deep_evolution_samplescontrols_metadata_20190523.csv"))
-metadata_individual <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
-metadata_library_screening <- read_csv(paste0(proj_dir, "00-documentation.backup/03-human_filtering_statistics_20190522.csv"))
+metadata_sample <- read_csv(paste0(proj_dir, "../00-documentation.backup/01-calculus_microbiome_deep_evolution_samplescontrols_metadata_20190523.csv"))
+metadata_individual <- read_tsv(paste0(proj_dir, "../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+metadata_library_screening <- read_csv(paste0(proj_dir, "../00-documentation.backup/03-human_filtering_statistics_20190522.csv"))
 
 metadata_library_screening_polyg <- read_csv(paste0(proj_dir, "04-analysis/screening/eager/polyGremoval_output/output/Report_output.csv"))
 ```
@@ -42,7 +42,7 @@ metadata_library_screening_polyg <- read_csv(paste0(proj_dir, "04-analysis/scree
 
 ```{r}
 metadata_library_deep <- read_csv(paste0(proj_dir, "03-preprocessing/deep/human_filtering/output/Report_output.csv"))
-metadata_individual_deep <- read_tsv(paste0(proj_dir, "00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv"))
+metadata_individual_deep <- read_tsv(paste0(proj_dir, "../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv"))
 ```
 
 # Data Wranging

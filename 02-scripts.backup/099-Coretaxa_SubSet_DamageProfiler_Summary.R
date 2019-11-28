@@ -12,7 +12,7 @@ library(vegan) ## for statistical testing
 library(patchwork) ## for further visualisation assistance
 library(cowplot) ## further visualisation assistance
 
-data_meta_raw <- read_csv("00-documentation.backup/01-calculus_microbiome_deep_evolution_samplescontrols_metadata_20191112.csv")
+data_meta_raw <- read_csv(../00-documentation.backup/01-calculus_microbiome_deep_evolution_samplescontrols_metadata_20191112.csv")
 
 data_meta_filtered <- filter(data_meta_raw, !grepl("Blank", Group)) %>%
   select(Group, Host_Common, Latitude, Longitude) %>% 
@@ -56,12 +56,12 @@ common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1,
                    Gut = 7, Skin = 9, Sediment = 10, EnvironmentalControl = 12)
 
 ## Metadata
-raw_metadata <- read_tsv("00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>%
+raw_metadata <- read_tsv(../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>%
   rename(Individual = `#SampleID`)
 
 ######DAMAGE########
 
-data_longdamage <- read_tsv("00-documentation.backup/14-damageprofiler_screening_3p_5p_summaries_20190503.tsv")
+data_longdamage <- read_tsv(../00-documentation.backup/14-damageprofiler_screening_3p_5p_summaries_20190503.tsv")
 
 selected_taxa_damage <- c("streptococcus_gordonii", "fusobacterium_nucleatum", 
                           "pseudopropionibacterium_propionicum", 

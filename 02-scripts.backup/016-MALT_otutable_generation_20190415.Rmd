@@ -20,7 +20,7 @@ library(tidyverse)
 Load OTU tables
 
 ```{r}
-main_dir <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/")
+main_dir <- Sys.glob("../04-analysis/screening/megan.backup/")
 
 input_files <- list.files(main_dir, pattern = '*.txt', full.names = TRUE, recursive = FALSE)
 input_files <- input_files[grepl("prokaryotes", input_files) & 
@@ -36,10 +36,10 @@ Load extra data
 
 ```{r}
 ## Metadata
-raw_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
+raw_metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
 
 ## Bad samples to remove
-main_dir_sampfil <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/")
+main_dir_sampfil <- Sys.glob("../04-analysis/screening/cumulative_decay.backup/")
 
 input_files_sampfil <- list.files(main_dir_sampfil, pattern = '*', full.names = TRUE, recursive = FALSE) %>%
      enframe() %>% filter(grepl("withinfluctuation", value) & grepl("tsv", value)) %>% pull(value)
@@ -50,7 +50,7 @@ data_out_sampfil <- tibble(filename = input_files_sampfil) %>%
 
 
 ## Predicted contaminant taxa to remove
-main_dir_cont <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup")
+main_dir_cont <- Sys.glob("../04-analysis/screening/decontam.backup")
 
 input_files_cont <- list.files(main_dir_cont, pattern = 'decontam_*', full.names = TRUE, recursive = FALSE) %>%
   enframe() %>% filter(grepl("megan", value) & grepl("tsv", value)) %>% pull(value)

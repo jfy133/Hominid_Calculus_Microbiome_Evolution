@@ -176,7 +176,7 @@ parse_files <- function(in_glob, pattern){
                   status_rooted, "-",
                   format(Sys.Date(), "%Y%m%d"),
                   ".pdf"),
-           path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/phylogenies/plots/",
+           path = "../04-analysis/deep/phylogenies/plots/",
            final_tree,
            device = cairo_pdf,
            width = 3.5,
@@ -193,7 +193,7 @@ parse_files <- function(in_glob, pattern){
 Load trees
 
 ```{r, message=F, warning=F}
-analysis_dirs <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/*/output/*_2X_0.7_0.7/*/")
+analysis_dirs <- Sys.glob("../04-analysis/deep/multivcfanalyzer/*/output/*_2X_0.7_0.7/*/")
 
 trees <- parse_files(analysis_dirs, "*.nwk") %>%
   mutate(file_contents = map(path, read.tree)) %>%
@@ -216,7 +216,7 @@ pairwisesnps_raw <- parse_files(analysis_dirs, "*overlappingNucleotidesReport*")
 Load metadata
 
 ```{r}
-sample_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+sample_metadata <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
 ```
 
 ## Plotting Aesthetics

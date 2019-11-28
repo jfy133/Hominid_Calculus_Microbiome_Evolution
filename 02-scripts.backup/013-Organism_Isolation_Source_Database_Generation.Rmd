@@ -72,7 +72,7 @@ Lets do a brief example using a single species. First we need to give the
 database we want to search, and the target species.
 
 ```{bash}
-/home/fellows/edirect/esearch -db nuccore -query "Ottowia sp. oral taxon 894"
+edirect/esearch -db nuccore -query "Ottowia sp. oral taxon 894"
 ```
 ```
 <ENTREZ_DIRECT>
@@ -162,7 +162,7 @@ Now I want to switch to R, as it is easier to deal with tabular data (at least
 for me).
 
 ```{r eval=F}
-setwd("/home/fellows/Downloads/Genome_Isolation_source_Experiment")
+setwd("Downloads/Genome_Isolation_source_Experiment")
 library(tidyverse)
 
 ## Prep

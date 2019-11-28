@@ -7,7 +7,7 @@ library(tidyverse)
 
 ## Functions
 
-main_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/"
+main_dir <- "../04-analysis/screening/philr.backup/"
 
 collect_files <- function(string) {
   list.files(main_dir, pattern = string, full.names = T, recursive = F) %>% 
@@ -146,13 +146,13 @@ summary_permanovabootstrap <- collect_data(files_permanovabootstrap) %>%
 
 
 
-write_tsv(data_betadisperanova$anova, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/19a-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_betadispersion_singlerun_summary_anova_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+write_tsv(data_betadisperanova$anova, paste("../00-documentation.backup/19a-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_betadispersion_singlerun_summary_anova_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
 
-write_tsv(data_betadisperpermutest$permutest, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/19b-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_betadispersion_singlerun_summary_permutest_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+write_tsv(data_betadisperpermutest$permutest, paste("../00-documentation.backup/19b-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_betadispersion_singlerun_summary_permutest_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
 
-write_tsv(data_permanovasingle$adonis, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/21-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_permanova_singlerun_summary_adonis_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+write_tsv(data_permanovasingle$adonis, paste("../00-documentation.backup/21-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_permanova_singlerun_summary_adonis_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
 
-write_tsv(summary_permanovabootstrap$Adonis, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/22a-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_permanova_bootstrap_summary_adonis_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+write_tsv(summary_permanovabootstrap$Adonis, paste("../00-documentation.backup/22a-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_permanova_bootstrap_summary_adonis_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
 
-write_tsv(summary_permanovabootstrap$BetaDispersion, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/22a-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_permanova_bootstrap_summary_betadisper_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+write_tsv(summary_permanovabootstrap$BetaDispersion, paste("../00-documentation.backup/22a-philr_hostgenus_noSources_noControls_badsamplesOut_withinvariation_permanova_bootstrap_summary_betadisper_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
 

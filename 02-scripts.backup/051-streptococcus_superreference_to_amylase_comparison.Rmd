@@ -16,11 +16,11 @@ Load genus/stats superrefernece stats (previously generated in notebook
 `031-supperferencemapped_stats`)
 
 ```{r}
-superreference_data <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz")
+superreference_data <- read_tsv("../04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz")
 
-raw_metadata_deep <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+raw_metadata_deep <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
 
-abp_data <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/superreference_mapping/output/Streptococcus/*/5-DeDup/") %>%
+abp_data <- Sys.glob("../04-analysis/deep/eager/superreference_mapping/output/Streptococcus/*/5-DeDup/") %>%
   list.files("*reads.tsv.gz", full.names = T) %>%
   enframe(name = NULL, value = "file_path") %>%
   mutate(file_contents = map(file_path, ~read_tsv(.x, 
@@ -171,7 +171,7 @@ To save
 
 ```{r eval = F}
 ## And save
-write_tsv(data_combined, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/streptococcus_investigation.backup/Streptococcus_superreference_amylaseReadsOverAllReads_rawdata.tsv")
+write_tsv(data_combined, "../04-analysis/deep/streptococcus_investigation.backup/Streptococcus_superreference_amylaseReadsOverAllReads_rawdata.tsv")
 ```
 
 ## Plotting
@@ -195,7 +195,7 @@ to save
 
 ```{r eval = F}
 ggsave(plot = final_plot, 
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/streptococcus_investigation.backup/Streptococcus_superreference_amylaseReadsOverAllReads_plot.pdf",
+       "../04-analysis/deep/streptococcus_investigation.backup/Streptococcus_superreference_amylaseReadsOverAllReads_plot.pdf",
       device = cairo_pdf,
       width = 3.5,
       height = 3.5,

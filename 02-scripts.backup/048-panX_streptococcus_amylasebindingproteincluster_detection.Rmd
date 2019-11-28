@@ -236,7 +236,7 @@ For abpA
 
 ```{r}
 all_abpA_aa_aln %>% select(name) %>% rename(Annotation = name) %>%
-  write_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/streptococcus_investigation.backup/panX/selected_panX_abpA_annotations.tsv")
+  write_tsv("../04-analysis/screening/streptococcus_investigation.backup/panX/selected_panX_abpA_annotations.tsv")
 ```
 
 For abpA
@@ -248,7 +248,7 @@ all_abpB_aa_aln %>%
   arrange(seq) %>% 
   select(name) %>% 
   rename(Annotation = name) %>%
-  write_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/streptococcus_investigation.backup/panX/selected_panX_abpB_annotations.tsv")
+  write_tsv("../04-analysis/screening/streptococcus_investigation.backup/panX/selected_panX_abpB_annotations.tsv")
 
 ```
 

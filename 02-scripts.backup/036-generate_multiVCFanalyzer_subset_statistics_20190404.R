@@ -41,8 +41,8 @@ input_bed <- args[2]
 input_feature <- args[3]
 
 ## Testing ##
- #input_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/multivcfanalyzer/superreference_mapping/output/Treponema/"
- #input_bed <- "/home/fellows/projects1/microbiome_calculus/evolution/01-data/genomes/Treponema/collapsed_Treponema_superreference.bed"
+ #input_dir <- "../04-analysis/deep/multivcfanalyzer/superreference_mapping/output/Treponema/"
+ #input_bed <- "../01-data/genomes/Treponema/collapsed_Treponema_superreference.bed"
  #input_feature <- "Treponema_socranskii"
  #out_dir <- "~/Downloads/"
 #############

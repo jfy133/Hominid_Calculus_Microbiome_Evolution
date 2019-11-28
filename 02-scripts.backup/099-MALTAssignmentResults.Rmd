@@ -23,15 +23,15 @@ library(dabestr)
 Set project directory (if required!)
 
 ```{r}
-proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
+proj_dir <- "../"
 ```
 
 Load files to be analysed - fortunately nt stats are already in metadat
 
 ```{r}
-metadata <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+metadata <- read_tsv(paste0(proj_dir, "../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
 
-data_refseq_raw <- read_tsv(paste0(proj_dir, "00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics_refseq_bacarchhomo_gcs_20181122_20190410.tsv"))
+data_refseq_raw <- read_tsv(paste0(proj_dir, "../00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics_refseq_bacarchhomo_gcs_20181122_20190410.tsv"))
 ```
 
 We will also load a MEGAN table for nt at domain level to look at 
@@ -360,7 +360,7 @@ final_comparison_all
 ggsave(paste0("SupFigX_MALTAssignments_AllCategories_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".pdf"), 
        plot = final_comparison_all,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = cairo_pdf, 
        width = 7, 
        height = 5, 
@@ -370,7 +370,7 @@ ggsave(paste0("SupFigX_MALTAssignments_AllCategories_comparison_" ,
 ggsave(paste0("SupFigX_MALTAssignments_AllCategories_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".png"), 
        plot = final_comparison_all,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = "png", 
        width = 7, 
        height = 5, 
@@ -451,7 +451,7 @@ dabest_final
 ggsave(paste0("SupFigX_MALTAssignments_dabest_AllCategoriesCalculusOnly_comparison_" ,
              format(Sys.Date(), "%Y%m%d"),".pdf"),
        plot = dabest_final,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = cairo_pdf,
        width = 5,
        height = 5,
@@ -461,7 +461,7 @@ ggsave(paste0("SupFigX_MALTAssignments_dabest_AllCategoriesCalculusOnly_comparis
 ggsave(paste0("SupFigX_MALTAssignments_dabest_AllCategoriesCalculusOnly_comparison_" ,
              format(Sys.Date(), "%Y%m%d"),".png"),
        plot = dabest_final,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = "png",
        width = 5,
        height = 5,
@@ -523,7 +523,7 @@ And save
 ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_comparison_" ,
              format(Sys.Date(), "%Y%m%d"),".pdf"),
        plot = calculusonly_comparison,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = cairo_pdf,
        width = 7,
        height = 3,
@@ -533,7 +533,7 @@ ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_comparison_" ,
 ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_comparison_" ,
              format(Sys.Date(), "%Y%m%d"),".png"),
        plot = calculusonly_comparison,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = "png",
        width = 7,
        height = 3,
@@ -563,7 +563,7 @@ eukvsnoneuk_all_plot
 ggsave(paste0("SupFigX_MALTAssignments_all_eukaryoticNoneukaryoticRatio_" ,
              format(Sys.Date(), "%Y%m%d"),".pdf"),
        plot = eukvsnoneuk_all_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = cairo_pdf,
        width = 7,
        height = 3,
@@ -573,7 +573,7 @@ ggsave(paste0("SupFigX_MALTAssignments_all_eukaryoticNoneukaryoticRatio_" ,
 ggsave(paste0("SupFigX_MALTAssignments_all_eukaryoticNoneukaryoticRatio_" ,
              format(Sys.Date(), "%Y%m%d"),".png"),
        plot = eukvsnoneuk_all_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = "png",
        width = 7,
        height = 3,
@@ -601,7 +601,7 @@ eukvsnoneuk_modernhumanplaque_plot
 ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_eukaryoticNoneukaryoticRatio_" ,
              format(Sys.Date(), "%Y%m%d"),".pdf"),
        plot = eukvsnoneuk_modernhumanplaque_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = cairo_pdf,
        width = 7,
        height = 3,
@@ -611,7 +611,7 @@ ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_eukaryoticNoneukaryoti
 ggsave(paste0("SupFigX_MALTAssignments_CalculusPlaqueOnly_eukaryoticNoneukaryoticRatio_" ,
              format(Sys.Date(), "%Y%m%d"),".png"),
        plot = eukvsnoneuk_modernhumanplaque_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/MALT_AssignmentResults",
+       path = "../04-analysis/screening/malt",
        device = "png",
        width = 7,
        height = 3,

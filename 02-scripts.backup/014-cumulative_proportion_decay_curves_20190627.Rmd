@@ -25,15 +25,15 @@ which the isolation source DB was not built against
 db <- "refseq" ## 
 
 if (db == "nt") {
-  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_all_summarised_nt.txt")
+  otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_all_summarised_nt.txt")
 } else if (db == "refseq") {
-  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
+  otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
 }
 
 
-metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
+metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
 
-database <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/07-master_oralgenome_isolationsource_database_20180510.tsv")
+database <- read_tsv("../00-documentation.backup/07-master_oralgenome_isolationsource_database_20180510.tsv")
 
 ```
 
@@ -284,7 +284,7 @@ cfdp_plot(combined_data_meta_extended,
           paste("Filtering by oral fraction above", proportion_threshold, "after 'burn-in' of 1% of taxa"), 
           one_pc_pass, 
           250) %>% 
-  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter1pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter1pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "../04-analysis/screening/cumulative_decay.backup/", 
         device = cairo_pdf, 
         width = 7, 
         height = 5, 
@@ -296,7 +296,7 @@ cfdp_plot(combined_data_meta_extended,
           paste("Filtering by oral fraction above", proportion_threshold, "after 'burn-in' of 2% of taxa"), 
           two_pc_pass, 
           250) %>% 
-  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter2pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter2pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "../04-analysis/screening/cumulative_decay.backup/", 
         device = cairo_pdf, 
         width = 7, 
         height = 5, 
@@ -307,7 +307,7 @@ cfdp_plot(combined_data_meta_extended,
           paste("Filtering by oral fraction above", proportion_threshold, "after 'burn-in' of 5% of taxa"), 
           five_pc_pass, 
           250) %>% 
-  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter5pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter5pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "../04-analysis/screening/cumulative_decay.backup/", 
         device = cairo_pdf, 
         width = 7, 
         height = 5, 
@@ -319,7 +319,7 @@ cfdp_plot(combined_data_meta_extended,
           paste("Filtering by oral fraction above", proportion_threshold, "after 'burn-in' of 10% of taxa"), 
           ten_pc_pass, 
           250) %>% 
-  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter10pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninfilter10pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "../04-analysis/screening/cumulative_decay.backup/", 
         device = cairo_pdf, 
         width = 7, 
         height = 5, 
@@ -350,28 +350,28 @@ combined_data_meta_extended %>%
   select(sample, one_pc_pass) %>% 
   distinct() %>% 
   mutate(more_env = if_else(one_pc_pass, FALSE, TRUE)) %>% 
-  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+  write_tsv(paste0("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
 
 
 combined_data_meta_extended %>% 
   select(sample, two_pc_pass) %>% 
   distinct() %>% 
   mutate(more_env = if_else(two_pc_pass, FALSE, TRUE)) %>% 
-  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+  write_tsv(paste0("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
 
 
 combined_data_meta_extended %>% 
   select(sample, five_pc_pass) %>% 
   distinct() %>% 
   mutate(more_env = if_else(five_pc_pass, FALSE, TRUE)) %>% 
-  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+  write_tsv(paste0("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
 
 
 combined_data_meta_extended %>% 
   select(sample, ten_pc_pass) %>% 
   distinct() %>% 
   mutate(more_env = if_else(ten_pc_pass, FALSE, TRUE)) %>% 
-  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+  write_tsv(paste0("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
 
 
 ```
@@ -490,7 +490,7 @@ cfdp_plot(combined_data_meta_extended,
           "Filtering by oral fraction above 50 after 'burn-in' of 10% of taxa", 
             withinfluctuationvariation_pass,
           250) %>% 
-  ggsave(filename = paste0("cumulativeproportiondecay_burninwithinfluctuationSDvariation_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/", 
+  ggsave(filename = paste0("cumulativeproportiondecay_burninwithinfluctuationSDvariation_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".pdf"), "../04-analysis/screening/cumulative_decay.backup/", 
         device = cairo_pdf, 
         width = 7, 
         height = 5, 
@@ -563,7 +563,7 @@ combined_data_meta_extended %>%
   select(sample, withinfluctuationvariation_pass) %>% 
   distinct() %>% 
   mutate(more_env = if_else(withinfluctuationvariation_pass, FALSE, TRUE)) %>% 
-  write_tsv(paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
+  write_tsv(paste0("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_", db,"_fractionOralThreshold_", proportion_threshold,"_",format(Sys.Date(), "%Y%m%d"),".tsv"))
 
 ```
  

@@ -4,8 +4,8 @@ library(BacDiveR)
 
 ## DATA
 ## Load heatmap block data
-#input_data <- "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/compositional_heatmaps.backup/block_summaries/Heatmap_ManualBlockDescriptions_alltaxa_minsupportmultiplier4_minprevalence4_databasent_20190807.tsv"
-input_data <- "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/compositional_heatmaps.backup/block_summaries/Heatmap_ManualBlockDescriptions_alltaxa_minsupportmultiplier4_minprevalence4_databaserefseq_20190807.tsv"
+#input_data <- "../04-analysis/screening/compositional_heatmaps.backup/block_summaries/Heatmap_ManualBlockDescriptions_alltaxa_minsupportmultiplier4_minprevalence4_databasent_20190807.tsv"
+input_data <- "../04-analysis/screening/compositional_heatmaps.backup/block_summaries/Heatmap_ManualBlockDescriptions_alltaxa_minsupportmultiplier4_minprevalence4_databaserefseq_20190807.tsv"
 table_nt <- read_tsv(input_data)
 
 ## set some additional prior info

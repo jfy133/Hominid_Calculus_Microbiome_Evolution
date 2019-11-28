@@ -82,76 +82,76 @@ library(pairwiseAdonis) ## for PERMANOVA bonferoni post-hoc
 
 ## The tree related to the OTU table
 if (tax_level == "genus" & db == "nt") {
- otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_genus.nwk")
+ otu_tree <- read.tree("../04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_genus.nwk")
 } else if (tax_level == "species" & db == "nt") {
- otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_species.nwk")
+ otu_tree <- read.tree("../04-analysis/screening/megan.backup/Evolution-Comparison_20190401_nt_prokaryotes_species.nwk")
 } else if (tax_level == "genus" & db == "refseq") {
- otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_genus.nwk")
+ otu_tree <- read.tree("../04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_genus.nwk")
 } else if (tax_level == "species" & db == "refseq") {
-  otu_tree <- read.tree("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_species.nwk")
+  otu_tree <- read.tree("../04-analysis/screening/megan.backup/Evolution-Comparison_20190410_refseq_prokaryotes_species.nwk")
 }
 
 
 ## OTU tables
 if (tax_level == "genus" & db == "nt") {
- otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_prokaryotes_summarised_nt.txt")
+ otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_prokaryotes_summarised_nt.txt")
 } else if (tax_level == "species" & db == "nt") {
- otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+ otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
 } else if (tax_level == "genus" & db == "refseq") {
- otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_prokaryotes_summarised_refseq.txt")
+ otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_prokaryotes_summarised_refseq.txt")
 } else if (tax_level == "species" & db == "refseq") {
- otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
+ otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
 }
 
 
 ## Predicted contaminant taxa to remove
 if (tax_level == "genus" & db == "nt") {
- taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_genus_combined_0.99_190411.tsv")
+ taxa_to_remove <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_genus_combined_0.99_190411.tsv")
 } else if (tax_level == "species" & db == "nt") {
- taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+ taxa_to_remove <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
 } else if (tax_level == "genus" & db == "refseq") {
- taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_genus_combined_0.99_190411.tsv")
+ taxa_to_remove <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_genus_combined_0.99_190411.tsv")
 } else if (tax_level == "species" & db == "refseq") {
- taxa_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
+ taxa_to_remove <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
 }
 
 ## Metadata
-raw_metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
+raw_metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
 
 ## Bad samples to remove
 
 if (sample_filter == "sourcetracker") {
- samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/sourcetracker_filtering_results_190509.tsv") %>% 
+ samples_to_remove <- read_tsv("../04-analysis/screening/sourcetracker.backup/sourcetracker_filtering_results_190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "nt" && sample_filter == "onepcburnin") {
- samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("home/fellows../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "nt" && sample_filter == "twopcburnin") {
- samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("home/fellows../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "nt" && sample_filter == "fivepcburnin") {
- samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "nt" && sample_filter == "tenpcburnin") {
- samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_nt_fractionOralThreshold_50_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "nt" && sample_filter == "withinvariation") {
- samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "refseq" && sample_filter == "onepcburnin") {
- samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("home/fellows../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter1pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "refseq" && sample_filter == "twopcburnin") {
- samples_to_remove <- read_tsv("home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("home/fellows../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter2pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "refseq" && sample_filter == "fivepcburnin") {
- samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter5pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "refseq" && sample_filter == "tenpcburnin") {
- samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninfilter10pc_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
   filter(more_env == T)
 } else if (db == "refseq" && sample_filter == "withinvariation") {
- samples_to_remove <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
+ samples_to_remove <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190509.tsv") %>% 
   filter(more_env == T)
 }
 
@@ -322,7 +322,7 @@ rownames(otu_matrix_final) <- gsub(" ", "_", rownames(otu_matrix_final))
 #' And save
 #' 
 ## ----eval = FALSE--------------------------------------------------------
-## save(taxonomy_summary, file = paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/0-evolution-philr_taxonomytable", "_", db,"_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".robj", sep = ""))
+## save(taxonomy_summary, file = paste("../04-analysis/screening/philr.backup/0-evolution-philr_taxonomytable", "_", db,"_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".robj", sep = ""))
 
 #' 
 #' For the failed taxa, manually look up paths and add taxonomic paths and add them
@@ -366,16 +366,16 @@ rownames(otu_matrix_final) <- gsub(" ", "_", rownames(otu_matrix_final))
 ## temp <- read_tsv("~/Downloads/Genus_extra.csv")
 ## taxonomy_summary <- bind_rows(taxonomy_summary, temp) %>% distinct()
 ## 
-## save(taxonomy_summary, file = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/0-evolution-philr_taxonomytable_withsources_withControls_all_20190404.robj")
+## save(taxonomy_summary, file = "../04-analysis/screening/philr.backup/0-evolution-philr_taxonomytable_withsources_withControls_all_20190404.robj")
 
 #' 
 #' Load a previously made taxonomy table
 #' 
 ## ----fig.height=3.5, fig.width=7-----------------------------------------
 if (db == "nt") {
- load("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/0-evolution-philr_taxonomytable_withsources_withblanks_all_20190404.robj")
+ load("../04-analysis/screening/philr.backup/0-evolution-philr_taxonomytable_withsources_withblanks_all_20190404.robj")
 } else if (db == "refseq") {
- load("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/0-evolution-philr_taxonomytable_refseq_species_withSources_withControls_20190115.robj")
+ load("../04-analysis/screening/philr.backup/0-evolution-philr_taxonomytable_refseq_species_withSources_withControls_20190115.robj")
 }
 
 taxonomy_table <- as.data.frame(taxonomy_summary[2:ncol(taxonomy_summary)])
@@ -705,7 +705,7 @@ if (script == F) {
  pcoa_plot_hostpops
 }
 
-ggsave(paste("01a-philr_pcoa_malt_euclidean_axis1axis2_hostpopulations_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostpops, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("01a-philr_pcoa_malt_euclidean_axis1axis2_hostpopulations_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostpops, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
 
 
 ## Axis 3 and 2
@@ -725,7 +725,7 @@ if (script == F) {
 pcoa_plot_hostpops
 }
 
-ggsave(paste("01b-philr_pcoa_malt_euclidean_axis3axis2_hostpopulations_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostpops, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("01b-philr_pcoa_malt_euclidean_axis3axis2_hostpopulations_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostpops, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
 
 
 
@@ -786,7 +786,7 @@ if (script == F) {
 pcoa_plot_hostgenus
 }
 
-ggsave(paste("02a-philr_pcoa_malt_euclidean_axis1axis2_hostgenus_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostgenus, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("02a-philr_pcoa_malt_euclidean_axis1axis2_hostgenus_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostgenus, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
 
 
 ## Axis 3 and 2
@@ -808,7 +808,7 @@ if (script == F) {
 pcoa_plot_hostgenus
 }
 
-ggsave(paste("02b-philr_pcoa_malt_euclidean_axis3axis2_hostgenus_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostgenus, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("02b-philr_pcoa_malt_euclidean_axis3axis2_hostgenus_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostgenus, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
 
 
 #' 
@@ -844,7 +844,7 @@ if (script == F) {
 pcoa_plot_hostgenus_reduced
 }
 
-ggsave(paste("02a-philr_pcoa_malt_euclidean_axis1axis2_hostgenus_", db , "_", tax_level, "_", sources, "reduced_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostgenus_reduced, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("02a-philr_pcoa_malt_euclidean_axis1axis2_hostgenus_", db , "_", tax_level, "_", sources, "reduced_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostgenus_reduced, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
 
 
 ## Axis 3 and 2
@@ -869,7 +869,7 @@ if (script == F) {
 pcoa_plot_hostgenus_reduced
 }
 
-ggsave(paste("02b-philr_pcoa_malt_euclidean_axis3axis2_hostgenus_", db , "_", tax_level, "_", sources, "reduced_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostgenus_reduced, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("02b-philr_pcoa_malt_euclidean_axis3axis2_hostgenus_", db , "_", tax_level, "_", sources, "reduced_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_hostgenus_reduced, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 3.5, units = "in", dpi = 600)
 
 #' 
 #' 
@@ -908,9 +908,9 @@ if (script == F) {
 pcoa_plot_isoral_axis3axis2
 }
 
-ggsave(paste("03a-philr_pcoa_malt_euclidean_axis1axis2_isoral_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_isoral_axis1axis2, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 5, units = "in", dpi = 600)
+ggsave(paste("03a-philr_pcoa_malt_euclidean_axis1axis2_isoral_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_isoral_axis1axis2, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 5, units = "in", dpi = 600)
 
-ggsave(paste("03b-philr_pcoa_malt_euclidean_axis3axis2_isoral_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_isoral_axis3axis2, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 5, units = "in", dpi = 600)
+ggsave(paste("03b-philr_pcoa_malt_euclidean_axis3axis2_isoral_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = pcoa_plot_isoral_axis3axis2, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 5, units = "in", dpi = 600)
 
 
 #' 
@@ -1011,9 +1011,9 @@ combined_hostgenusseparated_a1a2_plot
 combined_hostgenusseparated_a3a2_plot
 }
  
-ggsave(paste("04a-philr_pcoa_malt_euclidean_axis1axis2_hostgenusseparated_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = combined_hostgenusseparated_a1a2_plot, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 5, units = "in", dpi = 600)
+ggsave(paste("04a-philr_pcoa_malt_euclidean_axis1axis2_hostgenusseparated_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = combined_hostgenusseparated_a1a2_plot, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 5, units = "in", dpi = 600)
 
-ggsave(paste("04b-philr_pcoa_malt_euclidean_axis3axis2_hostgenusseparated_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = combined_hostgenusseparated_a3a2_plot, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 5, units = "in", dpi = 600)
+ggsave(paste("04b-philr_pcoa_malt_euclidean_axis3axis2_hostgenusseparated_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = combined_hostgenusseparated_a3a2_plot, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 5, units = "in", dpi = 600)
 
 
 #' 
@@ -1046,7 +1046,7 @@ ggsave(paste("04b-philr_pcoa_malt_euclidean_axis3axis2_hostgenusseparated_", db 
 ## ps_data.philr_clust_dendro
 ## }
 ## 
-## ggsave(paste("05-philr_pcoa_malt_euclidean_hclustwardD2_hostpopulation_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = ps_data.philr_clust_dendro, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 7, units = "in", dpi = 600)
+## ggsave(paste("05-philr_pcoa_malt_euclidean_hclustwardD2_hostpopulation_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = ps_data.philr_clust_dendro, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 7, height = 7, units = "in", dpi = 600)
 
 #' 
 #' ## Summary
@@ -1107,7 +1107,7 @@ ps_data.betadisper <- betadisper(ps_data.dist, ind_groups, type = "centroid")
 ps_data.betadisper
 
 ## to save
-sink(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/06-betadisper_homogenity_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+sink(paste("../04-analysis/screening/philr.backup/06-betadisper_homogenity_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
 ps_data.betadisper
 sink(file = NULL)
 
@@ -1124,7 +1124,7 @@ ps_data.betadisper_anova <- anova(ps_data.betadisper) %>% tidy
 
 ps_data.betadisper_anova
 
-write_tsv(ps_data.betadisper_anova, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/07-betadisper_homogenity_anova_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+write_tsv(ps_data.betadisper_anova, paste("../04-analysis/screening/philr.backup/07-betadisper_homogenity_anova_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
 
 
 #' 
@@ -1138,7 +1138,7 @@ ps_data.betadisper_permutest <- permutest(ps_data.betadisper , pairwise = TRUE)
 ps_data.betadisper_permutest
 
 # to save
-sink(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/08-betadisper_homogenity_permutest_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+sink(paste("../04-analysis/screening/philr.backup/08-betadisper_homogenity_permutest_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
 
 ps_data.betadisper_permutest
 sink(file = NULL)
@@ -1182,7 +1182,7 @@ betadisper_boxplot <- tibble(ps_data.betadisper$distances, rownames = names(ps_d
 if (script == F) {
  betadisper_boxplot
 }
-ggsave(paste("09-philr_betadisper_malt_boxplot_hostgenus_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = betadisper_boxplot, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("09-philr_betadisper_malt_boxplot_hostgenus_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = betadisper_boxplot, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
 
 
 #' 
@@ -1204,7 +1204,7 @@ permanova_factors <- factor(ind_groups)
 original_result <- adonis(ps_data.dist ~ ind_groups) %>% print
 
 ## to save
-sink(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/10a-permanova_initial_hostgenuscentroids_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+sink(paste("../04-analysis/screening/philr.backup/10a-permanova_initial_hostgenuscentroids_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
  original_result
 sink(file = NULL)
 
@@ -1230,7 +1230,7 @@ original_result_posthoc <- pairwise.adonis(ps_data.dist, ind_groups)
 original_result_posthoc <- original_result_posthoc %>% as_tibble()
   
 write_tsv(original_result_posthoc, 
-          paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/10b-permanova_initial_hostgenuscentroids_multiplecorrectiontesting_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
+          paste("../04-analysis/screening/philr.backup/10b-permanova_initial_hostgenuscentroids_multiplecorrectiontesting_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".txt", sep = ""))
 
 
 
@@ -1367,10 +1367,10 @@ balanced_permanova_results_mct_tib <- balanced_permanova_results$adonis_mct_vect
             ) %>%
   mutate(bootstraps = bootstraps)
 
-write_tsv(balanced_permanova_results_tib, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/11a-permanova_bootstrap_hostgenuscentroids_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+write_tsv(balanced_permanova_results_tib, paste("../04-analysis/screening/philr.backup/11a-permanova_bootstrap_hostgenuscentroids_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
 
 write_tsv(balanced_permanova_results_mct_tib, 
-          paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/11b-permanova_bootstrap_hostgenuscentroids_multiplecorrectiontesting_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+          paste("../04-analysis/screening/philr.backup/11b-permanova_bootstrap_hostgenuscentroids_multiplecorrectiontesting_", db , "_", tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
  
 
 #' 
@@ -1416,7 +1416,7 @@ if (script == F) {
  adonis_r2_plot
 }
 
-ggsave(paste("12-philr_bootstrappermanova_malt_r2distribution_hostgenus_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = adonis_r2_plot, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("12-philr_bootstrappermanova_malt_r2distribution_hostgenus_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = adonis_r2_plot, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
 
 
 
@@ -1464,7 +1464,7 @@ if (script == F) {
  adonis_f_plot
 }
 
-ggsave(paste("13-philr_bootstrappermanova_malt_pseudofdistribution_hostgenus_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = adonis_f_plot, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/philr.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
+ggsave(paste("13-philr_bootstrappermanova_malt_pseudofdistribution_hostgenus_", db , "_",tax_level, "_", sources, "_", controls, "_badsamples", bad_samples, "_", sample_filter, "_", minsupp_threshold, "_" , format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), plot = adonis_f_plot, "../04-analysis/screening/philr.backup/", device = cairo_pdf, width = 3.5, height = 3.5, units = "in", dpi = 600)
 
 
 #' 

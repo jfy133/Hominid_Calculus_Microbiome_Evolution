@@ -26,9 +26,9 @@ Load data and select options
 
 ```{r}
 ## load data
- st2_raw_both <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/otu_table_L6_1000_20190520/sink_predictions.txt")
+ st2_raw_both <- read_tsv("../04-analysis/screening/sourcetracker.backup/otu_table_L6_1000_20190520/sink_predictions.txt")
 
- st2_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
+ st2_meta <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190509.tsv")
 
 colnames(st2_raw_both)[1] <- "sample"
 
@@ -148,7 +148,7 @@ barplot_prefilter
 
 ggsave(plot = barplot_prefilter, 
        paste("sourcetracker_barplot_prefilter_",format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""),
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/", 
+       "../04-analysis/screening/sourcetracker.backup/", 
        device = cairo_pdf, 
        width = 7, 
        height = 3.5,
@@ -186,7 +186,7 @@ st2_filtering_calculations <- st2_raw_both %>%
                                 Host_General, Host_Common, Age), .)
 
 write_tsv(st2_filtering_calculations, 
-          paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/06-sourcetracker_filtering_results_", format(Sys.Date(), format = "%y%m%d"), ".tsv", sep = ""))
+          paste("../00-documentation.backup/06-sourcetracker_filtering_results_", format(Sys.Date(), format = "%y%m%d"), ".tsv", sep = ""))
 
 ```
 
@@ -208,7 +208,7 @@ barplot_postfilter
 
 ggsave(plot = barplot_postfilter, 
        paste("sourcetracker_barplot_postfilter_",format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""),
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/", 
+       "../04-analysis/screening/sourcetracker.backup/", 
        device = cairo_pdf, 
        width = 7, 
        height = 3.5,
@@ -240,7 +240,7 @@ samples_to_retain %>%
   select(sample, Env, more_env) %>%
   replace_na(replace = list(more_env = T)) %>%
   group_by(Env) %>% 
-  summarise(No_Individuals = sum(!more_env)) %>% write_tsv(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/post_filter_individual_hostgenuspopulation_counts_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = "")) %>% 
+  summarise(No_Individuals = sum(!more_env)) %>% write_tsv(paste("../04-analysis/screening/sourcetracker.backup/post_filter_individual_hostgenuspopulation_counts_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = "")) %>% 
   print
 
 ## Number of individuals per host genus
@@ -249,7 +249,7 @@ samples_to_retain %>%
   replace_na(replace = list(more_env = T)) %>%
   group_by(Host_Genus) %>% 
   summarise(No_Individuals = sum(!more_env)) %>%
-  write_tsv(paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/post_filter_individual_hostgenus_counts_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = "")) %>% print
+  write_tsv(paste("../04-analysis/screening/sourcetracker.backup/post_filter_individual_hostgenus_counts_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = "")) %>% print
 
 ```
 
@@ -300,7 +300,7 @@ abovebelow_plot
 
 ggsave(plot = abovebelow_plot, 
        paste("sourcetracker_barplot_abovebelowthresholdcomparison_plaquegut_",format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""),
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/", 
+       "../04-analysis/screening/sourcetracker.backup/", 
        device = cairo_pdf, 
        width = 7, 
        height = 3.5, 
@@ -354,7 +354,7 @@ abovebelow_plot
 
 ggsave(plot = abovebelow_plot, 
        paste("sourcetracker_barplot_abovebelowthresholdcomparison_plaqueonly_",format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""),
-       "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/sourcetracker.backup/", 
+       "../04-analysis/screening/sourcetracker.backup/", 
        device = cairo_pdf, 
        width = 7, 
        height = 3.5, 

@@ -38,19 +38,19 @@ tax_level <- "species" ## genus or species
 
 
 if (table_type == "megan" & tax_level == "genus" & db == "nt") {
-  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_all_summarised_nt.txt")
+  otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_all_summarised_nt.txt")
 } else if (table_type == "megan" & tax_level == "species" & db == "nt") {
-  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_all_summarised_nt.txt")
+  otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_all_summarised_nt.txt")
 } else if (table_type == "megan" & tax_level == "genus" & db == "refseq") {
-  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_all_summarised_refseq.txt")
+  otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_all_summarised_refseq.txt")
 } else if (table_type == "megan" & tax_level == "species" & db == "refseq") {
-  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
+  otu_table <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
 }  else if (table_type == "mp2") {
-  otu_table <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/metaphlan2/output_readcounts/metaphlan2_merged_estimatedreadcount_table_20190401.txt")
+  otu_table <- read_tsv("../04-analysis/screening/metaphlan2/output_readcounts/metaphlan2_merged_estimatedreadcount_table_20190401.txt")
 } 
 
 
-metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190408.tsv")
+metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190408.tsv")
 
 
 
@@ -314,7 +314,7 @@ an influence the removal of all the taxa detected at a particular threshold may
 have.
 
 ```{r}
-homd <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/99-HOMD_oralgenomesonly_20190319.tsv")
+homd <- read_tsv("../00-documentation.backup/99-HOMD_oralgenomesonly_20190319.tsv")
 
 if (tax_level == "genus") {
   homd_taxon <- homd %>% 
@@ -671,6 +671,6 @@ MetaPhlAn2 | default  | species   | comb   |  0.90       | Higher than this star
 
 ```{r eval = T}
 write_tsv(as.tibble(sort(rownames(otu_table(ps)[which(contamdf.final$contaminant)]))),
-          paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_", table_type, "_", db, "_", tax_level,"_", final_method, "_", final_prob_threshold, "_", format(Sys.time(), "%y%m%d"),".tsv", sep = ""))
+          paste("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_", table_type, "_", db, "_", tax_level,"_", final_method, "_", final_prob_threshold, "_", format(Sys.time(), "%y%m%d"),".tsv", sep = ""))
 ```
 

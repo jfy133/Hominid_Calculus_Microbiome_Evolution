@@ -25,15 +25,15 @@ library(dabestr)
 Set project directory (if required!)
 
 ```{r}
-proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
+proj_dir <- "../"
 ```
 
 Load files to be analysed 
 
 ```{r}
-metadata <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+metadata <- read_tsv(paste0(proj_dir, "../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
 
-data_16smapping <- read_csv(paste0(proj_dir, "00-documentation.backup/05-16s_extraction_statistics_20190507.csv"), skip = 1)
+data_16smapping <- read_csv(paste0(proj_dir, "../00-documentation.backup/05-16s_extraction_statistics_20190507.csv"), skip = 1)
 
 data_16sclustering <- read_delim(paste0(proj_dir, "04-analysis/screening/qiime/output/otu_picking/otu_table_summary.txt"), skip = 14, delim = " ")
 ```
@@ -286,7 +286,7 @@ Save
 ggsave(paste0("SupFigX_16sMapping_AllCategories_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".pdf"), 
        plot = data_16smapping_full_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       path = "../04-analysis/screening/qiime/summary_plots/",
        device = cairo_pdf, 
        width = 7, 
        height = 4, 
@@ -296,7 +296,7 @@ ggsave(paste0("SupFigX_16sMapping_AllCategories_comparison_" ,
 ggsave(paste0("SupFigX_16sMapping_AllCategories_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".png"), 
        plot = data_16smapping_full_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       path = "../04-analysis/screening/qiime/summary_plots/",
        device = "png", 
        width = 7, 
        height = 4, 
@@ -340,7 +340,7 @@ To save
 ggsave(paste0("SupFigX_16sMapping_ModernHumanCalculusPlaque_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".pdf"), 
        plot = data_16smapping_modernhumancalculusplaqueonly_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       path = "../04-analysis/screening/qiime/summary_plots/",
        device = cairo_pdf, 
        width = 7, 
        height = 3.5, 
@@ -350,7 +350,7 @@ ggsave(paste0("SupFigX_16sMapping_ModernHumanCalculusPlaque_comparison_" ,
 ggsave(paste0("SupFigX_16sMapping_ModernHumanCalculusPlaque_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".png"), 
        plot = data_16smapping_modernhumancalculusplaqueonly_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       path = "../04-analysis/screening/qiime/summary_plots/",
        device = "png", 
        width = 7, 
        height = 3.5, 
@@ -384,7 +384,7 @@ To save
 ggsave(paste0("SupFigX_16sClustering_AllCategories_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".pdf"), 
        plot = data_16sclustering_full_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       path = "../04-analysis/screening/qiime/summary_plots/",
        device = cairo_pdf, 
        width = 7, 
        height = 3.5, 
@@ -394,7 +394,7 @@ ggsave(paste0("SupFigX_16sClustering_AllCategories_comparison_" ,
 ggsave(paste0("SupFigX_16sClustering_AllCategories_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".png"), 
        plot = data_16sclustering_full_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       path = "../04-analysis/screening/qiime/summary_plots/",
        device = "png", 
        width = 7, 
        height = 3.5, 
@@ -429,7 +429,7 @@ To save
 ggsave(paste0("SupFigX_16sClustering_ModernHumanCalculusPlaque_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".pdf"), 
        plot = data_16sclustering_modernhumancalculusplaqueonly_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       path = "../04-analysis/screening/qiime/summary_plots/",
        device = cairo_pdf, 
        width = 7, 
        height = 3.5, 
@@ -439,7 +439,7 @@ ggsave(paste0("SupFigX_16sClustering_ModernHumanCalculusPlaque_comparison_" ,
 ggsave(paste0("SupFigX_16sClustering_ModernHumanCalculusPlaque_comparison_" , 
              format(Sys.Date(), "%Y%m%d"),".png"), 
        plot = data_16sclustering_modernhumancalculusplaqueonly_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/16s_Results",
+       path = "../04-analysis/screening/qiime/summary_plots/",
        device = "png", 
        width = 7, 
        height = 3.5, 

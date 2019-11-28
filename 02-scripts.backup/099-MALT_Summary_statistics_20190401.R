@@ -1,5 +1,5 @@
 ## In BASH
-# DB="<SELECT_HERE>" && grep -e "Loading MEGAN File:" -e "Total reads:" -e "With hits:" -e "Alignments:" -e "Assig. Taxonomy" -e "Min-supp. changes" -e "Numb. Tax. classes:" -e "Class. Taxonomy:" -e "Num. of queries:" -e "Aligned queries:" -e "Num. alignments:" -e "MinSupport set to:" /projects1/microbiome_calculus/evolution/04-analysis/screening/malt/nt/*log | cut -d":" -f 2-99 > /projects1/microbiome_calculus/evolution/00-documentation.backup/99-maltAlignedReadsSummary_raw_"$DB"_$(date "+%Y%m%d").txt
+# DB="<SELECT_HERE>" && grep -e "Loading MEGAN File:" -e "Total reads:" -e "With hits:" -e "Alignments:" -e "Assig. Taxonomy" -e "Min-supp. changes" -e "Numb. Tax. classes:" -e "Class. Taxonomy:" -e "Num. of queries:" -e "Aligned queries:" -e "Num. alignments:" -e "MinSupport set to:" ../04-analysis/screening/malt/nt/*log | cut -d":" -f 2-99 "../00-documentation.backup/99-maltAlignedReadsSummary_raw_"$DB"_$(date "+%Y%m%d").txt
 
 library(tidyverse)
 
@@ -7,10 +7,10 @@ library(tidyverse)
 db <- "refseq_bacarchhomo_gcs_20181122" ## nt or refseq_bacarchhomo_gcs_20181122
 
 if (db == "nt") {
-  raw_data <- read_lines(paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/99-maltAlignedReadsSummary_raw_", db,"_", format(Sys.time(), "%Y%m%d"), ".txt", sep = "")) %>% 
+  raw_data <- read_lines(paste("../00-documentation.backup/99-maltAlignedReadsSummary_raw_", db,"_", format(Sys.time(), "%Y%m%d"), ".txt", sep = "")) %>% 
     as_tibble()
 } else if (db == "refseq_bacarchhomo_gcs_20181122") {
-  raw_data <- read_lines(paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/99-maltAlignedReadsSummary_raw_", db,"_", format(Sys.time(), "%Y%m%d"), ".txt", sep = "")) %>% 
+  raw_data <- read_lines(paste("../00-documentation.backup/99-maltAlignedReadsSummary_raw_", db,"_", format(Sys.time(), "%Y%m%d"), ".txt", sep = "")) %>% 
     as_tibble()
 }
 
@@ -42,6 +42,6 @@ clean_data <- raw_data %>%
          filter(!is.na(Input_Reads)) %>%
   distinct()
 
-write_tsv(clean_data, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics_", db, "_", format(Sys.time(), "%Y%m%d"),".tsv", sep = ""))
+write_tsv(clean_data, paste("../00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics_", db, "_", format(Sys.time(), "%Y%m%d"),".tsv", sep = ""))
 
           

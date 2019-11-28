@@ -22,7 +22,7 @@ library(broom)
 Set project directory (if required!)
 
 ```{r}
-proj_dir <- "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker/"
+proj_dir <- "../"
 ```
 
 
@@ -51,7 +51,7 @@ Load data and select options
 
 ```{r}
 ## load data
- st2_raw_both <- read_tsv(paste0(proj_dir, "/04-analysis/screening/sourcetracker.backup/otu_table_L6_1000_20190520/sink_predictions.txt"))
+ st2_raw_both <- read_tsv(paste0(proj_dir, "04-analysis/screening/sourcetracker.backup/otu_table_L6_1000_20190520/sink_predictions.txt"))
 
 colnames(st2_raw_both)[1] <- "sample"
 
@@ -249,7 +249,7 @@ st2_bar_cpd_perplaquecontent
 ggsave(paste0("SupFigX_SourcetrackerVsCPD_st2bar_cpdtext_" ,
              format(Sys.Date(), "%Y%m%d"),".pdf"),
        plot = st2_bar_cpd_perplaquecontent,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker",
+       path = "../04-analysis/screening/cumulative_decay.backup/comparison",
        device = cairo_pdf,
        width = 7,
        height = 3,
@@ -259,7 +259,7 @@ ggsave(paste0("SupFigX_SourcetrackerVsCPD_st2bar_cpdtext_" ,
 ggsave(paste0("SupFigX_SourcetrackerVsCPD_st2bar_cpdtext_" ,
              format(Sys.Date(), "%Y%m%d"),".png"),
        plot = st2_bar_cpd_perplaquecontent,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker",
+       path = "../04-analysis/screening/cumulative_decay.backup/comparison",
        device = "png",
        width = 7,
        height = 3,
@@ -355,7 +355,7 @@ To save the ratio distribution plot
 ggsave(paste0("SupFigX_eukaryoticratioplot_ancientcalculusonly_" ,
              format(Sys.Date(), "%Y%m%d"),".pdf"),
        plot = ratio_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker",
+       path = "../04-analysis/screening/cumulative_decay.backup/comparison",
        device = cairo_pdf,
        width = 3,
        height = 3,
@@ -365,7 +365,7 @@ ggsave(paste0("SupFigX_eukaryoticratioplot_ancientcalculusonly_" ,
 ggsave(paste0("SupFigX_eukaryoticratioplot_ancientcalculusonly_" ,
              format(Sys.Date(), "%Y%m%d"),".png"),
        plot = ratio_plot,
-       path = "/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryFigures/cufredec_vs_sourcetracker",
+       path = "../04-analysis/screening/cumulative_decay.backup/comparison",
        device = "png",
        width = 3,
        height = 3,

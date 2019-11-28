@@ -14,7 +14,7 @@ Load data
 
 ```{r}
 ## set directory to search
-main_dir <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/03-preprocessing/deep/human_filtering/output/")
+main_dir <- Sys.glob("../03-preprocessing/deep/human_filtering/output/")
 
 ## find files
 input_files <- list.files(main_dir, pattern = 'Report_output.csv', full.names = TRUE, recursive = FALSE)
@@ -29,7 +29,7 @@ data_raw <- data_frame(filename = input_files) %>%
   bind_rows()
 
 ## Load metadata
-data_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
+data_meta <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
 
 
 ```
@@ -154,7 +154,7 @@ data_summary <- data_clean %>%
 Save file
 
 ```{r eval = F}
-write_tsv(data_summary, paste("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_LibraryLevel_HumanFiltering_Results__", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+write_tsv(data_summary, paste("../00-documentation.backup/17-Deep_Sequencing_LibraryLevel_HumanFiltering_Results__", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
 ```
 
 > Note for JAE and VLC, I manually copy the information from the screening data 

@@ -19,7 +19,7 @@ library(tictoc)
 library(rentrez)
 
 ## Metadata
-data_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+data_meta <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
 ```
 
 # General Mapping Statistics
@@ -89,7 +89,7 @@ eager_cleaner <- function(x){
 Load EAGER ReportTables for single genome mapping
 
 ```{r}
-data_representativemapping_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/*/output/*") %>%
+data_representativemapping_raw <- Sys.glob("../04-analysis/deep/eager/*/output/*") %>%
   list.files("*.csv", full.names = T) %>%
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, function(x) suppressMessages(read_csv(x)))) %>%
@@ -183,7 +183,7 @@ Find and stats from `bedtools`, and clean up the data.
 
 ```{r eval = F}
 ## Set dir
-main_dir <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/eager/superreference_mapping/output/*/*/5-DeDup/")
+main_dir <- Sys.glob("../04-analysis/deep/eager/superreference_mapping/output/*/*/5-DeDup/")
 
 ## find files
 input_files_depth <- list.files(main_dir, pattern = '*bedtoolsdepth.tsv.gz', full.names = TRUE, recursive = FALSE)
@@ -233,7 +233,7 @@ data_all <- left_join(data_breadth, data_depth) %>%
 Save for reloading
 
 ```{r eval = F}
-write_tsv(data_all, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_", format(Sys.Date(), "%Y%m%d"), ".tsv.gz", sep = ""))
+write_tsv(data_all, paste("../04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_", format(Sys.Date(), "%Y%m%d"), ".tsv.gz", sep = ""))
 ```
 
 
@@ -249,7 +249,7 @@ Load from earlier.
 you update the file name to the latest date.
 
 ```{r}
-data_all <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz") %>%
+data_all <- read_tsv("../04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz") %>%
   print()
 ```
 
@@ -329,7 +329,7 @@ data_all_collapsed_meta$sample <- factor(data_all_collapsed_meta$sample, levels 
 And save
 
 ```{r eval = F}
-write_tsv(data_all_collapsed_meta, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_final_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
+write_tsv(data_all_collapsed_meta, paste("../04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_final_", format(Sys.Date(), "%Y%m%d"), ".tsv", sep = ""))
 ```
 
 ## Final Statistics
@@ -337,7 +337,7 @@ write_tsv(data_all_collapsed_meta, paste("/home/fellows/projects1/microbiome_cal
 To re-load
 
 ```{r}
-data_all_collapsed_meta <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_final_20190522.tsv")
+data_all_collapsed_meta <- read_tsv("../04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_final_20190522.tsv")
 
 data_all_collapsed_meta$Env <- factor(data_all_collapsed_meta$Env, 
                                   levels = c("Howler_Monkey", "Gorilla_1", 
@@ -427,7 +427,7 @@ data_mappingstats_all <- data_mappingstats_all %>%
   spread(mapping_strategy, value) %>%
   mutate(difference = initial_single_genome - superreference)
 
-write_tsv(data_mappingstats_all, paste0("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_singlegenome_mappingstats_comparison", format(Sys.Date(), "%Y%m%d"), ".tsv"))
+write_tsv(data_mappingstats_all, paste0("../04-analysis/deep/competitive_mapping.backup/superreference_singlegenome_mappingstats_comparison", format(Sys.Date(), "%Y%m%d"), ".tsv"))
 ```
 
 
@@ -463,7 +463,7 @@ plot_linegraph <- function(my_genus, metric_col, mean_col, sd_col){
                  format(Sys.Date(), "%Y%m%d"), 
                  ".pdf", 
                  sep = ""), plot = out_plot,
-           "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/species_selection/", 
+           "../04-analysis/deep/competitive_mapping.backup/species_selection/", 
            device = cairo_pdf, 
            width = 14, 
            height = 7, 
@@ -551,7 +551,7 @@ plot_heatmap <- function(my_genus, metric_col, mean_col, sd_col){
                  format(Sys.Date(), "%Y%m%d"), 
                  ".pdf", 
                  sep = ""), plot = out_plot,
-           "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/species_selection/", 
+           "../04-analysis/deep/competitive_mapping.backup/species_selection/", 
            device = cairo_pdf, 
            width = 7, 
            height = 14, 
@@ -678,7 +678,7 @@ results_filter <- filter_by_threshold(data_all_collapsed_meta, data_all_boundari
   filter(Metrics_Passed > 1) %>%
   print()
 
-write_tsv(results_filter, "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/deep/competitive_mapping.backup/superreference_speciespassingfilter.tsv")
+write_tsv(results_filter, "../04-analysis/deep/competitive_mapping.backup/superreference_speciespassingfilter.tsv")
 
 ```
 
