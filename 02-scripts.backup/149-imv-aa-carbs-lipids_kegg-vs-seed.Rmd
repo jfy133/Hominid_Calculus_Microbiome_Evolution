@@ -1,0 +1,179 @@
+---
+title: "Overlap of Amino acid, Carbohydrate, and Lipid protein/orthologs between SEED and KEGG"
+output: html_notebook
+---
+# Preparation
+
+Start by using decontam to remove the SEED categories that appear to come from contaminants, using the program decontam. 
+First load the libraries you'll use
+```{r}
+library("data.table")
+library(janitor)
+library(tidyverse)
+```
+
+Set the working directory of the notebook to the directory of the notebook itself.  
+
+```{r setup}
+knitr::opts_knit$set(root.dir = normalizePath("."))
+```
+
+Load in the files that were exported from 144-imv-oral_evolution_humann2_fxn.Rmd and 148-imv-aadder_evolution_function.Rmd
+```{r read_tables}
+aminoacids.kegg <- fread("../04-analysis/screening/humann2/tables/aminoacids.kegg.tsv")
+carbs.kegg <- fread("../04-analysis/screening/humann2/tables/carbs.kegg.tsv")
+lipids.kegg <- fread("../04-analysis/screening/humann2/tables/lipids.kegg.tsv")
+
+aminoacids.seed <- read.table("../04-analysis/screening/humann2/tables/aminoacids.seed.tsv", header = T)
+carbs.seed <- read.table("../04-analysis/screening/humann2/tables/carbs.seed.tsv", header = T)
+fattyacids.seed <- read.table("../04-analysis/screening/humann2/tables/fattyacids.seed.tsv", header = T)
+
+```
+
+Make the EC numbers a new column
+```{r ec_columns_kegg}
+# for amino acids
+aminoacids.kegg <- aminoacids.kegg %>%
+  mutate(EC_number = sapply(Enzyme_name, function(f) {
+  unlist(str_split(f, "\\[EC:"))[2]
+  }))
+aminoacids.kegg$EC_number <- gsub("\\]","", aminoacids.kegg$EC_number)
+
+aminoacids.kegg <- aminoacids.kegg %>%
+mutate(EC_number_1 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[1]
+  })) %>%
+mutate(EC_number_2 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[2]
+  })) %>%
+  mutate(EC_number_3 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[3]
+  }))
+
+# for carbohydrates
+carbs.kegg <- carbs.kegg %>%
+  mutate(EC_number = sapply(Enzyme_name, function(f) {
+  unlist(str_split(f, "\\[EC:"))[2]
+  }))
+carbs.kegg$EC_number <- gsub("\\]","", carbs.kegg$EC_number)
+
+carbs.kegg <- carbs.kegg %>%
+mutate(EC_number_1 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[1]
+  })) %>%
+mutate(EC_number_2 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[2]
+  })) %>%
+  mutate(EC_number_3 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[3]
+  }))
+
+# for lipids
+lipids.kegg <- lipids.kegg %>%
+  mutate(EC_number = sapply(Enzyme_name, function(f) {
+  unlist(str_split(f, "\\[EC:"))[2]
+  }))
+lipids.kegg$EC_number <- gsub("\\]","", lipids.kegg$EC_number)
+
+lipids.kegg <- lipids.kegg %>%
+mutate(EC_number_1 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[1]
+  })) %>%
+mutate(EC_number_2 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[2]
+  })) %>%
+  mutate(EC_number_3 = sapply(EC_number, function(f) {
+  unlist(str_split(f, " "))[3]
+  }))
+
+```
+
+```{r ec_columns_seed}
+aminoacids.seed <- aminoacids.seed %>%
+  mutate(EC_number = sapply(protein, function(f) {
+  unlist(str_split(f, "\\(EC "))[2]
+  }))
+aminoacids.seed$EC_number <- gsub("\\)","", aminoacids.seed$EC_number)
+aminoacids.seed$EC_number <- gsub(", SufS subfamily","", aminoacids.seed$EC_number)
+
+carbs.seed <- carbs.seed %>%
+  mutate(EC_number = sapply(protein, function(f) {
+  unlist(str_split(f, "\\(EC "))[2]
+  }))
+carbs.seed$EC_number <- gsub("\\)","", carbs.seed$EC_number)
+
+fattyacids.seed <- fattyacids.seed %>%
+  mutate(EC_number = sapply(protein, function(f) {
+  unlist(str_split(f, "\\(EC "))[2]
+  }))
+fattyacids.seed$EC_number <- gsub("\\)","", fattyacids.seed$EC_number)
+
+```
+
+```{r ec_list_kegg}
+aa_EC_kegg <- aminoacids.kegg %>%
+  select(EC_number_1)
+
+aa_EC_kegg <- bind_rows(aa_EC_kegg, aminoacids.kegg %>%
+  select(EC_number_2) %>%
+    rename(EC_number_1 = EC_number_2))
+
+aa_EC_kegg <- bind_rows(aa_EC_kegg, aminoacids.kegg %>%
+  select(EC_number_3) %>%
+    rename(EC_number_1 = EC_number_3)) %>%
+   drop_na() %>%
+  rename(EC_number = EC_number_1) %>%
+  distinct(EC_number)
+
+
+carb_EC_kegg <- carbs.kegg %>%
+  select(EC_number_1)
+
+carb_EC_kegg <- bind_rows(carb_EC_kegg, carbs.kegg %>%
+  select(EC_number_2) %>%
+    rename(EC_number_1 = EC_number_2))
+
+carb_EC_kegg <- bind_rows(carb_EC_kegg, carbs.kegg %>%
+  select(EC_number_3) %>%
+    rename(EC_number_1 = EC_number_3)) %>%
+  drop_na() %>%
+  rename(EC_number = EC_number_1) %>%
+  distinct(EC_number)
+
+
+lipids_EC_kegg <- lipids.kegg %>%
+  select(EC_number_1)
+
+lipids_EC_kegg <- bind_rows(lipids_EC_kegg, lipids.kegg %>%
+  select(EC_number_2) %>%
+    rename(EC_number_1 = EC_number_2))
+
+lipids_EC_kegg <- bind_rows(lipids_EC_kegg, lipids.kegg %>%
+  select(EC_number_3) %>%
+    rename(EC_number_1 = EC_number_3)) %>%
+  drop_na() %>%
+  rename(EC_number = EC_number_1) %>%
+  distinct(EC_number)
+
+```
+
+```{r ec_matching}
+EC_aminoacids <- full_join(aminoacids.seed, aa_EC_kegg)
+EC_carbohydrates <- full_join(carbs.seed, carb_EC_kegg)
+EC_lipids <- full_join(fattyacids.seed, lipids_EC_kegg)
+
+EC_aminoacids_shared <- inner_join(aminoacids.seed, aa_EC_kegg)
+EC_carbohydrates_shared <- inner_join(carbs.seed, carb_EC_kegg)
+EC_lipids_shared <- inner_join(fattyacids.seed, lipids_EC_kegg)
+
+```
+
+
+
+
+
+
+
+
+
+

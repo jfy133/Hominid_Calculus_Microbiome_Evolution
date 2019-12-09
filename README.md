@@ -2268,7 +2268,17 @@ The resulting files wre then loaded into to assess the ratio of all streptococus
 
 ### HUMANn2
 
-**short intro by @ivelsko**
+In addition to the taxonomic profile, the funcitonal profile of dental calculus
+microbiota may provide insight into host evolutionary patterns. The functional
+profile of a metagenomic sample is determined by the gene content of species
+that are present. The program HMP Unified Metabolic Analysis Network 2 (HUMAnN2,
+Franzosa, *et al*. 2018) was developed to generate a metabolic functional
+profile from a metagenome sample. HUMAnN2 provides both species-specific gene
+assignments and general gene assignments, when the species of origin cannot be
+determined, as well as grouping the genes into the metabolic pathways they
+contribute to and providing a metabolic pathway profile. We assessed both the
+metabolic pathway profile and the gene content profile of our samples generated
+by HUMAnN2, as detailed below.
 
 #### MetaPhlAn2
 
@@ -2463,7 +2473,9 @@ humann2_regroup_table -i humann2_genefamilies.tsv -g uniref90_ko -o humann2_gene
 
 > HUMANn2 output files are not provided here due to large size
 
-**IRINA FROM HERE**
+All analysis and figure generation for HUMAnN2 data can be found in the R markdown
+document here `02-scripts.backup/144-imv-oral_evolution_humann2_fxn_cleaned.Rmd`.
+
 
 ### AADDER Analysis
 

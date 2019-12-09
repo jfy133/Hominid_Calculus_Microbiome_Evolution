@@ -1,0 +1,67 @@
+Pathway_name	Pathway_number	KOrtholog	Enzyme_name
+Bacterial chemotaxis	ko02030	K03406	methyl-accepting chemotaxis protein
+Bacterial chemotaxis	ko02030	K05874	methyl-accepting chemotaxis protein I, serine sensor receptor
+Bacterial chemotaxis	ko02030	K05875	methyl-accepting chemotaxis protein II, aspartate sensor receptor
+Bacterial chemotaxis	ko02030	K05876	methyl-accepting chemotaxis protein III, ribose and galactose sensor receptor
+Bacterial chemotaxis	ko02030	K05877	methyl-accepting chemotaxis protein IV, peptide sensor receptor
+Bacterial chemotaxis	ko02030	K03776	aerotaxis receptor
+Bacterial chemotaxis	ko02030	K10108	maltose/maltodextrin transport system substrate-binding protein
+Bacterial chemotaxis	ko02030	K10439	ribose transport system substrate-binding protein
+Bacterial chemotaxis	ko02030	K10540	methyl-galactoside transport system substrate-binding protein
+Bacterial chemotaxis	ko02030	K12368	dipeptide transport system substrate-binding protein
+Bacterial chemotaxis	ko02030	K03407	two-component system, chemotaxis family, sensor kinase CheA [EC:2.7.13.3]
+Bacterial chemotaxis	ko02030	K03408	purine-binding chemotaxis protein CheW
+Bacterial chemotaxis	ko02030	K03413	two-component system, chemotaxis family, chemotaxis protein CheY
+Bacterial chemotaxis	ko02030	K03410	chemotaxis protein CheC
+Bacterial chemotaxis	ko02030	K03414	chemotaxis protein CheZ
+Bacterial chemotaxis	ko02030	K03409	chemotaxis protein CheX
+Bacterial chemotaxis	ko02030	K03412	two-component system, chemotaxis family, protein-glutamate methylesterase/glutaminase [EC:3.5.1.44 3.1.1.61]
+Bacterial chemotaxis	ko02030	K13924	two-component system, chemotaxis family, CheB/CheR fusion protein [EC:3.1.1.61 2.1.1.80]
+Bacterial chemotaxis	ko02030	K03415	two-component system, chemotaxis family, chemotaxis protein CheV
+Bacterial chemotaxis	ko02030	K03411	chemotaxis protein CheD [EC:3.5.1.44]
+Bacterial chemotaxis	ko02030	K00575	chemotaxis protein methyltransferase CheR [EC:2.1.1.80]
+Bacterial chemotaxis	ko02030	K02410	flagellar motor switch protein FliG
+Bacterial chemotaxis	ko02030	K02416	flagellar motor switch protein FliM
+Bacterial chemotaxis	ko02030	K02417	flagellar motor switch protein FliN/FliY
+Bacterial chemotaxis	ko02030	K02556	chemotaxis protein MotA
+Bacterial chemotaxis	ko02030	K02557	chemotaxis protein MotB
+Flagellar assembly	ko02040	K02402	flagellar transcriptional activator FlhC
+Flagellar assembly	ko02040	K02403	flagellar transcriptional activator FlhD
+Flagellar assembly	ko02040	K02398	negative regulator of flagellin synthesis FlgM
+Flagellar assembly	ko02040	K02405	RNA polymerase sigma factor for flagellar operon FliA
+Flagellar assembly	ko02040	K02406	flagellin
+Flagellar assembly	ko02040	K02407	flagellar hook-associated protein 2
+Flagellar assembly	ko02040	K02397	flagellar hook-associated protein 3 FlgL
+Flagellar assembly	ko02040	K02396	flagellar hook-associated protein 1 FlgK
+Flagellar assembly	ko02040	K02414	flagellar hook-length control protein FliK
+Flagellar assembly	ko02040	K02389	flagellar basal-body rod modification protein FlgD
+Flagellar assembly	ko02040	K02390	flagellar hook protein FlgE
+Flagellar assembly	ko02040	K02391	flagellar basal-body rod protein FlgF
+Flagellar assembly	ko02040	K02392	flagellar basal-body rod protein FlgG
+Flagellar assembly	ko02040	K02393	flagellar L-ring protein precursor FlgH
+Flagellar assembly	ko02040	K02394	flagellar P-ring protein precursor FlgI
+Flagellar assembly	ko02040	K02387	flagellar basal-body rod protein FlgB
+Flagellar assembly	ko02040	K02388	flagellar basal-body rod protein FlgC
+Flagellar assembly	ko02040	K02408	flagellar hook-basal body complex protein FliE
+Flagellar assembly	ko02040	K02409	flagellar M-ring protein FliF
+Flagellar assembly	ko02040	K02410	flagellar motor switch protein FliG
+Flagellar assembly	ko02040	K02416	flagellar motor switch protein FliM
+Flagellar assembly	ko02040	K02417	flagellar motor switch protein FliN/FliY
+Flagellar assembly	ko02040	K02400	flagellar biosynthesis protein FlhA
+Flagellar assembly	ko02040	K02401	flagellar biosynthetic protein FlhB
+Flagellar assembly	ko02040	K02411	flagellar assembly protein FliH
+Flagellar assembly	ko02040	K02412	flagellum-specific ATP synthase [EC:7.4.2.8]
+Flagellar assembly	ko02040	K02418	flagellar protein FliO/FliZ
+Flagellar assembly	ko02040	K02419	flagellar biosynthetic protein FliP
+Flagellar assembly	ko02040	K02420	flagellar biosynthetic protein FliQ
+Flagellar assembly	ko02040	K02421	flagellar biosynthetic protein FliR
+Flagellar assembly	ko02040	K13820	flagellar biosynthetic protein FliR/FlhB
+Flagellar assembly	ko02040	K02556	chemotaxis protein MotA
+Flagellar assembly	ko02040	K02557	chemotaxis protein MotB
+Flagellar assembly	ko02040	K21217	sodium-type polar flagellar protein MotX
+Flagellar assembly	ko02040	K21218	sodium-type flagellar protein MotY
+Flagellar assembly	ko02040	K02399	flagella synthesis protein FlgN
+Flagellar assembly	ko02040	K02413	flagellar FliJ protein
+Flagellar assembly	ko02040	K02422	flagellar protein FliS
+Flagellar assembly	ko02040	K02423	flagellar protein FliT
+Flagellar assembly	ko02040	K02386	flagella basal body P-ring formation protein FlgA

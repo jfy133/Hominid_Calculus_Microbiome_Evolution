@@ -1,0 +1,285 @@
+Pathway_name	Pathway_number	KOrtholog	Enzyme_name
+DNA replication	ko03030	K02345	DNA polymerase III subunit theta [EC:2.7.7.7]
+DNA replication	ko03030	K02342	DNA polymerase III subunit epsilon [EC:2.7.7.7]
+DNA replication	ko03030	K14159	ribonuclease HI / DNA polymerase III subunit epsilon [EC:2.7.7.7 3.1.26.4]
+DNA replication	ko03030	K02337	DNA polymerase III subunit alpha [EC:2.7.7.7]
+DNA replication	ko03030	K03763	DNA polymerase III subunit alpha, Gram-positive type [EC:2.7.7.7]
+DNA replication	ko03030	K02343	DNA polymerase III subunit gamma/tau [EC:2.7.7.7]
+DNA replication	ko03030	K02341	DNA polymerase III subunit delta' [EC:2.7.7.7]
+DNA replication	ko03030	K02340	DNA polymerase III subunit delta [EC:2.7.7.7]
+DNA replication	ko03030	K02344	DNA polymerase III subunit psi [EC:2.7.7.7]
+DNA replication	ko03030	K02339	DNA polymerase III subunit chi [EC:2.7.7.7]
+DNA replication	ko03030	K02338	DNA polymerase III subunit beta [EC:2.7.7.7]
+DNA replication	ko03030	K02314	replicative DNA helicase [EC:3.6.4.12]
+DNA replication	ko03030	K02316	DNA primase [EC:2.7.7.101]
+DNA replication	ko03030	K03111	single-strand DNA-binding protein
+DNA replication	ko03030	K03469	ribonuclease HI [EC:3.1.26.4]
+DNA replication	ko03030	K22316	ribonuclease H / adenosylcobalamin/alpha-ribazole phosphatase [EC:3.1.3.73 3.1.26.4]
+DNA replication	ko03030	K03470	ribonuclease HII [EC:3.1.26.4]
+DNA replication	ko03030	K03471	ribonuclease HIII [EC:3.1.26.4]
+DNA replication	ko03030	K02335	DNA polymerase I [EC:2.7.7.7]
+DNA replication	ko03030	K01972	DNA ligase (NAD+) [EC:6.5.1.2]
+DNA replication	ko03030	K02319	DNA polymerase, archaea type [EC:2.7.7.7]
+DNA replication	ko03030	K02323	DNA polymerase II small subunit [EC:2.7.7.7]
+DNA replication	ko03030	K02322	DNA polymerase II large subunit [EC:2.7.7.7]
+DNA replication	ko03030	K10726	replicative DNA helicase Mcm [EC:3.6.4.-]
+DNA replication	ko03030	K02683	DNA primase small subunit [EC:2.7.7.102]
+DNA replication	ko03030	K18882	DNA primase large subunit
+DNA replication	ko03030	K07466	replication factor A1
+DNA replication	ko03030	K04802	proliferating cell nuclear antigen
+DNA replication	ko03030	K04801	replication factor C small subunit
+DNA replication	ko03030	K04800	replication factor C large subunit
+DNA replication	ko03030	K10742	DNA replication ATP-dependent helicase Dna2 [EC:3.6.4.12]
+DNA replication	ko03030	K04799	flap endonuclease-1 [EC:3.-.-.-]
+DNA replication	ko03030	K10747	DNA ligase 1 [EC:6.5.1.7 6.5.1.6 6.5.1.1]
+DNA replication	ko03030	K02320	DNA polymerase alpha subunit A [EC:2.7.7.7]
+DNA replication	ko03030	K02321	DNA polymerase alpha subunit B
+DNA replication	ko03030	K02684	DNA primase small subunit [EC:2.7.7.102]
+DNA replication	ko03030	K02685	DNA primase large subunit
+DNA replication	ko03030	K02327	DNA polymerase delta subunit 1 [EC:2.7.7.7]
+DNA replication	ko03030	K02328	DNA polymerase delta subunit 2
+DNA replication	ko03030	K03504	DNA polymerase delta subunit 3
+DNA replication	ko03030	K03505	DNA polymerase delta subunit 4
+DNA replication	ko03030	K02324	DNA polymerase epsilon subunit 1 [EC:2.7.7.7]
+DNA replication	ko03030	K02325	DNA polymerase epsilon subunit 2 [EC:2.7.7.7]
+DNA replication	ko03030	K02326	DNA polymerase epsilon subunit 3 [EC:2.7.7.7]
+DNA replication	ko03030	K03506	DNA polymerase epsilon subunit 4 [EC:2.7.7.7]
+DNA replication	ko03030	K02540	DNA replication licensing factor MCM2 [EC:3.6.4.12]
+DNA replication	ko03030	K02541	DNA replication licensing factor MCM3 [EC:3.6.4.12]
+DNA replication	ko03030	K02212	DNA replication licensing factor MCM4 [EC:3.6.4.12]
+DNA replication	ko03030	K02209	DNA replication licensing factor MCM5 [EC:3.6.4.12]
+DNA replication	ko03030	K02542	DNA replication licensing factor MCM6 [EC:3.6.4.12]
+DNA replication	ko03030	K02210	DNA replication licensing factor MCM7 [EC:3.6.4.12]
+DNA replication	ko03030	K10739	replication factor A2
+DNA replication	ko03030	K10741	replication factor A4
+DNA replication	ko03030	K10740	replication factor A3
+DNA replication	ko03030	K10754	replication factor C subunit 1
+DNA replication	ko03030	K10755	replication factor C subunit 2/4
+DNA replication	ko03030	K10756	replication factor C subunit 3/5
+DNA replication	ko03030	K10743	ribonuclease H2 subunit A [EC:3.1.26.4]
+DNA replication	ko03030	K10744	ribonuclease H2 subunit B
+DNA replication	ko03030	K10745	ribonuclease H2 subunit C
+Base excision repair	ko03410	K10563	formamidopyrimidine-DNA glycosylase [EC:4.2.99.18 3.2.2.23]
+Base excision repair	ko03410	K05522	endonuclease VIII [EC:4.2.99.18 3.2.2.-]
+Base excision repair	ko03410	K03660	N-glycosylase/DNA lyase [EC:4.2.99.18 3.2.2.-]
+Base excision repair	ko03410	K10773	endonuclease III [EC:4.2.99.18]
+Base excision repair	ko03410	K10567	endonuclease VIII-like 1 [EC:4.2.99.18 3.2.2.-]
+Base excision repair	ko03410	K10568	endonuclease VIII-like 2 [EC:4.2.99.18 3.2.2.-]
+Base excision repair	ko03410	K10569	endonuclease VIII-like 3
+Base excision repair	ko03410	K01247	DNA-3-methyladenine glycosylase II [EC:3.2.2.21]
+Base excision repair	ko03410	K13529	AraC family transcriptional regulator, regulatory protein of adaptative response / DNA-3-methyladenine glycosylase II [EC:3.2.2.21]
+Base excision repair	ko03410	K01246	DNA-3-methyladenine glycosylase I [EC:3.2.2.20]
+Base excision repair	ko03410	K03649	double-stranded uracil-DNA glycosylase [EC:3.2.2.28]
+Base excision repair	ko03410	K21929	uracil-DNA glycosylase [EC:3.2.2.27]
+Base excision repair	ko03410	K03648	uracil-DNA glycosylase [EC:3.2.2.27]
+Base excision repair	ko03410	K10800	single-strand selective monofunctional uracil DNA glycosylase [EC:3.2.2.-]
+Base excision repair	ko03410	K03575	A/G-specific adenine glycosylase [EC:3.2.2.31]
+Base excision repair	ko03410	K03652	DNA-3-methyladenine glycosylase [EC:3.2.2.21]
+Base excision repair	ko03410	K10801	methyl-CpG-binding domain protein 4 [EC:3.2.2.-]
+Base excision repair	ko03410	K20813	thymine-DNA glycosylase [EC:3.2.2.29]
+Base excision repair	ko03410	K01142	exodeoxyribonuclease III [EC:3.1.11.2]
+Base excision repair	ko03410	K01151	deoxyribonuclease IV [EC:3.1.21.2]
+Base excision repair	ko03410	K10771	AP endonuclease 1 [EC:4.2.99.18]
+Base excision repair	ko03410	K10772	AP endonuclease 2 [EC:4.2.99.18]
+Base excision repair	ko03410	K02335	DNA polymerase I [EC:2.7.7.7]
+Base excision repair	ko03410	K07462	single-stranded-DNA-specific exonuclease [EC:3.1.-.-]
+Base excision repair	ko03410	K02330	DNA polymerase beta [EC:4.2.99.- 2.7.7.7]
+Base excision repair	ko03410	K03512	DNA polymerase lambda [EC:4.2.99.- 2.7.7.7]
+Base excision repair	ko03410	K10802	high mobility group protein B1
+Base excision repair	ko03410	K10803	DNA-repair protein XRCC1
+Base excision repair	ko03410	K04802	proliferating cell nuclear antigen
+Base excision repair	ko03410	K02327	DNA polymerase delta subunit 1 [EC:2.7.7.7]
+Base excision repair	ko03410	K02328	DNA polymerase delta subunit 2
+Base excision repair	ko03410	K03504	DNA polymerase delta subunit 3
+Base excision repair	ko03410	K03505	DNA polymerase delta subunit 4
+Base excision repair	ko03410	K02324	DNA polymerase epsilon subunit 1 [EC:2.7.7.7]
+Base excision repair	ko03410	K02325	DNA polymerase epsilon subunit 2 [EC:2.7.7.7]
+Base excision repair	ko03410	K02326	DNA polymerase epsilon subunit 3 [EC:2.7.7.7]
+Base excision repair	ko03410	K03506	DNA polymerase epsilon subunit 4 [EC:2.7.7.7]
+Base excision repair	ko03410	K01972	DNA ligase (NAD+) [EC:6.5.1.2]
+Base excision repair	ko03410	K10747	DNA ligase 1 [EC:6.5.1.7 6.5.1.6 6.5.1.1]
+Base excision repair	ko03410	K10776	DNA ligase 3 [EC:6.5.1.1]
+Base excision repair	ko03410	K10798	poly [ADP-ribose] polymerase [EC:2.4.2.30]
+Base excision repair	ko03410	K04799	flap endonuclease-1 [EC:3.-.-.-]
+Nucleotide excision repair	ko03420	K03723	transcription-repair coupling factor (superfamily II helicase) [EC:3.6.4.-]
+Nucleotide excision repair	ko03420	K03701	excinuclease ABC subunit A
+Nucleotide excision repair	ko03420	K03702	excinuclease ABC subunit B
+Nucleotide excision repair	ko03420	K03703	excinuclease ABC subunit C
+Nucleotide excision repair	ko03420	K03657	DNA helicase II / ATP-dependent DNA helicase PcrA [EC:3.6.4.12]
+Nucleotide excision repair	ko03420	K02335	DNA polymerase I [EC:2.7.7.7]
+Nucleotide excision repair	ko03420	K01972	DNA ligase (NAD+) [EC:6.5.1.2]
+Nucleotide excision repair	ko03420	K03868	RING-box protein 1 [EC:2.3.2.32]
+Nucleotide excision repair	ko03420	K10609	cullin 4
+Nucleotide excision repair	ko03420	K10610	DNA damage-binding protein 1
+Nucleotide excision repair	ko03420	K10140	DNA damage-binding protein 2
+Nucleotide excision repair	ko03420	K10838	xeroderma pigmentosum group C-complementing protein
+Nucleotide excision repair	ko03420	K10839	UV excision repair protein RAD23
+Nucleotide excision repair	ko03420	K10840	centrin-2
+Nucleotide excision repair	ko03420	K10570	DNA excision repair protein ERCC-8
+Nucleotide excision repair	ko03420	K10841	DNA excision repair protein ERCC-6
+Nucleotide excision repair	ko03420	K02202	cyclin-dependent kinase 7 [EC:2.7.11.23 2.7.11.22]
+Nucleotide excision repair	ko03420	K10842	CDK-activating kinase assembly factor MAT1
+Nucleotide excision repair	ko03420	K06634	cyclin H
+Nucleotide excision repair	ko03420	K10843	DNA excision repair protein ERCC-3 [EC:3.6.4.12]
+Nucleotide excision repair	ko03420	K10844	DNA excision repair protein ERCC-2 [EC:3.6.4.12]
+Nucleotide excision repair	ko03420	K10845	TFIIH basal transcription factor complex TTD-A subunit
+Nucleotide excision repair	ko03420	K03141	transcription initiation factor TFIIH subunit 1
+Nucleotide excision repair	ko03420	K03142	transcription initiation factor TFIIH subunit 2
+Nucleotide excision repair	ko03420	K03143	transcription initiation factor TFIIH subunit 3
+Nucleotide excision repair	ko03420	K03144	transcription initiation factor TFIIH subunit 4
+Nucleotide excision repair	ko03420	K10846	DNA excision repair protein ERCC-5
+Nucleotide excision repair	ko03420	K10847	DNA-repair protein complementing XP-A cells
+Nucleotide excision repair	ko03420	K07466	replication factor A1
+Nucleotide excision repair	ko03420	K10739	replication factor A2
+Nucleotide excision repair	ko03420	K10740	replication factor A3
+Nucleotide excision repair	ko03420	K10741	replication factor A4
+Nucleotide excision repair	ko03420	K10848	DNA excision repair protein ERCC-4 [EC:3.1.-.-]
+Nucleotide excision repair	ko03420	K10849	DNA excision repair protein ERCC-1
+Nucleotide excision repair	ko03420	K02327	DNA polymerase delta subunit 1 [EC:2.7.7.7]
+Nucleotide excision repair	ko03420	K02328	DNA polymerase delta subunit 2
+Nucleotide excision repair	ko03420	K03504	DNA polymerase delta subunit 3
+Nucleotide excision repair	ko03420	K03505	DNA polymerase delta subunit 4
+Nucleotide excision repair	ko03420	K02324	DNA polymerase epsilon subunit 1 [EC:2.7.7.7]
+Nucleotide excision repair	ko03420	K02325	DNA polymerase epsilon subunit 2 [EC:2.7.7.7]
+Nucleotide excision repair	ko03420	K02326	DNA polymerase epsilon subunit 3 [EC:2.7.7.7]
+Nucleotide excision repair	ko03420	K03506	DNA polymerase epsilon subunit 4 [EC:2.7.7.7]
+Nucleotide excision repair	ko03420	K04802	proliferating cell nuclear antigen
+Nucleotide excision repair	ko03420	K10754	replication factor C subunit 1
+Nucleotide excision repair	ko03420	K10755	replication factor C subunit 2/4
+Nucleotide excision repair	ko03420	K10756	replication factor C subunit 3/5
+Nucleotide excision repair	ko03420	K10747	DNA ligase 1 [EC:6.5.1.7 6.5.1.6 6.5.1.1]
+Mismatch repair	ko03430	K03555	DNA mismatch repair protein MutS
+Mismatch repair	ko03430	K07456	DNA mismatch repair protein MutS2
+Mismatch repair	ko03430	K03572	DNA mismatch repair protein MutL
+Mismatch repair	ko03430	K03573	DNA mismatch repair protein MutH
+Mismatch repair	ko03430	K03657	DNA helicase II / ATP-dependent DNA helicase PcrA [EC:3.6.4.12]
+Mismatch repair	ko03430	K01141	exodeoxyribonuclease I [EC:3.1.11.1]
+Mismatch repair	ko03430	K03601	exodeoxyribonuclease VII large subunit [EC:3.1.11.6]
+Mismatch repair	ko03430	K03602	exodeoxyribonuclease VII small subunit [EC:3.1.11.6]
+Mismatch repair	ko03430	K10857	exodeoxyribonuclease X [EC:3.1.11.-]
+Mismatch repair	ko03430	K07462	single-stranded-DNA-specific exonuclease [EC:3.1.-.-]
+Mismatch repair	ko03430	K03111	single-strand DNA-binding protein
+Mismatch repair	ko03430	K02337	DNA polymerase III subunit alpha [EC:2.7.7.7]
+Mismatch repair	ko03430	K03763	DNA polymerase III subunit alpha, Gram-positive type [EC:2.7.7.7]
+Mismatch repair	ko03430	K02338	DNA polymerase III subunit beta [EC:2.7.7.7]
+Mismatch repair	ko03430	K02343	DNA polymerase III subunit gamma/tau [EC:2.7.7.7]
+Mismatch repair	ko03430	K02340	DNA polymerase III subunit delta [EC:2.7.7.7]
+Mismatch repair	ko03430	K02341	DNA polymerase III subunit delta' [EC:2.7.7.7]
+Mismatch repair	ko03430	K02342	DNA polymerase III subunit epsilon [EC:2.7.7.7]
+Mismatch repair	ko03430	K14159	ribonuclease HI / DNA polymerase III subunit epsilon [EC:2.7.7.7 3.1.26.4]
+Mismatch repair	ko03430	K02345	DNA polymerase III subunit theta [EC:2.7.7.7]
+Mismatch repair	ko03430	K02339	DNA polymerase III subunit chi [EC:2.7.7.7]
+Mismatch repair	ko03430	K02344	DNA polymerase III subunit psi [EC:2.7.7.7]
+Mismatch repair	ko03430	K01972	DNA ligase (NAD+) [EC:6.5.1.2]
+Mismatch repair	ko03430	K06223	DNA adenine methylase [EC:2.1.1.72]
+Mismatch repair	ko03430	K10858	DNA mismatch repair protein PMS2
+Mismatch repair	ko03430	K08734	DNA mismatch repair protein MLH1
+Mismatch repair	ko03430	K08737	DNA mismatch repair protein MSH6
+Mismatch repair	ko03430	K08735	DNA mismatch repair protein MSH2
+Mismatch repair	ko03430	K08736	DNA mismatch repair protein MSH3
+Mismatch repair	ko03430	K08739	DNA mismatch repair protein MLH3
+Mismatch repair	ko03430	K10754	replication factor C subunit 1
+Mismatch repair	ko03430	K10755	replication factor C subunit 2/4
+Mismatch repair	ko03430	K10756	replication factor C subunit 3/5
+Mismatch repair	ko03430	K04802	proliferating cell nuclear antigen
+Mismatch repair	ko03430	K10746	exonuclease 1 [EC:3.1.-.-]
+Mismatch repair	ko03430	K07466	replication factor A1
+Mismatch repair	ko03430	K10739	replication factor A2
+Mismatch repair	ko03430	K10740	replication factor A3
+Mismatch repair	ko03430	K10741	replication factor A4
+Mismatch repair	ko03430	K02327	DNA polymerase delta subunit 1 [EC:2.7.7.7]
+Mismatch repair	ko03430	K02328	DNA polymerase delta subunit 2
+Mismatch repair	ko03430	K03504	DNA polymerase delta subunit 3
+Mismatch repair	ko03430	K03505	DNA polymerase delta subunit 4
+Mismatch repair	ko03430	K10747	DNA ligase 1 [EC:6.5.1.7 6.5.1.6 6.5.1.1]
+Homologous recombination	ko03440	K07462	single-stranded-DNA-specific exonuclease [EC:3.1.-.-]
+Homologous recombination	ko03440	K03111	single-strand DNA-binding protein
+Homologous recombination	ko03440	K03629	DNA replication and repair protein RecF
+Homologous recombination	ko03440	K03584	DNA repair protein RecO (recombination protein O)
+Homologous recombination	ko03440	K06187	recombination protein RecR
+Homologous recombination	ko03440	K03553	recombination protein RecA
+Homologous recombination	ko03440	K02335	DNA polymerase I [EC:2.7.7.7]
+Homologous recombination	ko03440	K03550	holliday junction DNA helicase RuvA [EC:3.6.4.12]
+Homologous recombination	ko03440	K03551	holliday junction DNA helicase RuvB [EC:3.6.4.12]
+Homologous recombination	ko03440	K01159	crossover junction endodeoxyribonuclease RuvC [EC:3.1.22.4]
+Homologous recombination	ko03440	K03655	ATP-dependent DNA helicase RecG [EC:3.6.4.12]
+Homologous recombination	ko03440	K03582	exodeoxyribonuclease V beta subunit [EC:3.1.11.5]
+Homologous recombination	ko03440	K03583	exodeoxyribonuclease V gamma subunit [EC:3.1.11.5]
+Homologous recombination	ko03440	K03581	exodeoxyribonuclease V alpha subunit [EC:3.1.11.5]
+Homologous recombination	ko03440	K02337	DNA polymerase III subunit alpha [EC:2.7.7.7]
+Homologous recombination	ko03440	K03763	DNA polymerase III subunit alpha, Gram-positive type [EC:2.7.7.7]
+Homologous recombination	ko03440	K02338	DNA polymerase III subunit beta [EC:2.7.7.7]
+Homologous recombination	ko03440	K02343	DNA polymerase III subunit gamma/tau [EC:2.7.7.7]
+Homologous recombination	ko03440	K02340	DNA polymerase III subunit delta [EC:2.7.7.7]
+Homologous recombination	ko03440	K02341	DNA polymerase III subunit delta' [EC:2.7.7.7]
+Homologous recombination	ko03440	K02342	DNA polymerase III subunit epsilon [EC:2.7.7.7]
+Homologous recombination	ko03440	K14159	ribonuclease HI / DNA polymerase III subunit epsilon [EC:2.7.7.7 3.1.26.4]
+Homologous recombination	ko03440	K02345	DNA polymerase III subunit theta [EC:2.7.7.7]
+Homologous recombination	ko03440	K02339	DNA polymerase III subunit chi [EC:2.7.7.7]
+Homologous recombination	ko03440	K02344	DNA polymerase III subunit psi [EC:2.7.7.7]
+Homologous recombination	ko03440	K04066	primosomal protein N' (replication factor Y) (superfamily II helicase) [EC:3.6.4.-]
+Homologous recombination	ko03440	K02686	primosomal replication protein N
+Homologous recombination	ko03440	K04067	primosomal replication protein N''
+Homologous recombination	ko03440	K02317	DNA replication protein DnaT
+Homologous recombination	ko03440	K10866	DNA repair protein RAD50 [EC:3.6.-.-]
+Homologous recombination	ko03440	K10865	double-strand break repair protein MRE11
+Homologous recombination	ko03440	K10868	DNA repair protein XRS2
+Homologous recombination	ko03440	K10867	nibrin
+Homologous recombination	ko03440	K04728	serine-protein kinase ATM [EC:2.7.11.1]
+Homologous recombination	ko03440	K10605	breast cancer type 1 susceptibility protein [EC:2.3.2.27]
+Homologous recombination	ko03440	K10683	BRCA1-associated RING domain protein 1
+Homologous recombination	ko03440	K20773	DNA endonuclease RBBP8 [EC:3.1.-.-]
+Homologous recombination	ko03440	K15362	fanconi anemia group J protein [EC:3.6.4.12]
+Homologous recombination	ko03440	K10728	topoisomerase (DNA) II binding protein 1
+Homologous recombination	ko03440	K20774	BRCA1-A complex subunit Abraxas
+Homologous recombination	ko03440	K20775	BRCA1-A complex subunit RAP80
+Homologous recombination	ko03440	K20776	BRISC and BRCA1-A complex member 1
+Homologous recombination	ko03440	K12173	BRCA1-A complex subunit BRE
+Homologous recombination	ko03440	K11864	BRCA1/BRCA2-containing complex subunit 3 [EC:3.4.19.-]
+Homologous recombination	ko03440	K10897	partner and localizer of BRCA2
+Homologous recombination	ko03440	K08775	breast cancer 2 susceptibility protein
+Homologous recombination	ko03440	K10881	26 proteasome complex subunit DSS1
+Homologous recombination	ko03440	K19528	synaptonemal complex protein 3
+Homologous recombination	ko03440	K10957	DNA repair protein RAD55
+Homologous recombination	ko03440	K10958	DNA repair protein RAD57
+Homologous recombination	ko03440	K07466	replication factor A1
+Homologous recombination	ko03440	K10739	replication factor A2
+Homologous recombination	ko03440	K10740	replication factor A3
+Homologous recombination	ko03440	K10741	replication factor A4
+Homologous recombination	ko03440	K04482	DNA repair protein RAD51
+Homologous recombination	ko03440	K10873	DNA repair and recombination protein RAD52
+Homologous recombination	ko03440	K10869	RAD51-like protein 1
+Homologous recombination	ko03440	K10870	RAD51-like protein 2
+Homologous recombination	ko03440	K10871	RAD51-like protein 3
+Homologous recombination	ko03440	K10879	DNA-repair protein XRCC2
+Homologous recombination	ko03440	K10880	DNA-repair protein XRCC3
+Homologous recombination	ko03440	K10959	DNA repair protein RAD59
+Homologous recombination	ko03440	K10875	DNA repair and recombination protein RAD54 and RAD54-like protein [EC:3.6.4.-]
+Homologous recombination	ko03440	K10877	DNA repair and recombination protein RAD54B [EC:3.6.4.-]
+Homologous recombination	ko03440	K02327	DNA polymerase delta subunit 1 [EC:2.7.7.7]
+Homologous recombination	ko03440	K02328	DNA polymerase delta subunit 2
+Homologous recombination	ko03440	K03504	DNA polymerase delta subunit 3
+Homologous recombination	ko03440	K03505	DNA polymerase delta subunit 4
+Homologous recombination	ko03440	K10901	bloom syndrome protein [EC:3.6.4.12]
+Homologous recombination	ko03440	K03165	DNA topoisomerase III [EC:5.6.2.1]
+Homologous recombination	ko03440	K08991	crossover junction endonuclease MUS81 [EC:3.1.22.-]
+Homologous recombination	ko03440	K10882	crossover junction endonuclease EME1 [EC:3.1.22.-]
+Non-homologous end-joining	ko03450	K10979	DNA end-binding protein Ku
+Non-homologous end-joining	ko03450	K01971	bifunctional non-homologous end joining protein LigD [EC:6.5.1.1]
+Non-homologous end-joining	ko03450	K10884	ATP-dependent DNA helicase 2 subunit 1
+Non-homologous end-joining	ko03450	K10885	ATP-dependent DNA helicase 2 subunit 2
+Non-homologous end-joining	ko03450	K10887	DNA cross-link repair 1C protein [EC:3.1.-.-]
+Non-homologous end-joining	ko03450	K06642	DNA-dependent protein kinase catalytic subunit [EC:2.7.11.1]
+Non-homologous end-joining	ko03450	K03512	DNA polymerase lambda [EC:4.2.99.- 2.7.7.7]
+Non-homologous end-joining	ko03450	K03513	DNA polymerase mu [EC:2.7.7.7]
+Non-homologous end-joining	ko03450	K00977	DNA nucleotidylexotransferase [EC:2.7.7.31]
+Non-homologous end-joining	ko03450	K10777	DNA ligase 4 [EC:6.5.1.1]
+Non-homologous end-joining	ko03450	K10886	DNA-repair protein XRCC4
+Non-homologous end-joining	ko03450	K10980	non-homologous end-joining factor 1
+Non-homologous end-joining	ko03450	K10866	DNA repair protein RAD50 [EC:3.6.-.-]
+Non-homologous end-joining	ko03450	K10865	double-strand break repair protein MRE11
+Non-homologous end-joining	ko03450	K10868	DNA repair protein XRS2
+Non-homologous end-joining	ko03450	K10981	DNA polymerase IV [EC:2.7.7.7]
+Non-homologous end-joining	ko03450	K04799	flap endonuclease-1 [EC:3.-.-.-]
+Non-homologous end-joining	ko03450	K10982	ligase-interacting factor 1
+Non-homologous end-joining	ko03450	K10983	non-homologous end-joining protein 1

@@ -1,0 +1,681 @@
+Pathway_name	Pathway_number	KOrtholog	Enzyme_name
+ABC transporters	ko02010	K02048	sulfate/thiosulfate transport system substrate-binding protein
+ABC transporters	ko02010	K23163	sulfate/thiosulfate transport system substrate-binding protein
+ABC transporters	ko02010	K02046	sulfate/thiosulfate transport system permease protein
+ABC transporters	ko02010	K02047	sulfate/thiosulfate transport system permease protein
+ABC transporters	ko02010	K02045	sulfate/thiosulfate transport system ATP-binding protein [EC:7.3.2.3]
+ABC transporters	ko02010	K05772	tungstate transport system substrate-binding protein
+ABC transporters	ko02010	K05773	tungstate transport system permease protein
+ABC transporters	ko02010	K06857	tungstate transport system ATP-binding protein [EC:7.3.2.6]
+ABC transporters	ko02010	K15495	molybdate/tungstate transport system substrate-binding protein
+ABC transporters	ko02010	K15496	molybdate/tungstate transport system permease protein
+ABC transporters	ko02010	K15497	molybdate/tungstate transport system ATP-binding protein [EC:7.3.2.6 7.3.2.5]
+ABC transporters	ko02010	K15576	nitrate/nitrite transport system substrate-binding protein
+ABC transporters	ko02010	K15577	nitrate/nitrite transport system permease protein
+ABC transporters	ko02010	K15578	nitrate/nitrite transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K15579	nitrate/nitrite transport system ATP-binding protein
+ABC transporters	ko02010	K11950	bicarbonate transport system substrate-binding protein
+ABC transporters	ko02010	K11951	bicarbonate transport system permease protein
+ABC transporters	ko02010	K11952	bicarbonate transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K11953	bicarbonate transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K15551	taurine transport system substrate-binding protein
+ABC transporters	ko02010	K15552	taurine transport system permease protein
+ABC transporters	ko02010	K10831	taurine transport system ATP-binding protein [EC:7.6.2.7]
+ABC transporters	ko02010	K15553	sulfonate transport system substrate-binding protein
+ABC transporters	ko02010	K15554	sulfonate transport system permease protein
+ABC transporters	ko02010	K15555	sulfonate transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K15598	putative hydroxymethylpyrimidine transport system substrate-binding protein
+ABC transporters	ko02010	K15599	putative hydroxymethylpyrimidine transport system permease protein
+ABC transporters	ko02010	K15600	putative hydroxymethylpyrimidine transport system ATP-binding protein
+ABC transporters	ko02010	K15556	phthalate transport system substrate-binding protein
+ABC transporters	ko02010	K15557	phthalate transport system permease protein
+ABC transporters	ko02010	K15558	phthalate transport system ATP-binding protein
+ABC transporters	ko02010	K02020	molybdate transport system substrate-binding protein
+ABC transporters	ko02010	K02018	molybdate transport system permease protein
+ABC transporters	ko02010	K02017	molybdate transport system ATP-binding protein [EC:7.3.2.5]
+ABC transporters	ko02010	K05776	molybdate transport system ATP-binding protein
+ABC transporters	ko02010	K02012	iron(III) transport system substrate-binding protein
+ABC transporters	ko02010	K02011	iron(III) transport system permease protein
+ABC transporters	ko02010	K02010	iron(III) transport system ATP-binding protein [EC:7.2.2.7]
+ABC transporters	ko02010	K02064	thiamine transport system substrate-binding protein
+ABC transporters	ko02010	K02063	thiamine transport system permease protein
+ABC transporters	ko02010	K02062	thiamine transport system ATP-binding protein
+ABC transporters	ko02010	K11069	spermidine/putrescine transport system substrate-binding protein
+ABC transporters	ko02010	K11070	spermidine/putrescine transport system permease protein
+ABC transporters	ko02010	K11071	spermidine/putrescine transport system permease protein
+ABC transporters	ko02010	K11072	spermidine/putrescine transport system ATP-binding protein [EC:7.6.2.11]
+ABC transporters	ko02010	K11073	putrescine transport system substrate-binding protein
+ABC transporters	ko02010	K11074	putrescine transport system permease protein
+ABC transporters	ko02010	K11075	putrescine transport system permease protein
+ABC transporters	ko02010	K11076	putrescine transport system ATP-binding protein
+ABC transporters	ko02010	K11077	mannopine transport system substrate-binding protein
+ABC transporters	ko02010	K11078	mannopine transport system permease protein
+ABC transporters	ko02010	K11079	mannopine transport system permease protein
+ABC transporters	ko02010	K11080	mannopine transport system ATP-binding protein
+ABC transporters	ko02010	K11081	2-aminoethylphosphonate transport system substrate-binding protein
+ABC transporters	ko02010	K11082	2-aminoethylphosphonate transport system permease protein
+ABC transporters	ko02010	K11083	2-aminoethylphosphonate transport system permease protein
+ABC transporters	ko02010	K11084	2-aminoethylphosphonate transport system ATP-binding protein
+ABC transporters	ko02010	K02002	glycine betaine/proline transport system substrate-binding protein
+ABC transporters	ko02010	K02001	glycine betaine/proline transport system permease protein
+ABC transporters	ko02010	K02000	glycine betaine/proline transport system ATP-binding protein [EC:7.6.2.9]
+ABC transporters	ko02010	K05845	osmoprotectant transport system substrate-binding protein
+ABC transporters	ko02010	K05846	osmoprotectant transport system permease protein
+ABC transporters	ko02010	K05847	osmoprotectant transport system ATP-binding protein [EC:7.6.2.9]
+ABC transporters	ko02010	K10108	maltose/maltodextrin transport system substrate-binding protein
+ABC transporters	ko02010	K10109	maltose/maltodextrin transport system permease protein
+ABC transporters	ko02010	K10110	maltose/maltodextrin transport system permease protein
+ABC transporters	ko02010	K10111	multiple sugar transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K10112	multiple sugar transport system ATP-binding protein
+ABC transporters	ko02010	K15770	arabinogalactan oligomer / maltooligosaccharide transport system substrate-binding protein
+ABC transporters	ko02010	K15771	arabinogalactan oligomer / maltooligosaccharide transport system permease protein
+ABC transporters	ko02010	K15772	arabinogalactan oligomer / maltooligosaccharide transport system permease protein
+ABC transporters	ko02010	K10117	raffinose/stachyose/melibiose transport system substrate-binding protein
+ABC transporters	ko02010	K10118	raffinose/stachyose/melibiose transport system permease protein
+ABC transporters	ko02010	K10119	raffinose/stachyose/melibiose transport system permease protein
+ABC transporters	ko02010	K10188	lactose/L-arabinose transport system substrate-binding protein
+ABC transporters	ko02010	K10189	lactose/L-arabinose transport system permease protein
+ABC transporters	ko02010	K10190	lactose/L-arabinose transport system permease protein
+ABC transporters	ko02010	K10191	lactose/L-arabinose transport system ATP-binding protein
+ABC transporters	ko02010	K10227	sorbitol/mannitol transport system substrate-binding protein
+ABC transporters	ko02010	K10228	sorbitol/mannitol transport system permease protein
+ABC transporters	ko02010	K10229	sorbitol/mannitol transport system permease protein
+ABC transporters	ko02010	K10232	alpha-glucoside transport system substrate-binding protein
+ABC transporters	ko02010	K10233	alpha-glucoside transport system permease protein
+ABC transporters	ko02010	K10234	alpha-glucoside transport system permease protein
+ABC transporters	ko02010	K10235	alpha-glucoside transport system ATP-binding protein
+ABC transporters	ko02010	K10192	oligogalacturonide transport system substrate-binding protein
+ABC transporters	ko02010	K10193	oligogalacturonide transport system permease protein
+ABC transporters	ko02010	K10194	oligogalacturonide transport system permease protein
+ABC transporters	ko02010	K10195	oligogalacturonide transport system ATP-binding protein
+ABC transporters	ko02010	K17241	alpha-1,4-digalacturonate transport system substrate-binding protein
+ABC transporters	ko02010	K17242	alpha-1,4-digalacturonate transport system permease protein
+ABC transporters	ko02010	K17243	alpha-1,4-digalacturonate transport system permease protein
+ABC transporters	ko02010	K17318	putative aldouronate transport system substrate-binding protein
+ABC transporters	ko02010	K17319	putative aldouronate transport system permease protein
+ABC transporters	ko02010	K17320	putative aldouronate transport system permease protein
+ABC transporters	ko02010	K10236	trehalose/maltose transport system substrate-binding protein
+ABC transporters	ko02010	K10237	trehalose/maltose transport system permease protein
+ABC transporters	ko02010	K10238	trehalose/maltose transport system permease protein
+ABC transporters	ko02010	K17311	trehalose transport system substrate-binding protein
+ABC transporters	ko02010	K17312	trehalose transport system permease protein
+ABC transporters	ko02010	K17313	trehalose transport system permease protein
+ABC transporters	ko02010	K17314	trehalose transport system ATP-binding protein
+ABC transporters	ko02010	K10200	N-acetylglucosamine transport system substrate-binding protein
+ABC transporters	ko02010	K10201	N-acetylglucosamine transport system permease protein
+ABC transporters	ko02010	K10202	N-acetylglucosamine transport system permease protein
+ABC transporters	ko02010	K10240	cellobiose transport system substrate-binding protein
+ABC transporters	ko02010	K10241	cellobiose transport system permease protein
+ABC transporters	ko02010	K10242	cellobiose transport system permease protein
+ABC transporters	ko02010	K17329	N,N'-diacetylchitobiose transport system substrate-binding protein
+ABC transporters	ko02010	K17330	N,N'-diacetylchitobiose transport system permease protein
+ABC transporters	ko02010	K17331	N,N'-diacetylchitobiose transport system permease protein
+ABC transporters	ko02010	K17244	putative chitobiose transport system substrate-binding protein
+ABC transporters	ko02010	K17245	putative chitobiose transport system permease protein
+ABC transporters	ko02010	K17246	putative chitobiose transport system permease protein
+ABC transporters	ko02010	K17234	arabinosaccharide transport system substrate-binding protein
+ABC transporters	ko02010	K17235	arabinosaccharide transport system permease protein
+ABC transporters	ko02010	K17236	arabinosaccharide transport system permease protein
+ABC transporters	ko02010	K17326	xylobiose transport system substrate-binding protein
+ABC transporters	ko02010	K17327	xylobiose transport system permease protein
+ABC transporters	ko02010	K17328	xylobiose transport system permease protein
+ABC transporters	ko02010	K23545	sugar transport system substrate-binding protein
+ABC transporters	ko02010	K23546	sugar transport system permease protein
+ABC transporters	ko02010	K23547	sugar transport system ATP-binding protein
+ABC transporters	ko02010	K10546	putative multiple sugar transport system substrate-binding protein
+ABC transporters	ko02010	K10547	putative multiple sugar transport system permease protein
+ABC transporters	ko02010	K10548	putative multiple sugar transport system ATP-binding protein [EC:7.5.2.-]
+ABC transporters	ko02010	K07323	phospholipid transport system substrate-binding protein
+ABC transporters	ko02010	K02067	phospholipid/cholesterol/gamma-HCH transport system substrate-binding protein
+ABC transporters	ko02010	K02066	phospholipid/cholesterol/gamma-HCH transport system permease protein
+ABC transporters	ko02010	K07122	phospholipid transport system transporter-binding protein
+ABC transporters	ko02010	K02065	phospholipid/cholesterol/gamma-HCH transport system ATP-binding protein
+ABC transporters	ko02010	K07335	basic membrane protein A and related proteins
+ABC transporters	ko02010	K23535	general nucleoside transport system permease protein
+ABC transporters	ko02010	K23536	general nucleoside transport system permease protein
+ABC transporters	ko02010	K23537	general nucleoside transport system ATP-binding protein
+ABC transporters	ko02010	K10196	glucose/arabinose transport system substrate-binding protein
+ABC transporters	ko02010	K10197	glucose/arabinose transport system permease protein
+ABC transporters	ko02010	K10198	glucose/arabinose transport system permease protein
+ABC transporters	ko02010	K10199	glucose/arabinose transport system ATP-binding protein
+ABC transporters	ko02010	K17315	glucose/mannose transport system substrate-binding protein
+ABC transporters	ko02010	K17316	glucose/mannose transport system permease protein
+ABC transporters	ko02010	K17317	glucose/mannose transport system permease protein
+ABC transporters	ko02010	K10439	ribose transport system substrate-binding protein
+ABC transporters	ko02010	K10440	ribose transport system permease protein
+ABC transporters	ko02010	K10441	ribose transport system ATP-binding protein [EC:7.5.2.7]
+ABC transporters	ko02010	K06726	D-ribose pyranase [EC:5.4.99.62]
+ABC transporters	ko02010	K10537	L-arabinose transport system substrate-binding protein
+ABC transporters	ko02010	K10538	L-arabinose transport system permease protein
+ABC transporters	ko02010	K10539	L-arabinose transport system ATP-binding protein [EC:7.5.2.12]
+ABC transporters	ko02010	K23508	galactofuranose transport system substrate-binding protein
+ABC transporters	ko02010	K23509	galactofuranose transport system permease protein
+ABC transporters	ko02010	K10820	galactofuranose transport system ATP-binding protein [EC:7.5.2.9]
+ABC transporters	ko02010	K10540	methyl-galactoside transport system substrate-binding protein
+ABC transporters	ko02010	K10541	methyl-galactoside transport system permease protein
+ABC transporters	ko02010	K10542	methyl-galactoside transport system ATP-binding protein [EC:7.5.2.11]
+ABC transporters	ko02010	K10543	D-xylose transport system substrate-binding protein
+ABC transporters	ko02010	K10544	D-xylose transport system permease protein
+ABC transporters	ko02010	K10545	D-xylose transport system ATP-binding protein [EC:7.5.2.10]
+ABC transporters	ko02010	K10549	D-allose transport system substrate-binding protein
+ABC transporters	ko02010	K10550	D-allose transport system permease protein
+ABC transporters	ko02010	K10551	D-allose transport system ATP-binding protein [EC:7.5.2.8]
+ABC transporters	ko02010	K10552	fructose transport system substrate-binding protein
+ABC transporters	ko02010	K10553	fructose transport system permease protein
+ABC transporters	ko02010	K10554	fructose transport system ATP-binding protein
+ABC transporters	ko02010	K10559	rhamnose transport system substrate-binding protein
+ABC transporters	ko02010	K10560	rhamnose transport system permease protein
+ABC transporters	ko02010	K10561	rhamnose transport system permease protein
+ABC transporters	ko02010	K10562	rhamnose transport system ATP-binding protein [EC:7.5.2.-]
+ABC transporters	ko02010	K17202	erythritol transport system substrate-binding protein
+ABC transporters	ko02010	K17203	erythritol transport system permease protein
+ABC transporters	ko02010	K17204	erythritol transport system ATP-binding protein
+ABC transporters	ko02010	K17205	putative xylitol transport system substrate-binding protein
+ABC transporters	ko02010	K17206	putative xylitol transport system permease protein
+ABC transporters	ko02010	K17207	putative xylitol transport system ATP-binding protein
+ABC transporters	ko02010	K17208	inositol transport system substrate-binding protein
+ABC transporters	ko02010	K17209	inositol transport system permease protein
+ABC transporters	ko02010	K17210	inositol transport system ATP-binding protein
+ABC transporters	ko02010	K17213	inositol transport system substrate-binding protein
+ABC transporters	ko02010	K17214	inositol transport system permease protein
+ABC transporters	ko02010	K17215	inositol transport system ATP-binding protein
+ABC transporters	ko02010	K17237	inositol-phosphate transport system substrate-binding protein
+ABC transporters	ko02010	K17238	inositol-phosphate transport system permease protein
+ABC transporters	ko02010	K17239	inositol-phosphate transport system permease protein
+ABC transporters	ko02010	K17240	inositol-phosphate transport system ATP-binding protein
+ABC transporters	ko02010	K17321	glycerol transport system substrate-binding protein
+ABC transporters	ko02010	K17322	glycerol transport system permease protein
+ABC transporters	ko02010	K17323	glycerol transport system permease protein
+ABC transporters	ko02010	K17324	glycerol transport system ATP-binding protein
+ABC transporters	ko02010	K17325	glycerol transport system ATP-binding protein
+ABC transporters	ko02010	K05813	sn-glycerol 3-phosphate transport system substrate-binding protein
+ABC transporters	ko02010	K05814	sn-glycerol 3-phosphate transport system permease protein
+ABC transporters	ko02010	K05815	sn-glycerol 3-phosphate transport system permease protein
+ABC transporters	ko02010	K05816	sn-glycerol 3-phosphate transport system ATP-binding protein [EC:7.6.2.10]
+ABC transporters	ko02010	K02040	phosphate transport system substrate-binding protein
+ABC transporters	ko02010	K02037	phosphate transport system permease protein
+ABC transporters	ko02010	K02038	phosphate transport system permease protein
+ABC transporters	ko02010	K02036	phosphate transport system ATP-binding protein [EC:7.3.2.1]
+ABC transporters	ko02010	K02044	phosphonate transport system substrate-binding protein
+ABC transporters	ko02010	K02042	phosphonate transport system permease protein
+ABC transporters	ko02010	K02041	phosphonate transport system ATP-binding protein [EC:7.3.2.2]
+ABC transporters	ko02010	K10013	lysine/arginine/ornithine transport system substrate-binding protein
+ABC transporters	ko02010	K10015	histidine transport system permease protein
+ABC transporters	ko02010	K10016	histidine transport system permease protein
+ABC transporters	ko02010	K10017	histidine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K10014	histidine transport system substrate-binding protein
+ABC transporters	ko02010	K10036	glutamine transport system substrate-binding protein
+ABC transporters	ko02010	K10037	glutamine transport system permease protein
+ABC transporters	ko02010	K10038	glutamine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K10039	aspartate/glutamate/glutamine transport system substrate-binding protein
+ABC transporters	ko02010	K10040	aspartate/glutamate/glutamine transport system permease protein
+ABC transporters	ko02010	K10041	aspartate/glutamate/glutamine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K09996	arginine transport system substrate-binding protein
+ABC transporters	ko02010	K09997	arginine transport system substrate-binding protein
+ABC transporters	ko02010	K09998	arginine transport system permease protein
+ABC transporters	ko02010	K09999	arginine transport system permease protein
+ABC transporters	ko02010	K10000	arginine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K10001	glutamate/aspartate transport system substrate-binding protein
+ABC transporters	ko02010	K10002	glutamate/aspartate transport system permease protein
+ABC transporters	ko02010	K10003	glutamate/aspartate transport system permease protein
+ABC transporters	ko02010	K10004	glutamate/aspartate transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K10018	octopine/nopaline transport system substrate-binding protein
+ABC transporters	ko02010	K10019	octopine/nopaline transport system permease protein
+ABC transporters	ko02010	K10020	octopine/nopaline transport system permease protein
+ABC transporters	ko02010	K10021	octopine/nopaline transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K09969	general L-amino acid transport system substrate-binding protein
+ABC transporters	ko02010	K09970	general L-amino acid transport system permease protein
+ABC transporters	ko02010	K09971	general L-amino acid transport system permease protein
+ABC transporters	ko02010	K09972	general L-amino acid transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K10005	glutamate transport system substrate-binding protein
+ABC transporters	ko02010	K10006	glutamate transport system permease protein
+ABC transporters	ko02010	K10007	glutamate transport system permease protein
+ABC transporters	ko02010	K10008	glutamate transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K02424	L-cystine transport system substrate-binding protein
+ABC transporters	ko02010	K10009	L-cystine transport system permease protein
+ABC transporters	ko02010	K10010	L-cystine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K16956	L-cystine transport system substrate-binding protein
+ABC transporters	ko02010	K16957	L-cystine transport system substrate-binding protein
+ABC transporters	ko02010	K16958	L-cystine transport system permease protein
+ABC transporters	ko02010	K16959	L-cystine transport system permease protein
+ABC transporters	ko02010	K16960	L-cystine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K16961	putative S-methylcysteine transport system substrate-binding protein
+ABC transporters	ko02010	K16962	putative S-methylcysteine transport system permease protein
+ABC transporters	ko02010	K16963	putative S-methylcysteine transport system ATP-binding protein
+ABC transporters	ko02010	K10022	arginine/ornithine transport system substrate-binding protein
+ABC transporters	ko02010	K10023	arginine/ornithine transport system permease protein
+ABC transporters	ko02010	K10024	arginine/ornithine transport system permease protein
+ABC transporters	ko02010	K10025	arginine/ornithine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K17062	arginine/lysine/histidine/glutamine transport system substrate-binding and permease protein
+ABC transporters	ko02010	K17063	arginine/lysine/histidine/glutamine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K23059	arginine/lysine/histidine transporter system substrate-binding protein
+ABC transporters	ko02010	K17077	arginine/lysine/histidine transport system permease protein
+ABC transporters	ko02010	K23060	arginine/lysine/histidine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K17073	putative lysine transport system substrate-binding protein
+ABC transporters	ko02010	K17074	putative lysine transport system permease protein
+ABC transporters	ko02010	K17076	putative lysine transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K23055	putative lysine/arginine/ornithine/histidine/octopine transport system substrate-binding protein
+ABC transporters	ko02010	K23056	putative lysine/arginine/ornithine/histidine/octopine transport system permease protein
+ABC transporters	ko02010	K23057	putative lysine/arginine/ornithine/histidine/octopine transport system permease protein
+ABC transporters	ko02010	K23058	putative lysine/arginine/ornithine/histidine/octopine transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K23061	hydroxyproline transporter system substrate-binding protein
+ABC transporters	ko02010	K23062	hydroxyproline transport system permease protein
+ABC transporters	ko02010	K23063	hydroxyproline transport system permease protein
+ABC transporters	ko02010	K23064	hydroxyproline transport system ATP-binding protein [EC:7.4.2.1]
+ABC transporters	ko02010	K01999	branched-chain amino acid transport system substrate-binding protein
+ABC transporters	ko02010	K01997	branched-chain amino acid transport system permease protein
+ABC transporters	ko02010	K01998	branched-chain amino acid transport system permease protein
+ABC transporters	ko02010	K01995	branched-chain amino acid transport system ATP-binding protein
+ABC transporters	ko02010	K01996	branched-chain amino acid transport system ATP-binding protein
+ABC transporters	ko02010	K11954	neutral amino acid transport system substrate-binding protein
+ABC transporters	ko02010	K11955	neutral amino acid transport system permease protein
+ABC transporters	ko02010	K11956	neutral amino acid transport system permease protein
+ABC transporters	ko02010	K11957	neutral amino acid transport system ATP-binding protein
+ABC transporters	ko02010	K11958	neutral amino acid transport system ATP-binding protein
+ABC transporters	ko02010	K02073	D-methionine transport system substrate-binding protein
+ABC transporters	ko02010	K02072	D-methionine transport system permease protein
+ABC transporters	ko02010	K02071	D-methionine transport system ATP-binding protein
+ABC transporters	ko02010	K11959	urea transport system substrate-binding protein
+ABC transporters	ko02010	K11960	urea transport system permease protein
+ABC transporters	ko02010	K11961	urea transport system permease protein
+ABC transporters	ko02010	K11962	urea transport system ATP-binding protein
+ABC transporters	ko02010	K11963	urea transport system ATP-binding protein
+ABC transporters	ko02010	K15580	oligopeptide transport system substrate-binding protein
+ABC transporters	ko02010	K15581	oligopeptide transport system permease protein
+ABC transporters	ko02010	K15582	oligopeptide transport system permease protein
+ABC transporters	ko02010	K15583	oligopeptide transport system ATP-binding protein
+ABC transporters	ko02010	K10823	oligopeptide transport system ATP-binding protein
+ABC transporters	ko02010	K12368	dipeptide transport system substrate-binding protein
+ABC transporters	ko02010	K12369	dipeptide transport system permease protein
+ABC transporters	ko02010	K12370	dipeptide transport system permease protein
+ABC transporters	ko02010	K12371	dipeptide transport system ATP-binding protein
+ABC transporters	ko02010	K12372	dipeptide transport system ATP-binding protein
+ABC transporters	ko02010	K16199	dipeptide transport system substrate-binding protein
+ABC transporters	ko02010	K16200	dipeptide transport system permease protein
+ABC transporters	ko02010	K16201	dipeptide transport system permease protein
+ABC transporters	ko02010	K16202	dipeptide transport system ATP-binding protein
+ABC transporters	ko02010	K23125	beta-defensin 1
+ABC transporters	ko02010	K19226	cationic peptide transport system substrate-binding protein
+ABC transporters	ko02010	K19227	cationic peptide transport system permease protein
+ABC transporters	ko02010	K19228	cationic peptide transport system permease protein
+ABC transporters	ko02010	K19229	cationic peptide transport system ATP-binding protein
+ABC transporters	ko02010	K19230	cationic peptide transport system ATP-binding protein
+ABC transporters	ko02010	K15584	nickel transport system substrate-binding protein
+ABC transporters	ko02010	K15585	nickel transport system permease protein
+ABC transporters	ko02010	K15586	nickel transport system permease protein
+ABC transporters	ko02010	K15587	nickel transport system ATP-binding protein [EC:7.2.2.11]
+ABC transporters	ko02010	K10824	nickel transport system ATP-binding protein [EC:7.2.2.11]
+ABC transporters	ko02010	K13889	glutathione transport system substrate-binding protein
+ABC transporters	ko02010	K13890	glutathione transport system permease protein
+ABC transporters	ko02010	K13891	glutathione transport system permease protein
+ABC transporters	ko02010	K13892	glutathione transport system ATP-binding protein
+ABC transporters	ko02010	K13893	microcin C transport system substrate-binding protein
+ABC transporters	ko02010	K13894	microcin C transport system permease protein
+ABC transporters	ko02010	K13895	microcin C transport system permease protein
+ABC transporters	ko02010	K13896	microcin C transport system ATP-binding protein
+ABC transporters	ko02010	K23181	ferric citrate transport system substrate-binding protein
+ABC transporters	ko02010	K23182	ferric citrate transport system permease protein
+ABC transporters	ko02010	K23183	ferric citrate transport system permease protein
+ABC transporters	ko02010	K23184	ferric citrate transport system ATP-binding protein [EC:7.2.2.18]
+ABC transporters	ko02010	K23185	ferric enterobactin transport system substrate-binding protein
+ABC transporters	ko02010	K23186	ferric enterobactin transport system permease protein
+ABC transporters	ko02010	K23187	ferric enterobactin transport system permease protein
+ABC transporters	ko02010	K23188	ferric enterobactin transport system ATP-binding protein [EC:7.2.2.17]
+ABC transporters	ko02010	K23227	ferric hydroxamate transport system substrate-binding protein
+ABC transporters	ko02010	K23228	ferric hydroxamate transport system permease protein
+ABC transporters	ko02010	K10829	ferric hydroxamate transport system ATP-binding protein [EC:7.2.2.16]
+ABC transporters	ko02010	K06858	vitamin B12 transport system substrate-binding protein
+ABC transporters	ko02010	K06073	vitamin B12 transport system permease protein
+ABC transporters	ko02010	K06074	vitamin B12 transport system ATP-binding protein [EC:7.6.2.8]
+ABC transporters	ko02010	K11601	manganese transport system substrate-binding protein
+ABC transporters	ko02010	K11602	manganese transport system permease protein
+ABC transporters	ko02010	K11603	manganese transport system ATP-binding protein [EC:7.2.2.5]
+ABC transporters	ko02010	K19975	manganese transport system substrate-binding protein
+ABC transporters	ko02010	K19976	manganese transport system permease protein
+ABC transporters	ko02010	K19973	manganese transport system ATP-binding protein [EC:7.2.2.5]
+ABC transporters	ko02010	K09815	zinc transport system substrate-binding protein
+ABC transporters	ko02010	K09816	zinc transport system permease protein
+ABC transporters	ko02010	K09817	zinc transport system ATP-binding protein [EC:7.2.2.-]
+ABC transporters	ko02010	K11704	iron/zinc/manganese/copper transport system substrate-binding protein
+ABC transporters	ko02010	K11705	iron/zinc/manganese/copper transport system permease protein
+ABC transporters	ko02010	K11706	iron/zinc/manganese/copper transport system ATP-binding protein
+ABC transporters	ko02010	K11604	manganese/iron transport system substrate-binding protein
+ABC transporters	ko02010	K11605	manganese/iron transport system permease protein
+ABC transporters	ko02010	K11606	manganese/iron transport system permease protein
+ABC transporters	ko02010	K11607	manganese/iron transport system ATP-binding protein
+ABC transporters	ko02010	K19971	manganese/zinc transport system substrate-binding protein
+ABC transporters	ko02010	K19972	manganese/zinc transport system permease protein
+ABC transporters	ko02010	K10830	manganese/zinc transport system ATP-binding protein [EC:7.2.2.5]
+ABC transporters	ko02010	K11707	manganese/zinc/iron transport system substrate-binding protein
+ABC transporters	ko02010	K11708	manganese/zinc/iron transport system permease protein
+ABC transporters	ko02010	K11709	manganese/zinc/iron transport system permease protein
+ABC transporters	ko02010	K11710	manganese/zinc/iron transport system ATP- binding protein [EC:7.2.2.5]
+ABC transporters	ko02010	K02009	cobalt/nickel transport protein
+ABC transporters	ko02010	K02007	cobalt/nickel transport system permease protein
+ABC transporters	ko02010	K02008	cobalt/nickel transport system permease protein
+ABC transporters	ko02010	K02006	cobalt/nickel transport system ATP-binding protein
+ABC transporters	ko02010	K10094	nickel transport protein
+ABC transporters	ko02010	K16915	nickel transport protein
+ABC transporters	ko02010	K03523	biotin transport system substrate-specific component
+ABC transporters	ko02010	K16783	biotin transport system permease protein
+ABC transporters	ko02010	K16784	biotin transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K16785	energy-coupling factor transport system permease protein
+ABC transporters	ko02010	K16786	energy-coupling factor transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K16787	energy-coupling factor transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K10555	AI-2 transport system substrate-binding protein
+ABC transporters	ko02010	K10556	AI-2 transport system permease protein
+ABC transporters	ko02010	K10557	AI-2 transport system permease protein
+ABC transporters	ko02010	K10558	AI-2 transport system ATP-binding protein
+ABC transporters	ko02010	K23510	riboflavin transport system substrate-binding protein
+ABC transporters	ko02010	K23511	riboflavin transport system permease protein
+ABC transporters	ko02010	K23512	riboflavin transport system permease protein
+ABC transporters	ko02010	K23513	riboflavin transport system ATP-binding protein
+ABC transporters	ko02010	K11051	multidrug/hemolysin transport system permease protein
+ABC transporters	ko02010	K11050	multidrug/hemolysin transport system ATP-binding protein
+ABC transporters	ko02010	K10107	capsular polysaccharide transport system permease protein
+ABC transporters	ko02010	K09688	capsular polysaccharide transport system permease protein
+ABC transporters	ko02010	K09689	capsular polysaccharide transport system ATP-binding protein [EC:7.6.2.12]
+ABC transporters	ko02010	K22921	Vi polysaccharide transport system permease protein
+ABC transporters	ko02010	K22922	Vi polysaccharide transport system permease protein
+ABC transporters	ko02010	K22923	Vi polysaccharide transport system ATP-binding protein [EC:7.6.2.12]
+ABC transporters	ko02010	K09690	lipopolysaccharide transport system permease protein
+ABC transporters	ko02010	K09691	lipopolysaccharide transport system ATP-binding protein
+ABC transporters	ko02010	K09692	teichoic acid transport system permease protein
+ABC transporters	ko02010	K09693	teichoic acid transport system ATP-binding protein [EC:7.5.2.4]
+ABC transporters	ko02010	K09694	lipooligosaccharide transport system permease protein
+ABC transporters	ko02010	K09695	lipooligosaccharide transport system ATP-binding protein
+ABC transporters	ko02010	K09696	sodium transport system permease protein
+ABC transporters	ko02010	K09697	sodium transport system ATP-binding protein [EC:7.2.2.4]
+ABC transporters	ko02010	K09813	hemin transport system permease protein
+ABC transporters	ko02010	K09814	hemin transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K18233	oleandomycin transport system permease protein
+ABC transporters	ko02010	K18232	oleandomycin transport system ATP-binding protein
+ABC transporters	ko02010	K19310	bacitracin transport system permease protein
+ABC transporters	ko02010	K19309	bacitracin transport system ATP-binding protein
+ABC transporters	ko02010	K11632	bacitracin transport system permease protein
+ABC transporters	ko02010	K11631	bacitracin transport system ATP-binding protein
+ABC transporters	ko02010	K20460	lantibiotic transport system permease protein
+ABC transporters	ko02010	K20461	lantibiotic transport system permease protein
+ABC transporters	ko02010	K20459	lantibiotic transport system ATP-binding protein
+ABC transporters	ko02010	K20491	lantibiotic transport system permease protein
+ABC transporters	ko02010	K20492	lantibiotic transport system permease protein
+ABC transporters	ko02010	K20494	lantibiotic transport system permease protein
+ABC transporters	ko02010	K20490	lantibiotic transport system ATP-binding protein
+ABC transporters	ko02010	K09808	lipoprotein-releasing system permease protein
+ABC transporters	ko02010	K09810	lipoprotein-releasing system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K02196	heme exporter protein D
+ABC transporters	ko02010	K02195	heme exporter protein C
+ABC transporters	ko02010	K02194	heme exporter protein B
+ABC transporters	ko02010	K02193	heme exporter protein A [EC:7.6.2.5]
+ABC transporters	ko02010	K07091	lipopolysaccharide export system permease protein
+ABC transporters	ko02010	K11720	lipopolysaccharide export system permease protein
+ABC transporters	ko02010	K06861	lipopolysaccharide export system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K16905	fluoroquinolone transport system permease protein
+ABC transporters	ko02010	K16906	fluoroquinolone transport system permease protein
+ABC transporters	ko02010	K16907	fluoroquinolone transport system ATP-binding protein [EC:3.6.3.-]
+ABC transporters	ko02010	K16916	putative peptide transport system permease protein
+ABC transporters	ko02010	K16917	putative peptide transport system ATP-binding protein
+ABC transporters	ko02010	K19084	bacitracin transport system permease protein
+ABC transporters	ko02010	K19083	bacitracin transport system ATP-binding protein
+ABC transporters	ko02010	K19080	cationic antimicrobial peptide transport system permease protein
+ABC transporters	ko02010	K19079	cationic antimicrobial peptide transport system ATP-binding protein
+ABC transporters	ko02010	K19341	Cu-processing system permease protein
+ABC transporters	ko02010	K19340	Cu-processing system ATP-binding protein
+ABC transporters	ko02010	K09811	cell division transport system permease protein
+ABC transporters	ko02010	K09812	cell division transport system ATP-binding protein
+ABC transporters	ko02010	K16918	acetoin utilization transport system permease protein
+ABC transporters	ko02010	K16919	acetoin utilization transport system permease protein
+ABC transporters	ko02010	K16921	acetoin utilization transport system ATP-binding protein
+ABC transporters	ko02010	K16920	acetoin utilization transport system ATP-binding protein
+ABC transporters	ko02010	K05641	ATP-binding cassette, subfamily A (ABC1), member 1
+ABC transporters	ko02010	K05642	ATP-binding cassette, subfamily A (ABC1), member 2
+ABC transporters	ko02010	K05643	ATP-binding cassette, subfamily A (ABC1), member 3
+ABC transporters	ko02010	K05644	ATP-binding cassette, subfamily A (ABC1), member 4
+ABC transporters	ko02010	K05645	ATP-binding cassette, subfamily A (ABC1), member 7
+ABC transporters	ko02010	K05646	ATP-binding cassette, subfamily A (ABC1), member 12
+ABC transporters	ko02010	K05647	ATP binding cassette, subfamily A (ABC1), member 13
+ABC transporters	ko02010	K05648	ATP-binding cassette, subfamily A (ABC1), member 5
+ABC transporters	ko02010	K05649	ATP-binding cassette, subfamily A (ABC1), member 6
+ABC transporters	ko02010	K05650	ATP-binding cassette, subfamily A (ABC1), member 8
+ABC transporters	ko02010	K05651	ATP-binding cassette, subfamily A (ABC1), member 9
+ABC transporters	ko02010	K05652	ATP-binding cassette, subfamily A (ABC1), member 10
+ABC transporters	ko02010	K05653	ATP-binding cassette, subfamily B (MDR/TAP), member 2
+ABC transporters	ko02010	K05654	ATP-binding cassette, subfamily B (MDR/TAP), member 3
+ABC transporters	ko02010	K05655	ATP-binding cassette, subfamily B (MDR/TAP), member 8
+ABC transporters	ko02010	K05656	ATP-binding cassette, subfamily B (MDR/TAP), member 9
+ABC transporters	ko02010	K05657	ATP-binding cassette, subfamily B (MDR/TAP), member 10
+ABC transporters	ko02010	K05658	ATP-binding cassette, subfamily B (MDR/TAP), member 1 [EC:7.6.2.2]
+ABC transporters	ko02010	K05659	ATP-binding cassette, subfamily B (MDR/TAP), member 4 [EC:7.6.2.2]
+ABC transporters	ko02010	K05660	ATP-binding cassette, subfamily B (MDR/TAP), member 5
+ABC transporters	ko02010	K05661	ATP-binding cassette, subfamily B (MDR/TAP), member 6
+ABC transporters	ko02010	K05662	ATP-binding cassette, subfamily B (MDR/TAP), member 7
+ABC transporters	ko02010	K05663	ATP-binding cassette, subfamily B, mitochondrial transporter ATM
+ABC transporters	ko02010	K05664	ATP-binding cassette, subfamily B (MDR/TAP), member 11
+ABC transporters	ko02010	K14698	ATP-binding cassette, subfamily B, bacterial IrtA [EC:3.6.3.-]
+ABC transporters	ko02010	K14699	ATP-binding cassette, subfamily B, bacterial IrtB [EC:3.6.3.-]
+ABC transporters	ko02010	K11085	ATP-binding cassette, subfamily B, bacterial MsbA [EC:3.6.3.-]
+ABC transporters	ko02010	K18889	ATP-binding cassette, subfamily B, multidrug efflux pump
+ABC transporters	ko02010	K18890	ATP-binding cassette, subfamily B, multidrug efflux pump
+ABC transporters	ko02010	K18894	ATP-binding cassette, subfamily B, multidrug efflux pump
+ABC transporters	ko02010	K18895	ATP-binding cassette, subfamily B, salmochelin/enterobactin exporter
+ABC transporters	ko02010	K11004	ATP-binding cassette, subfamily B, bacterial HlyB/CyaB
+ABC transporters	ko02010	K13409	ATP-binding cassette, subfamily B, bacterial RaxB
+ABC transporters	ko02010	K20386	ATP-binding cassette, subfamily B, bacterial CylB
+ABC transporters	ko02010	K18104	ATP-binding cassette, subfamily B, bacterial AbcA/BmrA [EC:7.6.2.2]
+ABC transporters	ko02010	K18891	ATP-binding cassette, subfamily B, multidrug efflux pump
+ABC transporters	ko02010	K18892	ATP-binding cassette, subfamily B, multidrug efflux pump
+ABC transporters	ko02010	K18216	ATP-binding cassette, subfamily B, tetracycline resistant protein
+ABC transporters	ko02010	K18217	ATP-binding cassette, subfamily B, tetracycline resistant protein
+ABC transporters	ko02010	K18893	ATP-binding cassette, subfamily B, multidrug efflux pump
+ABC transporters	ko02010	K18887	ATP-binding cassette, subfamily B, multidrug efflux pump
+ABC transporters	ko02010	K18888	ATP-binding cassette, subfamily B, multidrug efflux pump
+ABC transporters	ko02010	K05665	ATP-binding cassette, subfamily C (CFTR/MRP), member 1 [EC:7.6.2.3]
+ABC transporters	ko02010	K05666	ATP-binding cassette, subfamily C (CFTR/MRP), member 2
+ABC transporters	ko02010	K05667	ATP-binding cassette, subfamily C (CFTR/MRP), member 3
+ABC transporters	ko02010	K05673	ATP-binding cassette, subfamily C (CFTR/MRP), member 4
+ABC transporters	ko02010	K05668	ATP-binding cassette, subfamily C (CFTR/MRP), member 5
+ABC transporters	ko02010	K05669	ATP-binding cassette, subfamily C (CFTR/MRP), member 6
+ABC transporters	ko02010	K05674	ATP-binding cassette, subfamily C (CFTR/MRP), member 10
+ABC transporters	ko02010	K05671	ATP-binding cassette, subfamily C (CFTR/MRP), member 11
+ABC transporters	ko02010	K05672	ATP-binding cassette, subfamily C (CFTR/MRP), member 12
+ABC transporters	ko02010	K05670	ATP-binding cassette, subfamily C (CFTR/MRP), member 13
+ABC transporters	ko02010	K05031	cystic fibrosis transmembrane conductance regulator [EC:5.6.1.6]
+ABC transporters	ko02010	K05032	ATP-binding cassette subfamily C (CFTR/MRP) member 8
+ABC transporters	ko02010	K05033	ATP-binding cassette subfamily C (CFTR/MRP) member 9
+ABC transporters	ko02010	K12541	ATP-binding cassette, subfamily C, bacterial LapB
+ABC transporters	ko02010	K12536	ATP-binding cassette, subfamily C, bacterial exporter for protease/lipase
+ABC transporters	ko02010	K12539	ATP-binding cassette, subfamily C, bacterial PrsD
+ABC transporters	ko02010	K12533	ATP-binding cassette, subfamily C, bacterial RsaD
+ABC transporters	ko02010	K16299	ATP-binding cassette, subfamily C, bacterial EexD
+ABC transporters	ko02010	K12292	ATP-binding cassette, subfamily C, bacterial, competence factor transporting protein [EC:3.4.22.-]
+ABC transporters	ko02010	K20344	ATP-binding cassette, subfamily C, bacteriocin exporter
+ABC transporters	ko02010	K16012	ATP-binding cassette, subfamily C, bacterial CydC
+ABC transporters	ko02010	K16013	ATP-binding cassette, subfamily C, bacterial CydD
+ABC transporters	ko02010	K16014	ATP-binding cassette, subfamily C, bacterial CydCD
+ABC transporters	ko02010	K05675	ATP-binding cassette, subfamily D (ALD), member 1
+ABC transporters	ko02010	K05676	ATP-binding cassette, subfamily D (ALD), member 2
+ABC transporters	ko02010	K05677	ATP-binding cassette, subfamily D (ALD), member 3
+ABC transporters	ko02010	K05678	ATP-binding cassette, subfamily D (ALD), member 4
+ABC transporters	ko02010	K15628	ATP-binding cassette, subfamily D (ALD), peroxisomal long-chain fatty acid import protein
+ABC transporters	ko02010	K05679	ATP-binding cassette, subfamily G (WHITE), member 1
+ABC transporters	ko02010	K05680	ATP-binding cassette, subfamily G (WHITE), member 4
+ABC transporters	ko02010	K05681	ATP-binding cassette, subfamily G (WHITE), member 2
+ABC transporters	ko02010	K08711	ATP-binding cassette, subfamily G (WHITE), member 2, PDR
+ABC transporters	ko02010	K08712	ATP-binding cassette, subfamily G (WHITE), member 2, SNQ2
+ABC transporters	ko02010	K05682	ATP-binding cassette, subfamily G (WHITE), member 3
+ABC transporters	ko02010	K05683	ATP-binding cassette, subfamily G (WHITE), member 5 (sterolin 1)
+ABC transporters	ko02010	K05684	ATP-binding cassette, subfamily G (WHITE), member 8 (sterolin 2)
+ABC transporters	ko02010	K05685	macrolide transport system ATP-binding/permease protein [EC:3.6.3.-]
+ABC transporters	ko02010	K18230	macrolide transport system ATP-binding/permease protein
+ABC transporters	ko02010	K18231	macrolide transport system ATP-binding/permease protein
+ABC transporters	ko02010	K19349	pleuromutilin/lincosamide/streptogramin A transport system ATP-binding/permease protein
+ABC transporters	ko02010	K19350	lincosamide and streptogramin A transport system ATP-binding/permease protein
+ABC transporters	ko02010	K06159	multidrug/microcin transport system ATP-binding/permease protein
+ABC transporters	ko02010	K06160	putative pyoverdin transport system ATP-binding/permease protein
+ABC transporters	ko02010	K06161	putative syringomycin transport system ATP-binding/permease protein
+ABC transporters	ko02010	K02471	vitamin B12/bleomycin/antimicrobial peptide transport system ATP-binding/permease protein
+Phosphotransferase system (PTS)	ko02060	K08483	phosphotransferase system, enzyme I, PtsI [EC:2.7.3.9]
+Phosphotransferase system (PTS)	ko02060	K02784	phosphocarrier protein HPr
+Phosphotransferase system (PTS)	ko02060	K20116	PTS system, glucose-specific IIA component [EC:2.7.1.199]
+Phosphotransferase system (PTS)	ko02060	K20117	PTS system, glucose-specific IIB component [EC:2.7.1.199]
+Phosphotransferase system (PTS)	ko02060	K20118	PTS system, glucose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02777	PTS system, sugar-specific IIA component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K02778	PTS system, glucose-specific IIB component [EC:2.7.1.199]
+Phosphotransferase system (PTS)	ko02060	K02779	PTS system, glucose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02802	PTS system, N-acetylglucosamine-specific IIA component [EC:2.7.1.193]
+Phosphotransferase system (PTS)	ko02060	K02803	PTS system, N-acetylglucosamine-specific IIB component [EC:2.7.1.193]
+Phosphotransferase system (PTS)	ko02060	K02804	PTS system, N-acetylglucosamine-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02790	PTS system, maltose/glucose-specific IIB component [EC:2.7.1.208 2.7.1.199]
+Phosphotransferase system (PTS)	ko02060	K02791	PTS system, maltose/glucose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K20107	PTS system, maltose-specific IIB component [EC:2.7.1.208]
+Phosphotransferase system (PTS)	ko02060	K20108	PTS system, maltose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02763	PTS system, D-glucosamine-specific IIA component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K02764	PTS system, D-glucosamine-specific IIB component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K02765	PTS system, D-glucosamine-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02808	PTS system, sucrose-specific IIA component [EC:2.7.1.211]
+Phosphotransferase system (PTS)	ko02060	K02809	PTS system, sucrose-specific IIB component [EC:2.7.1.211]
+Phosphotransferase system (PTS)	ko02060	K02810	PTS system, sucrose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02755	PTS system, beta-glucoside-specific IIA component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K02756	PTS system, beta-glucoside-specific IIB component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K02757	PTS system, beta-glucoside-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02752	PTS system, beta-glucoside (arbutin/salicin/cellobiose)-specific IIB component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K02753	PTS system, beta-glucoside (arbutin/salicin/cellobiose)-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02749	PTS system, alpha-glucoside-specific IIB component [EC:2.7.1.- 2.7.1.208]
+Phosphotransferase system (PTS)	ko02060	K02750	PTS system, alpha-glucoside-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02817	PTS system, trehalose-specific IIA component [EC:2.7.1.201]
+Phosphotransferase system (PTS)	ko02060	K02818	PTS system, trehalose-specific IIB component [EC:2.7.1.201]
+Phosphotransferase system (PTS)	ko02060	K02819	PTS system, trehalose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K11191	PTS system, N-acetylmuramic acid-specific IIB component [EC:2.7.1.192]
+Phosphotransferase system (PTS)	ko02060	K11192	PTS system, N-acetylmuramic acid-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02798	PTS system, mannitol-specific IIA component [EC:2.7.1.197]
+Phosphotransferase system (PTS)	ko02060	K02799	PTS system, mannitol-specific IIB component [EC:2.7.1.197]
+Phosphotransferase system (PTS)	ko02060	K02800	PTS system, mannitol-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K11198	PTS system, 2-O-A-mannosyl-D-glycerate-specific IIA component [EC:2.7.1.195]
+Phosphotransferase system (PTS)	ko02060	K11199	PTS system, 2-O-A-mannosyl-D-glycerate-specific IIB component [EC:2.7.1.195]
+Phosphotransferase system (PTS)	ko02060	K11200	PTS system, 2-O-A-mannosyl-D-glycerate-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02786	PTS system, lactose-specific IIA component [EC:2.7.1.207]
+Phosphotransferase system (PTS)	ko02060	K02787	PTS system, lactose-specific IIB component [EC:2.7.1.207]
+Phosphotransferase system (PTS)	ko02060	K02788	PTS system, lactose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02759	PTS system, cellobiose-specific IIA component [EC:2.7.1.205 2.7.1.196]
+Phosphotransferase system (PTS)	ko02060	K02760	PTS system, cellobiose-specific IIB component [EC:2.7.1.205 2.7.1.196]
+Phosphotransferase system (PTS)	ko02060	K02761	PTS system, cellobiose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02793	PTS system, mannose-specific IIA component [EC:2.7.1.191]
+Phosphotransferase system (PTS)	ko02060	K02794	PTS system, mannose-specific IIB component [EC:2.7.1.191]
+Phosphotransferase system (PTS)	ko02060	K02795	PTS system, mannose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02796	PTS system, mannose-specific IID component
+Phosphotransferase system (PTS)	ko02060	K19506	PTS system, fructoselysine/glucoselysine-specific IIA component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K19507	PTS system, fructoselysine/glucoselysine-specific IIB component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K19508	PTS system, fructoselysine/glucoselysine-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K19509	PTS system, fructoselysine/glucoselysine-specific IID component
+Phosphotransferase system (PTS)	ko02060	K11194	PTS system, fructose-specific IIA component [EC:2.7.1.202]
+Phosphotransferase system (PTS)	ko02060	K11195	PTS system, fructose-specific IIB component [EC:2.7.1.202]
+Phosphotransferase system (PTS)	ko02060	K11196	PTS system, fructose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02771	PTS system, fructose-specific IID component
+Phosphotransferase system (PTS)	ko02060	K02812	PTS system, sorbose-specific IIA component [EC:2.7.1.206]
+Phosphotransferase system (PTS)	ko02060	K02813	PTS system, sorbose-specific IIB component [EC:2.7.1.206]
+Phosphotransferase system (PTS)	ko02060	K02814	PTS system, sorbose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02815	PTS system, sorbose-specific IID component
+Phosphotransferase system (PTS)	ko02060	K02744	PTS system, N-acetylgalactosamine-specific IIA component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K02745	PTS system, N-acetylgalactosamine-specific IIB component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K02746	PTS system, N-acetylgalactosamine-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02747	PTS system, N-acetylgalactosamine-specific IID component
+Phosphotransferase system (PTS)	ko02060	K10984	PTS system, galactosamine-specific IIB component [EC:2.7.1.-]
+Phosphotransferase system (PTS)	ko02060	K10985	PTS system, galactosamine-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K10986	PTS system, galactosamine-specific IID component
+Phosphotransferase system (PTS)	ko02060	K17464	PTS system, D-glucosaminate-specific IIA component [EC:2.7.1.203]
+Phosphotransferase system (PTS)	ko02060	K17465	PTS system, D-glucosaminate-specific IIB component [EC:2.7.1.203]
+Phosphotransferase system (PTS)	ko02060	K17466	PTS system, D-glucosaminate-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K17467	PTS system, D-glucosaminate-specific IID component
+Phosphotransferase system (PTS)	ko02060	K02781	PTS system, glucitol/sorbitol-specific IIA component [EC:2.7.1.198]
+Phosphotransferase system (PTS)	ko02060	K02782	PTS system, glucitol/sorbitol-specific IIB component [EC:2.7.1.198]
+Phosphotransferase system (PTS)	ko02060	K02783	PTS system, glucitol/sorbitol-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02773	PTS system, galactitol-specific IIA component [EC:2.7.1.200]
+Phosphotransferase system (PTS)	ko02060	K02774	PTS system, galactitol-specific IIB component [EC:2.7.1.200]
+Phosphotransferase system (PTS)	ko02060	K02775	PTS system, galactitol-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K20112	PTS system, galactose-specific IIA component [EC:2.7.1.204]
+Phosphotransferase system (PTS)	ko02060	K20113	PTS system, galactose-specific IIB component [EC:2.7.1.204]
+Phosphotransferase system (PTS)	ko02060	K20114	PTS system, galactose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K02821	PTS system, ascorbate-specific IIA component [EC:2.7.1.194]
+Phosphotransferase system (PTS)	ko02060	K02822	PTS system, ascorbate-specific IIB component [EC:2.7.1.194]
+Phosphotransferase system (PTS)	ko02060	K03475	PTS system, ascorbate-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K11183	phosphocarrier protein FPr
+Phosphotransferase system (PTS)	ko02060	K02768	PTS system, fructose-specific IIA component [EC:2.7.1.202]
+Phosphotransferase system (PTS)	ko02060	K02769	PTS system, fructose-specific IIB component [EC:2.7.1.202]
+Phosphotransferase system (PTS)	ko02060	K02770	PTS system, fructose-specific IIC component
+Phosphotransferase system (PTS)	ko02060	K08484	phosphotransferase system, enzyme I, PtsP [EC:2.7.3.9]
+Phosphotransferase system (PTS)	ko02060	K08485	phosphocarrier protein NPr
+Phosphotransferase system (PTS)	ko02060	K02806	PTS system, nitrogen regulatory IIA component [EC:2.7.1.-]
+Bacterial secretion system	ko03070	K12340	outer membrane protein
+Bacterial secretion system	ko03070	K11003	hemolysin D
+Bacterial secretion system	ko03070	K11004	ATP-binding cassette, subfamily B, bacterial HlyB/CyaB
+Bacterial secretion system	ko03070	K03221	type III secretion protein F
+Bacterial secretion system	ko03070	K04056	type III secretion protein O
+Bacterial secretion system	ko03070	K04057	type III secretion protein P
+Bacterial secretion system	ko03070	K04059	type III secretion protein X
+Bacterial secretion system	ko03070	K03219	type III secretion protein C
+Bacterial secretion system	ko03070	K04058	type III secretion protein W
+Bacterial secretion system	ko03070	K03222	type III secretion protein J
+Bacterial secretion system	ko03070	K03226	type III secretion protein R
+Bacterial secretion system	ko03070	K03227	type III secretion protein S
+Bacterial secretion system	ko03070	K03228	type III secretion protein T
+Bacterial secretion system	ko03070	K03229	type III secretion protein U
+Bacterial secretion system	ko03070	K03230	type III secretion protein V
+Bacterial secretion system	ko03070	K03224	ATP synthase in type III secretion protein N [EC:7.4.2.8]
+Bacterial secretion system	ko03070	K03225	type III secretion protein Q
+Bacterial secretion system	ko03070	K03223	type III secretion protein L
+Bacterial secretion system	ko03070	K02453	general secretion pathway protein D
+Bacterial secretion system	ko03070	K02465	general secretion pathway protein S
+Bacterial secretion system	ko03070	K02452	general secretion pathway protein C
+Bacterial secretion system	ko03070	K02455	general secretion pathway protein F
+Bacterial secretion system	ko03070	K02456	general secretion pathway protein G
+Bacterial secretion system	ko03070	K02457	general secretion pathway protein H
+Bacterial secretion system	ko03070	K02458	general secretion pathway protein I
+Bacterial secretion system	ko03070	K02459	general secretion pathway protein J
+Bacterial secretion system	ko03070	K02460	general secretion pathway protein K
+Bacterial secretion system	ko03070	K02461	general secretion pathway protein L
+Bacterial secretion system	ko03070	K02462	general secretion pathway protein M
+Bacterial secretion system	ko03070	K02454	general secretion pathway protein E [EC:7.4.2.8]
+Bacterial secretion system	ko03070	K02464	general secretion pathway protein O [EC:2.1.1.- 3.4.23.43]
+Bacterial secretion system	ko03070	K03072	preprotein translocase subunit SecD
+Bacterial secretion system	ko03070	K12257	SecD/SecF fusion protein
+Bacterial secretion system	ko03070	K03074	preprotein translocase subunit SecF
+Bacterial secretion system	ko03070	K03073	preprotein translocase subunit SecE
+Bacterial secretion system	ko03070	K03075	preprotein translocase subunit SecG
+Bacterial secretion system	ko03070	K03076	preprotein translocase subunit SecY
+Bacterial secretion system	ko03070	K03210	preprotein translocase subunit YajC
+Bacterial secretion system	ko03070	K03217	YidC/Oxa1 family membrane protein insertase
+Bacterial secretion system	ko03070	K03070	preprotein translocase subunit SecA [EC:7.4.2.8]
+Bacterial secretion system	ko03070	K13301	secretion monitor
+Bacterial secretion system	ko03070	K03110	fused signal recognition particle receptor
+Bacterial secretion system	ko03070	K03071	preprotein translocase subunit SecB
+Bacterial secretion system	ko03070	K03106	signal recognition particle subunit SRP54 [EC:3.6.5.4]
+Bacterial secretion system	ko03070	K03116	sec-independent protein translocase protein TatA
+Bacterial secretion system	ko03070	K03117	sec-independent protein translocase protein TatB
+Bacterial secretion system	ko03070	K03118	sec-independent protein translocase protein TatC
+Bacterial secretion system	ko03070	K03425	sec-independent protein translocase protein TatE
+Bacterial secretion system	ko03070	K11028	vacuolating cytotoxin
+Bacterial secretion system	ko03070	K11017	hemolysin activation/secretion protein
+Bacterial secretion system	ko03070	K11016	hemolysin
+Bacterial secretion system	ko03070	K12341	adhesin YadA
+Bacterial secretion system	ko03070	K12342	adhesin YadB/C
+Bacterial secretion system	ko03070	K03194	type IV secretion system protein VirB1
+Bacterial secretion system	ko03070	K03197	type IV secretion system protein VirB2
+Bacterial secretion system	ko03070	K03198	type IV secretion system protein VirB3
+Bacterial secretion system	ko03070	K03200	type IV secretion system protein VirB5
+Bacterial secretion system	ko03070	K03202	type IV secretion system protein VirB7
+Bacterial secretion system	ko03070	K03204	type IV secretion system protein VirB9
+Bacterial secretion system	ko03070	K03201	type IV secretion system protein VirB6
+Bacterial secretion system	ko03070	K03203	type IV secretion system protein VirB8
+Bacterial secretion system	ko03070	K03195	type IV secretion system protein VirB10
+Bacterial secretion system	ko03070	K03199	type IV secretion system protein VirB4 [EC:7.4.2.8]
+Bacterial secretion system	ko03070	K03196	type IV secretion system protein VirB11 [EC:7.4.2.8]
+Bacterial secretion system	ko03070	K03205	type IV secretion system protein VirD4 [EC:7.4.2.8]
+Bacterial secretion system	ko03070	K11904	type VI secretion system secreted protein VgrG
+Bacterial secretion system	ko03070	K11903	type VI secretion system secreted protein Hcp
+Bacterial secretion system	ko03070	K11906	type VI secretion system protein VasD
+Bacterial secretion system	ko03070	K11891	type VI secretion system protein ImpL
+Bacterial secretion system	ko03070	K11892	type VI secretion system protein ImpK
+Bacterial secretion system	ko03070	K11907	type VI secretion system protein VasG
+Bacterial secretion system	ko03070	K11912	serine/threonine-protein kinase PpkA [EC:2.7.11.1]
+Bacterial secretion system	ko03070	K11913	type VI secretion system protein
+Bacterial secretion system	ko03070	K11915	serine/threonine protein phosphatase Stp1 [EC:3.1.3.16]
