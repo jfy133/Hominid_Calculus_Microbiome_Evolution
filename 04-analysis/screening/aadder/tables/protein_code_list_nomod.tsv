@@ -1,0 +1,37 @@
+PC1nomodcode	PC2nomodcode	Protein
+pc1n10nomod	none	Exodeoxyribonuclease V beta chain (EC 3.1.11.5)
+pc1n1nomod	none	Sulfite reductase [NADPH] flavoprotein alpha-component (EC 1.8.1.2)
+pc1n2nomod	none	Exodeoxyribonuclease V gamma chain (EC 3.1.11.5)
+pc1n3nomod	none	Outer membrane receptor for ferric coprogen and ferric-rhodotorulic acid
+pc1n4nomod	pc2n7nomod	Glutathione biosynthesis bifunctional protein gshF (EC 6.3.2.2)(EC 6.3.2.3)
+pc1n5nomod	pc2n9nomod	Maltodextrin phosphorylase (EC 2.4.1.1)
+pc1n6nomod	none	Sulfite reductase [NADPH] hemoprotein beta-component (EC 1.8.1.2)
+pc1n7nomod	none	Oligopeptidase A (EC 3.4.24.70)
+pc1n8nomod	none	Chaperone protein HscA
+pc1n9nomod	none	Dihydrolipoamide dehydrogenase of pyruvate dehydrogenase complex (EC 1.8.1.4)
+pc1p10nomod	none	V-type ATP synthase subunit B (EC 3.6.3.14)
+pc1p1nomod	none	Duplicated ATPase component BL0693 of energizing module of predicted ECF transporter
+pc1p2nomod	pc2p1nomod	Putative mobilization protein BF0133
+pc1p3nomod	pc2p2nomod	Conjugative transposon protein TraG
+pc1p4nomod	none	Pyruvate-flavodoxin oxidoreductase (EC 1.2.7.-)
+pc1p5nomod	none	Pyrophosphate-energized proton pump (EC 3.6.1.1)
+pc1p6nomod	none	DNA topoisomerase III (EC 5.99.1.2)
+pc1p7nomod	none	Transport ATP-binding protein CydC
+pc1p8nomod	none	Multi antimicrobial extrusion protein (Na(+)/drug antiporter), MATE family of MDR efflux pumps
+pc1p9nomod	none	V-type ATP synthase subunit A (EC 3.6.3.14)
+none	pc2n10nomod	Alpha-galactosidase (EC 3.2.1.22)
+none	pc2n1nomod	Pyruvate-utilizing enzyme, similar to phosphoenolpyruvate synthase
+none	pc2n2nomod	Serine endopeptidase ScpC (EC 3.4.21.-)
+none	pc2n3nomod	Pullulanase (EC 3.2.1.41)
+none	pc2n4nomod	Choline binding protein A
+none	pc2n5nomod	Sialidase (EC 3.2.1.18)
+none	pc2n6nomod	FtsK/SpoIIIE family protein, putative EssC component of Type VII secretion system
+none	pc2n8nomod	ATP-dependent nuclease, subunit B
+none	pc2p10nomod	Lipid-A-disaccharide synthase (EC 2.4.1.182)
+none	pc2p3nomod	Na(+)-translocating NADH-quinone reductase subunit F (EC 1.6.5.-)
+none	pc2p4nomod	Acriflavin resistance protein
+none	pc2p5nomod	Ribonucleotide reductase of class Ia (aerobic), alpha subunit (EC 1.17.4.1)
+none	pc2p6nomod	Ferric iron ABC transporter, permease protein
+none	pc2p7nomod	GTP pyrophosphokinase (EC 2.7.6.5), (p)ppGpp synthetase II
+none	pc2p8nomod	3-oxoacyl-[acyl-carrier-protein] synthase, KASI (EC 2.3.1.41)
+none	pc2p9nomod	Phosphoenolpyruvate carboxykinase [ATP] (EC 4.1.1.49)

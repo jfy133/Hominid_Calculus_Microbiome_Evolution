@@ -24,9 +24,9 @@ aminoacids.kegg <- fread("../04-analysis/screening/humann2/tables/aminoacids.keg
 carbs.kegg <- fread("../04-analysis/screening/humann2/tables/carbs.kegg.tsv")
 lipids.kegg <- fread("../04-analysis/screening/humann2/tables/lipids.kegg.tsv")
 
-aminoacids.seed <- read.table("../04-analysis/screening/humann2/tables/aminoacids.seed.tsv", header = T)
-carbs.seed <- read.table("../04-analysis/screening/humann2/tables/carbs.seed.tsv", header = T)
-fattyacids.seed <- read.table("../04-analysis/screening/humann2/tables/fattyacids.seed.tsv", header = T)
+aminoacids.seed <- read.table("../04-analysis/screening/aadder/tables.backup/aminoacids.seed.tsv", header = T)
+carbs.seed <- read.table("../04-analysis/screening/aadder/tables.backup/carbs.seed.tsv", header = T)
+fattyacids.seed <- read.table("../04-analysis/screening/aadder/tables.backup/fattyacids.seed.tsv", header = T)
 
 ```
 

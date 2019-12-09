@@ -1,0 +1,39 @@
+PC1code	PC2code	Protein
+pc1n1	none	Sulfite reductase [NADPH] flavoprotein alpha-component (EC 1.8.1.2)
+pc1n10	none	Beta-lactamase (EC 3.5.2.6)
+pc1n2	none	Outer membrane receptor for ferric coprogen and ferric-rhodotorulic acid
+pc1n3	pc2p4	Exodeoxyribonuclease V gamma chain (EC 3.1.11.5)
+pc1n4	none	Glutathione biosynthesis bifunctional protein gshF (EC 6.3.2.2)(EC 6.3.2.3)
+pc1n5	none	Maltodextrin phosphorylase (EC 2.4.1.1)
+pc1n6	none	Sulfite reductase [NADPH] hemoprotein beta-component (EC 1.8.1.2)
+pc1n7	none	Oligopeptidase A (EC 3.4.24.70)
+pc1n8	pc2n2	Serine endopeptidase ScpC (EC 3.4.21.-)
+pc1n9	none	Chaperone protein HscA
+pc1p1	none	Duplicated ATPase component BL0693 of energizing module of predicted ECF transporter
+pc1p10	none	Pyruvate,phosphate dikinase (EC 2.7.9.1)
+pc1p2	none	Pyruvate-flavodoxin oxidoreductase (EC 1.2.7.-)
+pc1p3	none	Pyrophosphate-energized proton pump (EC 3.6.1.1)
+pc1p4	none	Transport ATP-binding protein CydC
+pc1p5	none	Multi antimicrobial extrusion protein (Na(+)/drug antiporter), MATE family of MDR efflux pumps
+pc1p6	none	DNA topoisomerase III (EC 5.99.1.2)
+pc1p7	none	Putative mobilization protein BF0133
+pc1p8	none	Conjugative transposon protein TraG
+pc1p9	none	Pyrophosphate-dependent fructose 6-phosphate-1-kinase (EC 2.7.1.90)
+none	pc2n1	Pyruvate-utilizing enzyme, similar to phosphoenolpyruvate synthase
+none	pc2n10	Alpha-1,2-mannosidase
+none	pc2n3	Pullulanase (EC 3.2.1.41)
+none	pc2n4	Choline binding protein A
+none	pc2n5	Sialidase (EC 3.2.1.18)
+none	pc2n6	FtsK/SpoIIIE family protein, putative EssC component of Type VII secretion system
+none	pc2n7	ATP-dependent nuclease, subunit B
+none	pc2n8	Beta-hexosaminidase (EC 3.2.1.52)
+none	pc2n9	Alpha-galactosidase (EC 3.2.1.22)
+none	pc2p1	Acriflavin resistance protein
+none	pc2p10	Catalase (EC 1.11.1.6)
+none	pc2p2	Ribonucleotide reductase of class Ia (aerobic), alpha subunit (EC 1.17.4.1)
+none	pc2p3	Glutathione-regulated potassium-efflux system ATP-binding protein
+none	pc2p5	3-oxoacyl-[acyl-carrier-protein] synthase, KASI (EC 2.3.1.41)
+none	pc2p6	Na(+)-translocating NADH-quinone reductase subunit F (EC 1.6.5.-)
+none	pc2p7	GTP pyrophosphokinase (EC 2.7.6.5), (p)ppGpp synthetase II
+none	pc2p8	ATP-dependent DNA helicase Rep
+none	pc2p9	Ribonucleotide reductase of class Ia (aerobic), beta subunit (EC 1.17.4.1)
