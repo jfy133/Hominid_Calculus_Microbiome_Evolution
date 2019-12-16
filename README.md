@@ -2545,8 +2545,52 @@ blast2rma \
 -v
 ```
 
-Once completed, the resulting RMA6 files were opened in MEGAN6CE (v6.15.2) via 
-MEGAN SERVER, opened in compare mode using absolute counts and 
-'ignore all unassigned reads'. I then switched to the 'SEED' categories, 
-'uncollapse-all', select everythign then exported the table as TSV with 
-seedPath_to_count.
+Once completed, the resulting RMA6 files were opened in MEGAN6CE (v6.15.2) via
+MEGAN SERVER, opened in compare mode using absolute counts and 'ignore all
+unassigned reads'. I then switched to the 'SEED' categories, 'uncollapse-all',
+select everythign then exported the table as TSV with seedPath_to_count. An
+additional file that also included all unassigned reads was also exported (with
+the same name but ending in _summarised_Not_Assigned.txt), to be able to compare
+between the host genera the percent of reads that could be assigned functions.
+
+After performing PCA on the protein-level SEED assignments, we wanted to explore
+the contribution of each microbial species to the proteins with strongest
+loadings in PC1 and PC2, to see if they differed between host genera. To do
+this, we opened all of the AADDER .rma6 files from each host genera in MEGAN as
+a group (all *Homo* at once, only ancient *Homo* all at once, all *Gorilla* at
+once, etc.). From the SEED categories, each protein in the top 10 PC1 and PC2
+positive and negative loadings were individually selected, and exported to a new
+document. The new document summed the total read counts from all host samples
+for each microbial species, so the individual read counts per sample was lost.
+The species list and read count for ech host genus was exported from MEGAN as a
+tsv.
+
+BBEdit was used to add additional 6 columns with the Find and Replace function:
+Host_Genus, Protein, PC1 code, PC2 code, PC1nomodcode, and PC2nomodcode. The
+PC<number>code columns indicate the order of proteins from strongest loading (1)
+to lowest loading (10) of the top 10 strongest loadings in PC1 and PC2, for
+positive values and negative values. The PC<number>nomodcode columns indicate
+the same loading order, but for the PCAs that excluded modern *Homo* samples.
+For example, pc1n3 is the protein with the 3rd strongest negative loading in
+PC1, and pc1p3 is the protein with teh 3rd strongest positive loading in PC1.
+These codes were used to make the protein names manageable and consistent in R,
+which had trouble with the special characters in several protein names.
+
+All analysis of AADDER functional profiles can be found in the R markdown
+document here `02-scripts.backup/148-imv-aadder_evolution_function_cleaned`.
+
+### Overlap between HUMAnN2 and AADDER
+
+Finally, we wanted to see how many genes identified in the samples were
+identified by both HUMAnN2 and AADDER, within major biomolecule procesisng
+pathways (Amino acids, Carbohydrates, Fatty acids/Lipids). Both the HUMAnN2 KEGG
+orthologs and the AADDER SEED proteins include the Enzyme Commission number (EC
+number) on a majority of the orthologs/proteins they report, so we compared the
+EC numbers between the two programs. For HUMAnN2, all orthologs that are
+included in the KEGG Metabolism Pathways Amino acid, Carbohydrate, and Lipid
+were individually selected out of the full HUMAnN2 ortholog list. For AADDER,
+all proteins in the pathways Amino Acids, Carbohydrates, and Fatty Acids,
+Lipids, and Isoprenoids were selected out of the full AADDER table. All analyses
+based on EC numbers can be found in the R markdown document here
+`02-scripts.backup/149-imv-aa-carbs-lipids_kegg-vs-seed.Rmd`.
+
