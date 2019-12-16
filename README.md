@@ -2561,23 +2561,23 @@ a group (all *Homo* at once, only ancient *Homo* all at once, all *Gorilla* at
 once, etc.). From the SEED categories, each protein in the top 10 PC1 and PC2
 positive and negative loadings were individually selected, and exported to a new
 document. The new document summed the total read counts from all host samples
-for each microbial species, so the individual read counts per sample was lost.
-The species list and read count for ech host genus was exported from MEGAN as a
-tsv.
+for each microbial species, so the individual read counts per species per sample
+was lost. The species list and read count for ech host genus was exported from
+MEGAN as a tsv.
 
-BBEdit was used to add additional 6 columns with the Find and Replace function:
+BBEdit was used to add an additional 6 columns with the Find and Replace function:
 Host_Genus, Protein, PC1 code, PC2 code, PC1nomodcode, and PC2nomodcode. The
 PC<number>code columns indicate the order of proteins from strongest loading (1)
 to lowest loading (10) of the top 10 strongest loadings in PC1 and PC2, for
 positive values and negative values. The PC<number>nomodcode columns indicate
 the same loading order, but for the PCAs that excluded modern *Homo* samples.
 For example, pc1n3 is the protein with the 3rd strongest negative loading in
-PC1, and pc1p3 is the protein with teh 3rd strongest positive loading in PC1.
+PC1, and pc1p3 is the protein with the 3rd strongest positive loading in PC1.
 These codes were used to make the protein names manageable and consistent in R,
 which had trouble with the special characters in several protein names.
 
 All analysis of AADDER functional profiles can be found in the R markdown
-document here `02-scripts.backup/148-imv-aadder_evolution_function_cleaned`.
+document here `02-scripts.backup/148-imv-aadder_evolution_function_cleaned.Rmd`.
 
 ### Overlap between HUMAnN2 and AADDER
 
