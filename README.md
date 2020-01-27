@@ -1069,8 +1069,12 @@ The resulting human mapping data after poly-G removal can be seen in
 
 > The FASTQ files are not provided here due to the large size.
 
+### Processing Results
+
 Sequencing quality control results for both screening and production datasets
 can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
+
+![SeqQC_Ancient](05-images/SupFigX_SequencingQCSummaries_NewCalculusOnly_Deep_AncientOnly_20200123.svg)
 
 ## Metagenomic Screening
 
