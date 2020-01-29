@@ -20,7 +20,7 @@
 
 ## 1 Preamble
 
-This README is a walkthrough of the R notebooks, R scripts and Bash scripts 
+This README is a walk-through of the R notebooks, R scripts and Bash scripts 
 stored in this repository, and used in the Anthropoid Calculus Microbiome 
 Evolution project.
 
@@ -39,18 +39,18 @@ should always check this for each command and script.
 
 > Important: The code in this repository was written over multiple 'learning' 
 > years by non-bioinformaticians. Quality will vary and may not be immediately 
-> re-rerunable or readable - if you encounter any issues please leave 
+> rer-unable or readable - if you encounter any issues please leave 
 > an [issue](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/issues) 
-> and we will endevour to clarify.
+> and we will endeavour to clarify.
 
 > We have tried to auto replace all file paths to make it relative to this 
 > repository. This may not have been perfect, so please check the path 
 > begins with `../0{1,2,4}`. If it does not, let us know and we will fix
 > this accordingly.
  
-This README section acts as **walkthrough** guidance of the order of analyses, 
+This README section acts as **walk-through** guidance of the order of analyses, 
 and which R notebooks and scripts were used. It also includes commands where a
-program was intiated directly from the command line.
+program was initiated directly from the command line.
 
 ## 2 Resources
 
@@ -230,7 +230,7 @@ _Treponema socranskii_                        | ATCC 35535  | 2018-05-31     | S
 
 ### 3.1 General Directory Structure
 
-The general struture of this project is typically as follows (although
+The general structure of this project is typically as follows (although
 variants will occur):
 
 ```
@@ -284,7 +284,7 @@ README.md
 
 Some scripts used in this project use variables stored a central profile called
 `02-scripts.backup/000-analysis_profile`. These variables indicate the location
-of certain programs in your servers filesystem. The scripts loading the 
+of certain programs in your servers file-system. The scripts loading the 
 profile will therefore look for and use the program stored in the variable.
 
 You will need to replace the paths stored there to where each tool is stored
@@ -336,7 +336,7 @@ malt-build \
 
 For the custom NCBI Genome RefSeq database containing bacterial and archaea
 assemblies at scaffold, chromosome and complete levels - we follow the
-R ntoebook  here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_walkthrough_20181029.Rmd`
+R notebook  here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_walkthrough_20181029.Rmd`
 
 ### 4.2 AADDER Database
 
@@ -383,7 +383,7 @@ humann2_databases --download uniref uniref90_ec_filtered_diamond 01-data/databas
 ### 4.5 Database analysis profile
 
 For the scripts using `analysis_profile` file, ensure to update the paths to in
-the analysis profile to your correpsonding location.
+the analysis profile to your corresponding location.
 
 ```bash
 ## MALT DB Directory containing all database files
@@ -478,7 +478,7 @@ seen in the `00-documentation/99-sourcemetadata-*` files
 A file containing the ERR and SRR numbers of each library on each line was 
 given to the scripts `001-SRA_download_script.sh` and `002-ERR_download_script.sh`.
 
-Some HMP project samples were not avaliable directly from the FTP server,
+Some HMP project samples were not available directly from the FTP server,
 in which case these were directly pulled using either `prefetch -v`, which is 
 a similar command as in the `001-SRA_download_script.sh` file, but without 
 the `wget` step.
@@ -571,7 +571,7 @@ If you need to increase the number of cores of memory, you can
 modify this in the `CPU` and `MEM` variables in the script itself.
 
 You will need to check if this manual script is working correctly
-manually, as I didn't have time to inbuild checks. You can do this by checking 
+manually, as I didn't have time to inbuilt checks. You can do this by checking 
 all the fields in the output of the next script (below) are filled with numbers.
 
 An example is below with 'premerged' script.
@@ -911,7 +911,7 @@ have a 2 colour chemistry that considers no light emission as a 'G'. Thus,
 empty or finished clusters can be read as long poly G reads - which can still 
 map to the human genome in regions with long repetitive regions. Modern
 contamination with long human DNA reads on a failed flow cell cluster may also 
-containg poly-G stretches if the flouresence failed before the entire read is
+containing poly-G stretches if the florescence failed before the entire read is
 complete and the adapter had not been sequenced.
 
 To get improved human DNA content calculations, we can run EAGER to get the 
@@ -959,7 +959,7 @@ We then update the `find` path and number of jobs in the array in the script
 `02-scripts.backup/18-eager_microbiota_slurm_array.sh` to the new input directory and number
 of libraries.
 
-Once completed, we can perform a cleanup FASTQs to reduce our footprint 
+Once completed, we can perform a clean up FASTQs to reduce our footprint 
 
 ```bash
 cd 04-analysis/screening/eager/polyGremoval_input
@@ -991,7 +991,7 @@ rm -r 04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.collapsed.gz
 04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.SamtoolsSortDeDup
 ```
 
-and now use samtools to convert our mapped Human DNA reads (after DeDup) back to 
+and now use `samtools` to convert our mapped Human DNA reads (after DeDup) back to 
 FASTQ.
 
 ```bash
@@ -1010,7 +1010,7 @@ done
 ```
 
 Then we run the complexity filter on these to remove the poly-Gs using 
-[fastp](https://github.com/OpenGene/fastp). This will remove/trim any read
+[`fastp`](https://github.com/OpenGene/fastp). This will remove/trim any read
 where the last 10 reads are all Gs.
 
 ```bash
@@ -1106,16 +1106,16 @@ can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
 For taxonomic binning of reads of the screening dataset we will use MALT, with 
 a wrapper script for efficient submission. The settings are set in 
 `007-malt-genbank-nt_2017_2step_85pc_supp_0.01` are as follows: a read requires 
-a minimum of 85% sequence identity (-id), it will only retain a second hit 
-if the alignment is within 1% of the bit-score of the top scoring hit (-top), 
+a minimum of 85% sequence identity (`-id`), it will only retain a second hit 
+if the alignment is within 1% of the bit-score of the top scoring hit (`-top`), 
 it will only keep a leaf-node on the tree if it has more than 0.01 of the hits
-over all the hits in the sample (-supp). It will only retain 100 possible hits
+over all the hits in the sample (`-supp`). It will only retain 100 possible hits
 per node. Note that you may have to change the `INSTALL4J_JAVA_HOME` path 
 within the script, as I'm currently not sure what that does. This script aligns
 to the NCBI Nucleotide database (nt).
 
 We can then run our taxonomic binning job with the following command, providing
-a input directory with wildcards to all the files and an output directory.
+a input directory with wild-cards to all the files and an output directory.
 
 ```bash
 02-scripts.backup/007-malt-genbank-nt_2017_2step_85pc_supp_0.01 \
@@ -1169,25 +1169,25 @@ For this we need to use the GUI tool MEGAN6 locally on your desktop. To
 generate the OTU table, open the MALT RMA6 files in MEGAN with absolute counts, 
 and ignore all unassigned reads.
 
-To uncollapse the tree: Tree > Rank > <Taxonomic level>, then select species 
+To un-collapse the tree: Tree > Rank > <Taxonomic level>, then select species 
 nodes with: Select > Rank > <Taxonomic level>. 
 
 Now go File > Export > Text (CSV) format, select taxonName_to-count, summarised 
 and tab as a separator.
 
 For a 'microbial-only' OTU table (basically not prokaryotes or synthetic DNA 
-sequences), we can before uncollapsing the tree select 
+sequences), we can before un-collapsing the tree select 
 'collapse non-prokaryotes' under the 'Tree' menu and then do Select > Rank > 
 <taxonomic level> to select only Bacteria and Archaea. We also need to export 
 the same data with as a tree from MEGAN with the option: file > export > tree, 
-and save as newick. This should also be done for each non-prokaryote taxonomic 
+and save as Newick. This should also be done for each non-prokaryote taxonomic 
 level. 
 
 These are saved in `04-analysis/screening/megan.backup`
 
 #### 7.2.2 Additional Raw OTU Tables
 
-Raw MALT OTU tables with and without bad samples and at different min-support
+Raw MALT OTU tables with and without bad samples and at different min. support
 values are generated by the Notebook `02-scripts.backup/016-MALT_otutable_generation.Rmd`. These
 tables are stored as `.tsv` files in the `04-analysis/screening/megan.backup` 
 directory.
@@ -1355,7 +1355,7 @@ done
 
 > The FASTA file is not provided here due to the large size.
 
-For OTU clustering tself we need to define some parameter that have 
+For OTU clustering itself we need to define some parameter that have 
 been adapted for shotgun data by LMAMR in Oklahoma, in a file named 
 `02-scripts.backup/010-params_CrefOTUpick.txt` 
 
@@ -1409,7 +1409,7 @@ head "$OUTDIR"/otu_picking/otu_table_summary.txt -n 20
 Sourcetracker (I realised later) doesn't do rarefaction properly as it 
 allows sampling with replacement of the OTUS. Therefore, we need to remove
 samples that have less than 1000 OTUs (which is the default rarefaction level
-in sourcetracker - see below). So next we need to filter our OTU table
+in Sourcetracker - [see below](#823-sourcetracker)). So next we need to filter our OTU table
 to remove samples that have less than that threshold. Looking at the table
 summary shows that fortunately this will remove very few samples and 
 will remove mostly blanks.
@@ -1468,7 +1468,7 @@ seen under `02-scripts.backup/099-16sResults.Rmd`.
 
 #### 8.2.3 Sourcetracker
 
-Sourecetracker requires a OTU table (generated above) and a metadata file
+Sourcetracker requires a OTU table (generated above) and a metadata file
 that tells the program what libraries in the OTU are a 'sink' or a 'source'.
 This metadata file in this case is recorded here, 
 `02-scripts.backup/02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`,
@@ -1551,8 +1551,8 @@ The collated results for the whole screening dataset are stored in the file
 
 To remove possible contaminating species from our samples that are derived from
 the laboratory environment, we can use the R package `decontam`. The idea here 
-is to use this to reduce the number of noisey taxa in the downstream 
-compositional analysis, e.g. reducing the overplotting of the loadings of PCAs.
+is to use this to reduce the number of noisy taxa in the downstream 
+compositional analysis, e.g. reducing the over-plotting of the loadings of PCAs.
 
  We manually added the library quantification values (qPCR) to our
 main metadata file 
@@ -1588,7 +1588,7 @@ of:
  * Whether controls are included or not
  * Whether to include low preservation samples or not
  * Which low preservation samples filtering list to use (see Cumulative Percentage Decay notebook above for explanation)
- * Either minimum support value of 7 (genus) or 4 (species) [the value in the commands are multipliers of 0.01, the default MALT min support value set above]
+ * Either minimum support value of 7 (genus) or 4 (species) [the value in the commands are multipliers of 0.01, the default MALT min. support value set above]
 
 ```bash
 i=7
@@ -1645,11 +1645,11 @@ More specific comparisons of different parameters can be seen in Figures R18-20.
 
 ![Effect of low preservation sample removal on PCoA](05-images/Figure_R19_SEB_PCoA_SampleRemovalComparison/FigureSXX-PhILR_PCoA_malt_euclidean_genus_withSources_withControls_badsamplesout_withinvariation_0.07_20190527_ntrefseq_axis1axis2axis3axis4_SampleRemovalComparison_combined.png)
 
-**Figure R19 | Validation of low-preservation sample removal with Principal Coordinate Analysis.** Visual inspection shows low preservation samples typically fall in compositional ranges of laboratory control or comparative source. PhILR transformed OTU table ordinated by Principal Coordinate Analysis with sources and controls at genus level. Low abundant taxa removed if under 0.07% of overall alignments. a NCBI nt database axis 1 and 2 with low-preservation samples. b NCBI nt database axis 1 and 2 without low-preservation samples. c NCBI nt database axis 2 and 3 with low-preservation samples. d NCBI nt database axis 2 and 3 without low-preservation samples. e Custom NCBI RefSeq database axis 1 and 2 with low-preservation samples. f Custom NCBI RefSeq database axis 1 and 2 without low-preservation samples. g Custom NCBI RefSeq database axis 2 and 3 with low-preservation samples. h Custom NCBI RefSeq database axis 2 and 3 without low-preservation samples. In all cases, samples noted as having low preservation generally fall outside the range of well preserved calculus samples and likely consist of large fractions similar to that of environmental and/or laboratory metagenomic content. Grey symbols represent comparative sources.
+**Figure R19 | Validation of low-preservation sample removal with Principal Coordinate Analysis.** Visual inspection shows low preservation samples typically fall in compositional ranges of laboratory control or comparative source. PhILR transformed OTU table ordinated by Principal Coordinate Analysis with sources and controls at genus level. Low abundant taxa removed if under 0.07% of overall alignments. **a** NCBI nt database axis 1 and 2 with low-preservation samples. **b** NCBI nt database axis 1 and 2 without low-preservation samples. **c** NCBI nt database axis 2 and 3 with low-preservation samples. **d** NCBI nt database axis 2 and 3 without low-preservation samples. **e** Custom NCBI RefSeq database axis 1 and 2 with low-preservation samples. **f** Custom NCBI RefSeq database axis 1 and 2 without low-preservation samples. **g** Custom NCBI RefSeq database axis 2 and 3 with low-preservation samples. h Custom NCBI RefSeq database axis 2 and 3 without low-preservation samples. In all cases, samples noted as having low preservation generally fall outside the range of well preserved calculus samples and likely consist of large fractions similar to that of environmental and/or laboratory metagenomic content. Grey symbols represent comparative sources.
 
 ![Final genus-level PCoA for nt and RefSeq databases](05-images/Figure_R20_SEC_PCoA_HostGenus_Clustering/FigureSXX-PhILR_PCoA_HostGenusClustering_ntrefseq_0_07_genus_withinvaration_badsamplesout_COMBINED.png)
 
-**Figure R20 | Principal Coordinate Analysis of well-preserved calculus microbiomes at prokaryotic genus taxonomic level by host genus.** Visual inspection shows distinct centroids of each host genus, albeit with overlap with others. Input is PhILR transformed OTU tables without sources and controls and low preservation samples removed. Low abundant taxa removed if under 0.07% of overall alignments (‘min support’). a NCBI nt database axis 1 and 2, b NCBI nt database axis 2 and 3, c Custom NCBI RefSeq database axis 1 and 2, and d Custom NCBI RefSeq database axis 2 and 3.
+**Figure R20 | Principal Coordinate Analysis of well-preserved calculus microbiomes at prokaryotic genus taxonomic level by host genus.** Visual inspection shows distinct centroids of each host genus, albeit with overlap with others. Input is PhILR transformed OTU tables without sources and controls and low preservation samples removed. Low abundant taxa removed if under 0.07% of overall alignments (‘min. support’). **a** NCBI nt database axis 1 and 2, **b** NCBI nt database axis 2 and 3, **c** Custom NCBI RefSeq database axis 1 and 2, and **d** Custom NCBI RefSeq database axis 2 and 3.
 
 ### 9.2 Hierarchical Clustering Heatmaps
 
@@ -1668,7 +1668,7 @@ algorithm is selected automatically within the script.
 The script allows filtering as above (database, taxonomic levels, with/without
 sources, with/without controls, with/without bad samples (+ bad sample removal
 method option)) and also additional taxon filtering, zero-replacement method,
-additional min-support filtering and a prevalence filter (i.e. a taxon is
+additional min. support filtering and a prevalence filter (i.e. a taxon is
 only kept if it is in _n_ number of indiviudals across the dataset)
 
 We look for the parameters with the best overall bootstrap support 
@@ -1676,12 +1676,12 @@ in the deepest nodes (i.e. the ones we are most interested in - splits between
 host genus level clades)
 
 ```bash
-## Additional min support filtering, no genus filtering
+## Additional min. support filtering, no genus filtering
 Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt species noSources noControls out withinvariation none pseudo 4 0
 Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt species noSources noControls out withinvariation none pseudo 4 5
 ```
 
-The sample clustering with no taxon filtering, additional minsupport of 0.04, 
+The sample clustering with no taxon filtering, additional min. support of 0.04, 
 and prevalence filtering set to 5 was selected. This was based on it having
 generally the highest bootstrap values in the internal nodes, and the phylogeny
 showing 'cleanest' clustering of individuals of the same host genus falling 
@@ -1739,11 +1739,11 @@ The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`.
 
 ![PCoA of different human cultural lifestyles and regions](05-images/Figure_R21_SEE_Weyrich_DietaryPCoA_PhiLR/11-philr_pcoa_malt_euclidean_axis1axis2_populationVSregion_nt_genus_noSources_noControls_badsamplesout_withinvariation_0.01_20191003_EDIT.png)
 
-**Figure R21 | Principal coordinate analysis of different Homo calculus microbiomes, comparing different lifestyles and regions.** a we do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences, by prokaryotic OTUs at genus level, as originally reported by Weyrich et al. 6. b we do not observe a clear regional difference between microbiomes that may indicate preservational biases. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Low abundant taxa are removed if under 0.01% of overall alignments (‘min support’), and putative laboratory contaminants removed as per the decontam R package. 
+**Figure R21 | Principal coordinate analysis of different Homo calculus microbiomes, comparing different lifestyles and regions.** a we do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences, by prokaryotic OTUs at genus level, as originally reported by Weyrich et al. 6. b we do not observe a clear regional difference between microbiomes that may indicate preservational biases. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Low abundant taxa are removed if under 0.01% of overall alignments (‘min. support’), and putative laboratory contaminants removed as per the decontam R package. 
 
 ![Hierarchical cluster dendrogram of different human cultural lifestyles and regions](05-images/Figure_R22_SEF_Weyrich_DietaryHClust_PhiLR/04a-philr_pcoa_malt_euclidean_hclustwardD2_hostgroup_nt_genus_noSources_noControls_badsamplesout_withinvariation_0.01_20191003.png)
 
-**Figure R22 |  Hierarchical clustering of different Homo calculus microbiomes, comparing different lifestyles and regions.** We do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Clustering was performed with the average-linkage algorithm.  Low abundant taxa are removed if under 0.01% of overall alignments (‘min support’), and putative laboratory contaminants removed as per the decontam R package. 
+**Figure R22 |  Hierarchical clustering of different Homo calculus microbiomes, comparing different lifestyles and regions.** We do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Clustering was performed with the average-linkage algorithm.  Low abundant taxa are removed if under 0.01% of overall alignments (‘min. support’), and putative laboratory contaminants removed as per the decontam R package. 
 
 ## 10 Core Microbiome Analysis
 
@@ -1764,7 +1764,7 @@ notebook is also provided under
 **Figure R23 | Schematic of parameters used for selecting taxa considered to be core to a host genus population and host genus population themselves.** Requiring half of individuals of a population (to be core to a population) allows for inter-individual biological variability and preservation variability. Requiring two-thirds of the populations of a host genus (to be core to a host genus), ensures a particular taxon is core in multiple populations or subspecies and is not unique to a single population (which may also reflect preservational or curational backgrounds). _Alouatta_ is exempt from the population level parameter due to the inclusion of only a single population.
 
 Once optimal parameters for prevalence and abundance were chosen by permutating
-population fractions and min support values respectively (minimising retention 
+population fractions and min. support values respectively (minimising retention 
 of environment contaminants and retaining well characterised oral taxa as  
 reference) (see `02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.Rmd`), we collated the results from each database and taxonomic level into 
 a single set of results using the R script 
@@ -1788,7 +1788,7 @@ or not.
 
 ```bash
 ## Final being minSupport of X, 0.5 inds of population, and 66 pops of genus, 
-## minsupport 0.7 for genus and 0.4 for species, and testing whether dropping
+## min. support 0.7 for genus and 0.4 for species, and testing whether dropping
 ## single individual populations makes a difference.
 
 for i in 4 7; do
@@ -1826,7 +1826,7 @@ combination.
 
 ![Core microbiome Upset plots at genus and species level for Nt and RefSeq databases](05-images/Figure_R27_SFC_CoreMicrobiome_UpSetPlots/FigureSXX-CoreMicrobiome_UpSetR_combined.png)
 
-**Figure SFC | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a ‘core’ microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
+**Figure R27 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a ‘core’ microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
 
 ### 10.2 Core Microbiome MaltExtract
 
@@ -1835,7 +1835,7 @@ MaltExtract on a subset of the core taxa to check for damage patterns and
 short fragment lengths. 
 
 We took the species level 'core' of the Anthropoids, Hominids and Homininis 
-based on the MALT nt database, with a minsupport value of 0.04, requiring 
+based on the MALT nt database, with a min. support value of 0.04, requiring 
 a taxon being in 50% of each population having a taxon to be core to the 
 population, and 66% of the populations to be core to the genus. We retain
 single individual populations, and calculate intersections between each
@@ -1868,7 +1868,7 @@ makes genotyping difficult when dealing with the low coverage data, because
 the confidence in the SNP calling is very low.
 
 As a strategy to try and reduce cross-mapping, I came up with the idea to 
-map the production dataset to a 'super-reference' of all relevent species of
+map the production dataset to a 'super-reference' of all relevant species of
 a genus (including the target species of interest), and then only genotype on
 the section of the super-reference including the target species of interest. The
 predicted effect would be reads from off-target reads would be attracted to
@@ -1888,22 +1888,22 @@ observations in the dataset or from broad literature review). We selected
 the following species - downloaded the reference or representative strains
 from NCBI, and indexed as [above](#bwa-indexing).
 
-The Intitial species that were selected are:
+The Initial species that were selected are:
 
-  * Pseudopropionibacterium propionicum
-  * Treponema socranskii (<- only scaffolds)
-  * Rothia dentocariosa 
-  * Desulfobulbus sp. oral taxon 041 (<- only contigs)
+  * _Pseudopropionibacterium propionicum_
+  * _Treponema socranskii_ (only scaffolds)
+  * Rothia dentocariosa_
+  * _Desulfobulbus_ sp. oral taxon 041 (<- only contigs)
     - For this selected the sp. oral taxon 041 assembly with the largest  
     assembly size, Desulfobulbus sp. oral taxon 041 str. Dsb1-5. 
     - Downloaded from the Genbank FTP server the contigs from here: 
       ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/403/865/GCA_000403865.1_Dsb1-5
-  * Fusobacterium nucleatum
-  * Aggregatibacter aphrophilus
-  * Streptococcus gordonii
- * Treponema denticola
- * Tannerella forsythia
- * Treponema denticola
+  * _Fusobacterium nucleatum_
+  * _Aggregatibacter aphrophilus_
+  * _Streptococcus gordonii_
+ * _Treponema denticola_
+ * _Tannerella forsythia_
+ * _Treponema denticola_
 
 We can then map all our samples to the references listed above with EAGER.
 
@@ -1974,11 +1974,11 @@ The outcome of these filtering steps can be seen in the files
 files used for downloading ending with  "*filtered". This files were downloaded 
 as above with `wget` 
 
-> Pseudopropionbacterium is generated in a differnet manner due to recent clade
+> Pseudopropionibacterium is generated in a different manner due to recent clade
 > renaming, but the desire to retain common skin taxa which now have new genus
 > names (see [Scholz and Kilian 2016](http://dx.doi.org/10.1099/ijsem.0.001367))
 
-We convert the FASTA headers to a format suitable for Samtools (given we 
+We convert the FASTA headers to a format suitable for `samtools` (given we 
 don't have chromosomes) with 
 `02-scripts.backup/099-fasta_header_replacer.sh <FASTA>`.
 
@@ -1986,7 +1986,7 @@ For downstream processing (in particular MultiVCFAnalyzer), we need to convert
 the multiple FASTA files into a single one, with FASTA headers removed. For
 this we can use the script `02-scripts.backup/099-collapse_fastas.sh`, which
 combines them but exporting coordinates (also in bed format) indicating where
-each species FASTA entry is present in the super-refereence FASTA.
+each species FASTA entry is present in the super-reference FASTA.
 
 FASTAs were indexed as [above](#bwa-indexing)
 
@@ -2005,7 +2005,7 @@ Pairment: Single End
 Input is already concatenated (skip merging): Y
 
 Reference: [listed above]
-Name of mitocondrial chromosome: [none]
+Name of mitochondrial chromosome: [none]
 
 FastQC: Off
 AdapterRemoval: Off
@@ -2032,7 +2032,7 @@ The EAGER runs are stored in
 `04-analysis/deep/eager/superreference_mapping/output`
 
 To generate breadth and depth statistics for each species reference in
-the super-reference we can use bedtools, using the BED coordinates as provided
+the super-reference we can use `bedtools`, using the BED coordinates as provided
 by the `02-scripts.backup/099-collapse_fastas.sh` script.
 
 ```bash
@@ -2050,7 +2050,7 @@ Output results for this statistics can also be see under
 To compare the effect on genotyping when using a super-reference rather than a 
 single representative genome, we also need a single genome to compare to.
 Furthermore, as we wish to run phylogenies of the outcome - we want to find
-taxa which are both prevelant across all host genera, as well as displaying 
+taxa which are both prevalent across all host genera, as well as displaying 
 sufficient coverage for genotyping.
 
 For this we can calculate a variety of metrics, and select the best fitting
@@ -2059,23 +2059,23 @@ species for the two requirements above. This is described in
 
 The finally selected taxa were as follows
 
-Genus                    | Majority Vote                                
--------------------------|-----------------------------------------------
-Actinomyces              | Actinomyces_dentalis_DSM_19115 
-Campylobacter            | Campylobacter_gracilis
-Capnocytophaga           | Capnocytophaga_gingivalis_ATCC_33624
-Corynebacterium          | Corynebacterium_matruchotii_ATCC_14266
-Fretibacterium           | Fretibacterium_fastidiosum
-Fusobacterium            | Fusobacterium_hwasookii_ChDC_F206
-Olsenella                | Olsenella_sp_oral_taxon_807
-Ottowia                  | Ottowia_sp_oral_taxon_894
-Porphyromonas            | Porphyromonas_gingivalis_ATCC_33277
-Prevotella               | Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930
-Pseudopropionibacterium  | Pseudopropionibacterium_propionicum_F0230a
-Selenomonas              | Selenomonas_sp_F0473
-Streptococcus            | Streptococcus_sanguinis_SK36
-Tannerella               | Tannerella_forsythia_92A2
-Treponema                | Treponema_socranskii_subsp_paredis_ATCC_35535
+Genus                      | Majority Vote                                
+---------------------------|-----------------------------------------------
+_Actinomyces_              | Actinomyces_dentalis_DSM_19115 
+_Campylobacter_            | Campylobacter_gracilis
+_Capnocytophaga_           | Capnocytophaga_gingivalis_ATCC_33624
+_Corynebacterium_          | Corynebacterium_matruchotii_ATCC_14266
+_Fretibacterium_           | Fretibacterium_fastidiosum
+_Fusobacterium_            | Fusobacterium_hwasookii_ChDC_F206
+_Olsenella_                | Olsenella_sp_oral_taxon_807
+_Ottowia_                  | Ottowia_sp_oral_taxon_894
+_Porphyromonas_            | Porphyromonas_gingivalis_ATCC_33277
+_Prevotella_               | Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930
+_Pseudopropionibacterium_  | Pseudopropionibacterium_propionicum_F0230a
+_Selenomonas_              | Selenomonas_sp_F0473
+_Streptococcus_            | Streptococcus_sanguinis_SK36
+_Tannerella_               | Tannerella_forsythia_92A2
+_Treponema_                | Treponema_socranskii_subsp_paredis_ATCC_35535
 
 > Output from the species selection can be seen in 
 > `04-analysis/deep/competitive_mapping.backup/species_selection`
@@ -2106,7 +2106,7 @@ can reduce the level of cross-mapping, we need a way of assessing the level
 of multi-allelic positions occur in each mapping.
 
 For this we can use MultiVCFAnalyzer, which when given a GATK UnifiedGenotyper 
-VCF file where the reference ploidy was (pretendedly) set to 2, will report
+VCF file where the reference ploidy was ('pretendedly') set to 2, will report
 the fraction of reads that hold an allele in 'heterozygous' sites (i.e. 
 positions where there is a possible reference and a possible alternative allele - which is not expected in haploid bacteria).
 
@@ -2134,7 +2134,7 @@ NA \
 We set `T` to turn on saving of the allele frequencies in the outputted SNP 
 Table, minimum coverage of 2 (to ensure at least two independent reads support
 a call), a minimum fraction of reads required to have a base to be considered 
-a single-allelic reference or SNP call as 0.9, and a minimum of 0.1 (but below 0.9) to be considered heterogzous.
+a single-allelic reference or SNP call as 0.9, and a minimum of 0.1 (but below 0.9) to be considered heterozygous.
 
 For super-reference mappings, we still need to get the statistics for just the
 positions representing the target species of interest. We can use the following
@@ -2211,7 +2211,7 @@ The final snpAlignment and snpStatistics files can be seen in `04-analysis/deep/
 ### 11.7 Phylogenies
 
 For the phylogenies themselves, I wrote a custom R script that allows for 
-generating a few summary statisics for the alignment, filtering based on the 
+generating a few summary statistics for the alignment, filtering based on the 
 number of positions, and then pairwise-deletion neighbour-joining phylogenies.
 
 To ensure a enough positions are present for distance calculations between 
@@ -2229,13 +2229,13 @@ done
 Rscript 02-scripts.backup/042-generate_NJ_tree.R 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/Porphyromonas_gingivalis_ATCC_33277/snpAlignment.fasta.gz 2000 JC69 100 OME003
 ```
 
-> We had to re-run Porphyromonas with a higher minimum  position threshold, 
+> We had to re-run _Porphyromonas_ with a higher minimum  position threshold, 
 > and excluded a sample. The higher position here was due to some samples having
-> insufficient posiiton overlap to calculate a genetic distance, and inclusion
+> insufficient position overlap to calculate a genetic distance, and inclusion
 > OME003 caused bootstrapping to fail as it had an unusually higher number of
 >  SNPs which ended up violating the equal base frequencies of the JC69 model.
 
-The final newick files and filtering statistics can be seen in 
+The final Newick files and filtering statistics can be seen in 
 `04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/`
 
 Visualisation of the phylogenies was carried out with the R notebook 
@@ -2354,7 +2354,7 @@ figures can be seen under `04-analysis/screening/EMN_Neanderthal_phylogeny_check
 ![Screening dataset core microbiome representative species NJ trees 1-4](05-images/Figure_R33_SGG_ScreeningPhylogenies/Phylogenies_Screening_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_1.png)
 ![Screening dataset core microbiome representative species NJ trees 5-8](05-images/Figure_R33_SGG_ScreeningPhylogenies/Phylogenies_Screening_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_2.png)
 
-**Figure SGG | Replication of production dataset phylogenies with low-coverage and damage-containing screening dataset with additional European individuals.** The observed pattern of pre-14k BP Europeans and post-14k BP humans clustering separately in the production dataset phylogenies is replicated when including additional pre- and post-14k BP individuals when using screening dataset equivalents. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Grey boxes indicate European ‘pre-14k BP’ of the Red Lady of El Mirón and Neanderthals
+**Figure R33 | Replication of production dataset phylogenies with low-coverage and damage-containing screening dataset with additional European individuals.** The observed pattern of pre-14k BP Europeans and post-14k BP humans clustering separately in the production dataset phylogenies is replicated when including additional pre- and post-14k BP individuals when using screening dataset equivalents. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Grey boxes indicate European ‘pre-14k BP’ of the Red Lady of El Mirón and Neanderthals
 
 ## 12 Functional Analysis
 
@@ -2369,8 +2369,9 @@ identified virulence factors in human strains.
 For this we can first use the production mapping datasets to the references of
 _Tannerella forsythia_ and _Porphyromonas gingivalis_. 
 
-We can take the deduplicated bedfiles and run bedtools coverage on them, using
+We can take the deduplicated bedfiles and run `bedtools` coverage on them, using
 a collection of virulence factors described in the literature 
+
 **@ivelsko to describe how collected**
 
 ```bash
@@ -2382,6 +2383,14 @@ For the actual filtering and identification of presence/absence, we load the
  resulting TSV files into R with the notebook 
  `02-scripts.backup/054-virulence_investigation.Rmd`
 
+![Number of genes passing breadth coverage thresholds for red complex production-data mappings](05-images/Figure_R34_SFE_VirulenceFactors_GeneFiltering/FigSX_VirulenceNormalisation_Breadth_GeneFilter.png)
+
+**Figure R34 | Distribution of (annotated) gene counts passing a breadth threshold of 70%, as calculated from the mappings of the production dataset to two ‘red complex’ bacteria reference genomes.** A clear cut off of ~500 genes can be seen, reflecting the separation between low-coverage and higher coverage genomes.
+
+![Virulence factor gene depth and breadth across production dataset](05-images/Figure_R35_SFF_VirulenceFactors_RatioPlot/FigSX_Virulence_AllAnnotatedGene_Virulence_Ratios.png)
+
+**Figure R35 | Heatmap of ratios (fill) of virulence gene depth coverage and gene completeness (size), in mappings of the production dataset to two ‘red complex’ bacteria reference genomes.** Virulence factors associated with oral disease are found prevalent across all host genera.
+
 ### 12.2 Amylase
 
 #### 12.2.1 Streptococcus Distribution
@@ -2392,23 +2401,26 @@ host genus. We therefore wished to explore this further - given the interest
 in human evolutionary history regarding the role of amylase copy number 
 variation, and certain groups of Streptococci displaying amylase activity.
 
-
-Firstly, we can look at the distribution of different types of streptocci groups
-within each of our host genera. We generated a 'consensus' table of Streptocci
+Firstly, we can look at the distribution of different types of streptococci groups
+within each of our host genera. We generated a 'consensus' table of streptococci
 groups and their reported amylase-binding protein activity (as reported in the
 literature), described here under `00-documentation.backup/25-streptococcus_cladegroup_amylasegroup_database.tsv`.
 
 Using the MALT species level OTU tables from the screening dataset, we 
-can visualise as stacked bar plots the proportion of Streptococus alignments 
+can visualise as stacked bar plots the proportion of Streptococcus alignments 
 deriving from each group. We can also applied the same concept to the production 
-dataset - but using the _Streptococcus_ superreference as the reference 
+dataset - but using the _Streptococcus_ super-reference as the reference 
 database, as in the notebook
 `02-scripts.backup/033-streptoccocus_investigation_v2_20190826.Rmd`.
+
+![Distribution of reads across streptococci species for production dataset mapping to super-reference](05-images/Figure_R36_SED_StreptococcusGroupDistributionSuperreference/01-streptococcusinvestigation_stackedbar_superreference_none_hostgenus_percentagegroupoverallstrepreads_cladeconsensus_20190920.png)
+
+**Figure R36 | Distribution of production dataset reads to each Streptococcus group when mapping to a Streptococcus super-reference, normalised by the total number of super-reference aligned reads.** As with the screening dataset, _Homo_ are dominated by streptococci groups displaying amylase binding protein activity (sangiuinis, mitis and salivarius). See section 6. Microbial phylogenetics for details on super-reference construction and mapping. Streptococcus groups are ordered by amylase activity as reported by Haase 2017 BMC Microbiol - in which members within the sanguinis, mitis and salivarius groups showed amylase activity.
 
 #### 12.2.2 Amylase binding protein genes
 
 Given the different distributions of the _Streptococcus_ content of each 
-host-genera and the observation that Humans tend to have more prominant signals
+host-genera and the observation that Humans tend to have more prominent signals
 of amylase-binding-activity positive species, we also looked at whether amylase-
 binding genes can be actually detected in each host genus.
 
@@ -2416,10 +2428,10 @@ We decided to use the production dataset for this, to provide higher confidence
 of gene presence given the higher whole-reference depth coverages in this 
 dataset. Given that sections of amylase-binding protein genes is present in other
 genes, we wanted to find all possible 'amylase-binding-protein gene'-like 
-sequences in the superrefenece, to maximise our sensitivity in finding related
+sequences in the super-reference, to maximise our sensitivity in finding related
 reads.
 
-For this we can recover all amylase-like reads in our superreference with the 
+For this we can recover all amylase-like reads in our super-reference with the 
 tool panX, using the Genbank files for each reference.
 
 ```bash
@@ -2440,7 +2452,7 @@ We then performed a filtering procedure to the files due to
 the inclusion of highly diverged sequences, as described in `02-scripts.backup/048-panX_streptococcus_amylasebindingproteincluster_detection.Rmd`.
 
 We then used the R script `02-scripts.backup/049-Streptoccocus_superreference_amylasebinding_coordinate_reconstruction.R` to recover the coordinates
-of these sequences from the superreference FASTA, which was exported as a BED file.
+of these sequences from the super-reference FASTA, which was exported as a BED file.
 
 > The super-reference FASTA files are not included here to large size.
 
@@ -2455,11 +2467,11 @@ bedtools intersect \
 -b <SUPER-REFERENCE_BAM>
 ```
 
-The resulting files wre then loaded into to assess the ratio of all streptococus reads to amylase binding protein-like reads as in `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`
+The resulting files were then loaded into to assess the ratio of all _Streptococcus_ reads to amylase binding protein-like reads as in `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`
 
 ### 12.3 HUMANn2
 
-In addition to the taxonomic profile, the funcitonal profile of dental calculus
+In addition to the taxonomic profile, the functional profile of dental calculus
 microbiota may provide insight into host evolutionary patterns. The functional
 profile of a metagenomic sample is determined by the gene content of species
 that are present. The program HMP Unified Metabolic Analysis Network 2 (HUMAnN2,
@@ -2473,7 +2485,7 @@ by HUMAnN2, as detailed below.
 
 #### 12.3.1 MetaPhlAn2
 
-In prepraration for HUMANn2, we ran MetaPhlan2, running on the whole screening
+In preparation for HUMANn2, we ran MetaPhlan2, running on the whole screening
 dataset.
 
 ```bash
@@ -2590,6 +2602,14 @@ Note that all of those files need to be -1 because the count includes a header.
 Finally, some read statistics by applying the same 0.01% threshold used in MALT
 are gained via the `099-MetaPhlan2_Summary_statistics.R` script. These were
 then manually added to the metadata file.
+
+![MetaPhlAn2 mapped reads screening dataset](05-images/Figure_R37_SBJ_MetaPhlAn2Assignment_MappedReadCount/SupFigX_MetaPhlan2Assignments_MappedReadCount_comparison_20191028_EDIT.png)
+
+**Figure R37 | Percentage of non-human reads mapping to the MetaPhlAn2 database.** Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
+
+![MetaPhlAn2 identified genus and species and screening dataset](05-images/Figure_R38_SBK_MetaPhlAn2Assignment_SpeciesGenusCounts/SupFigX_MetaPhlAn2ssignments_speciesGenusCount_comparison_20191028.png)
+
+**Figure SBK | Distributions of the number of genera and species identified by MetaPhlAn2 across each study group.** Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
 
 #### 12.3.2 Running HUMANn2
 
