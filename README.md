@@ -1238,7 +1238,7 @@ These are saved in `04-analysis/screening/cumulative_decay.backup`
 
 ![Cumulative Percentage Decay Plots for calculus and comparative sources](05-images/Figure_R09_SCA_CumulativePercentageDecayPlots/SuppFigSX_CumulativePercentDecay_ntRefseqCombined_titlesfixed_EDIT.png)
 
-**Figure R10 | Cumulative percent decay plots of fraction of oral taxa across taxa ordered by abundance rank.** Taxonomic assignment against the: **a** NCBI nt database, and **b** a custom NCBI RefSeq database showing a large number of calculus samples displayed greater levels of preservation (blue), and although a smaller number do not pass the estimated preservation threshold (red). Plots are limited to 250 rank positions (x-axis) for visualization purposes. Thresholds are selected based on observations that all sources and controls do not increase about 50% (nt) and 65% (RefSeq) of fraction of oral taxon. Point at which the per-sample threshold is considered is based on when the fluctuation of the fraction of oral taxa (i.e. fraction difference between a taxon and next abundant taxon) does not exceed the standard deviation of all differences of the rank.
+**Figure R9 | Cumulative percent decay plots of fraction of oral taxa across taxa ordered by abundance rank.** Taxonomic assignment against the: **a** NCBI nt database, and **b** a custom NCBI RefSeq database showing a large number of calculus samples displayed greater levels of preservation (blue), and although a smaller number do not pass the estimated preservation threshold (red). Plots are limited to 250 rank positions (x-axis) for visualization purposes. Thresholds are selected based on observations that all sources and controls do not increase about 50% (nt) and 65% (RefSeq) of fraction of oral taxon. Point at which the per-sample threshold is considered is based on when the fluctuation of the fraction of oral taxa (i.e. fraction difference between a taxon and next abundant taxon) does not exceed the standard deviation of all differences of the rank.
 
 ### QIIME
 
@@ -1304,11 +1304,11 @@ seen under `02-scripts.backup/099-16sResults.Rmd`
 
 ![Distributions of 16S reads mapped across all categories](05-images/Figure_R10_SBF_16sMapping_Results_AllCategoryComparison/SupFigX_16sMapping_AllCategories_comparison_20191028.png)
 
-**Figure SBF | Distributions of percentages of 16S rRNA mapping reads extracted out of all non-human reads across all samples in the dataset, when mapping to the SILVA database.** Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
+**Figure R10 | Distributions of percentages of 16S rRNA mapping reads extracted out of all non-human reads across all samples in the dataset, when mapping to the SILVA database.** Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
 
 ![Distributions of 16S reads mapped across human calculus and plaque](05-images/Figure_R11_SBG_16sMapping_ModernHumanCalculusPlaqueOnlyComparison/SupFigX_16sMapping_ModernHumanCalculusPlaque_comparison_20191028.png)
 
-**Figure SBG | Distributions of percentages of 16S rRNA mapping reads extracted out of all non-human reads libraries across human calculus and plaque samples by mapping to the SILVA database.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
+**Figure R11 | Distributions of percentages of 16S rRNA mapping reads extracted out of all non-human reads libraries across human calculus and plaque samples by mapping to the SILVA database.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
 
 #### 16S Clustering
 
@@ -1445,11 +1445,11 @@ seen under `02-scripts.backup/099-16sResults.Rmd`.
 
 ![Distributions of 16S based OTUs identifications across all categories](05-images/Figure_R12_SBH_16sClustering_Results_AllCategoryComparison/SupFigX_16sClustering_AllCategories_comparison_20191028_EDIT.png)
 
-**Figure SBH | Distributions of the number of OTUs identified after closed-reference clustering of 16S rRNA reads across all calculus, laboratory controls and comparative sources in this study.** Clustering was performed in QIIME at 97% identity Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
+**Figure R12 | Distributions of the number of OTUs identified after closed-reference clustering of 16S rRNA reads across all calculus, laboratory controls and comparative sources in this study.** Clustering was performed in QIIME at 97% identity Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
 
 ![Distributions of 16S based OTUs identifications across human calculus and plaque](05-images/Figure_R13_SBI_16sClustering_ModernHumanCalculusPlaqueOnlyComparison/SupFigX_16sClustering_ModernHumanCalculusPlaque_comparison_20191028.png)
 
-**Figure SBI | Distributions of the number of OTUs identified after closed-reference clustering of 16S rRNA read sequences at 97% sequence similarity in QIIME across human calculus and plaque samples.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
+**Figure R13 | Distributions of the number of OTUs identified after closed-reference clustering of 16S rRNA read sequences at 97% sequence similarity in QIIME across human calculus and plaque samples.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
 
 #### Sourcetracker
 
@@ -1481,7 +1481,41 @@ For plotting of these for comparison with the cumulative percent decay plots,
  I use the following R notebook to summarise the results: 
  `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`. 
 
-### DamageProfiler
+![Comparison between Sourcetracker and CumulativePercentDecay Plots](05-images/Figure_R14_SCB_Sourcetracker_vs_CumulativePercentdecay/SupFigX_SourcetrackerVsCPD_st2bar_cpdtext_20190923.png)
+
+**Figure R14 | Stacked bar plots representing the estimated proportion of sample resembling a given source, as estimated by Sourcetracker across all calculus samples.** Visual inspection shows general concordance between the cumulative percent decay method and Sourcetracker estimation is seen. Coloured label text indicate whether that sample passed (grey) or failed (black) the cumulative percent decay threshold (see above) based on alignments to the NCBI nt (2017) database. 
+
+### Ratio of Eukaryotic to Prokaryotic Alignments
+
+We also noted that less well preserved samples appear to generally contain
+larger numbers of eukaryotic alignments. If explored further, this could also 
+potentially act as a guidance indicator for levels of preservation of ancient
+dental calculus samples.
+
+![Comparison of Eukaryotic to Prokaryotic ratios for preservation](05-images/Figure_R15_SCC_RatioEukaryoticVNonEukaryoticRatio_Comparison/SupFigX_eukaryoticratioplot_ancientcalculusonly_20190704.png)
+
+**Figure R15 | Comparison of ratios of bacterial/archaeal/viral over eukaryotic alignments, between ancient calculus samples that passed the cumulative decay cut off for preservation.** Samples not passing the preservation threshold as estimated with the cumulative percent decay plots, tend to have smaller ratio and therefore greater amounts of eukaryotic DNA reads being assigned. Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT.
+
+Code for statistical testing and visualisation can also be seen in the data repository under 02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd 
+
+### Damage Patterns
+
+#### MEx-IPA
+
+To rapidly screen for damage patterns indicative of ancient DNA on the observed core microbiome ([see below](#core-microbiome-analysis)), we [ran MaltExtract](#core-microbiome-maltextract) on all output of MALT, with the core microbiome 
+as input list.
+
+We then developed [MEx-IPA](https://github.com/jfy133/MEx-IPA) to rapidly visualise ancient DNA characteristics across all samples and core taxa.
+
+The results files for this analysis are are stored in the MEx-IPA GitHub 
+repository. Example reports for the two oldest Neanderthals (PES001 and GDN001),
+can be seen below in Figure R16.
+
+![Example MEx-IPA Reports](05-images/Figure_R16_SDA_Example_MEx-IPA_Reports/FigureSXX_ExampleMEX-IPAPartialReports_nt_AnthropoidCore_PES_GDN_FretiFusoTannTrepo.png)
+
+**Figure R16 | Example of MEx-IPA reports from the MaltExtract tool of the HOPS pipeline for two Neanderthal individuals, across four known oral microbiome taxa.** Individual-Taxon combination shows: C to T misincorporation lesions indicative of DNA deamination; read length distribution with a typical peak <50 bp indicative of fragmented DNA; edit distance and percent identity to the given reference which both show close similarity to the oral reference genome in most cases (1-2 edit distance peak; and 95% identity peak identity). Note that _Fretibacterium fastidiosum_ shows a higher edit distance and low percent identity score, suggesting the reads are likely derived from a relative of that taxon that does not have a genome represented in the database used (NCBI nt 2017). 
+
+#### DamageProfiler
 
 To generate additional confirmation of damage patterns in oral taxa, the 
 screening data was mapped to a subset of observed core microbiome reference 
@@ -1489,9 +1523,13 @@ genomes (see [below](#production-dataset-sequencing-depth-calculatons)), using
 EAGER.
 
 DamageProfiler results were collated and visualised in the R script
-`02-scripts.backup/099-Coretaxa_SubSet_DamageProfiler_Summary.R`.
+`02-scripts.backup/099-Coretaxa_SubSet_DamageProfiler_Summary.R`. An example of the range of damage signals in ancient Human remains can be seen below in Figure R17.
 
-The collated results are stored in the file 
+![Example DamageProfiler plots](05-images/Figure_R17_SCD_ExampleDamagePatterns/Damage_Only_EDIT.png)
+
+**Figure R17 | Frequency of C to T miscorporations along 5’ ends of DNA reads compared to references of four representative human oral-specific species as calculated by DamageProfiler.** Neanderthal and Upper Palaeolithic individuals show damage patterns indicative of authentic aDNA, whereas a modern day individual does not.
+
+The collated results for the whole screening dataset are stored in the file 
 `00-documentation.backup/14-damageprofiler_screening_3p_5p_summaries_20191113.csv`.
 
 ### Laboratory Contaminants
@@ -1583,6 +1621,20 @@ The R script for summarising the results across all runs is named
   `00-documentation` under `philr_permanova_*_summary.tsv`.
 
 Individual plots can be seen in `04-analysis/screening/philr.backup`
+
+More specific comparisons of different parameters can be seen in Figures R18-20.
+
+![Zero replacement method comparison for PCoA](05-images/Figure_R18_SEA_PCoAPsuedoCountvsCZM/SuppFigSXX_PhiLRPCoA_ZeroReplacementComparison_EDIT.png)
+
+**Figure R18 | Principal coordinate analysis comparing pseudocount and cumulative zero multiplication zero-replacement methods.** Reconstruction of Fig. 1 of main article (but with all sources), shows little differences in the relationships between samples between each method. Scatterplot displays euclidean distances based on genus-level PhILR ratios of all well preserved samples and sources (without controls), putative laboratory contaminants removed, and low abundant taxa removed by a minimum support value of 0.07%. Grey symbols represent comparative sources.
+
+![Effect of low preservation sample removal on PCoA](05-images/FFigure_R19_SEB_PCoA_SampleRemovalComparison/FigureSXX-PhILR_PCoA_malt_euclidean_genus_withSources_withControls_badsamplesout_withinvariation_0.07_20190527_ntrefseq_axis1axis2axis3axis4_SampleRemovalComparison_combined.png)
+
+**Figure R19 | Validation of low-preservation sample removal with Principal Coordinate Analysis.** Visual inspection shows low preservation samples typically fall in compositional ranges of laboratory control or comparative source. PhILR transformed OTU table ordinated by Principal Coordinate Analysis with sources and controls at genus level. Low abundant taxa removed if under 0.07% of overall alignments. a NCBI nt database axis 1 and 2 with low-preservation samples. b NCBI nt database axis 1 and 2 without low-preservation samples. c NCBI nt database axis 2 and 3 with low-preservation samples. d NCBI nt database axis 2 and 3 without low-preservation samples. e Custom NCBI RefSeq database axis 1 and 2 with low-preservation samples. f Custom NCBI RefSeq database axis 1 and 2 without low-preservation samples. g Custom NCBI RefSeq database axis 2 and 3 with low-preservation samples. h Custom NCBI RefSeq database axis 2 and 3 without low-preservation samples. In all cases, samples noted as having low preservation generally fall outside the range of well preserved calculus samples and likely consist of large fractions similar to that of environmental and/or laboratory metagenomic content. Grey symbols represent comparative sources.
+
+![Final genus-level PCoA for nt and RefSeq databases](05-images/Figure_R20_SEC_PCoA_HostGenus_Clustering/FigureSXX-PhILR_PCoA_HostGenusClustering_ntrefseq_0_07_genus_withinvaration_badsamplesout_COMBINED.png)
+
+**Figure R20 | Principal Coordinate Analysis of well-preserved calculus microbiomes at prokaryotic genus taxonomic level by host genus.** Visual inspection shows distinct centroids of each host genus, albeit with overlap with others. Input is PhILR transformed OTU tables without sources and controls and low preservation samples removed. Low abundant taxa removed if under 0.07% of overall alignments (‘min support’). a NCBI nt database axis 1 and 2, b NCBI nt database axis 2 and 3, c Custom NCBI RefSeq database axis 1 and 2, and d Custom NCBI RefSeq database axis 2 and 3.
 
 ### Hierarchical Clustering Heatmaps
 
@@ -1748,10 +1800,6 @@ MaltExtract \
 -v
 
 ```
-
-MaltExtract results were viewed using [MEx-IPA](https://github.com/jfy133/MEx-IPA).
-The results files for this analysis are are stored in the MEx-IPA GitHub 
-repository. 
 
 
 ## Genome Reconstruction and Phylogenetics
