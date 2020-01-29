@@ -1,6 +1,92 @@
 # Anthropoid Calculus Microbiome Evolution
 
-## Preamble
+<!-- MarkdownTOC -->
+
+- 1 Preamble
+- 2 Resources
+  - 2.1 Software
+  - 2.2 R Packages
+  - 2.3 Sequence Databases
+  - 2.4 Single Reference Genomes
+- 3 Repository Structure
+  - 3.1 General Directory Structure
+  - 3.2 Analysis Profile
+- 4 Database and Genome Indexing
+  - 4.1 MALT Database
+  - 4.2 AADDER Database
+  - 4.3 BWA Indexing
+  - 4.4 UniRef Database
+  - 4.5 Database analysis profile
+- 5 Data Acquisition
+  - 5.1 Additional Individuals
+  - 5.2 Comparative Sources
+- 6 Data Preprocessing
+  - 6.1 Preprocessing
+    - 6.1.1 Script Version
+    - 6.1.2 EAGER Version
+  - 6.2 Post-Processing
+    - 6.2.1 EAGER preprocessing dataset BAM to FASTQ Conversion
+    - 6.2.2 Statistics
+    - 6.2.3 Library Merging
+  - 6.3 Poly-G Trimming Assessment
+  - 6.4 Processing Results
+- 7 Metagenomic Screening
+  - 7.1 MALT
+    - 7.1.1 MALT Running
+    - 7.1.2 MALT Summary Statistics
+  - 7.2 MEGAN
+    - 7.2.1 MEGAN Running
+    - 7.2.2 Additional Raw OTU Tables
+    - 7.2.3 Prokaryotic vs. Eukaryotic MALT content Comparison
+  - 7.3 Database Comparison
+- 8 Preservation Screening
+  - 8.1 Cumulative Proportion Decay Plots
+  - 8.2 Source Estimation
+    - 8.2.1 16S Extraction
+    - 8.2.2 16S Clustering
+    - 8.2.3 Sourcetracker
+  - 8.3 Ratio of Eukaryotic to Prokaryotic Alignments
+  - 8.4 Damage Patterns
+    - 8.4.1 MEx-IPA
+    - 8.4.2 DamageProfiler
+  - 8.5 Laboratory Contaminants
+- 9 Compositional Analysis
+  - 9.1 Principal Coordinate Analysis
+  - 9.2 Hierarchical Clustering Heatmaps
+    - 9.2.1 Zero replacement validation
+  - 9.2.2 Indicator Analysis
+  - 9.3 Clustering by Diet?
+- 10 Core Microbiome Analysis
+  - 10.1 Core Microbiome Calculation
+  - 10.2 Core Microbiome MaltExtract
+- 11 Genome Reconstruction and Phylogenetics
+  - 11.1 Production dataset sequencing depth calculations
+  - 11.2 Super-reference construction
+  - 11.3 Super-reference alignment and species selection
+  - 11.4 Comparative single reference mapping
+  - 11.5 Performance of super-reference vs. single genome mapping
+  - 11.6 Variant calling and single-allelic position assessment
+  - 11.7 Phylogenies
+  - 11.8 Pre- and Post-14k BP Observation Verification
+    - 11.8.1 Production dataset overlapping positions analysis
+    - 11.8.2 Screening datasets phylogenies
+- 12 Functional Analysis
+  - 12.1 Virulence Factors
+  - 12.2 Amylase
+    - 12.2.1 Streptococcus Distribution
+    - 12.2.2 Amylase binding protein genes
+  - 12.3 HUMANn2
+    - 12.3.1 MetaPhlAn2
+    - 12.3.2 Running HUMANn2
+  - 12.4 AADDER Analysis
+  - 12.5 MALT RefSeq
+  - 12.6 Running AADDER
+  - 12.7 Overlap between HUMAnN2 and AADDER
+
+<!-- /MarkdownTOC -->
+
+
+## 1 Preamble
 
 This README is a walkthrough of the R notebooks, R scripts and Bash scripts 
 stored in this repository, and used in the Anthropoid Calculus Microbiome 
@@ -34,14 +120,14 @@ This README section acts as **walkthrough** guidance of the order of analyses,
 and which R notebooks and scripts were used. It also includes commands where a
 program was intiated directly from the command line.
 
-## Resources
+## 2 Resources
 
 Here is a list of programs and databases that will be used in this analysis
 and that you should have ready installed/downloaded prior carrying out the
 analysis. Note that the download and set up of the databases are described 
 below.
 
-### Software
+### 2.1 Software
 
 Name                    | Version                 | Citation
 ------------------------|-------------------------|------------------------------------------------------------
@@ -77,7 +163,7 @@ IGV                     | 2.4                     | https://software.broadinstit
 Inkscape                | 0.92                    | www.inkscape.org
 
 
-### R Packages
+### 2.2 R Packages
 
 Here we used R version 3.6.1
 
@@ -163,7 +249,7 @@ Here we used R version 3.6.1
 |    adegenet    |   2.1.1    |                               https://github.com/thibautjombart/adegenet                               |
 |      ade4      |   1.7-13   |      http://pbil.univ-lyon1.fr/ADE-4, Mailing list:; http://listes.univ-lyon1.fr/wws/info/adelist      |
 
-### Sequence Databases
+### 2.3 Sequence Databases
 
 If did not come with package itself, we downloaded the following:
 
@@ -174,7 +260,7 @@ NCBI RefSeq      | Custom                       | Nov. 2018     | ftp://ftp.ncbi
 SILVA            | 128_SSURef_Nr99              | Mar. 2017     | http://ftp.arb-silva.de/release_128/Exports/
 UniRef           | uniref90_ec_filtered_diamond | Oct. 2018     | https://bitbucket.org/biobakery/humann2
 
-### Single Reference Genomes
+### 2.4 Single Reference Genomes
 
 Species                                       | Strain      | Date           | Completeness | Type           | Source
 ----------------------------------------------|-------------|----------------|--------------|----------------|-----------------------------------------------------
@@ -208,9 +294,9 @@ _Streptococcus gordonii_                      | CH1         | 2017-06-14     | C
 _Treponema socranskii_                        | ATCC 35535  | 2018-05-31     | Scaffold     | Representative | https://www.ncbi.nlm.nih.gov/genome
 
 
-## Repository Structure
+## 3 Repository Structure
 
-### General Directory Structure
+### 3.1 General Directory Structure
 
 The general struture of this project is typically as follows (although
 variants will occur):
@@ -262,7 +348,7 @@ README.md
       output
 ```
 
-### Analysis Profile
+### 3.2 Analysis Profile
 
 Some scripts used in this project use variables stored a central profile called
 `02-scripts.backup/000-analysis_profile`. These variables indicate the location
@@ -278,9 +364,9 @@ however you will need to check each path correctly.
 For direct commands (i.e. not used in a script), the path will be defined in
 the command block.
 
-## Database and Genome Indexing
+## 4 Database and Genome Indexing
 
-### MALT Database
+### 4.1 MALT Database
 
 The MALT nt databases was downloaded and generated as follows.
 
@@ -316,12 +402,11 @@ malt-build \
 
 > The database files are not provided here due to the large size.
 
-
 For the custom NCBI Genome RefSeq database containing bacterial and archaea
 assemblies at scaffold, chromosome and complete levels - we follow the
 R ntoebook  here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_walkthrough_20181029.Rmd`
 
-### AADDER Database
+### 4.2 AADDER Database
 
 To build the `aadder` database for functional analysis - based on the RefSeq
 MALT database above, we run the command
@@ -330,7 +415,7 @@ calls the `adder-build` command as provided in the MEGAN install directory's
 `tools` folder. Note we have to change the `MEGAN.vmoptions` to have a large 
 enough memory allocation in the MEGAN install directory.
 
-### BWA Indexing
+### 4.3 BWA Indexing
 
 The SILVA reference database, and all single genomes (HG19, bacterial etc.) were
 indexed as follows - with the SILVA database FASTA file as an example.
@@ -354,7 +439,7 @@ O=SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.dict
 
 > The database files are not provided here due to the large size.
 
-### UniRef Database
+### 4.4 UniRef Database
 
 For acquire the UniRef database for [HUMANn2](#humann2), we used the script
 that comes with HUMANn2, and run as follows:
@@ -363,7 +448,7 @@ that comes with HUMANn2, and run as follows:
 humann2_databases --download uniref uniref90_ec_filtered_diamond 01-data/databases/uniref90
 ```
 
-## Database analysis profile
+### 4.5 Database analysis profile
 
 For the scripts using `analysis_profile` file, ensure to update the paths to in
 the analysis profile to your correpsonding location.
@@ -379,12 +464,12 @@ GREENGENESDB=<PATH_TO>/tools/qiime-environment/1.9.1/lib/python2.7/site-packages
 HG19REF=<PATH_TO>/Reference_Genomes/Human/HG19/hg19_complete.fasta
 ```
 
-## Data Acquisition
+## 5 Data Acquisition
 
 All raw FASTQ files should be downloaded sample specific directories in
  `01-data/public_data/raw`.
 
-### Additional Individuals
+### 5.1 Additional Individuals
 
 In addition to the samples sequenced in this study (or generated by our 
 group, but previously published in the case of JAE), we downloaded the shotgun 
@@ -425,7 +510,7 @@ The just renamed files were just symlinked into the above.
 
 > The FASTQ files are not provided here due to the large size.
 
-### Comparative Sources
+### 5.2 Comparative Sources
 
 In addition to ancient and calculus samples, we also require comparative data
 from different sources of microbiomes (e.g. soil, skin, gut etc.). 
@@ -523,7 +608,7 @@ The final merged individual fastq files were moved to individual directories in
 
 > The FASTQ files are not provided here due to the large size.
 
-## Data Preprocessing
+## 6 Data Preprocessing
 
 Now downloaded, we can begin preprocessing by performing a sequencing quality 
 check, merge any of the PE data (as well as trimming low quality bases), remove 
@@ -541,9 +626,9 @@ used for metagenomic screening) to FASTQ.
 
 > The FASTQ files are not provided here due to the large size.
 
-### Preprocessing
+### 6.1 Preprocessing
 
-#### Script Version 
+#### 6.1.1 Script Version 
 
 Below I provide a loop that makes sure to run the
 script on libraries you have not already run that are present in the output
@@ -576,7 +661,7 @@ for LIBDIR in "$INDIR"/*/; do
 done
 ```
 
-#### EAGER Version
+#### 6.1.2 EAGER Version
 
 For the Slon et al. 2017 and Weyrich et al. 2017 datasets, we ran EAGER without 
 AdapterRemoval as the ENA uploaded data was already trimmed and merged. 
@@ -711,9 +796,9 @@ done
 
 > The per-sample EAGER run files are not provided here due to the large size.
 
-### Post-Processing
+### 6.2 Post-Processing
 
-#### EAGER preprocessing dataset BAM to FASTQ Conversion
+#### 6.2.1 EAGER preprocessing dataset BAM to FASTQ Conversion
 
 As EAGER itself does not have ability to convert unmapped read BAMs to FASTQ 
 (whereas), we have to do this manually for EAGER preprocessed files with:
@@ -730,7 +815,7 @@ done
 > The FASTQ files are not provided here due to the large size.
 
 
-#### Statistics
+#### 6.2.2 Statistics
 We can then extract the statistics of this pre-processing with the script 
 `02-scripts.backup/005-statistics_human_filtering.sh`. Once checked, we move the resulting 
 `human_filtering_statistics.csv` script to our `00-documents` folder and
@@ -756,7 +841,7 @@ are no human reads after de-duplication. I just manually fill in with NA.
 For the deep data, the EAGER table was used for report statistics (see below for
 further information)
 
-#### Library Merging
+#### 6.2.3 Library Merging
 
 Next, we can merge together libraries that have been sequenced multiple times,
 or Individuals with multiple calculus samples.
@@ -886,7 +971,7 @@ lanes was done for the deep sequencing samples. However the statistics were
 summarised across replicates using the R notebook 
 `02-scripts.backup/099-eager_table_individual_summarised.Rmd`.
 
-### Poly-G Trimming Assessment
+### 6.3 Poly-G Trimming Assessment
 
 The human DNA GC content could be a bit off in some of the new libraries 
 generated in this study, as we are sequencing with Illumina NextSeqs, which 
@@ -1067,7 +1152,7 @@ The resulting human mapping data after poly-G removal can be seen in
 
 > The FASTQ files are not provided here due to the large size.
 
-### Processing Results
+### 6.4 Processing Results
 
 Sequencing quality control results for both screening and production datasets
 can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
@@ -1080,11 +1165,11 @@ can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
 
 **Figure R2 | Sequencing read count distributions of the production dataset of ancient calculus samples sequenced during this study.** **a** Raw sequencing reads (prior adapter removal and merging), **b** Number of reads used for downstream analysis (processed reads with human sequences removed).
 
-## Metagenomic Screening
+## 7 Metagenomic Screening
 
-### MALT
+### 7.1 MALT
 
-#### MALT Running
+#### 7.1.1 MALT Running
 
 For taxonomic binning of reads of the screening dataset we will use MALT, with 
 a wrapper script for efficient submission. The settings are set in 
@@ -1110,7 +1195,7 @@ For the CustomRefSeq database, see [below](#aadder-analysis)
 
 > The RMA6 files are not provided here due to the large size.
 
-#### MALT Summary Statistics
+#### 7.1.2 MALT Summary Statistics
 
 To extract the summary statistics for all the MALT runs, we can run
 the following on the MALT logs.
@@ -1142,9 +1227,9 @@ our main screening metadata file
 `00-documentation/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv`.
 
 
-### MEGAN
+### 7.2 MEGAN
 
-#### MEGAN Running
+#### 7.2.1 MEGAN Running
 
 Once MALT has completed, we need to generate an OTU table of all the alignments.
  
@@ -1168,22 +1253,20 @@ level.
 
 These are saved in `04-analysis/screening/megan.backup`
 
-#### MEGAN Results
-
-### Additional Raw OTU Tables
+#### 7.2.2 Additional Raw OTU Tables
 
 Raw MALT OTU tables with and without bad samples and at different min-support
 values are generated by the Notebook `02-scripts.backup/016-MALT_otutable_generation.Rmd`. These
 tables are stored as `.tsv` files in the `04-analysis/screening/megan.backup` 
 directory.
 
-#### Prokaryotic vs. Eukaryotic MALT content Comparison
+#### 7.2.3 Prokaryotic vs. Eukaryotic MALT content Comparison
 
 Visualisation and statistical testing of whether the ratio of prokaryotic to 
 eukyarotic reads differs between well-preserved and badly-preserved samples can 
 be seen in `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`
 
-### Database Comparison
+### 7.3 Database Comparison
 
 Summary statistics of numbers of reads taxonomically assigned, and also
 comparison between the two MALT databases can be seen in  
@@ -1209,9 +1292,9 @@ comparison between the two MALT databases can be seen in
 
 **Figure R7 | Comparison of ratios of alignments to Bacterial/Archaeal/Viral reference sequences vs. Eukaryotic reference sequences between different groups of humans.** Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT. Y-axis is log10 scaled. Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to calculus host genus. Colours correspond to calculus host genus. Orange: _Homo_; Grey: non-calculus.
 
-## Preservation Screening
+## 8 Preservation Screening
 
-### Cumulative Proportion Decay Plots
+### 8.1 Cumulative Proportion Decay Plots
 
 The OTU table itself does not give us much information about the oral signature.
 
@@ -1240,9 +1323,9 @@ These are saved in `04-analysis/screening/cumulative_decay.backup`
 
 **Figure R9 | Cumulative percent decay plots of fraction of oral taxa across taxa ordered by abundance rank.** Taxonomic assignment against the: **a** NCBI nt database, and **b** a custom NCBI RefSeq database showing a large number of calculus samples displayed greater levels of preservation (blue), and although a smaller number do not pass the estimated preservation threshold (red). Plots are limited to 250 rank positions (x-axis) for visualization purposes. Thresholds are selected based on observations that all sources and controls do not increase about 50% (nt) and 65% (RefSeq) of fraction of oral taxon. Point at which the per-sample threshold is considered is based on when the fluctuation of the fraction of oral taxa (i.e. fraction difference between a taxon and next abundant taxon) does not exceed the standard deviation of all differences of the rank.
 
-### QIIME
+### 8.2 Source Estimation
 
-#### 16S Extraction 
+#### 8.2.1 16S Extraction 
 
 We next want to compare to a less-suitable but more established approach to 
 compare the screening method to, which is Sourcetracker analysis. However this 
@@ -1310,7 +1393,7 @@ seen under `02-scripts.backup/099-16sResults.Rmd`
 
 **Figure R11 | Distributions of percentages of 16S rRNA mapping reads extracted out of all non-human reads libraries across human calculus and plaque samples by mapping to the SILVA database.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
 
-#### 16S Clustering
+#### 8.2.2 16S Clustering
 
 For this we can use QIIME to cluster the reads by similarity then assign a
 taxonomic 'name'. We will stick with OTU clustering rather than the more 
@@ -1451,7 +1534,7 @@ seen under `02-scripts.backup/099-16sResults.Rmd`.
 
 **Figure R13 | Distributions of the number of OTUs identified after closed-reference clustering of 16S rRNA read sequences at 97% sequence similarity in QIIME across human calculus and plaque samples.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
 
-#### Sourcetracker
+#### 8.2.3 Sourcetracker
 
 Sourecetracker requires a OTU table (generated above) and a metadata file
 that tells the program what libraries in the OTU are a 'sink' or a 'source'.
@@ -1485,7 +1568,7 @@ For plotting of these for comparison with the cumulative percent decay plots,
 
 **Figure R14 | Stacked bar plots representing the estimated proportion of sample resembling a given source, as estimated by Sourcetracker across all calculus samples.** Visual inspection shows general concordance between the cumulative percent decay method and Sourcetracker estimation is seen. Coloured label text indicate whether that sample passed (grey) or failed (black) the cumulative percent decay threshold (see above) based on alignments to the NCBI nt (2017) database. 
 
-### Ratio of Eukaryotic to Prokaryotic Alignments
+### 8.3 Ratio of Eukaryotic to Prokaryotic Alignments
 
 We also noted that less well preserved samples appear to generally contain
 larger numbers of eukaryotic alignments. If explored further, this could also 
@@ -1498,9 +1581,9 @@ dental calculus samples.
 
 Code for statistical testing and visualisation can also be seen in the data repository under 02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd 
 
-### Damage Patterns
+### 8.4 Damage Patterns
 
-#### MEx-IPA
+#### 8.4.1 MEx-IPA
 
 To rapidly screen for damage patterns indicative of ancient DNA on the observed core microbiome ([see below](#core-microbiome-analysis)), we [ran MaltExtract](#core-microbiome-maltextract) on all output of MALT, with the core microbiome 
 as input list.
@@ -1515,7 +1598,7 @@ can be seen below in Figure R16.
 
 **Figure R16 | Example of MEx-IPA reports from the MaltExtract tool of the HOPS pipeline for two Neanderthal individuals, across four known oral microbiome taxa.** Individual-Taxon combination shows: C to T misincorporation lesions indicative of DNA deamination; read length distribution with a typical peak <50 bp indicative of fragmented DNA; edit distance and percent identity to the given reference which both show close similarity to the oral reference genome in most cases (1-2 edit distance peak; and 95% identity peak identity). Note that _Fretibacterium fastidiosum_ shows a higher edit distance and low percent identity score, suggesting the reads are likely derived from a relative of that taxon that does not have a genome represented in the database used (NCBI nt 2017). 
 
-#### DamageProfiler
+#### 8.4.2 DamageProfiler
 
 To generate additional confirmation of damage patterns in oral taxa, the 
 screening data was mapped to a subset of observed core microbiome reference 
@@ -1532,7 +1615,7 @@ DamageProfiler results were collated and visualised in the R script
 The collated results for the whole screening dataset are stored in the file 
 `00-documentation.backup/14-damageprofiler_screening_3p_5p_summaries_20191113.csv`.
 
-### Laboratory Contaminants
+### 8.5 Laboratory Contaminants
 
 To remove possible contaminating species from our samples that are derived from
 the laboratory environment, we can use the R package `decontam`. The idea here 
@@ -1546,9 +1629,9 @@ main metadata file
 We then run Decontam following the Decontam tutorial vignette on CRAN in the 
 script, and also described here `015-decontam_contamination_detection_analysis.Rmd`
 
-## Compositional Analysis
+## 9 Compositional Analysis
 
-### Principal Coordinate Analysis
+### 9.1 Principal Coordinate Analysis
 
 To explore if we have a structure in our data that can describe differences 
 between each group we want to explore, we can perform a Principal Coordinate 
@@ -1636,7 +1719,7 @@ More specific comparisons of different parameters can be seen in Figures R18-20.
 
 **Figure R20 | Principal Coordinate Analysis of well-preserved calculus microbiomes at prokaryotic genus taxonomic level by host genus.** Visual inspection shows distinct centroids of each host genus, albeit with overlap with others. Input is PhILR transformed OTU tables without sources and controls and low preservation samples removed. Low abundant taxa removed if under 0.07% of overall alignments (‘min support’). a NCBI nt database axis 1 and 2, b NCBI nt database axis 2 and 3, c Custom NCBI RefSeq database axis 1 and 2, and d Custom NCBI RefSeq database axis 2 and 3.
 
-### Hierarchical Clustering Heatmaps
+### 9.2 Hierarchical Clustering Heatmaps
 
 To further visualise drivers of similarity and differences between the different
 host genera, we applied hierarchical clustering on the contaminant and
@@ -1681,7 +1764,7 @@ Figures can be seen in `04-analysis/screening/compositional_heatmaps.backup`.
 
 **TODO**
 
-#### Zero replacement validation
+#### 9.2.1 Zero replacement validation
 
 Next we can check whether this result is affected by the zero replacement model,
 with the same script otherwise the same settings.
@@ -1696,7 +1779,7 @@ Comparing the zero replacement methods shows no difference between clustering.
 There is cosmetic tree topology changes but  only by clade flipping - no 
 structural changes. The output is saved as in the same directory at above.
 
-#### Indicator Analysis
+### 9.2.2 Indicator Analysis
 
 To confirm the species corresponding to the groups in the hierarchical clustering
 we ran Indicator Analysis to find species that are 'indicative' of certain 
@@ -1711,7 +1794,7 @@ Rscript 02-scripts.backup/21-Indicator_analysis.R
 
 and the results are saved in `04-analysis/screening/indicspecies.backup`.
 
-### Clustering by Diet?
+### 9.3 Clustering by Diet?
 
 To revisit the question and results posed by Weyrich et al (2017) _Nature_ 
 regarding clustering of the calculus microbiomes individuals by subsistence 
@@ -1730,9 +1813,9 @@ The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`.
 
 **Figure R22 |  Hierarchical clustering of different Homo calculus microbiomes, comparing different lifestyles and regions.** We do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Clustering was performed with the average-linkage algorithm.  Low abundant taxa are removed if under 0.01% of overall alignments (‘min support’), and putative laboratory contaminants removed as per the decontam R package. 
 
-### Core Microbiome Analysis
+## 10 Core Microbiome Analysis
 
-#### Core Microbiome Calculation
+### 10.1 Core Microbiome Calculation
 
 Given the overlap between each host genus as identified above, we also wished 
 to find microbiota taxa that are potentially present across various 
@@ -1813,7 +1896,7 @@ combination.
 
 **Figure SFC | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a ‘core’ microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
 
-#### Core Microbiome MaltExtract
+### 10.2 Core Microbiome MaltExtract
 
 To further verify the authenticity the calculus samples - we can also run 
 MaltExtract on a subset of the core taxa to check for damage patterns and 
@@ -1843,7 +1926,7 @@ MaltExtract \
 
 See [above](#mex-ipa) for results
 
-## Genome Reconstruction and Phylogenetics
+## 11 Genome Reconstruction and Phylogenetics
 
 We next want to test whether the phylogenies of specific oral taxa also
 'mimic' the phylogenetic histories of the host. A common problem from 
@@ -1860,7 +1943,7 @@ predicted effect would be reads from off-target reads would be attracted to
 the related strains/species and thus would not be present on the reference of
 interest.
 
-### Production dataset sequencing depth calculations
+### 11.1 Production dataset sequencing depth calculations
 
 For optimal phylogenetic reconstruction, high coverage genomes are generally
 preferred to improve confidence in genotyping. The screening dataset 
@@ -1940,7 +2023,7 @@ following steps.
 
 Extracts of the selected samples were sent for UDG treatment and deep sequencing.
 
-### Super-reference construction
+### 11.2 Super-reference construction
 
 We decided to generate phylogenies based on the core genera 
 [identified above](#core-microbiome-analysis). To generate the super-reference,
@@ -1977,7 +2060,7 @@ FASTAs were indexed as [above](#bwa-indexing)
 
 > Reference files and indices are not included due to large size
 
-### Super-reference alignment and species selection
+### 11.3 Super-reference alignment and species selection
 
 The production dataset was then mapped to each of the core genus 
 super-references with EAGER, with the following settings.
@@ -2030,7 +2113,7 @@ bedtools coverage -a 01-data/genomes/"$genus"/collapsed_"$genus"_superreference.
 Output results for this statistics can also be see under 
 `04-analysis/deep/eager/superreference_mapping/output`
 
-### Comparative single reference mapping
+### 11.4 Comparative single reference mapping
 
 To compare the effect on genotyping when using a super-reference rather than a 
 single representative genome, we also need a single genome to compare to.
@@ -2084,7 +2167,7 @@ Summary plots of the single genome mappings can be seen under
 
 **Figure R28 | Comparison mapping statistics of deep sequenced calculus microbiomes to single species representatives of core calculus microbiome genera.** Despite deep sequencing, mean fold coverage remains low - albeit with low cluster factor suggesting deeper sequencing will result in higher coverages. **a** Distributions of mean fold coverage. **b** Distributions of cluster factor. Mappings are production dataset calculus data, mapped to a single representative reference genomes of core anthropoid calculus microbiome. Post-deduplication mean fold coverage and cluster factors values are as reported by EAGER results table.
 
-### Performance of super-reference vs. single genome mapping
+### 11.5 Performance of super-reference vs. single genome mapping
 
 As the main target of this comparison of mapping strategies is to see if we 
 can reduce the level of cross-mapping, we need a way of assessing the level
@@ -2163,7 +2246,7 @@ increase the number of semi-confident SNP positions.
 Aggregation of this across all mappings can be seen in 
 `04-analysis/deep/competitive_mapping.backup/multiallelic_snps/`.
 
-### Variant calling and single-allelic position assessment
+### 11.6 Variant calling and single-allelic position assessment
 
 We now re-run MultiVCFAnalyzer to create our final SNP Alignments for 
 phylogenetic analysis.
@@ -2193,7 +2276,7 @@ The final snpAlignment and snpStatistics files can be seen in `04-analysis/deep/
 
 > The remaining MultiVCFAnalyzer results are not provided here due to large size.
 
-### Phylogenies
+### 11.7 Phylogenies
 
 For the phylogenies themselves, I wrote a custom R script that allows for 
 generating a few summary statisics for the alignment, filtering based on the 
@@ -2242,13 +2325,13 @@ the pairwise number of overlapping bases between each sample can be seen in
 
 **Figure R31 | Relationship between number of positions shared, and fold depth coverage between pairwise combinations of individuals, from the production dataset mapped to representative core taxa. Higher coverage taxa generally display greater numbers of shared positions.** Shared number of bases was calculated from the MultiVCFAnalyzer ‘SNP alignment’ FASTA file, with alignments containing less than 1000 bases removed. Order of microbial taxa and fill colour based on the genus median of average fold coverages average across all mappings in that genus as reported by EAGER. Boxplots present 25%, 50%, 75% of data, Dots represent outliers as calculated by the geom_histogram() function of ggplot. X axis is log scaled.
 
-### Pre- and Post-14k BP Observation Verification
+### 11.8 Pre- and Post-14k BP Observation Verification
 
 In the trees generated above, we observed that single deep sequenced pre-14ky
 BP individual (Red Lady/EMN001) _always_ clustered with Neanderthals, whereas 
 post-14ky BP individuals mostly fell with modern day humans. 
 
-#### Production dataset overlapping positions analysis
+#### 11.8.1 Production dataset overlapping positions analysis
 
 One possible cause of this clustering could be that the two clades could 
 represent different species (due to sub-optimal reference selection), and the
@@ -2273,7 +2356,7 @@ This is implemented in version three within `02-scripts.backup/044-SNPAlignment_
 
 The output files for can be seen in `04-analysis/deep/phylogenies`
 
-#### Screening datasets phylogenies
+#### 11.8.2 Screening datasets phylogenies
 
 We also wanted to see if this held when adding additional European individuals.
 
@@ -2341,9 +2424,9 @@ figures can be seen under `04-analysis/screening/EMN_Neanderthal_phylogeny_check
 
 **Figure SGG | Replication of production dataset phylogenies with low-coverage and damage-containing screening dataset with additional European individuals.** The observed pattern of pre-14k BP Europeans and post-14k BP humans clustering separately in the production dataset phylogenies is replicated when including additional pre- and post-14k BP individuals when using screening dataset equivalents. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Grey boxes indicate European ‘pre-14k BP’ of the Red Lady of El Mirón and Neanderthals
 
-## Functional Analysis
+## 12 Functional Analysis
 
-### Virulence Factors
+### 12.1 Virulence Factors
 
 Given that we identified in the production dataset significant numbers of reads
 mapping to reference genomes of classically considered and well-studied 
@@ -2367,9 +2450,9 @@ For the actual filtering and identification of presence/absence, we load the
  resulting TSV files into R with the notebook 
  `02-scripts.backup/054-virulence_investigation.Rmd`
 
-### Amylase
+### 12.2 Amylase
 
-#### Streptococcus Distribution
+#### 12.2.1 Streptococcus Distribution
 
 In the hierarchical clustering ([above](#hierarchical-clustering-heatmaps)), we
 observed the relative abundance and prevalence of Streptococci varied between 
@@ -2390,7 +2473,7 @@ dataset - but using the _Streptococcus_ superreference as the reference
 database, as in the notebook
 `02-scripts.backup/033-streptoccocus_investigation_v2_20190826.Rmd`.
 
-#### Amylase binding protein genes
+#### 12.2.2 Amylase binding protein genes
 
 Given the different distributions of the _Streptococcus_ content of each 
 host-genera and the observation that Humans tend to have more prominant signals
@@ -2442,7 +2525,7 @@ bedtools intersect \
 
 The resulting files wre then loaded into to assess the ratio of all streptococus reads to amylase binding protein-like reads as in `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`
 
-### HUMANn2
+### 12.3 HUMANn2
 
 In addition to the taxonomic profile, the funcitonal profile of dental calculus
 microbiota may provide insight into host evolutionary patterns. The functional
@@ -2456,7 +2539,7 @@ contribute to and providing a metabolic pathway profile. We assessed both the
 metabolic pathway profile and the gene content profile of our samples generated
 by HUMAnN2, as detailed below.
 
-#### MetaPhlAn2
+#### 12.3.1 MetaPhlAn2
 
 In prepraration for HUMANn2, we ran MetaPhlan2, running on the whole screening
 dataset.
@@ -2576,7 +2659,7 @@ Finally, some read statistics by applying the same 0.01% threshold used in MALT
 are gained via the `099-MetaPhlan2_Summary_statistics.R` script. These were
 then manually added to the metadata file.
 
-#### Running HUMANn2
+#### 12.3.2 Running HUMANn2
 
 Once we have the MetaPhlAn2 profiles, we can run HUMANn2 with the following
 command, running on the S
@@ -2653,7 +2736,7 @@ All analysis and figure generation for HUMAnN2 data can be found in the R markdo
 document here `02-scripts.backup/144-imv-oral_evolution_humann2_fxn_cleaned.Rmd`.
 
 
-### AADDER Analysis
+### 12.4 AADDER Analysis
 
 As a validation, we also want to use AADDERR - a tool which infers functional
 characteristics based on the annotations of a MALT/MEGAN reference database. 
@@ -2664,7 +2747,7 @@ we downloaded [above](#aadder-database).
 We will run this against the filtered RefSeq genomes we built above both
 with MALT (fasta files) and AADDER (gff files).
 
-### MALT RefSeq
+### 12.5 MALT RefSeq
 
 We then run MALT but instead of immediately producing RMA6 files, we 
 generate SAM files. This can be run with the following:
@@ -2694,7 +2777,7 @@ grep -e "Loading MEGAN File:" \
 04-analysis/screening/malt/refseq_bacarchhomo_gcs_20181122/*log | cut -d":" -f 2-99 > 00-documentation.backup/99-maltAlignedReadsSummary_raw_refseq_bacarchhomo_gcs_20181122_$(date "+%Y%m%d").txt
 ```
 
-### Running AADDER
+### 12.6 Running AADDER
 
 Then we run AADDER
 
@@ -2755,7 +2838,7 @@ which had trouble with the special characters in several protein names.
 All analysis of AADDER functional profiles can be found in the R markdown
 document here `02-scripts.backup/148-imv-aadder_evolution_function_cleaned.Rmd`.
 
-### Overlap between HUMAnN2 and AADDER
+### 12.7 Overlap between HUMAnN2 and AADDER
 
 Finally, we wanted to see how many genes identified in the samples were
 identified by both HUMAnN2 and AADDER, within major biomolecule procesisng
