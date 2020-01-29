@@ -1072,7 +1072,7 @@ The resulting human mapping data after poly-G removal can be seen in
 Sequencing quality control results for both screening and production datasets
 can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
 
-![Sequencing QC New Calculus Screening Dataset](05-images/Figure_R1_SAB_SequencingQC_screeningSup/SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_20200107.png)
+![Sequencing QC New Calculus Screening Dataset](05-images/Figure_R01_SAB_SequencingQC_screening/SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_20200107.png)
 
 **Figure R1 | Sequencing metric distributions of the screening dataset of ancient and modern calculus samples sequenced during this study.** **a** Raw sequencing read counts (prior to adapter removal and merging). **b** Pre-processed read counts after adapter removal and read merging. **c** Proportion of human DNA. **d** Count of non-human reads used for downstream analysis (pre-processed reads with human sequences removed).
 
