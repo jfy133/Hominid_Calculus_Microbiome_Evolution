@@ -1076,7 +1076,7 @@ can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
 
 **Figure R1 | Sequencing metric distributions of the screening dataset of ancient and modern calculus samples sequenced during this study.** **a** Raw sequencing read counts (prior to adapter removal and merging). **b** Pre-processed read counts after adapter removal and read merging. **c** Proportion of human DNA. **d** Count of non-human reads used for downstream analysis (pre-processed reads with human sequences removed).
 
-![Sequencing QC New Calculus Production Dataset](05-images/Figure_R2_SAC_SequencingQC_deep/SupFigX_SequencingQCSummaries_NewCalculusOnly_Deep_AncientOnly_20190626.png)
+![Sequencing QC New Calculus Production Dataset](05-images/Figure_R02_SAC_SequencingQC_deep/SupFigX_SequencingQCSummaries_NewCalculusOnly_Deep_AncientOnly_20190626.png)
 
 **Figure R2 | Sequencing read count distributions of the production dataset of ancient calculus samples sequenced during this study.** **a** Raw sequencing reads (prior adapter removal and merging), **b** Number of reads used for downstream analysis (processed reads with human sequences removed).
 
@@ -1189,25 +1189,25 @@ Summary statistics of numbers of reads taxonomically assigned, and also
 comparison between the two MATL databases can be seen in  
 `02-scripts.backup/099-MALTAssignmentResults.Rmd`.
 
-![MALT Number of Assigned Reads](05-images/Figure_R3_SBA_MALTAssignment_AllCategoryComparison/SupFigX_MALTAssignments_AllCategories_comparison_20191028_EDIT.png)
+![MALT Number of Assigned Reads](05-images/Figure_R03_SBA_MALTAssignment_AllCategoryComparison/SupFigX_MALTAssignments_AllCategories_comparison_20191028_EDIT.png)
 
-**Figure R3 | Comparison of the mean number of taxonomically assigned non-human reads across all sources, laboratory controls and comparative sample groups.** Taxonomic assignment is from aligning to the NCBI nt (2017) and a custom NCBI refseq (2018) databases using MALT. Colours correspond to calculus host genus. Blue: Alouatta; Purple: Gorilla; Green: Pan; Orange: Homo; Grey: non-calculus. 
+**Figure R3 | Comparison of the mean number of taxonomically assigned non-human reads across all sources, laboratory controls and comparative sample groups.** Taxonomic assignment is from aligning to the NCBI nt (2017) and a custom NCBI refseq (2018) databases using MALT. Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus. 
 
-![MALT Database Comparison via DABESTR](05-images/Figure_R4_SBB_MALTAssignment_DABESTR/SupFigX_MALTAssignments_dabest_AllCategoriesCalculusOnly_comparison_20190627_EDIT2.png)
+![MALT Database Comparison via DABESTR](05-images/Figure_R04_SBB_MALTAssignment_DABESTR/SupFigX_MALTAssignments_dabest_AllCategoriesCalculusOnly_comparison_20190627_EDIT2.png)
 
 **Figure R4 | Gardner-Altman plot showing differences in the mean percent of taxonomically assigned reads between the NCBI nt (2017) and a custom NCBI RefSeq (2018) databases using MALT.** Right hand plot: dot represents mean difference between the two groups with resampling distribution (5000 bootstraps). Left hand plot: slope graph showing relationship between means percent taxonomically assigned reads between two databases per group. Vertical dark line on dot represents 95% confidence interval around the mean. Y axis represents mean percentage of taxonomically assigned reads within each group. **a** Comparison of overall mean between all calculus samples, laboratory controls and comparative sources in this study. **b** Comparison of just dental calculus samples. 
 
-![MALT human samples database comparison](05-images/Figure_R5_SBC_MALTAssignment_ModernHumanCalculusPlaqueOnlyComparison/SupFigX_MALTAssignments_CalculusPlaqueOnly_comparison_20191028_EDIT.png)
+![MALT human samples database comparison](05-images/Figure_R05_SBC_MALTAssignment_ModernHumanCalculusPlaqueOnlyComparison/SupFigX_MALTAssignments_CalculusPlaqueOnly_comparison_20191028_EDIT.png)
 
-**Figure R5 | Comparison of mean percent of taxonomically assigned reads to different groups of humans, when aligning between the NCBI nt (2017) and a custom NCBI RefSeq (2018) database using MALT.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: Homo calculus; Grey: non-calculus. 
+**Figure R5 | Comparison of mean percent of taxonomically assigned reads to different groups of humans, when aligning between the NCBI nt (2017) and a custom NCBI RefSeq (2018) database using MALT.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
 
-![MALT Eukaryotic to Prokaryotic Assigned Reads Comparison](05-images/Figure_R6_SBD_MALTAssignment_all_eukaryoticNoneukaryoticRatio/SupFigX_MALTAssignments_all_eukaryoticNoneukaryoticRatio_20191028_EDIT.png)
+![MALT Eukaryotic to Prokaryotic Assigned Reads Comparison](05-images/Figure_R06_SBD_MALTAssignment_all_eukaryoticNoneukaryoticRatio/SupFigX_MALTAssignments_all_eukaryoticNoneukaryoticRatio_20191028_EDIT.png)
 
-**Figure R6 | Comparison of ratios of alignments to Bacterial/Archaeal/Viral reference sequences vs. Eukaryotic reference sequences between all calculus, laboratory controls and comparative sources.** Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT. Y-axis is log10 scaled. Colours correspond to calculus host genus. Colours correspond to calculus host genus. Blue: Alouatta; Purple: Gorilla; Green: Pan; Orange: Homo; Grey: non-calculus.
+**Figure R6 | Comparison of ratios of alignments to Bacterial/Archaeal/Viral reference sequences vs. Eukaryotic reference sequences between all calculus, laboratory controls and comparative sources.** Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT. Y-axis is log10 scaled. Colours correspond to calculus host genus. Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
 
-![MALT Eukaryotic to Prokaryotic Assigned Reads Comparison Humans Only](05-images/Figure_R7_SBE_MALTAssignment_ModernHumanCalculusPlaqueOnlyComarpsion_EukaryoticNonEukatyoticRatio/SupFigX_MALTAssignments_CalculusPlaqueOnly_eukaryoticNoneukaryoticRatio_20191028.png)
+![MALT Eukaryotic to Prokaryotic Assigned Reads Comparison Humans Only](05-images/Figure_R07_SBE_MALTAssignment_ModernHumanCalculusPlaqueOnlyComarpsion_EukaryoticNonEukatyoticRatio/SupFigX_MALTAssignments_CalculusPlaqueOnly_eukaryoticNoneukaryoticRatio_20191028.png)
 
-**Figure R7 | Comparison of ratios of alignments to Bacterial/Archaeal/Viral reference sequences vs. Eukaryotic reference sequences between different groups of humans.** Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT. Y-axis is log10 scaled. Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to calculus host genus. Colours correspond to calculus host genus. Orange: Homo; Grey: non-calculus.
+**Figure R7 | Comparison of ratios of alignments to Bacterial/Archaeal/Viral reference sequences vs. Eukaryotic reference sequences between different groups of humans.** Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT. Y-axis is log10 scaled. Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to calculus host genus. Colours correspond to calculus host genus. Orange: _Homo_; Grey: non-calculus.
 
 ## Preservation Screening
 
@@ -1232,11 +1232,11 @@ the visualisation.
 
 These are saved in `04-analysis/screening/cumulative_decay.backup`
 
-![Schematic of how Cumulative Percentage Decay Plots Work](05-images/Figure_R8_SCE_CumulativeDecay_Schematic/CumulativeDecay_Schematic.png)
+![Schematic of how Cumulative Percentage Decay Plots Work](05-images/Figure_R08_SCE_CumulativeDecay_Schematic/CumulativeDecay_Schematic.png)
 
 **Figure R8 | Schematic diagram of a cumulative percent decay method of preservation assessment.** **a** example curves of a theoretical sample consisting of purely oral taxa (top left), and a theoretical sample containing no oral taxa (top right). For the archaeological samples, a well-preserved sample (bottom left) will consist mostly of oral taxa but may include uncharacterised or contaminant taxa leading to a nonlinear relationship, but remaining above an oral taxon fraction percent of 50% (as identified in modern plaque samples). An archaeological sample (bottom right) with no endogenous oral content will have few oral taxa, and may have occasional modern contaminants resulting in a nonlinear relationship. **b** a representation of the method for calculating the rank from which to begin assessing whether a sample decay curve goes above the ‘well-preserved’ fraction threshold, accounting for high variation in mixed preservation samples with both oral and non-oral/uncharacterised taxa at higher ranks. Given the large differences between the initial ranks due to small denominators, a 'burn-in' like procedure is applied. The rank at which the difference change between each subsequent rank does not exceed the standard deviation of all rank differences, is set as the rank from which, it is assessed whether the sample curve exceeds the preservation threshold (here 50% for the NCB nt OTU table). A curve that does not exceed this threshold at any point from this rank onwards, is considered not to have sufficient preservation for downstream analysis.
 
-![Cumulative Percentage Decay Plots for calculus and comparative sources](05-images/Figure_R9_SCA_CumulativePercentageDecayPlots/SuppFigSX_CumulativePercentDecay_ntRefseqCombined_titlesfixed_EDIT.png)
+![Cumulative Percentage Decay Plots for calculus and comparative sources](05-images/Figure_R09_SCA_CumulativePercentageDecayPlots/SuppFigSX_CumulativePercentDecay_ntRefseqCombined_titlesfixed_EDIT.png)
 
 **Figure R10 | Cumulative percent decay plots of fraction of oral taxa across taxa ordered by abundance rank.** Taxonomic assignment against the: **a** NCBI nt database, and **b** a custom NCBI RefSeq database showing a large number of calculus samples displayed greater levels of preservation (blue), and although a smaller number do not pass the estimated preservation threshold (red). Plots are limited to 250 rank positions (x-axis) for visualization purposes. Thresholds are selected based on observations that all sources and controls do not increase about 50% (nt) and 65% (RefSeq) of fraction of oral taxon. Point at which the per-sample threshold is considered is based on when the fluctuation of the fraction of oral taxa (i.e. fraction difference between a taxon and next abundant taxon) does not exceed the standard deviation of all differences of the rank.
 
