@@ -1795,8 +1795,23 @@ done
 Individual visualisations and results for each parameter run can be seen in 
 `04-analysis/screening/presenceabsence_intersection.backup/`
 
+We also observed that _Mycobacterium_ was able to pass our minimum support 
+despite being a common soil contaminant. We investigated this further 
+(see main article for more details.).
 
-**We also obeserved MYCOBACTEIRUM**
+**TODO POINT TO SCRIPT**
+
+![Distribution of Mycobacterium reads in MALT Nt database](05-images/Figure_R26_SFD_CoreMicrobiome_Mycobacterium/99-coremicrobiome_presenceabsene_mycobacterium_investigation_20190903.png)
+
+**Figure R26 | Alignment distribution and prevalence of Mycobacterium across well-preserved calculus microbiome samples in this study.** Approximate ‘abundance’ is consistent across calculus samples, however most prevalent taxa are likely well-known environmental taxa. a summary of alignments of well preserved samples and sources to _Mycobacterium_ species. b number of individuals that all _Mycobacterium_ species identified in the dataset are found in. Input is from MALT NCBI nt database OTU table at species level, excluding putative laboratory contaminants and badly preserved samples.
+
+Finally, for each database and taxonomic level, we generated Upset plots 
+summarising the number of genera and species found in each core microbiome 
+combination.
+
+![Core microbiome Upset plots at genus and species level for Nt and RefSeq databases](05-images/Figure_R27_SFC_CoreMicrobiome_UpSetPlots/FigureSXX-CoreMicrobiome_UpSetR_combined.png)
+
+**Figure SFC | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a ‘core’ microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
 
 #### Core Microbiome MaltExtract
 
@@ -1826,6 +1841,7 @@ MaltExtract \
 
 ```
 
+See [above](#mex-ipa) for results
 
 ## Genome Reconstruction and Phylogenetics
 
@@ -2064,6 +2080,10 @@ Summary plots of the single genome mappings can be seen under
 
 > The reference genome files are not provided here due to the large size
 
+![Mapping statistics of mapping to single representative genomes per genus of core microbiome](05-images/Figure_R28_SGC_SingleGenomeFoldCoverageSummary/FigureSX_meanfoldcoverage_clusterfactor_distributions_allcalculussamples_noblanks.png)
+
+**Figure R28 | Comparison mapping statistics of deep sequenced calculus microbiomes to single species representatives of core calculus microbiome genera.** Despite deep sequencing, mean fold coverage remains low - albeit with low cluster factor suggesting deeper sequencing will result in higher coverages. **a** Distributions of mean fold coverage. **b** Distributions of cluster factor. Mappings are production dataset calculus data, mapped to a single representative reference genomes of core anthropoid calculus microbiome. Post-deduplication mean fold coverage and cluster factors values are as reported by EAGER results table.
+
 ### Performance of super-reference vs. single genome mapping
 
 As the main target of this comparison of mapping strategies is to see if we 
@@ -2132,8 +2152,13 @@ on the reference itself - therefore reducing the phylogenetically-informative
 data. We therefore selected the single representative genome mappings for
 downstream analysis.
 
-Additionally, in the notebook we also show that we identified the most common fraction of a majority allele was 0.7, therefore we can use this to
+Additionally, in the notebook we also show that we identified the most common 
+fraction of a majority allele was 0.7, therefore we can use this to
 increase the number of semi-confident SNP positions.
+
+![Major allele fraction selection for genotyping of single-genome mappings](05-images/Figure_R29_SGB_AlleleFrequencySelection/singlereferencemapping_SNPcallingthreshold_selection_20190913.png)
+
+**Figure R29 | Distributions of majority allele (i.e. >50%) frequency of multi-allelic SNPs for each genus, across all production dataset calculus mappings to single genomes of representative core microbial taxa.** All mappings but _Actinomyces_ (reference: _Actinomyces dentalis_ DSM 19115) show that the most common highest frequency multi-allelic SNP bin is 70%. Calculated by selecting for each single-genome mapping the highest frequency multi-allelic SNP bin, from the ‘SNP Table’ of MultiVCFAnalyzer with a ‘homozygous’ threshold of 0.9, and ‘heterozygous’ threshold of 0.1 and minimum coverage threshold of 2.
 
 Aggregation of this across all mappings can be seen in 
 `04-analysis/deep/competitive_mapping.backup/multiallelic_snps/`.
@@ -2202,12 +2227,20 @@ Visualisation of the phylogenies was carried out with the R notebook
 `02-scripts.backup/026-Tree_visualisation_20190611.Rmd` and PDF files of each
 phylogeny for each of the taxa under `04-analysis/deep/phylogenies/plots`.
 
+![Production dataset core microbiome representative species NJ trees 1-4](05-images/Figure_R30_SGF_ProductionPhylogenies/Phylogenies_Production_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_1.png)
+![Production dataset core microbiome representative species NJ trees 5-8](05-images/Figure_R30_SGF_ProductionPhylogenies/Phylogenies_Production_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_2.png)
+
+**Figure R30 | Neighbour joining trees of eight well-supported calculus core taxa trees from single representative mappings of the production dataset.** Trees generally show microbial strains clustering of individuals to those of the same host genus, and pre-14k BP European individuals consistently display a distinct clade from post-14k BP European individuals. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Trees were selected as ‘well-supported’ if nodes resulting in expected host genus bifurcations equalled or exceeded 70%. Note that titles refer to the representative genome of the selected species used for the reference genome, and the alignments are mixtures of strains/species as indicated by high levels of multi-allelic sites. Grey boxes indicate European ‘pre-14k BP’ of the Red Lady of El Mirón and Neanderthals.
+
 Comparison of the median fold depth of all mappings of a host genus, and
 the pairwise number of overlapping bases between each sample can be seen in 
 `02-scripts.backup/099-Phylogenies_SharedOverlappingSNPS.Rmd`
 
-
 > You may need to `gunzip` the `.nwk` files before loading
+
+![Comparison of number of positions shared and fold depth coverage between sample-pairwise combinations](05-images/Figure_R31_SGD_PhylogeniesOverlappingNucleotides/FigureSX_meanfoldcoverage_distributions_allcalculussamples_noblanks.png)
+
+**Figure R31 | Relationship between number of positions shared, and fold depth coverage between pairwise combinations of individuals, from the production dataset mapped to representative core taxa. Higher coverage taxa generally display greater numbers of shared positions.** Shared number of bases was calculated from the MultiVCFAnalyzer ‘SNP alignment’ FASTA file, with alignments containing less than 1000 bases removed. Order of microbial taxa and fill colour based on the genus median of average fold coverages average across all mappings in that genus as reported by EAGER. Boxplots present 25%, 50%, 75% of data, Dots represent outliers as calculated by the geom_histogram() function of ggplot. X axis is log scaled.
 
 ### Pre- and Post-14k BP Observation Verification
 
@@ -2218,7 +2251,7 @@ post-14ky BP individuals mostly fell with modern day humans.
 #### Production dataset overlapping positions analysis
 
 One possible cause of this clustering could be that the two clades could 
-represent differnet species (due to sub-optimal reference selection), and the
+represent different species (due to sub-optimal reference selection), and the
 clustering of the Red Lady of El Mirón (EMN001)  with the Neanderthals is 
 because they share the same regions of the genome which are not present in 
 the other clade (leading to more similar distance calculations). Alternatively, 
@@ -2231,6 +2264,10 @@ calculate the median number of overlapping SNPs of EMN001 with each Neanderthals
 and the same for each Human individual - and see if the 
 MN001/Neanderthal median falls outside the range of the EMN001/Human and 
 Human/Human combinations.
+
+![El Mirón shared number of SNPs with Neanderthals and Humans](05-images/Figure_R32_SGE_ElMironOverlappingSNPsAnalysis/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_COMBINED.png)
+
+**Figure R32 | Comparison of number shared positions of EMN001 and Neanderthals, compared to humans used to generate production dataset phylogenies.** EMN001 and Neanderthal pairwise combinations do not show having shared number of positions falling outside the range of all human to human pairwise combinations. Histogram represents a count of all pairwise human combinations that have a given number of shared positions. All individuals with less than 1000 positions in each SNP alignment have been removed. Orange solid line represents median number of positions of EMN001 shared with each human, and red dashed line represents median shared between EMN001 and each Neanderthal individual.
 
 This is implemented in version three within `02-scripts.backup/044-SNPAlignment_SharedData_Analysis_20190915.Rmd`.
 
@@ -2299,6 +2336,10 @@ figures can be seen under `04-analysis/screening/EMN_Neanderthal_phylogeny_check
 
 > You may need to `gunzip` the `.nwk` files before loading
 
+![Screening dataset core microbiome representative species NJ trees 1-4](05-images/Figure_R33_SGG_ScreeningPhylogenies/Phylogenies_Screening_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_1.png)
+![Screening dataset core microbiome representative species NJ trees 5-8](05-images/Figure_R33_SGG_ScreeningPhylogenies/Phylogenies_Screening_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_2.png)
+
+**Figure SGG | Replication of production dataset phylogenies with low-coverage and damage-containing screening dataset with additional European individuals.** The observed pattern of pre-14k BP Europeans and post-14k BP humans clustering separately in the production dataset phylogenies is replicated when including additional pre- and post-14k BP individuals when using screening dataset equivalents. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Grey boxes indicate European ‘pre-14k BP’ of the Red Lady of El Mirón and Neanderthals
 
 ## Functional Analysis
 
