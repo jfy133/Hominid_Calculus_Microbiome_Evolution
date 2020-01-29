@@ -180,7 +180,7 @@ Species                                       | Strain      | Date           | C
 ----------------------------------------------|-------------|----------------|--------------|----------------|-----------------------------------------------------
 _Homo sapiens_                                | HG19        | 2016-01-14     | Complete     | Reference      | http://hgdownload.cse.ucsc.edu/downloads.html#human
 _Actinomyces dentalis_                        | DSM 19115   | 2019-02-25     | Scaffold     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/429/225/GCF_000429225.1_ASM42922v1/
-_Campylobacter gracilis__                     | -           | 2019-05-22     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/
+_Campylobacter gracilis_                      | -           | 2019-05-22     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/
 _Capnocytophaga gingivalis_                   | ATCC 33624  | 2019-02-25     | Contigs      | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/174/755/GCF_000174755.1_ASM17475v1/
 _Corynebacterium matruchotii_                 | ATCC 14266  | 2019-05-22     | Contigs      | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/175/375/GCF_000175375.1_ASM17537v1/
 _Fretibacterium fastidiosum_                  | -           | 2018-12-11     | Chromosome   | Unknown        | https://www.ncbi.nlm.nih.gov/nuccore/FP929056.1
@@ -196,7 +196,9 @@ _Streptococcus sanguinis_                     | SK36        | 2018-12-11     | C
 _Tannerella forsythia_                        | 92A2        | 2018-12-18     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/238/215/GCF_000238215.1_ASM23821v1/
 _Treponema socranskii subsp. paredies_        | ATCC 35535  | 2019-02-28     | Scaffolds    | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/413/015/GCF_000413015.1_Trep_socr_subsp_paredis_ATCC_35535_V1/
 
-__SCREENING__
+**TODO**!
+
+_SCREENING__
 _Aggregatibacter aphrophilus_                 | W10433      | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
 _Desulfobulbus_ sp. oral taxon 041            | Dsb1-5      | 2018-06-06     | Contigs      | Assembly       | https://www.ncbi.nlm.nih.gov/genome
 _Fusobacterium nucleatum_ subsp. _nucleatum_  | ATCC 25586  | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
@@ -1184,7 +1186,7 @@ be seen in `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`
 ### Database Comparison
 
 Summary statistics of numbers of reads taxonomically assigned, and also
-comparison between the two MATL databases can be seen in  
+comparison between the two MALT databases can be seen in  
 `02-scripts.backup/099-MALTAssignmentResults.Rmd`.
 
 ![MALT Number of Assigned Reads](05-images/Figure_R03_SBA_MALTAssignment_AllCategoryComparison/SupFigX_MALTAssignments_AllCategories_comparison_20191028_EDIT.png)
@@ -1626,7 +1628,7 @@ More specific comparisons of different parameters can be seen in Figures R18-20.
 
 **Figure R18 | Principal coordinate analysis comparing pseudocount and cumulative zero multiplication zero-replacement methods.** Reconstruction of Fig. 1 of main article (but with all sources), shows little differences in the relationships between samples between each method. Scatterplot displays euclidean distances based on genus-level PhILR ratios of all well preserved samples and sources (without controls), putative laboratory contaminants removed, and low abundant taxa removed by a minimum support value of 0.07%. Grey symbols represent comparative sources.
 
-![Effect of low preservation sample removal on PCoA](05-images/FFigure_R19_SEB_PCoA_SampleRemovalComparison/FigureSXX-PhILR_PCoA_malt_euclidean_genus_withSources_withControls_badsamplesout_withinvariation_0.07_20190527_ntrefseq_axis1axis2axis3axis4_SampleRemovalComparison_combined.png)
+![Effect of low preservation sample removal on PCoA](05-images/Figure_R19_SEB_PCoA_SampleRemovalComparison/FigureSXX-PhILR_PCoA_malt_euclidean_genus_withSources_withControls_badsamplesout_withinvariation_0.07_20190527_ntrefseq_axis1axis2axis3axis4_SampleRemovalComparison_combined.png)
 
 **Figure R19 | Validation of low-preservation sample removal with Principal Coordinate Analysis.** Visual inspection shows low preservation samples typically fall in compositional ranges of laboratory control or comparative source. PhILR transformed OTU table ordinated by Principal Coordinate Analysis with sources and controls at genus level. Low abundant taxa removed if under 0.07% of overall alignments. a NCBI nt database axis 1 and 2 with low-preservation samples. b NCBI nt database axis 1 and 2 without low-preservation samples. c NCBI nt database axis 2 and 3 with low-preservation samples. d NCBI nt database axis 2 and 3 without low-preservation samples. e Custom NCBI RefSeq database axis 1 and 2 with low-preservation samples. f Custom NCBI RefSeq database axis 1 and 2 without low-preservation samples. g Custom NCBI RefSeq database axis 2 and 3 with low-preservation samples. h Custom NCBI RefSeq database axis 2 and 3 without low-preservation samples. In all cases, samples noted as having low preservation generally fall outside the range of well preserved calculus samples and likely consist of large fractions similar to that of environmental and/or laboratory metagenomic content. Grey symbols represent comparative sources.
 
@@ -1675,7 +1677,9 @@ Generation of phenotyping data was performed via
 using Inkscape, which was recorded in the file
 `00-documentation.backup/99-Heatmap_ManualBlockDescriptions_alltaxa_minsupportmultiplier4_minprevalence4_databasent_metadata.tsv`
 
-Figures can be seen in `04-analysis/screening/compositional_heatmaps.backup`
+Figures can be seen in `04-analysis/screening/compositional_heatmaps.backup`.
+
+**TODO**
 
 #### Zero replacement validation
 
@@ -1694,7 +1698,7 @@ structural changes. The output is saved as in the same directory at above.
 
 #### Indicator Analysis
 
-To confirm the species corresponding to the groups in the hierarhical clustering
+To confirm the species corresponding to the groups in the hierarchical clustering
 we ran Indicator Analysis to find species that are 'indicative' of certain 
 host genera combinations. This was performed with the R notebook 
 `02-scripts.backup/020-Indicator_analysis_20190808.Rmd`.
@@ -1710,13 +1714,21 @@ and the results are saved in `04-analysis/screening/indicspecies.backup`.
 ### Clustering by Diet?
 
 To revisit the question and results posed by Weyrich et al (2017) _Nature_ 
-regarding clustering of the calculus microbiomes individuals by subsistance 
+regarding clustering of the calculus microbiomes individuals by subsistence 
 strategy, we performed PCoA, PERMANOVA, hierarchical clustering on Neanderthals 
 and ancient humans. This was performed in the notebook 
 `02-scripts.backup/017-PERMANOVA_HomoOnly_Dietary_20190916.Rmd` and 
 corresponding script version.
 
-The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`
+The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`.
+
+![PCoA of different human cultural lifestyles and regions](05-images/Figure_R21_SEE_Weyrich_DietaryPCoA_PhiLR/11-philr_pcoa_malt_euclidean_axis1axis2_populationVSregion_nt_genus_noSources_noControls_badsamplesout_withinvariation_0.01_20191003_EDIT.png)
+
+**Figure R21 | Principal coordinate analysis of different Homo calculus microbiomes, comparing different lifestyles and regions.** a we do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences, by prokaryotic OTUs at genus level, as originally reported by Weyrich et al. 6. b we do not observe a clear regional difference between microbiomes that may indicate preservational biases. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Low abundant taxa are removed if under 0.01% of overall alignments (‘min support’), and putative laboratory contaminants removed as per the decontam R package. 
+
+![Hierarchical cluster dendrogram of different human cultural lifestyles and regions](05-images/Figure_R22_SEF_Weyrich_DietaryHClust_PhiLR/04a-philr_pcoa_malt_euclidean_hclustwardD2_hostgroup_nt_genus_noSources_noControls_badsamplesout_withinvariation_0.01_20191003.png)
+
+**Figure R22 |  Hierarchical clustering of different Homo calculus microbiomes, comparing different lifestyles and regions.** We do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Clustering was performed with the average-linkage algorithm.  Low abundant taxa are removed if under 0.01% of overall alignments (‘min support’), and putative laboratory contaminants removed as per the decontam R package. 
 
 ### Core Microbiome Analysis
 
@@ -1732,6 +1744,10 @@ values), as shown in the R notebook
 notebook is also provided under 
 `02-scripts.backup/018-CoreMicrobiome_20190902_script.R`. 
 
+![Core microbiome calculation schematic](05-images/Figure_R23_SFG_SCoreMicrobiome_Schematic/SuppFig_SXX_CoreMicrobiomeSchematic.png)
+
+**Figure R23 | Schematic of parameters used for selecting taxa considered to be core to a host genus population and host genus population themselves.** Requiring half of individuals of a population (to be core to a population) allows for inter-individual biological variability and preservation variability. Requiring two-thirds of the populations of a host genus (to be core to a host genus), ensures a particular taxon is core in multiple populations or subspecies and is not unique to a single population (which may also reflect preservational or curational backgrounds). _Alouatta_ is exempt from the population level parameter due to the inclusion of only a single population.
+
 Once optimal parameters for prevalence and abundance were chosen by permutating
 population fractions and min support values respectively (minimising retention 
 of environment contaminants and retaining well characterised oral taxa as  
@@ -1745,6 +1761,10 @@ of results can be seen in
 and
 
 `00-documentation.backup/24-intersection_proktaxapassingthresholdstaxalist_20190211.tsv`
+
+![Minimum support value optimisation for core microbiome calculation](05-images/Figure_R24_SFA_CoreMicrobiome_Alluvial_Minsupport/99-coremicrobiome_presenceabsence_alluival_minsupportcomparison_20190902.png)
+
+**Figure R24 | Alluvial diagram showing effects of increasing the minimum abundance threshold to the MALT OTU table-based core microbiome calculations. Increasing from 0.04% to 0.07% shows minimal changes in combination assignment.** Comparisons are between the nt (top) and RefSeq (bottom) databases, and at genus (left) and species (right) taxonomic levels. Stacked bars represent the number of taxa to each combination, and alluviums represent the assignment of a given taxon between each minimum support threshold. Plots created using the ggaluvial R package 273, with input data as MALT aligned and MEGAN exported OTU tables excluding putative laboratory contaminants, badly preserved samples, and taxa with minimum support values < 0.07% (genus level) and < 0.04% (species level).
 
 We additionally also checked the effect of removing the single individual 
 population in Gorillas with the script version of the core microbiome notebook,
@@ -1768,8 +1788,15 @@ done
 
 ```
 
+![Comparison of effect of removing single individual population on core microbiome calculations](05-images/Figure_R25_SFB_CoreMicrobiome_Alluvial_SinglePop/99-coremicrobiome_presenceabsence_alluival_singleindpopcomparison_20190902.png)
+
+**Figure R25 | Alluvial diagram showing effects of dropping and retaining a single-individual Gorilla population in core microbiome calculations at genus and species taxonomic levels.** Dropping the single-individual population results in minor combination assignments, mostly taxa being assigned to being core to the compositionally similar Alouatta combinations. Stacked bars represent the number of taxa to each combination, and alluviums represent the assignment of a given taxon between dataset. Plots created using the ggalluvial R package, with input as MALT NCBI nt aligned and MEGAN exported OTU tables with putative laboratory contaminants, badly preserved samples, and taxa with minimum support values < 0.07% (genus level) and < 0.04% (species level) removed.
+
 Individual visualisations and results for each parameter run can be seen in 
 `04-analysis/screening/presenceabsence_intersection.backup/`
+
+
+**We also obeserved MYCOBACTEIRUM**
 
 #### Core Microbiome MaltExtract
 
