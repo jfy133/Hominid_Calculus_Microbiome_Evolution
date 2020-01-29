@@ -56,21 +56,19 @@ GATK                    | 3.5                     | DePristo et al. 2011 Nat. Ge
 mapDamage               | 2.0.6                   | Jónsson et al. ‎2013 Bioinformatics
 DeDup                   | 0.12.1                  | Peltzer et al. 2016 Genome Bio
 MALT                    | 0.4.0                   | Herbig et al. 2016 bioRxiv, Vagene et al. 2018 Nat. Eco. Evo.
-MEGANCE                 | 6.12.0                  | Huson et al. 2016, PLoS Comp. Bio.
+MEGANCE                 | 6.12.0                  | Huson et al. 2016 PLoS Comp. Bio.
 FastP                   | 0.19.3                  | Chen et al. 2018 Bioinformatics
 Entrez Direct           | Jun 2016                | http://www.ncbi.nlm.nih.gov/books/NBK179288
 QIIME                   | 1.9.1                   | Caporaso et al. 2010 Nat. Methods.
 Sourcetracker           | 1.0.1                   | Knights et al. 2011 Nat. Methods.
 conda                   | 4.7.0                   | https://conda.io/projects/conda/en/latest/
 pigz                    | 2.3                     | https://zlib.net/pigz/
-MALT                    | 0.4.0                   | Herbig et al. 2016 bioRxiv, Vagene et al. 2018
-MEGANCE                 | 6.12.0                  | Huson et al. 2016
 R                       | 3.4.4                   | https://www.R-project.org/
-MaltExtract             | 1.5                     | https://github.com/rhuebler/HOPS
-MultiVCFAnalyzer        | 0.87                    | https://github.com/alexherbig/MultiVCFAnalyzer
+MaltExtract             | 1.5                     | Hübler et al. 2019 Genome Biology
+MultiVCFAnalyzer        | 0.87                    | Bos et al. 2014 Nature
 bedtools                | 2.25.0                  | Quinlan et al. 2010 Bioinformatics
 panX                    | 1.5.1                   | Ding et al. 2018 Nucleic Acids Research
-MetaPhlAn2              | 2.7.1                   | Truong et al. 2015
+MetaPhlAn2              | 2.7.1                   | Truong et al. 2015 Nat. Methods
 HuMANn2                 | 0.11.2                  | Franzosa et al. 2018 Nat. Methods.
 blastn                  | 2.7.1+                  | Package: blast 2.7.1, build Oct 18 2017 19:57:24
 seqtk                   | 1.2-r95-dirty           | https://github.com/lh3/seqtk
