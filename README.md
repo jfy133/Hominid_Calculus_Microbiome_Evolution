@@ -195,7 +195,7 @@ UniRef           | uniref90_ec_filtered_diamond | Oct. 2018     | https://bitbuc
 ### 2.4 Single Reference Genomes
 
 Species                                       | Strain      | Date           | Completeness | Type           | Source
-----------------------------------------------|-------------|----------------|--------------|----------------|-----------------------------------------------------
+----------------------------------------------|-------------|---------------:|--------------|----------------|-----------------------------------------------------
 _Homo sapiens_                                | HG19        | 2016-01-14     | Complete     | Reference      | http://hgdownload.cse.ucsc.edu/downloads.html#human
 _Actinomyces dentalis_                        | DSM 19115   | 2019-02-25     | Scaffold     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/429/225/GCF_000429225.1_ASM42922v1/
 _Campylobacter gracilis_                      | -           | 2019-05-22     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/
@@ -1214,7 +1214,7 @@ comparison between the two MALT databases can be seen in
 
 ![MALT human samples database comparison](05-images/Figure_R05_SBC_MALTAssignment_ModernHumanCalculusPlaqueOnlyComparison/SupFigX_MALTAssignments_CalculusPlaqueOnly_comparison_20191028_EDIT.png)
 
-**Figure R5 | Comparison of mean percent of taxonomically assigned reads to different groups of humans, when aligning between the NCBI nt (2017) and a custom NCBI RefSeq (2018) database using MALT.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
+**Figure R5 | Comparison of mean percent of taxonomically assigned reads to different groups of humans, when aligning between the NCBI nt (2017) and a custom NCBI RefSeq (2018) database using MALT.** Ancient sample groups are 'pre-agricultural' and 'pre-antibiotic' humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
 
 ![MALT Eukaryotic to Prokaryotic Assigned Reads Comparison](05-images/Figure_R06_SBD_MALTAssignment_all_eukaryoticNoneukaryoticRatio/SupFigX_MALTAssignments_all_eukaryoticNoneukaryoticRatio_20191028_EDIT.png)
 
@@ -1222,7 +1222,7 @@ comparison between the two MALT databases can be seen in
 
 ![MALT Eukaryotic to Prokaryotic Assigned Reads Comparison Humans Only](05-images/Figure_R07_SBE_MALTAssignment_ModernHumanCalculusPlaqueOnlyComarpsion_EukaryoticNonEukatyoticRatio/SupFigX_MALTAssignments_CalculusPlaqueOnly_eukaryoticNoneukaryoticRatio_20191028.png)
 
-**Figure R7 | Comparison of ratios of alignments to Bacterial/Archaeal/Viral reference sequences vs. Eukaryotic reference sequences between different groups of humans.** Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT. Y-axis is log10 scaled. Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to calculus host genus. Colours correspond to calculus host genus. Orange: _Homo_; Grey: non-calculus.
+**Figure R7 | Comparison of ratios of alignments to Bacterial/Archaeal/Viral reference sequences vs. Eukaryotic reference sequences between different groups of humans.** Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT. Y-axis is log10 scaled. Ancient sample groups are 'pre-agricultural' and 'pre-antibiotic' humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to calculus host genus. Colours correspond to calculus host genus. Orange: _Homo_; Grey: non-calculus.
 
 ## 8 Preservation Screening
 
@@ -1249,11 +1249,49 @@ These are saved in `04-analysis/screening/cumulative_decay.backup`
 
 ![Schematic of how Cumulative Percentage Decay Plots Work](05-images/Figure_R08_SCE_CumulativeDecay_Schematic/CumulativeDecay_Schematic.png)
 
-**Figure R8 | Schematic diagram of a cumulative percent decay method of preservation assessment.** **a** example curves of a theoretical sample consisting of purely oral taxa (top left), and a theoretical sample containing no oral taxa (top right). For the archaeological samples, a well-preserved sample (bottom left) will consist mostly of oral taxa but may include uncharacterised or contaminant taxa leading to a nonlinear relationship, but remaining above an oral taxon fraction percent of 50% (as identified in modern plaque samples). An archaeological sample (bottom right) with no endogenous oral content will have few oral taxa, and may have occasional modern contaminants resulting in a nonlinear relationship. **b** a representation of the method for calculating the rank from which to begin assessing whether a sample decay curve goes above the ‘well-preserved’ fraction threshold, accounting for high variation in mixed preservation samples with both oral and non-oral/uncharacterised taxa at higher ranks. Given the large differences between the initial ranks due to small denominators, a 'burn-in' like procedure is applied. The rank at which the difference change between each subsequent rank does not exceed the standard deviation of all rank differences, is set as the rank from which, it is assessed whether the sample curve exceeds the preservation threshold (here 50% for the NCB nt OTU table). A curve that does not exceed this threshold at any point from this rank onwards, is considered not to have sufficient preservation for downstream analysis.
+**Figure R8 | Schematic diagram of a cumulative percent decay method of preservation assessment.** **a** example curves of a theoretical sample consisting of purely oral taxa (top left), and a theoretical sample containing no oral taxa (top right). For the archaeological samples, a well-preserved sample (bottom left) will consist mostly of oral taxa but may include uncharacterised or contaminant taxa leading to a nonlinear relationship, but remaining above an oral taxon fraction percent of 50% (as identified in modern plaque samples). An archaeological sample (bottom right) with no endogenous oral content will have few oral taxa, and may have occasional modern contaminants resulting in a nonlinear relationship. **b** a representation of the method for calculating the rank from which to begin assessing whether a sample decay curve goes above the 'well-preserved' fraction threshold, accounting for high variation in mixed preservation samples with both oral and non-oral/uncharacterised taxa at higher ranks. Given the large differences between the initial ranks due to small denominators, a 'burn-in' like procedure is applied. The rank at which the difference change between each subsequent rank does not exceed the standard deviation of all rank differences, is set as the rank from which, it is assessed whether the sample curve exceeds the preservation threshold (here 50% for the NCB nt OTU table). A curve that does not exceed this threshold at any point from this rank onwards, is considered not to have sufficient preservation for downstream analysis.
 
 ![Cumulative Percentage Decay Plots for calculus and comparative sources](05-images/Figure_R09_SCA_CumulativePercentageDecayPlots/SuppFigSX_CumulativePercentDecay_ntRefseqCombined_titlesfixed_EDIT.png)
 
 **Figure R9 | Cumulative percent decay plots of fraction of oral taxa across taxa ordered by abundance rank.** Taxonomic assignment against the: **a** NCBI nt database, and **b** a custom NCBI RefSeq database showing a large number of calculus samples displayed greater levels of preservation (blue), and although a smaller number do not pass the estimated preservation threshold (red). Plots are limited to 250 rank positions (x-axis) for visualization purposes. Thresholds are selected based on observations that all sources and controls do not increase about 50% (nt) and 65% (RefSeq) of fraction of oral taxon. Point at which the per-sample threshold is considered is based on when the fluctuation of the fraction of oral taxa (i.e. fraction difference between a taxon and next abundant taxon) does not exceed the standard deviation of all differences of the rank.
+
+**Table R1 | Summary of sample counts passing preservation thresholds as implemented in the cumulative percent decay method.** Preservation was assessed using the cumulative percent decay method with the fluctuation burn-in threshold based on the MALT OTU tables.
+
+| Database | Host Group           | Passed | Failed | Total Samples (n) | Passed (%) |
+|----------|----------------------|-------:|-------:|------------------:|-----------:|
+| nt       | Howler               | 5      | 0      | 5                 | 100        |
+| nt       | Gorilla              | 14     | 15     | 29                | 48.28      |
+| nt       | Chimp                | 16     | 5      | 21                | 76.19      |
+| nt       | Neanderthal          | 7      | 10     | 17                | 41.18      |
+| nt       | PreagriculturalHuman | 16     | 4      | 20                | 80         |
+| nt       | PreantibioticHuman   | 13     | 1      | 14                | 92.86      |
+| nt       | ModernDayHuman       | 18     | 0      | 18                | 100        |
+| refseq   | Howler               | 5      | 0      | 5                 | 100        |
+| refseq   | Gorilla              | 12     | 17     | 29                | 41.38      |
+| refseq   | Chimp                | 11     | 10     | 21                | 52.38      |
+| refseq   | Neanderthal          | 7      | 10     | 17                | 41.18      |
+| refseq   | PreagriculturalHuman | 11     | 9      | 20                | 55         |
+| refseq   | PreantibioticHuman   | 13     | 1      | 14                | 92.86      |
+| refseq   | ModernDayHuman       | 18     | 0      | 18                | 100        |
+
+**Table R2 | Comparison of number of individuals with supported good- or low- preservation assignment between the nt and custom RefSeq database.** Preservation was assessed using the cumulative percent decay method with the fluctuation burn-in threshold based on the MALT OTU tables.
+
+| Population             | Total Individuals in Population | Individuals with Matching Preservation Assignment | Individuals not Matching Preservation Assignment |
+|------------------------|--------------------------------:|--------------------------------------------------:|-------------------------------------------------:|
+| Chimp_2                | 7                               | 6                                                 | 1                                                |
+| Chimp_3                | 6                               | 4                                                 | 2                                                |
+| Chimp_4                | 1                               | 1                                                 | 0                                                |
+| Gorilla_1              | 15                              | 13                                                | 2                                                |
+| Gorilla_2              | 8                               | 7                                                 | 1                                                |
+| Gorilla_3              | 6                               | 5                                                 | 1                                                |
+| Howler_Monkey          | 5                               | 5                                                 | 0                                                |
+| ModernDayHuman_1       | 10                              | 10                                                | 0                                                |
+| ModernDayHuman_2       | 8                               | 8                                                 | 0                                                |
+| Neanderthal            | 17                              | 15                                                | 2                                                |
+| PreagriculturalHuman_1 | 10                              | 8                                                 | 2                                                |
+| PreagriculturalHuman_2 | 10                              | 7                                                 | 3                                                |
+| PreantibioticHuman_1   | 10                              | 10                                                | 0                                                |
+| PreantibioticHuman_2   | 4                               | 4                                                 | 0                                                |
 
 ### 8.2 Source Estimation
 
@@ -1323,7 +1361,7 @@ seen under `02-scripts.backup/099-16sResults.Rmd`
 
 ![Distributions of 16S reads mapped across human calculus and plaque](05-images/Figure_R11_SBG_16sMapping_ModernHumanCalculusPlaqueOnlyComparison/SupFigX_16sMapping_ModernHumanCalculusPlaque_comparison_20191028.png)
 
-**Figure R11 | Distributions of percentages of 16S rRNA mapping reads extracted out of all non-human reads libraries across human calculus and plaque samples by mapping to the SILVA database.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
+**Figure R11 | Distributions of percentages of 16S rRNA mapping reads extracted out of all non-human reads libraries across human calculus and plaque samples by mapping to the SILVA database.** Ancient sample groups are 'pre-agricultural' and 'pre-antibiotic' humans and are taken from skeletal remains, whereas Modern Day Human calculus and HMP plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
 
 #### 8.2.2 16S Clustering
 
@@ -1358,6 +1396,18 @@ done
 For OTU clustering itself we need to define some parameter that have 
 been adapted for shotgun data by LMAMR in Oklahoma, in a file named 
 `02-scripts.backup/010-params_CrefOTUpick.txt` 
+
+The parameters in this file are as in Table R3
+
+**Table R3 | Non-default parameters used for QIIME closed-reference clustering.**
+
+| Parameter                         | Value |
+|-----------------------------------|------:|
+| pick_otus:max_accepts             | 100   |
+| pick_otus:max_rejects             | 500   |
+| pick_otus:word_length             | 12    |
+| pick_otus:stepwords               | 20    |
+| pick_otus:enable_rev_strand_match | TRUE  |
 
 To actually run the clustering analysis and generate our OTU table we need to 
 do the following. 
@@ -1464,7 +1514,7 @@ seen under `02-scripts.backup/099-16sResults.Rmd`.
 
 ![Distributions of 16S based OTUs identifications across human calculus and plaque](05-images/Figure_R13_SBI_16sClustering_ModernHumanCalculusPlaqueOnlyComparison/SupFigX_16sClustering_ModernHumanCalculusPlaque_comparison_20191028.png)
 
-**Figure R13 | Distributions of the number of OTUs identified after closed-reference clustering of 16S rRNA read sequences at 97% sequence similarity in QIIME across human calculus and plaque samples.** Ancient sample groups are ‘pre-agricultural’ and ‘pre-antibiotic’ humans and are taken from skeletal remains, whereas Modern Day Human calculus and plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
+**Figure R13 | Distributions of the number of OTUs identified after closed-reference clustering of 16S rRNA read sequences at 97% sequence similarity in QIIME across human calculus and plaque samples.** Ancient sample groups are 'pre-agricultural' and 'pre-antibiotic' humans and are taken from skeletal remains, whereas Modern Day Human calculus and plaque samples come from living individuals. Colours correspond to sample type. Orange: _Homo_ calculus; Grey: non-calculus. 
 
 #### 8.2.3 Sourcetracker
 
@@ -1542,7 +1592,7 @@ DamageProfiler results were collated and visualised in the R script
 
 ![Example DamageProfiler plots](05-images/Figure_R17_SCD_ExampleDamagePatterns/Damage_Only_EDIT.png)
 
-**Figure R17 | Frequency of C to T miscorporations along 5’ ends of DNA reads compared to references of four representative human oral-specific species as calculated by DamageProfiler.** Neanderthal and Upper Palaeolithic individuals show damage patterns indicative of authentic aDNA, whereas a modern day individual does not.
+**Figure R17 | Frequency of C to T miscorporations along 5' ends of DNA reads compared to references of four representative human oral-specific species as calculated by DamageProfiler.** Neanderthal and Upper Palaeolithic individuals show damage patterns indicative of authentic aDNA, whereas a modern day individual does not.
 
 The collated results for the whole screening dataset are stored in the file 
 `00-documentation.backup/14-damageprofiler_screening_3p_5p_summaries_20191113.csv`.
@@ -1559,7 +1609,18 @@ main metadata file
 `02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`.
 
 We then run Decontam following the Decontam tutorial vignette on CRAN in the 
-script, and also described here `015-decontam_contamination_detection_analysis.Rmd`
+script, and also described here `015-decontam_contamination_detection_analysis.Rmd`.
+
+**Table R4 | Summary of OTUs detected across each shotgun taxonomic binner/classifier and databases as potential contaminants by the R package decontam.** MetaPhlAn2 was run for functional analysis [below](#metaphlan2). While MetaPhlAn2 was run as reference but wasn't utilised, the contaminants were not removed downstream due to unknown effects of removing these for [HUMANn2](#humann2).
+
+| Binning Method | Database   | Taxonomic Level | Total OTUs Detected (n) | Contaminants Detected (n) | Contaminants Detected (%) |
+|----------------|------------|-----------------|-------------------------|---------------------------|---------------------------|
+| megan          | nt         | genus           | 1392                    | 651                       | 46.77                     |
+| megan          | nt         | species         | 3401                    | 1557                      | 45.78                     |
+| megan          | refseq     | genus           | 1241                    | 630                       | 50.77                     |
+| megan          | refseq     | species         | 5195                    | 2183                      | 42.02                     |
+| metaphlan2     | metaphlan2 | genus           | 675                     | 121                       | 17.93                     |
+| metaphlan2     | metaphlan2 | species         | 1626                    | 310                       | 19.07                     |
 
 ## 9 Compositional Analysis
 
@@ -1649,7 +1710,60 @@ More specific comparisons of different parameters can be seen in Figures R18-20.
 
 ![Final genus-level PCoA for nt and RefSeq databases](05-images/Figure_R20_SEC_PCoA_HostGenus_Clustering/FigureSXX-PhILR_PCoA_HostGenusClustering_ntrefseq_0_07_genus_withinvaration_badsamplesout_COMBINED.png)
 
-**Figure R20 | Principal Coordinate Analysis of well-preserved calculus microbiomes at prokaryotic genus taxonomic level by host genus.** Visual inspection shows distinct centroids of each host genus, albeit with overlap with others. Input is PhILR transformed OTU tables without sources and controls and low preservation samples removed. Low abundant taxa removed if under 0.07% of overall alignments (‘min. support’). **a** NCBI nt database axis 1 and 2, **b** NCBI nt database axis 2 and 3, **c** Custom NCBI RefSeq database axis 1 and 2, and **d** Custom NCBI RefSeq database axis 2 and 3.
+**Figure R20 | Principal Coordinate Analysis of well-preserved calculus microbiomes at prokaryotic genus taxonomic level by host genus.** Visual inspection shows distinct centroids of each host genus, albeit with overlap with others. Input is PhILR transformed OTU tables without sources and controls and low preservation samples removed. Low abundant taxa removed if under 0.07% of overall alignments ('min. support'). **a** NCBI nt database axis 1 and 2, **b** NCBI nt database axis 2 and 3, **c** Custom NCBI RefSeq database axis 1 and 2, and **d** Custom NCBI RefSeq database axis 2 and 3.
+
+Output from the PERMANOVA related analysis can be seen in Tables R5-7
+
+**Table R5 | Result of PERMANOVA comparing host genera at genus and species level with NCBI nt and custom NCBI RefSeq databases.** Calculus microbiomes composition of _Gorilla_, _Pan_ and _Homo_ are distinct at all taxonomic and database combinations. _Alouatta_ has been removed due to small sample size. Results of PERMANOVA as implemented in the `adonis()` function in the R package vegan and applied to euclidean distances of filtered and PhILR-transformed MALT alignment OTU tables. Putative laboratory contaminants and badly-preserved samples have been removed. Test statistic is 'pseudo-F'.
+
+| Database | Taxonomic Level | Min Support | Test   | Term       | Degrees of Freedom | Sum of Squares | Mean of Squares | Test Statistic | R Squared | p value |
+|----------|-----------------|------------:|--------|------------|-------------------:|---------------:|----------------:|---------------:|----------:|--------:|
+| nt       | genus           | 0.07        | adonis | ind_groups | 3                  | 6067420        | 2022473         | 3.3775         | 0.10651   | 0.002   |
+| nt       | genus           | 0.07        | adonis | Residuals  | 85                 | 50899238       | 598815          | 0.89349        | NA        | NA      |
+| nt       | genus           | 0.07        | adonis | Total      | 88                 | 56966658       | 1               | NA             | NA        | NA      |
+| nt       | species         | 0.04        | adonis | ind_groups | 3                  | 6659045        | 2219682         | 4.4985         | 0.13702   | 0.001   |
+| nt       | species         | 0.04        | adonis | Residuals  | 85                 | 41940880       | 493422          | 0.86298        | NA        | NA      |
+| nt       | species         | 0.04        | adonis | Total      | 88                 | 48599925       | 1               | NA             | NA        | NA      |
+| refseq   | genus           | 0.07        | adonis | ind_groups | 3                  | 7553528        | 2517843         | 2.5456         | 0.09471   | 0.005   |
+| refseq   | genus           | 0.07        | adonis | Residuals  | 73                 | 72204707       | 989106          | 0.90529        | NA        | NA      |
+| refseq   | genus           | 0.07        | adonis | Total      | 76                 | 79758235       | 1               | NA             | NA        | NA      |
+| refseq   | species         | 0.04        | adonis | ind_groups | 3                  | 6434342        | 2144781         | 2.6265         | 0.09742   | 0.007   |
+| refseq   | species         | 0.04        | adonis | Residuals  | 73                 | 59610720       | 816585          | 0.90258        | NA        | NA      |
+| refseq   | species         | 0.04        | adonis | Total      | 76                 | 66045062       | 1               | NA             | NA        | NA      |
+
+**Table R6 | Results of permutation tests at both genus species levels, and with NCBI nt and custom NCBI RefSeq databases.** Beta dispersion of samples from the centroid is likely heterogeneous between each host genus, as calculated by the `permutest()` function in the R package vegan. Input is euclidean distances of filtered and PhILR-transformed MALT alignment OTU tables. Putative laboratory contaminants and badly-preserved samples have been removed. Test statistic is 'pseudo-F'.
+
+| Database | Taxonomic Level | Min Support | Test      | Term      | Degrees of Freedom | Sum of Squares | Mean of Squares | Test Statistic | No. Permutations (permutest) | p value |
+|----------|-----------------|------------:|-----------|-----------|-------------------:|---------------:|----------------:|---------------:|-----------------------------:|--------:|
+| nt       | genus           | 0.07        | permutest | Groups    | 3                  | 1066682        | 355561          | 3.3092         | 999                          | 0.024   |
+| nt       | genus           | 0.07        | permutest | Residuals | 85                 | 9132865        | 107445          | NA             | NA                           | NA      |
+| nt       | species         | 0.04        | permutest | Groups    | 3                  | 586810         | 195603          | 2.4151         | 999                          | 0.079   |
+| nt       | species         | 0.04        | permutest | Residuals | 85                 | 6884242        | 80991           | NA             | NA                           | NA      |
+| refseq   | genus           | 0.07        | permutest | Groups    | 3                  | 1325633        | 441878          | 3.0401         | 999                          | 0.039   |
+| refseq   | genus           | 0.07        | permutest | Residuals | 73                 | 10610446       | 145349          | NA             | NA                           | NA      |
+| refseq   | species         | 0.04        | permutest | Groups    | 3                  | 538881         | 179627          | 1.632          | 999                          | 0.186   |
+| refseq   | species         | 0.04        | permutest | Residuals | 73                 | 8034883        | 110067          | NA             | NA                           | NA      |
+
+**Table R7 | Summary statistics of 100 runs of a bootstrapped PERMANOVA for each of genus and species, taxonomic levels and with NCBI nt and custom RefSeq Databases.** Bootstrapping was performed on _Gorilla_, _Pan_ and _Homo_ groups only, with each run having sub-sampled each genus to 10 individuals to have equal sample size. Input data is pseudo-count and PhILR transformed MALT OTU tables, with putative laboratory contaminants and badly preserved samples removed.
+
+| Database | Taxonomic Level | Min Support | Test   | Statistic         | Mean  | Standard Deviation |
+|----------|-----------------|------------:|--------|-------------------|------:|-------------------:|
+| nt       | genus           | 0.07        | Adonis | p                 | 0.001 | 0.001              |
+| nt       | genus           | 0.07        | Adonis | pseudo-F          | 5.228 | 1.428              |
+| nt       | genus           | 0.07        | Adonis | RsquaredGroups    | 0.275 | 0.053              |
+| nt       | genus           | 0.07        | Adonis | RsquaredResiduals | 0.725 | 0.053              |
+| nt       | species         | 0.04        | Adonis | p                 | 0.001 | 0.001              |
+| nt       | species         | 0.04        | Adonis | pseudo-F          | 6.678 | 2.525              |
+| nt       | species         | 0.04        | Adonis | RsquaredGroups    | 0.322 | 0.075              |
+| nt       | species         | 0.04        | Adonis | RsquaredResiduals | 0.678 | 0.075              |
+| refseq   | genus           | 0.07        | Adonis | p                 | 0.001 | 0.000              |
+| refseq   | genus           | 0.07        | Adonis | pseudo-F          | 6.501 | 1.648              |
+| refseq   | genus           | 0.07        | Adonis | RsquaredGroups    | 0.321 | 0.054              |
+| refseq   | genus           | 0.07        | Adonis | RsquaredResiduals | 0.679 | 0.054              |
+| refseq   | species         | 0.04        | Adonis | p                 | 0.001 | 0.000              |
+| refseq   | species         | 0.04        | Adonis | pseudo-F          | 6.886 | 1.947              |
+| refseq   | species         | 0.04        | Adonis | RsquaredGroups    | 0.332 | 0.059              |
+| refseq   | species         | 0.04        | Adonis | RsquaredResiduals | 0.668 | 0.059              |
 
 ### 9.2 Hierarchical Clustering Heatmaps
 
@@ -1669,7 +1783,7 @@ The script allows filtering as above (database, taxonomic levels, with/without
 sources, with/without controls, with/without bad samples (+ bad sample removal
 method option)) and also additional taxon filtering, zero-replacement method,
 additional min. support filtering and a prevalence filter (i.e. a taxon is
-only kept if it is in _n_ number of indiviudals across the dataset)
+only kept if it is in _n_ number of individuals across the dataset)
 
 We look for the parameters with the best overall bootstrap support 
 in the deepest nodes (i.e. the ones we are most interested in - splits between
@@ -1739,11 +1853,11 @@ The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`.
 
 ![PCoA of different human cultural lifestyles and regions](05-images/Figure_R21_SEE_Weyrich_DietaryPCoA_PhiLR/11-philr_pcoa_malt_euclidean_axis1axis2_populationVSregion_nt_genus_noSources_noControls_badsamplesout_withinvariation_0.01_20191003_EDIT.png)
 
-**Figure R21 | Principal coordinate analysis of different Homo calculus microbiomes, comparing different lifestyles and regions.** a we do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences, by prokaryotic OTUs at genus level, as originally reported by Weyrich et al. 6. b we do not observe a clear regional difference between microbiomes that may indicate preservational biases. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Low abundant taxa are removed if under 0.01% of overall alignments (‘min. support’), and putative laboratory contaminants removed as per the decontam R package. 
+**Figure R21 | Principal coordinate analysis of different Homo calculus microbiomes, comparing different lifestyles and regions.** a we do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences, by prokaryotic OTUs at genus level, as originally reported by Weyrich et al. 6. b we do not observe a clear regional difference between microbiomes that may indicate preservational biases. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Low abundant taxa are removed if under 0.01% of overall alignments ('min. support'), and putative laboratory contaminants removed as per the decontam R package. 
 
 ![Hierarchical cluster dendrogram of different human cultural lifestyles and regions](05-images/Figure_R22_SEF_Weyrich_DietaryHClust_PhiLR/04a-philr_pcoa_malt_euclidean_hclustwardD2_hostgroup_nt_genus_noSources_noControls_badsamplesout_withinvariation_0.01_20191003.png)
 
-**Figure R22 |  Hierarchical clustering of different Homo calculus microbiomes, comparing different lifestyles and regions.** We do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Clustering was performed with the average-linkage algorithm.  Low abundant taxa are removed if under 0.01% of overall alignments (‘min. support’), and putative laboratory contaminants removed as per the decontam R package. 
+**Figure R22 |  Hierarchical clustering of different Homo calculus microbiomes, comparing different lifestyles and regions.** We do not observe clustering of calculus microbiomes of individuals from Homo by broad dietary differences. Input is a genus level PhILR transformed OTU table without sources and controls, and low preservation samples removed. Clustering was performed with the average-linkage algorithm.  Low abundant taxa are removed if under 0.01% of overall alignments ('min. support'), and putative laboratory contaminants removed as per the decontam R package. 
 
 ## 10 Core Microbiome Analysis
 
@@ -1818,7 +1932,7 @@ despite being a common soil contaminant. We investigated this further
 
 ![Distribution of Mycobacterium reads in MALT Nt database](05-images/Figure_R26_SFD_CoreMicrobiome_Mycobacterium/99-coremicrobiome_presenceabsene_mycobacterium_investigation_20190903.png)
 
-**Figure R26 | Alignment distribution and prevalence of Mycobacterium across well-preserved calculus microbiome samples in this study.** Approximate ‘abundance’ is consistent across calculus samples, however most prevalent taxa are likely well-known environmental taxa. a summary of alignments of well preserved samples and sources to _Mycobacterium_ species. b number of individuals that all _Mycobacterium_ species identified in the dataset are found in. Input is from MALT NCBI nt database OTU table at species level, excluding putative laboratory contaminants and badly preserved samples.
+**Figure R26 | Alignment distribution and prevalence of Mycobacterium across well-preserved calculus microbiome samples in this study.** Approximate 'abundance' is consistent across calculus samples, however most prevalent taxa are likely well-known environmental taxa. a summary of alignments of well preserved samples and sources to _Mycobacterium_ species. b number of individuals that all _Mycobacterium_ species identified in the dataset are found in. Input is from MALT NCBI nt database OTU table at species level, excluding putative laboratory contaminants and badly preserved samples.
 
 Finally, for each database and taxonomic level, we generated Upset plots 
 summarising the number of genera and species found in each core microbiome 
@@ -1826,7 +1940,7 @@ combination.
 
 ![Core microbiome Upset plots at genus and species level for Nt and RefSeq databases](05-images/Figure_R27_SFC_CoreMicrobiome_UpSetPlots/FigureSXX-CoreMicrobiome_UpSetR_combined.png)
 
-**Figure R27 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a ‘core’ microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
+**Figure R27 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a 'core' microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
 
 ### 10.2 Core Microbiome MaltExtract
 
@@ -2077,8 +2191,37 @@ _Streptococcus_            | Streptococcus_sanguinis_SK36
 _Tannerella_               | Tannerella_forsythia_92A2
 _Treponema_                | Treponema_socranskii_subsp_paredis_ATCC_35535
 
-> Output from the species selection can be seen in 
-> `04-analysis/deep/competitive_mapping.backup/species_selection`
+Output from the species selection can be seen in 
+`04-analysis/deep/competitive_mapping.backup/species_selection`. This is
+also summarised in Table R8.
+
+**Table R8 | Results of ‘automated’ super-reference species selection for downstream phylogenetic analysis.** Production dataset was mapped for each genus with EAGER to a combined reference of all species of the calculus microbiome core genome calculated above. Metrics were number of reads, breadth coverage, depth coverage, competitive mapping score, percentage of species reads over all genus reads. Species were then filtered those that had a number metrics that the species exceeded the genus mean plus standard deviation of the metric was more than 1. In cases of ties, either a named species or more complete genome reconstruction selected. In cases where unnamed species are the top candidate, either the next best taxon with an official name or where the isolation source was ‘oral cavity’ were selected.
+
+| Genus                     | Species                                                   | Metrics Passed | Selected |
+|---------------------------|----------------------------------------------  -----------|---------------:|----------|
+| _Actinomyces_             | _Actinomyces dentalis DSM 19115_                          | 5              | TRUE     |
+| _Campylobacter_           | _Campylobacter_ sp. AAUH-44UCsig-a                        | 3              | FALSE    |
+| _Campylobacter_           | _Campylobacter gracilis_                                  | 2              | TRUE     |
+| _Capnocytophaga_          | _Capnocytophaga gingivalis_ ATCC 33624                    | 5              | TRUE     |
+| _Corynebacterium_         | _Corynebacterium matruchotii_ ATCC 14266                  | 4              | TRUE     |
+| _Corynebacterium_         | _Corynebacterium_ sp.                                     | 3              | FALSE    |
+| _Corynebacterium_         | _Corynebacterium durum_ F0235                             | 2              | FALSE    |
+| _Fretibacterium_          | _Fretibacterium fastidiosum_                              | 4              | TRUE     |
+| _Fusobacterium_           | _Fusobacterium hwasookii_ ChDC F206                       | 2              | TRUE     |
+| _Olsenella_               | _Olsenella_ sp. oral taxon 807                            | 5              | TRUE     |
+| _Ottowia_                 | _Ottowia_ sp. Marseille-P4747                             | 4              | FALSE    |
+| _Ottowia_                 | _Ottowia_ sp. oral taxon 894                              | 3              | TRUE     |
+| _Porphyromonas_           | _Porphyromonas gingivalis_ ATCC 33277                     | 4              | TRUE     |
+| _Prevotella_              | _Prevotella loescheii_ DSM 19665 = JCM 12249 = ATCC 15930 | 2              | TRUE     |
+| _Prevotella_              | _Prevotella_ sp. oral taxon 472 str F0295                 | 2              | FALSE    |
+| _Prevotella_              | _Prevotella_ sp. S7 MS 2                                  | 2              | FALSE    |
+| _Pseudopropionibacterium_ | _Pseudopropionibacterium propionicum_ F0230a              | 4              | TRUE     |
+| _Selenomonas_             | _Selenomonas_ sp. F0473                                   | 2              | TRUE     |
+| _Selenomonas_             | _Selenomonas_ sp. oral taxon 137 str F0430                | 2              | FALSE    |
+| _Streptococcus_           | _Streptococcus sanguinis_ SK36                            | 4              | TRUE     |
+| _Streptococcus_           | _Streptococcus_ sp. AS14                                  | 4              | FALSE    |
+| _Tannerella_              | _Tannerella forsythia_ 92A2                               | 5              | TRUE     |
+| _Treponema_               | _Treponema socranskii_ subsp. _paredis_ ATCC 35535        | 5              | TRUE     |
 
 The reference genomes of the selected taxa can be copied from the 
 [super-reference downloaded files](#super-reference-construction), 
@@ -2173,7 +2316,7 @@ increase the number of semi-confident SNP positions.
 
 ![Major allele fraction selection for genotyping of single-genome mappings](05-images/Figure_R29_SGB_AlleleFrequencySelection/singlereferencemapping_SNPcallingthreshold_selection_20190913.png)
 
-**Figure R29 | Distributions of majority allele (i.e. >50%) frequency of multi-allelic SNPs for each genus, across all production dataset calculus mappings to single genomes of representative core microbial taxa.** All mappings but _Actinomyces_ (reference: _Actinomyces dentalis_ DSM 19115) show that the most common highest frequency multi-allelic SNP bin is 70%. Calculated by selecting for each single-genome mapping the highest frequency multi-allelic SNP bin, from the ‘SNP Table’ of MultiVCFAnalyzer with a ‘homozygous’ threshold of 0.9, and ‘heterozygous’ threshold of 0.1 and minimum coverage threshold of 2.
+**Figure R29 | Distributions of majority allele (i.e. >50%) frequency of multi-allelic SNPs for each genus, across all production dataset calculus mappings to single genomes of representative core microbial taxa.** All mappings but _Actinomyces_ (reference: _Actinomyces dentalis_ DSM 19115) show that the most common highest frequency multi-allelic SNP bin is 70%. Calculated by selecting for each single-genome mapping the highest frequency multi-allelic SNP bin, from the 'SNP Table' of MultiVCFAnalyzer with a 'homozygous' threshold of 0.9, and 'heterozygous' threshold of 0.1 and minimum coverage threshold of 2.
 
 Aggregation of this across all mappings can be seen in 
 `04-analysis/deep/competitive_mapping.backup/multiallelic_snps/`.
@@ -2245,7 +2388,7 @@ phylogeny for each of the taxa under `04-analysis/deep/phylogenies/plots`.
 ![Production dataset core microbiome representative species NJ trees 1-4](05-images/Figure_R30_SGF_ProductionPhylogenies/Phylogenies_Production_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_1.png)
 ![Production dataset core microbiome representative species NJ trees 5-8](05-images/Figure_R30_SGF_ProductionPhylogenies/Phylogenies_Production_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_2.png)
 
-**Figure R30 | Neighbour joining trees of eight well-supported calculus core taxa trees from single representative mappings of the production dataset.** Trees generally show microbial strains clustering of individuals to those of the same host genus, and pre-14k BP European individuals consistently display a distinct clade from post-14k BP European individuals. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Trees were selected as ‘well-supported’ if nodes resulting in expected host genus bifurcations equalled or exceeded 70%. Note that titles refer to the representative genome of the selected species used for the reference genome, and the alignments are mixtures of strains/species as indicated by high levels of multi-allelic sites. Grey boxes indicate European ‘pre-14k BP’ of the Red Lady of El Mirón and Neanderthals.
+**Figure R30 | Neighbour joining trees of eight well-supported calculus core taxa trees from single representative mappings of the production dataset.** Trees generally show microbial strains clustering of individuals to those of the same host genus, and pre-14k BP European individuals consistently display a distinct clade from post-14k BP European individuals. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Trees were selected as 'well-supported' if nodes resulting in expected host genus bifurcations equalled or exceeded 70%. Note that titles refer to the representative genome of the selected species used for the reference genome, and the alignments are mixtures of strains/species as indicated by high levels of multi-allelic sites. Grey boxes indicate European 'pre-14k BP' of the Red Lady of El Mirón and Neanderthals.
 
 Comparison of the median fold depth of all mappings of a host genus, and
 the pairwise number of overlapping bases between each sample can be seen in 
@@ -2255,7 +2398,7 @@ the pairwise number of overlapping bases between each sample can be seen in
 
 ![Comparison of number of positions shared and fold depth coverage between sample-pairwise combinations](05-images/Figure_R31_SGD_PhylogeniesOverlappingNucleotides/FigureSX_meanfoldcoverage_distributions_allcalculussamples_noblanks.png)
 
-**Figure R31 | Relationship between number of positions shared, and fold depth coverage between pairwise combinations of individuals, from the production dataset mapped to representative core taxa. Higher coverage taxa generally display greater numbers of shared positions.** Shared number of bases was calculated from the MultiVCFAnalyzer ‘SNP alignment’ FASTA file, with alignments containing less than 1000 bases removed. Order of microbial taxa and fill colour based on the genus median of average fold coverages average across all mappings in that genus as reported by EAGER. Boxplots present 25%, 50%, 75% of data, Dots represent outliers as calculated by the geom_histogram() function of ggplot. X axis is log scaled.
+**Figure R31 | Relationship between number of positions shared, and fold depth coverage between pairwise combinations of individuals, from the production dataset mapped to representative core taxa. Higher coverage taxa generally display greater numbers of shared positions.** Shared number of bases was calculated from the MultiVCFAnalyzer 'SNP alignment' FASTA file, with alignments containing less than 1000 bases removed. Order of microbial taxa and fill colour based on the genus median of average fold coverages average across all mappings in that genus as reported by EAGER. Boxplots present 25%, 50%, 75% of data, Dots represent outliers as calculated by the geom_histogram() function of ggplot. X axis is log scaled.
 
 ### 11.8 Pre- and Post-14k BP Observation Verification
 
@@ -2354,7 +2497,7 @@ figures can be seen under `04-analysis/screening/EMN_Neanderthal_phylogeny_check
 ![Screening dataset core microbiome representative species NJ trees 1-4](05-images/Figure_R33_SGG_ScreeningPhylogenies/Phylogenies_Screening_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_1.png)
 ![Screening dataset core microbiome representative species NJ trees 5-8](05-images/Figure_R33_SGG_ScreeningPhylogenies/Phylogenies_Screening_NJ_pairwiseDel_representativemapping_minfrac0.7_combined_2.png)
 
-**Figure R33 | Replication of production dataset phylogenies with low-coverage and damage-containing screening dataset with additional European individuals.** The observed pattern of pre-14k BP Europeans and post-14k BP humans clustering separately in the production dataset phylogenies is replicated when including additional pre- and post-14k BP individuals when using screening dataset equivalents. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Grey boxes indicate European ‘pre-14k BP’ of the Red Lady of El Mirón and Neanderthals
+**Figure R33 | Replication of production dataset phylogenies with low-coverage and damage-containing screening dataset with additional European individuals.** The observed pattern of pre-14k BP Europeans and post-14k BP humans clustering separately in the production dataset phylogenies is replicated when including additional pre- and post-14k BP individuals when using screening dataset equivalents. Representative genomes were selected based on abundance and prevalence across all individuals in production dataset. SNPs were called using MultiVCFAnalyzer with a minimum coverage threshold of 2, and the majority allele threshold of 0.7. Alignments with <1000 called SNPs were removed. Genetic distance calculated using the ape R package, with the Jukes-Cantor 69 model and pairwise deletion strategy for missing data. Bootstraps are out of 100 bootstraps. Grey boxes indicate European 'pre-14k BP' of the Red Lady of El Mirón and Neanderthals
 
 ## 12 Functional Analysis
 
@@ -2385,11 +2528,11 @@ For the actual filtering and identification of presence/absence, we load the
 
 ![Number of genes passing breadth coverage thresholds for red complex production-data mappings](05-images/Figure_R34_SFE_VirulenceFactors_GeneFiltering/FigSX_VirulenceNormalisation_Breadth_GeneFilter.png)
 
-**Figure R34 | Distribution of (annotated) gene counts passing a breadth threshold of 70%, as calculated from the mappings of the production dataset to two ‘red complex’ bacteria reference genomes.** A clear cut off of ~500 genes can be seen, reflecting the separation between low-coverage and higher coverage genomes.
+**Figure R34 | Distribution of (annotated) gene counts passing a breadth threshold of 70%, as calculated from the mappings of the production dataset to two 'red complex' bacteria reference genomes.** A clear cut off of ~500 genes can be seen, reflecting the separation between low-coverage and higher coverage genomes.
 
 ![Virulence factor gene depth and breadth across production dataset](05-images/Figure_R35_SFF_VirulenceFactors_RatioPlot/FigSX_Virulence_AllAnnotatedGene_Virulence_Ratios.png)
 
-**Figure R35 | Heatmap of ratios (fill) of virulence gene depth coverage and gene completeness (size), in mappings of the production dataset to two ‘red complex’ bacteria reference genomes.** Virulence factors associated with oral disease are found prevalent across all host genera.
+**Figure R35 | Heatmap of ratios (fill) of virulence gene depth coverage and gene completeness (size), in mappings of the production dataset to two 'red complex' bacteria reference genomes.** Virulence factors associated with oral disease are found prevalent across all host genera.
 
 ### 12.2 Amylase
 
@@ -2596,7 +2739,7 @@ done > mp2_merged_readsmapped_table_all_"$(date +%Y%m%d)".txt
 
 Note that all of those files need to be -1 because the count includes a header.
 
-> Individual metaphlan2 files are not provided here due to redundency with
+> Individual MetaPhlAn2 files are not provided here due to redundancy with
 > combined file(s)
 
 Finally, some read statistics by applying the same 0.01% threshold used in MALT
