@@ -1241,7 +1241,7 @@ For the database, you can follow the steps as recorded in
 requires manual curation over time. This database is stored under
 `00-documentation` as `07-master_oralgenome_isolationsource_database.tsv`
 
-With these two things, the R notebook 
+With these OTU table and the database, the R notebook 
 `02-scripts.backup/014-cumulative_proportion_decay_curves.Rmd` shows you how to generate
 the visualisation.
 
@@ -1974,7 +1974,7 @@ The outcome of these filtering steps can be seen in the files
 files used for downloading ending with  "*filtered". This files were downloaded 
 as above with `wget` 
 
-> Pseudopropionibacterium is generated in a different manner due to recent clade
+> _Pseudopropionibacterium_ is generated in a different manner due to recent clade
 > renaming, but the desire to retain common skin taxa which now have new genus
 > names (see [Scholz and Kilian 2016](http://dx.doi.org/10.1099/ijsem.0.001367))
 
