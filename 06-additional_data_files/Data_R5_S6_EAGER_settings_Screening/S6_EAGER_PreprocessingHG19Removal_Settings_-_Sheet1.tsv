@@ -1,0 +1,39 @@
+Section	Parameter	Value	Variant Value	Variant Context
+Input FASTQs	Organism	Human	NA	NA
+	Age	Ancient	NA	NA
+	Treated Data	non-UDG	UDG	UDG treated data
+	Pairment	Paired End	Single End	Single end data/Pre-merged data
+	Input is already concatenated (skip merging)	FALSE	TRUE	Pre-merged data
+	Concatenate Lanewise together	FALSE	TRUE	Nextseq data
+Reference	Input	hg19.fasta	NA	NA
+	Name of mitochondrial chromosome	chrMT	NA	NA
+FastQC	Activated	TRUE	FALSE	Pre-merged data
+Adapter RM / Merging	Activated	TRUE	FALSE	Pre-merged data
+	Tool	AdapterRemoval	NA	NA
+	Forward Read Adapter	AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC	NA	NA
+	Reverse Read Adapter	AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA	NA	NA
+	Minimum Base Quality	20	NA	NA
+	Minimum Sequence Length	30	NA	NA
+	Minimum Adapter Overlap	1	NA	NA
+	Perform only adapter clipping	FALSE	NA	NA
+	Keep merged only	FALSE	NA	NA
+Quality Filtering	Activated	FALSE	NA	NA
+Mapping	Activated	TRUE	NA	NA
+	Program	bwa	NA	NA
+	BWA Seedlength (-l)	32	NA	NA
+	BWA Max # diff (-n)	0.01	NA	NA
+	BWA Qualityfilter (-q)	0	NA	NA
+	Filter unmapped	FALSE	NA	NA
+	Extract Mapped/Unmapped	TRUE	NA	NA
+Complexity Estimation	Activated	FALSE	NA	NA
+Remove Duplicates	Program	Dedup	NA	NA
+	Treat all reads as merged	TRUE	NA	NA
+PMD Tools	Activated	FALSE	NA	NA
+Contamination Estimation	Activated	FALSE	NA	NA
+Coverage / Statistics Calculation	Activated	TRUE	NA	NA
+Damage Calculation	Program	TRUE	NA	NA
+SNP Calling	Activated	FALSE	NA	NA
+SNP Filtering	Activated	FALSE	NA	NA
+VCF2Genome	Activated	FALSE	NA	NA
+Clean up	Activated	TRUE	NA	NA
+Create Report	Activated	TRUE	NA	NA

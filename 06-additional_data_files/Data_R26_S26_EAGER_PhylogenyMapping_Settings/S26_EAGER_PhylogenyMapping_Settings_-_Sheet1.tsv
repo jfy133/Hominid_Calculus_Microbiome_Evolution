@@ -1,0 +1,37 @@
+Section	Parameter	Value	Variant Value	Variant Context
+Input FASTQs	Organism	Bacteria	NA	NA
+	Age	Ancient	NA	NA
+	Treated Data	UDG	NA	NA
+	Pairment	Single End	NA	NA
+	Input is already concatenated (skip merging)	TRUE	NA	NA
+	Concatenate Lanewise together	FALSE	NA	NA
+Reference	Input	(Given genus)	NA	NA
+	Name of mitochondrial chromosome	NA	NA	NA
+FastQC	Activated	FALSE	NA	NA
+Adapter RM / Merging	Activated	FALSE	NA	NA
+Quality Filtering	Activated	FALSE	NA	NA
+Mapping	Activated	TRUE	NA	NA
+	Program	bwa	NA	NA
+	BWA Seedlength (-l)	32	NA	NA
+	BWA Max # diff (-n)	0.1	NA	NA
+	BWA Qualityfilter (-q)	0	NA	NA
+	Filter unmapped	FALSE	NA	NA
+	Extract Mapped/Unmapped	FALSE	NA	NA
+Complexity Estimation	Activated	FALSE	NA	NA
+Remove Duplicates	Program	Dedup	NA	NA
+	Treat all reads as merged	TRUE	NA	NA
+PMD Tools	Activated	FALSE	NA	NA
+Contamination Estimation	Activated	FALSE	NA	NA
+Coverage / Statistics Calculation	Activated	TRUE	NA	NA
+Damage Calculation	Program	TRUE	NA	NA
+SNP Calling	Activated	TRUE	NA	NA
+	Program	UnifiedGenotyper	NA	NA
+	Ploidy of Organism	2	NA	NA
+	Standard Call Confidence	30	NA	NA
+	Downsampling	250	NA	NA
+	Emit All Sites / BP_RES Mode HC	TRUE	NA	NA
+	Emit Conf Sites / GVCF Mode HC	FALSE	NA	NA
+SNP Filtering	Activated	FALSE	NA	NA
+VCF2Genome	Activated	FALSE	NA	NA
+Clean up	Activated	TRUE	NA	NA
+Create Report	Activated	TRUE	NA	NA

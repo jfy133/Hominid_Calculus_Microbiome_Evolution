@@ -1,0 +1,161 @@
+---
+title: "Deep Evolution - Putative Contaminant Importance check"
+author: "James A. Fellows Yates"
+output: html_notebook
+---
+
+# Preamble
+
+We observed a high number of putative contaminant OTUs when using our strict
+decontam parameters. We wanted to see how much this would provisionally impact
+our downstream analyses.
+
+# Preparation
+
+First we load our libraries
+
+```{r}
+library(tidyverse)
+library(patchwork)
+```
+
+And data which is our OTU table(s), our putative contaminant list(s) and 
+lists of samples passing or failing our cumulative decay threshold.
+
+```{r}
+## OTU tables
+data_otu_nt_species <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_all_summarised_nt.txt")
+data_otu_nt_genus <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_all_summarised_nt.txt")
+data_otu_refseq_species <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_all_summarised_refseq.txt")
+data_otu_refseq_genus <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_all_summarised_refseq.txt")
+
+## decontam contaminants
+data_contaminants_nt_species <- read_tsv("~/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv") %>% rename(Taxon = value)
+data_contaminants_nt_genus <- read_tsv("~/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_genus_combined_0.99_190411.tsv") %>% rename(Taxon = value)
+data_contaminants_refseq_species <- read_tsv("~/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv") %>% rename(Taxon = value)
+data_contaminants_refseq_genus <- read_tsv("~/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_genus_combined_0.99_190411.tsv") %>% rename(Taxon = value)
+
+## cumulative decay pass/fail lists
+data_samplelist_nt <- read_tsv("~/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv")
+data_samplelist_refseq <- read_tsv("~/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190701.tsv")
+```
+
+finally set some functions
+
+```{r}
+clean_otu <- function(x){
+  colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam", "", colnames(x)) 
+  colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(x))
+  colnames(x) <- gsub("_S0_L001_R1_001.fastq.extractunmapped.bam", "", colnames(x))
+  colnames(x) <- gsub("_S0_L000_R1_000.fastq.merged", "", colnames(x))
+  colnames(x) <- gsub("_S0_L003_R1_001.sorted.bam.unmapped", "", colnames(x))
+  return(x)
+} 
+
+calculate_fraction_contaminants <- function(data_otu, data_contaminants, data_passlist) {
+  data_otu %>% 
+    pivot_longer(-contains("#Datasets"), names_to = "Individual", values_to = "Alignments") %>% 
+    rename(Taxon = `#Datasets`) %>%
+    full_join(data_contaminants %>% mutate(Contaminant = TRUE)) %>%
+    left_join(data_passlist) %>%
+    replace_na(replace = list(Contaminant = FALSE)) %>%
+    group_by(Individual, Passed, Contaminant) %>%
+    summarise(Total = sum(Alignments)) %>% 
+    pivot_wider(names_from = Contaminant, values_from = Total) %>%
+    mutate(Fraction = (`TRUE` / (`TRUE` + `FALSE`)) * 100) %>%
+    filter(!grepl("ARS|JAE|VLC|SRR|ERR|EXB|LIB", Individual)) %>%
+    arrange(Fraction) %>%
+    ungroup() %>%
+    mutate(Individual = as_factor(Individual))
+}
+  
+plot_fraction_contaminants <- function(x, subtitle, tag){
+  ggplot(x, aes(Individual, Fraction, fill = Passed)) +
+    geom_col() +
+    ylab("Alignments (%)") +
+    labs(title = "Fraction of MALT Alignments from putative contaminant taxa",
+            subtitle = subtitle,
+            tag = tag) +
+    theme_minimal(base_size = 8) +
+    scale_fill_manual(values = c("#e41a1c", "#377eb8")) +
+    theme(axis.text.x = element_text(size = 7, angle = 90)) +
+    guides(fill = guide_legend(title = "Cumulative\nDecay\nThreshold\nPassed"))
+}
+
+```
+
+# Clean up
+
+Now we will clean up our data
+
+```{r}
+## Clean up the pass lists
+data_passlist_nt <- data_samplelist_nt %>% 
+  rename(Individual = sample, Passed = withinfluctuationvariation_pass) %>% 
+  select(-more_env)
+
+data_passlist_refseq <- data_samplelist_nt %>% 
+  rename(Individual = sample, Passed = withinfluctuationvariation_pass) %>% 
+  select(-more_env)
+
+data_otu_nt_species <- clean_otu(data_otu_nt_species)
+data_otu_nt_genus <- clean_otu(data_otu_nt_genus)
+data_otu_refseq_species <- clean_otu(data_otu_refseq_species)
+data_otu_refseq_genus <- clean_otu(data_otu_refseq_genus)
+
+```
+
+Next we  will format our table(s) for plotting
+
+```{r}
+data_plot_nt_species <- calculate_fraction_contaminants(data_otu_nt_species, data_contaminants_nt_species, data_passlist_nt)
+data_plot_nt_genus <- calculate_fraction_contaminants(data_otu_nt_genus, data_contaminants_nt_genus, data_passlist_nt)
+data_plot_refseq_species <- calculate_fraction_contaminants(data_otu_refseq_species, data_contaminants_refseq_species, data_passlist_refseq)
+data_plot_refseq_genus <- calculate_fraction_contaminants(data_otu_refseq_genus, data_contaminants_refseq_genus, data_passlist_refseq)
+
+```
+
+# Visulisation
+
+And now plot the number of MALT alignments that are derived from putative
+contaminant OTUs as a percentage of all taxonomically assigned alignments
+
+```{r fig.height=2.5, fig.width=8}
+figure_nt_species <- plot_fraction_contaminants(data_plot_nt_species, "Database: nt, Taxonomic level: species", "a")
+figure_nt_genus <- plot_fraction_contaminants(data_plot_nt_genus, "Database: nt, Taxonomic level: genus", "b")
+figure_refseq_species <- plot_fraction_contaminants(data_plot_refseq_species, "Database: Custom RefSeq, Taxonomic level: species", "c")
+figure_refseq_genus <- plot_fraction_contaminants(data_plot_refseq_genus, "Database: Custom RefSeq, Taxonomic level: genus", "d")
+
+```
+
+And combine for display
+
+```{r fig.height=10, fig.width=8}
+figure_combined <- figure_nt_species + figure_nt_genus + figure_refseq_species + figure_refseq_genus + plot_layout(ncol = 1)
+
+figure_combined
+```
+
+```{r fig.height=10, fig.width=8}
+ggsave(
+  "ContaminantOTUAlignment_to_preservation_comparison.pdf",
+  path = "../04-analysis/screening/decontam.backup/",
+  plot = figure_combined,
+  device = cairo_pdf,
+  width = 8,
+  height = 10,
+  units = "in",
+  dpi = 600
+)   
+
+ggsave(
+  "ContaminantOTUAlignment_to_preservation_comparison.png",
+  path = "../04-analysis/screening/decontam.backup/",
+  plot = figure_combined,
+  device = "png",
+  width = 8,
+  height = 10,
+  units = "in",
+  dpi = 600
+)   
+```

@@ -1,0 +1,11 @@
+seed_id	PC1	PC2	PC3	enzyme
+SEED;Carbohydrates;Fructooligosaccharides(FOS) and Raffinose Utilization;Alpha-galactosidase (EC 3.2.1.22);	0.0372318459989882	0.108155110293181	-0.044468150022733	Alpha-galactosidase (EC 3.2.1.22)
+SEED;Carbohydrates;Glycogen metabolism;Maltodextrin phosphorylase (EC 2.4.1.1);	-0.173496929848284	0.109520576717876	-0.105307359318882	Maltodextrin phosphorylase (EC 2.4.1.1)
+SEED;Carbohydrates;Glycolysis and Gluconeogenesis;Pyruvate-utilizing enzyme, similar to phosphoenolpyruvate synthase;	0.0108825882379736	0.402046165261074	-0.0781635047815079	Pyruvate-utilizing enzyme, similar to phosphoenolpyruvate synthase
+SEED;Carbohydrates;Maltose and Maltodextrin Utilization;Pullulanase (EC 3.2.1.41);	-0.0820119895823529	0.298144406388717	-0.0911101258494936	Pullulanase (EC 3.2.1.41)
+SEED;Cell Wall and Capsule;Sialic Acid Metabolism;Sialidase (EC 3.2.1.18);	0.0536408783026634	0.168202463070693	-0.0739336476182312	Sialidase (EC 3.2.1.18)
+SEED;DNA Metabolism;ATP-dependent Nuclease;ATP-dependent nuclease, subunit B;	-0.0341098516713794	0.134212450403636	-0.110330290969327	ATP-dependent nuclease, subunit B
+SEED;Membrane Transport;ESAT-6 proteins secretion system in Firmicutes;FtsK/SpoIIIE family protein, putative EssC component of Type VII secretion system;	-0.0615111039188071	0.151542324357845	-0.138042462110459	FtsK/SpoIIIE family protein, putative EssC component of Type VII secretion system
+SEED;Stress Response;Choline and Betaine Uptake and Betaine Biosynthesis;Choline binding protein A;	0.0726664910328022	0.19159379417579	-0.0097915508225466	Choline binding protein A
+SEED;Stress Response;Glutathione: Biosynthesis and gamma-glutamyl cycle;Glutathione biosynthesis bifunctional protein gshF (EC 6.3.2.2)(EC 6.3.2.3);	-0.187508982601707	0.137006156304017	-0.104851880998466	Glutathione biosynthesis bifunctional protein gshF (EC 6.3.2.2)(EC 6.3.2.3)
+SEED;Virulence, Disease and Defense;Streptococcus pyogenes Virulome;Serine endopeptidase ScpC (EC 3.4.21.-);	-0.0849207221051391	0.342636676886391	-0.075081849550514	Serine endopeptidase ScpC (EC 3.4.21.-)
