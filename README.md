@@ -928,7 +928,33 @@ comes after the adapters which would be the poly Gs. Poly G tails would
 only affect single index reads, where the read itself is too short and doesn't
 have an adapter to indicate the read has ended.
 
-For the first round of mapping we use the input parameters per sequencing 
+To get post-polyG trimming stats, we firstly imported the same symlinks to the 
+raw data as input to [preprocessing](#611-script-version), but  into 
+`04-analysis/screening/eager/polyGremoval_input`.
+
+With then run `fastp` on each of these folders to generate reads without
+potential poly-G tails.
+
+Then we run the complexity filter on these to remove the poly-Gs using 
+[`fastp`](https://github.com/OpenGene/fastp). This will remove/trim any read
+where the last 10 reads are all Gs.
+
+```bash
+
+sbatch 02-scripts.backup/099-polyGcomplexity_filter.sh
+
+```
+
+The output is then stored in 
+`04-analysis/screening/eager/polyGremoval_input/output`.
+
+From there, we can run EAGER on the poly-G trimmed files.
+
+--
+
+> THIS IS OLD
+
+ Then we for the first round of mapping we use the input parameters per sequencing 
 configuration, and the mapping pipeline as follows: 
 
 ```
@@ -1009,34 +1035,6 @@ done
 
 ```
 
-Then we run the complexity filter on these to remove the poly-Gs using 
-[`fastp`](https://github.com/OpenGene/fastp). This will remove/trim any read
-where the last 10 reads are all Gs.
-
-```bash
-
-sbatch 02-scripts.backup/099-polyGcomplexity_filter.sh
-
-## If running with extra samples
-INDIR=/projects1/microbiome_calculus/iberian/03-preprocessing/screening/human_filtering/output
-
-for LIBDIR in "$INDIR"/*/; do
-  LIBNAME=$(echo "$LIBDIR" | rev | cut -d/ -f2 | rev)
-  if [ -f "$INDIR"/"$LIBNAME"/4-Samtools/*.polyGtrimmed.fq.gz ]; then
-    printf "\n $LIBNAME already Processed \n\n"
-  else
-    echo "$LIBNAME"
-    sbatch \
-  fastp \
-  -i $(readlink -f $INDIR/$LIBNAME/4-Samtools/*mapped.sorted.bam.fq.gz) \
-  -o $(readlink -f $INDIR/$LIBNAME/4-Samtools/*mapped.sorted.bam.fq.gz).polyGtrimmed.fq.gz \
-  --trim_poly_g \
-  --disable_quality_filtering \
-  --disable_length_filtering \
-  --disable_adapter_trimming
-  fi
-done
-```
 
 Once completed, we prepare the final round of EAGER mapping to generate the 
 EAGER ReportTable mapping information but without poly-G reads.
@@ -1078,6 +1076,10 @@ CleanUp: On
 Create Report: Off
 
 ```
+
+> /END OLD
+
+--
 
 The resulting human mapping data after poly-G removal can be seen in 
 `00-documentation.backup/99-PolyGRemoved_HumanMapping_EAGERReport_output.csv`

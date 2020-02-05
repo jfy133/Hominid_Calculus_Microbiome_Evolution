@@ -1,0 +1,142 @@
+Taxon	Combination_Type	Combination	stat	p.value	BacDive_Data	aggregate_oxygen_tol	aggregate_gram_stain	oral_related	Genus
+Campylobacter_curvus	Single	Alouatta	0.7645325829	0.002	TRUE	anaerobe/microaerophile	NA	NA	Campylobacter
+Histophilus_somni	Single	Alouatta	0.6148622115	0.014	TRUE	microaerophile	NA	NA	Histophilus
+Kingella_kingae	Single	Alouatta	0.6975251654	0.009	TRUE	microaerophile	NA	NA	Kingella
+Streptococcus_acidominimus	Single	Alouatta	0.9444123558	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_agalactiae	Single	Alouatta	0.8746550863	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_gallolyticus	Single	Alouatta	0.9065310169	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_himalayensis	Single	Alouatta	0.9854636939	0.001	TRUE	anaerobe	positive	NA	Streptococcus
+Streptococcus_marmotae	Single	Alouatta	0.9867256187	0.001	TRUE	anaerobe	positive	NA	Streptococcus
+Streptococcus_merionis	Single	Alouatta	0.960970758	0.001	TRUE	microaerophile	positive	NA	Streptococcus
+Streptococcus_pantholopis	Single	Alouatta	0.9348790595	0.001	TRUE	anaerobe	positive	NA	Streptococcus
+Streptococcus_parasanguinis	Single	Alouatta	0.8452272109	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_parauberis	Single	Alouatta	0.5457539612	0.021	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_pseudopneumoniae	Single	Alouatta	0.9984891793	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_salivarius	Single	Alouatta	0.8921233396	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_sp _A12	Single	Alouatta	0.9055097128	0.001	FALSE	NA	NA	NA	Streptococcus
+Streptococcus_sp _I G2	Single	Alouatta	0.9795168237	0.001	FALSE	NA	NA	NA	Streptococcus
+Streptococcus_sp _I P16	Single	Alouatta	0.972340859	0.001	FALSE	NA	NA	NA	Streptococcus
+Streptococcus_suis	Single	Alouatta	0.9381658458	0.001	TRUE	anaerobe/microaerophile/aerobe	NA	NA	Streptococcus
+Streptococcus_thermophilus	Single	Alouatta	0.9535159917	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Tessaracoccus_aquimaris	Single	Alouatta	0.8661343629	0.001	FALSE	NA	NA	NA	Tessaracoccus
+Tessaracoccus_flavescens	Single	Alouatta	0.8500360641	0.001	TRUE	anaerobe	positive	NA	Tessaracoccus
+Tessaracoccus_flavus	Single	Alouatta	0.8432866546	0.001	TRUE	anaerobe	positive	NA	Tessaracoccus
+Tessaracoccus_sp _T2 5 30	Single	Alouatta	0.8469508285	0.001	FALSE	NA	NA	NA	Tessaracoccus
+Acidipropionibacterium_acidipropionici	Multiple	Alouatta:Gorilla	0.7931721786	0.001	TRUE	anaerobe	NA	NA	Acidipropionibacterium
+Actinobacillus_pleuropneumoniae	Multiple	Alouatta:Gorilla	0.8271701919	0.001	TRUE	microaerophile	NA	NA	Actinobacillus
+Actinobacillus_succinogenes	Multiple	Alouatta:Gorilla	0.8885233166	0.001	TRUE	aerobe	NA	NA	Actinobacillus
+Aggregatibacter_actinomycetemcomitans	Multiple	Alouatta:Gorilla	0.9595986011	0.001	TRUE	microaerophile	NA	NA	Aggregatibacter
+Bibersteinia_trehalosi	Multiple	Alouatta:Gorilla	0.512989176	0.032	TRUE	microaerophile	NA	NA	Bibersteinia
+Gallibacterium_anatis	Multiple	Alouatta:Gorilla	0.512989176	0.029	TRUE	NA	NA	NA	Gallibacterium
+Glaesserella_parasuis	Multiple	Alouatta:Gorilla	0.7608859103	0.001	FALSE	NA	NA	NA	Glaesserella
+Mannheimia_haemolytica	Multiple	Alouatta:Gorilla	0.7608859103	0.001	TRUE	NA	NA	NA	Mannheimia
+Mannheimia_varigena	Multiple	Alouatta:Gorilla	0.6488856845	0.005	TRUE	NA	NA	NA	Mannheimia
+Neisseria_sp _10022	Multiple	Alouatta:Gorilla	0.9176629355	0.001	FALSE	NA	NA	NA	Neisseria
+Neisseria_sp _10023	Multiple	Alouatta:Gorilla	0.8779451206	0.001	FALSE	NA	NA	NA	Neisseria
+Neisseria_weaveri	Multiple	Alouatta:Gorilla	0.6882472016	0.002	TRUE	aerobe	NA	NA	Neisseria
+Neisseria_zoodegmatis	Multiple	Alouatta:Gorilla	0.8353927921	0.001	TRUE	anaerobe	negative	NA	Neisseria
+Pasteurella_dagmatis	Multiple	Alouatta:Gorilla	0.512989176	0.033	TRUE	NA	NA	NA	Pasteurella
+Pasteurella_multocida	Multiple	Alouatta:Gorilla	0.8455484406	0.001	TRUE	NA	NA	NA	Pasteurella
+Pasteurellaceae_bacterium_NI1060	Multiple	Alouatta:Gorilla	0.8885233166	0.001	FALSE	NA	NA	NA	Pasteurellaceae
+Rothia_mucilaginosa	Multiple	Alouatta:Gorilla	0.8307162843	0.001	TRUE	microaerophile	NA	NA	Rothia
+Streptococcus_dysgalactiae	Multiple	Alouatta:Gorilla	0.7721217323	0.003	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_mutans	Multiple	Alouatta:Gorilla	0.8775583794	0.001	TRUE	microaerophile	NA	TRUE	Streptococcus
+Streptococcus_pyogenes	Multiple	Alouatta:Gorilla	0.7856751805	0.002	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_troglodytae	Multiple	Alouatta:Gorilla	0.7680528895	0.004	TRUE	microaerophile	positive	TRUE	Streptococcus
+Veillonella_rodentium	Multiple	Alouatta:Gorilla	0.724656492	0.007	TRUE	anaerobe	NA	TRUE	Veillonella
+Aggregatibacter_aphrophilus	Multiple	Alouatta:Gorilla:Homo	0.8990101101	0.013	TRUE	microaerophile	NA	NA	Aggregatibacter
+Eikenella_corrodens	Multiple	Alouatta:Gorilla:Homo	0.93509476	0.003	TRUE	NA	NA	NA	Eikenella
+Haemophilus_parainfluenzae	Multiple	Alouatta:Gorilla:Homo	0.7402332102	0.019	TRUE	microaerophile	NA	NA	Haemophilus
+Neisseria_elongata	Multiple	Alouatta:Gorilla:Homo	0.8758557459	0.004	TRUE	microaerophile	NA	NA	Neisseria
+Neisseria_gonorrhoeae	Multiple	Alouatta:Gorilla:Homo	0.7851358839	0.015	TRUE	microaerophile	NA	NA	Neisseria
+Neisseria_lactamica	Multiple	Alouatta:Gorilla:Homo	0.7214900867	0.033	TRUE	microaerophile	NA	NA	Neisseria
+Neisseria_meningitidis	Multiple	Alouatta:Gorilla:Homo	0.8836412834	0.004	TRUE	microaerophile	NA	NA	Neisseria
+Neisseria_sicca	Multiple	Alouatta:Gorilla:Homo	0.8990101101	0.004	TRUE	microaerophile	NA	NA	Neisseria
+Neisseria_sp _KEM232	Multiple	Alouatta:Gorilla:Homo	0.73092173	0.024	FALSE	NA	NA	NA	Neisseria
+Rothia_aeria	Multiple	Alouatta:Gorilla:Homo	0.8104212885	0.009	TRUE	microaerophile	positive	NA	Rothia
+Rothia_dentocariosa	Multiple	Alouatta:Gorilla:Homo	0.7668704502	0.032	TRUE	anaerobe/microaerophile	NA	TRUE	Rothia
+Selenomonas_sp _oral_taxon_920	Multiple	Alouatta:Gorilla:Homo	0.7644214061	0.035	FALSE	NA	NA	NA	Selenomonas
+Streptococcus_cristatus	Multiple	Alouatta:Gorilla:Homo	0.9282804503	0.001	TRUE	microaerophile	NA	TRUE	Streptococcus
+Streptococcus_pneumoniae	Multiple	Alouatta:Gorilla:Homo	0.8758557459	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Olsenella_sp _Marseille P2300	Multiple	Alouatta:Gorilla:Pan	0.8118842837	0.001	FALSE	NA	NA	NA	Olsenella
+Olsenella_umbonata	Multiple	Alouatta:Gorilla:Pan	0.8115301474	0.002	TRUE	anaerobe	NA	NA	Olsenella
+Propionibacterium_freudenreichii	Multiple	Alouatta:Gorilla:Pan	0.886443149	0.001	TRUE	anaerobe/microaerophile	NA	NA	Propionibacterium
+Streptococcus_equi	Multiple	Alouatta:Gorilla:Pan	0.8056605347	0.002	TRUE	microaerophile	NA	NA	Streptococcus
+Capnocytophaga_gingivalis	Multiple	Alouatta:Homo	0.8530686461	0.002	TRUE	anaerobe/microaerophile	NA	TRUE	Capnocytophaga
+Capnocytophaga_sp _ChDC_OS43	Multiple	Alouatta:Homo	0.8014934784	0.003	FALSE	NA	NA	NA	Capnocytophaga
+Capnocytophaga_sputigena	Multiple	Alouatta:Homo	0.8821796246	0.001	TRUE	anaerobe/microaerophile	NA	TRUE	Capnocytophaga
+Leptotrichia_buccalis	Multiple	Alouatta:Homo	0.76758421	0.009	TRUE	anaerobe/microaerophile	NA	TRUE	Leptotrichia
+Leptotrichia_sp _oral_taxon_212	Multiple	Alouatta:Homo	0.9174544984	0.001	FALSE	NA	NA	NA	Leptotrichia
+Streptococcus_gordonii	Multiple	Alouatta:Homo	0.9403134021	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_mitis	Multiple	Alouatta:Homo	0.7678323333	0.008	TRUE	microaerophile	NA	TRUE	Streptococcus
+Streptococcus_oralis	Multiple	Alouatta:Homo	0.9151935591	0.001	TRUE	microaerophile	positive	TRUE	Streptococcus
+Streptococcus_sanguinis	Multiple	Alouatta:Homo	0.9441207743	0.001	TRUE	microaerophile	NA	NA	Streptococcus
+Streptococcus_sp _NPS_308	Multiple	Alouatta:Homo	0.7801232606	0.006	FALSE	NA	NA	NA	Streptococcus
+Streptococcus_sp _oral_taxon_064	Multiple	Alouatta:Homo	0.6243640833	0.031	FALSE	NA	NA	NA	Streptococcus
+Streptococcus_sp _VT_162	Multiple	Alouatta:Homo	0.7463538438	0.011	FALSE	NA	NA	NA	Streptococcus
+Gemella_sp _oral_taxon_928	Multiple	Alouatta:Homo:Pan	0.8110974285	0.011	FALSE	NA	NA	NA	Gemella
+Parvimonas_micra	Multiple	Alouatta:Homo:Pan	0.8839846968	0.002	TRUE	anaerobe	NA	NA	Parvimonas
+Porphyromonas_gingivalis	Multiple	Alouatta:Homo:Pan	0.8904196858	0.017	TRUE	anaerobe	NA	TRUE	Porphyromonas
+Streptococcus_constellatus	Multiple	Alouatta:Homo:Pan	0.836478219	0.007	TRUE	anaerobe/microaerophile	NA	NA	Streptococcus
+Megasphaera_elsdenii	Multiple	Alouatta:Pan	0.5957268955	0.014	TRUE	anaerobe	NA	NA	Megasphaera
+Trueperella_pyogenes	Multiple	Alouatta:Pan	0.6546536707	0.004	TRUE	anaerobe	NA	NA	Trueperella
+Cutibacterium_avidum	Single	Gorilla	0.5091866594	0.02	TRUE	anaerobe/microaerophile	NA	NA	Cutibacterium
+Enterococcus_faecalis	Single	Gorilla	0.4747864241	0.021	TRUE	microaerophile	NA	NA	Enterococcus
+Salmonella_enterica	Single	Gorilla	0.5976143047	0.005	TRUE	aerobe	NA	NA	Salmonella
+Staphylococcus_saprophyticus	Single	Gorilla	0.6786161852	0.001	TRUE	NA	NA	NA	Staphylococcus
+Staphylococcus_xylosus	Single	Gorilla	0.6995753095	0.002	TRUE	aerobe	NA	NA	Staphylococcus
+Veillonella_atypica	Single	Gorilla	0.6951896198	0.003	TRUE	anaerobe	NA	TRUE	Veillonella
+Veillonella_parvula	Multiple	Gorilla:Homo	0.7276068751	0.017	TRUE	anaerobe	NA	TRUE	Veillonella
+Actinomyces_hongkongensis	Multiple	Gorilla:Homo:Pan	0.975750986	0.001	TRUE	anaerobe	NA	NA	Actinomyces
+Actinomyces_meyeri	Multiple	Gorilla:Homo:Pan	0.9925619026	0.001	TRUE	anaerobe	positive	NA	Actinomyces
+Fretibacterium_fastidiosum	Multiple	Gorilla:Homo:Pan	0.9385906354	0.002	TRUE	anaerobe	negative	TRUE	Fretibacterium
+Olsenella_sp _oral_taxon_807	Multiple	Gorilla:Homo:Pan	0.9449111825	0.001	FALSE	NA	NA	NA	Olsenella
+Olsenella_uli	Multiple	Gorilla:Homo:Pan	0.8975141614	0.019	TRUE	anaerobe	NA	TRUE	Olsenella
+Tannerella_forsythia	Multiple	Gorilla:Homo:Pan	0.949872835	0.003	TRUE	anaerobe	NA	TRUE	Tannerella
+Adlercreutzia_equolifaciens	Multiple	Gorilla:Pan	0.7790571866	0.004	TRUE	anaerobe	positive	NA	Adlercreutzia
+Cryptobacterium_curtum	Multiple	Gorilla:Pan	0.7752636328	0.002	TRUE	anaerobe	positive	TRUE	Cryptobacterium
+Eggerthella_lenta	Multiple	Gorilla:Pan	0.7669956746	0.005	TRUE	anaerobe	NA	NA	Eggerthella
+Gordonibacter_massiliensis	Multiple	Gorilla:Pan	0.7644484261	0.005	FALSE	NA	NA	NA	Gordonibacter
+Gordonibacter_pamelaeae	Multiple	Gorilla:Pan	0.7305225718	0.004	TRUE	anaerobe	positive	NA	Gordonibacter
+Gordonibacter_urolithinfaciens	Multiple	Gorilla:Pan	0.7561193319	0.003	TRUE	anaerobe	NA	NA	Gordonibacter
+Libanicoccus_massiliensis	Multiple	Gorilla:Pan	0.7745966692	0.003	FALSE	NA	NA	NA	Libanicoccus
+Slackia_heliotrinireducens	Multiple	Gorilla:Pan	0.7962059183	0.001	TRUE	anaerobe	NA	NA	Slackia
+Capnocytophaga_leadbetteri	Single	Homo	0.7565758191	0.008	TRUE	anaerobe/microaerophile	negative	TRUE	Capnocytophaga
+Capnocytophaga_ochracea	Single	Homo	0.7249950725	0.006	TRUE	anaerobe/microaerophile	NA	TRUE	Capnocytophaga
+Capnocytophaga_sp _oral_taxon_323	Single	Homo	0.7114677638	0.013	FALSE	NA	NA	NA	Capnocytophaga
+Methanobrevibacter_millerae	Single	Homo	0.6576516221	0.03	TRUE	anaerobe	NA	NA	Methanobrevibacter
+Methanobrevibacter_smithii	Single	Homo	0.66111934	0.033	TRUE	anaerobe	NA	NA	Methanobrevibacter
+Methanobrevibacter_sp _YE315	Single	Homo	0.6806142785	0.01	FALSE	NA	NA	NA	Methanobrevibacter
+Selenomonas_sputigena	Single	Homo	0.7967934412	0.007	TRUE	anaerobe	NA	TRUE	Selenomonas
+Anaerolineaceae_bacterium_oral_taxon_439	Multiple	Homo:Pan	0.9682307858	0.001	FALSE	NA	NA	NA	Anaerolineaceae
+Candidatus_Saccharibacteria_oral_taxon_TM7x	Multiple	Homo:Pan	0.965145711	0.001	FALSE	NA	NA	NA	Candidatus
+Desulfomicrobium_orale	Multiple	Homo:Pan	0.9013895154	0.016	TRUE	anaerobe	NA	TRUE	Desulfomicrobium
+Filifactor_alocis	Multiple	Homo:Pan	0.8349377677	0.015	TRUE	anaerobe	NA	TRUE	Filifactor
+Mogibacterium_pumilum	Multiple	Homo:Pan	0.891929679	0.001	FALSE	NA	NA	NA	Mogibacterium
+Tannerella_sp _oral_taxon_HOT 286	Multiple	Homo:Pan	0.9031951798	0.002	FALSE	NA	NA	NA	Tannerella
+Treponema_denticola	Multiple	Homo:Pan	0.9148600215	0.002	TRUE	anaerobe	NA	TRUE	Treponema
+Treponema_putidum	Multiple	Homo:Pan	0.7929237979	0.015	TRUE	anaerobe	NA	TRUE	Treponema
+Treponema_sp _OMZ_838	Multiple	Homo:Pan	0.771953413	0.028	FALSE	NA	NA	NA	Treponema
+Atopobium_parvulum	Single	Pan	0.7262401036	0.007	TRUE	anaerobe	NA	NA	Atopobium
+Bacteroides_fragilis	Single	Pan	0.6600806155	0.01	TRUE	anaerobe	NA	NA	Bacteroides
+Bacteroides_salanitronis	Single	Pan	0.5590169944	0.018	TRUE	anaerobe	NA	NA	Bacteroides
+Candidatus_Methanomethylophilus_alvus	Single	Pan	0.9965110158	0.001	FALSE	NA	NA	NA	Candidatus
+Cloacibacillus_porcorum	Single	Pan	0.4907600688	0.02	TRUE	anaerobe	negative	NA	Cloacibacillus
+Clostridioides_difficile	Single	Pan	0.6849283517	0.017	TRUE	anaerobe	NA	NA	Clostridioides
+Coriobacteriaceae_bacterium_68 1 3	Single	Pan	0.7443295532	0.005	FALSE	NA	NA	NA	Coriobacteriaceae
+Denitrobacterium_detoxificans	Single	Pan	0.6793014295	0.004	TRUE	anaerobe	NA	NA	Denitrobacterium
+Eubacterium_limosum	Single	Pan	0.6108216375	0.005	TRUE	anaerobe	NA	NA	Eubacterium
+Faecalibacterium_prausnitzii	Single	Pan	0.9381765816	0.001	TRUE	anaerobe	NA	NA	Faecalibacterium
+Fermentimonas_caenicola	Single	Pan	0.6123724357	0.002	TRUE	anaerobe	negative	NA	Fermentimonas
+Finegoldia_magna	Single	Pan	0.5814875803	0.012	TRUE	anaerobe	NA	NA	Finegoldia
+Flavonifractor_plautii	Single	Pan	0.591743952	0.01	TRUE	anaerobe	NA	NA	Flavonifractor
+Intestinimonas_butyriciproducens	Single	Pan	0.5936991767	0.007	TRUE	anaerobe	positive	NA	Intestinimonas
+Lachnoclostridium_phocaeense	Single	Pan	0.4954244811	0.022	FALSE	NA	NA	NA	Lachnoclostridium
+Lawsonella_clevelandensis	Single	Pan	0.9988587768	0.001	TRUE	anaerobe	positive	NA	Lawsonella
+Mageeibacillus_indolicus	Single	Pan	0.4854121497	0.023	TRUE	anaerobe	NA	NA	Mageeibacillus
+methanogenic_archaeon_ISO4 H5	Single	Pan	0.9354143467	0.001	FALSE	NA	NA	NA	methanogenic
+methanogenic_archaeon_mixed_culture_ISO4 G1	Single	Pan	0.8660254038	0.001	FALSE	NA	NA	NA	methanogenic
+Odoribacter_splanchnicus	Single	Pan	0.5590169944	0.014	TRUE	anaerobe	NA	NA	Odoribacter
+Pyramidobacter_piscolens	Single	Pan	0.8291561976	0.001	TRUE	anaerobe	negative	TRUE	Pyramidobacter
+Thermoplasmatales_archaeon_BRNA1	Single	Pan	0.9963266815	0.001	FALSE	NA	NA	NA	Thermoplasmatales
+Treponema_pedis	Single	Pan	0.6542858517	0.014	TRUE	anaerobe	negative	NA	Treponema
