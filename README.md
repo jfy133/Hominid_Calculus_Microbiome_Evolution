@@ -373,7 +373,7 @@ O=SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.dict
 
 ### 4.4 UniRef Database
 
-For acquire the UniRef database for [HUMANn2](#123-humann2), we used the script
+For acquiring the UniRef database for [HUMANn2](#123-humann2), we used the script
 that comes with HUMANn2, and run as follows:
 
 ```bash
@@ -948,7 +948,6 @@ sbatch 02-scripts.backup/099-polyGcomplexity_filter.sh
 The output is then stored in 
 `04-analysis/screening/eager/polyGremoval_input/output`.
 
-<<<<<<< HEAD
 From there, we can run EAGER on the poly-G trimmed files into polyGremoval_output
 
 ```
@@ -975,9 +974,6 @@ CleanUp: On
 Create Report: Off
 
 ```
-=======
-From there, we can run EAGER on the poly-G trimmed files.
->>>>>>> 3e76957707a186778589d9b0f7173e8639c39cc4
 
 --
 
@@ -2663,16 +2659,9 @@ bedtools intersect \
 
 The resulting files were then loaded into to assess the ratio of all _Streptococcus_ reads to amylase binding protein-like reads as in `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`
 
-<<<<<<< HEAD
 ![BEAST2 abpB skyline plot](05-images/Figure_R38_SO_beast/R37_sky_apbB_noGOY.png)
 
 **Figure R38 | Bayesian skyline plot of population expansion of the amylase-binding protein B gene _(abpB)_.** The population shows expansion at ~7000 years before the present, with a decline at around 500 years before the present. However, the uneven distribution of samples across time make the results unreliable, and we do not draw any conclusions from these results.
-=======
-![BEAST2 abpB skyline plot](05-images/Figure_R37_SO_beast/R37_sky_apbB_noGOY.png)
-
-**Figure R37 | Bayesian skyline plot of population expansion of the amylase-binding protein B gene _(abpB)_.** The population shows expansion at ~7000 years before the present, with a decline at around 500 years before the present. However, the uneven distribution of samples across time make the results unreliable, and we do not draw any conclusions from these results.
->>>>>>> 3e76957707a186778589d9b0f7173e8639c39cc4
-
 
 ### 12.3 HUMANn2
 
@@ -2808,7 +2797,6 @@ Finally, some read statistics by applying the same 0.01% threshold used in MALT
 are gained via the `099-MetaPhlan2_Summary_statistics.R` script. These were
 then manually added to the metadata file.
 
-<<<<<<< HEAD
 ![MetaPhlAn2 mapped reads screening dataset](05-images/Figure_R39_SBJ_MetaPhlAn2Assignment_MappedReadCount/SupFigX_MetaPhlan2Assignments_MappedReadCount_comparison_20191028_EDIT.png)
 
 **Figure R39 | Percentage of non-human reads mapping to the MetaPhlAn2 database.** Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
@@ -2816,15 +2804,7 @@ then manually added to the metadata file.
 ![MetaPhlAn2 identified genus and species and screening dataset](05-images/Figure_R40_SBK_MetaPhlAn2Assignment_SpeciesGenusCounts/SupFigX_MetaPhlAn2ssignments_speciesGenusCount_comparison_20191028.png)
 
 **Figure R40 | Distributions of the number of genera and species identified by MetaPhlAn2 across each study group.** Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
-=======
-![MetaPhlAn2 mapped reads screening dataset](05-images/Figure_R38_SBJ_MetaPhlAn2Assignment_MappedReadCount/SupFigX_MetaPhlan2Assignments_MappedReadCount_comparison_20191028_EDIT.png)
 
-**Figure R38 | Percentage of non-human reads mapping to the MetaPhlAn2 database.** Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
-
-![MetaPhlAn2 identified genus and species and screening dataset](05-images/Figure_R39_SBK_MetaPhlAn2Assignment_SpeciesGenusCounts/SupFigX_MetaPhlAn2ssignments_speciesGenusCount_comparison_20191028.png)
-
-**Figure R39 | Distributions of the number of genera and species identified by MetaPhlAn2 across each study group.** Colours correspond to calculus host genus. Blue: _Alouatta_; Purple: _Gorilla_; Green: _Pan_; Orange: _Homo_; Grey: non-calculus.
->>>>>>> 3e76957707a186778589d9b0f7173e8639c39cc4
 
 #### 12.3.2 Running HUMANn2
 
@@ -2902,7 +2882,6 @@ humann2_regroup_table -i humann2_genefamilies.tsv -g uniref90_ko -o humann2_gene
 All analysis and figure generation for HUMAnN2 data can be found in the R markdown
 document here `02-scripts.backup/144-imv-oral_evolution_humann2_fxn_cleaned.Rmd`.
 
-<<<<<<< HEAD
 ![HUMAnN2 PCAs](05-images/Figure_R41-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R41_SM1_supplemental_humann2_pcas.png)
 **Figure R41 | Principal components analysis of pathway abundances identified by HUMAnN2.** PCA of pathway abundances with **a** all samples and controls, **b** outlier samples removed, **c** only plaque and calculus samples, **d** only calculus samples. Outliers were determined for pathway abundances based on plotting with the controls samples (not plaque) in panel A.
 
@@ -2935,41 +2914,6 @@ document here `02-scripts.backup/144-imv-oral_evolution_humann2_fxn_cleaned.Rmd`
 
 ![HUMAnN2 KEGG ortholog major biomolecule PCAs](05-images/Figure_R41-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R51_SM11_suplemental_humann2_pcas_KO_categories.png)
 **Figure R51 | PCAs using KEGG orthologs belonging to specific metabolic pathway categories.** KEGG orthologs in pathways that process major biomolecules all separate samples by host genus in a pattern similar to that seen in taxonomy, metabolic pathways, and all KEGG orthologs. **a** All KEGG orthologs in the Carbohydrate metabolism pathways. **b** All KEGG orthologs in the Amino acid metabolism pathways. **c** All KEGG orthologs in the Lipid metabolism pathways.
-=======
-![HUMAnN2 PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R40_SM1_supplemental_humann2_pcas.png)
-**Figure R40 | Principal components analysis of pathway abundances identified by HUMAnN2.** PCA of pathway abundances with **a** all samples and controls, **b** outlier samples removed, **c** only plaque and calculus samples, **d** only calculus samples. Outliers were determined for pathway abundances based on plotting with the controls samples (not plaque) in panel A.
-
-![HUMAnN2 read assignments](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R41_SM2_supplemental_humann2_pct_assigned.png)
-**Figure R41 | HUMAnN2 read assignment statistics.** All graphs have outlier samples removed. **a** Percent of reads assigned to a UniRef90 protein, outlier samples removed. **b** Proportion of UniRef90 assignments that grouped to KEGG orthologs. **c** The total number of KEGG orthologs in any of the 15 KEGG Carbohydrate pathways in each sample. **d** Abundance of KEGG orthologs in any of the 15 KEGG Carbohydrate pathways in each sample. * P < 0.05, ** P < 0.01, *** P<0.001. 
-
-![HUMAnN2 KEGG Ortholog PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R42_SM3_supplemental_humann2_pcas_KOs.png)
-**Figure R42 | Principal components analysis of KEGG orthologs separates host genera.** PCA of pathway abundances with **a** all samples and controls, **b** outlier samples removed, **c** only plaque and calculus samples, **d** only calculus samples. Outliers were determined for pathway abundances based on plotting with the controls samples (not plaque) in panel A.
-
-![HUMAnN2 KEGG Ortholog PCA biplots](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R43_SM4_supplemental_humann2_KOs_biplots.png)
-**Figure R43 | PCA biplots with the KEGG orthologs (Figure R39/SM3D above) with the top 10 strongest positive and negative loadings on PC1 and PC2.** **a** Top loadings of PC1 with all _Homo_ samples. **b** Top loadings of PC1 without modern _Homo_ samples. **c** Top loadings of PC2 with all _Homo_ samples. **d** Top loadings of PC2 without modern _Homo_ samples. Note in panels b and d (without modern _Homo_ samples) that the y-axis has been reversed to maintain orientation with the other PCAs.
-
-![HUMAnN2 heat maps including modern humans](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R44_SM5_supplemental_humann2_KO_heatmaps.png)
-**Figure R44 | Heat maps showing the centered log ratio-transformed abundance of the top 10 proteins with strongest loadings from the PCA including modern _Homo_.** Host genus is indicated by the colored bars to the right, where blue is _Alouatta_, purple is _Gorilla_, green is _Pan_, and orange is _Homo_. Symbols in _Homo_ indicate different groups, where triangle pointed up is Neanderthal, square is pre-agricultural human, circle is pre-antibiotic human, and triangle pointed down is modern day human. **a** PC1 positive top 10 KEGG orthologs with strongest loadings. **b** PC1 negative top 10 KEGG orthologs with strongest loadings. **c** PC2 positive top 10 KEGG orthologs with strongest loadings. **d** PC2 negative top 10 KEGG orthologs with strongest loadings. 
-
-![HUMAnN2 heat maps excluding modern humans](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R45_SM6_supplemental_humann2_KO_nomod_heatmaps.png)
-**Figure R45 | Heat maps showing the centered log ratio-transformed abundance of the top 10 proteins with strongest loadings from the PCA excluding modern _Homo_.** Host genus is indicated by the colored bars to the right, where blue is _Alouatta_, purple is _Gorilla_, green is _Pan_, and orange is _Homo_. Symbols in _Homo_ indicate different groups, where triangle pointed up is Neanderthal, square is pre-agricultural human, and circle is pre-antibiotic human. **a** PC1 positive top 10 KEGG orthologs with strongest loadings. **b** PC1 negative top 10 KEGG orthologs with strongest loadings. **c** PC2 positive top 10 KEGG orthologs with strongest loadings. **d** PC2 negative top 10 KEGG orthologs with strongest loadings. 
-
-![HUMAnN2 PC1 positive ortholog barplots](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R46_SM7_supplemental_humann2_KO_bars_PC1_pws.png)
-**Figure R46 | Microbial genus contributions to KOs with the strongest positive loadings in PC1.** Bar graphs of the genera, summed from species, that contribute >12% to the KEGG orthologs with strongest positive loadings in PC1: **a** Including modern _Homo_ samples, grouped by KEGG ortholog, **b** Including modern _Homo_ samples, grouped by host genus, **c** Excluding modern _Homo_ samples, grouped by KEGG ortholog, and **d** Excluding modern _Homo_ samples, grouped by host genus. All genera that individually contributed <12% are grouped together as g__Other.
-
-![HUMAnN2 PC1 negative ortholog barplots](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R47_SM8_supplemental_humann2_KO_bars_PC1_neg.png)
-**Figure R47 | Microbial genus contributions to KOs with the strongest negative loadings in PC1.** Bar graphs of the genera, summed from species, that contribute >12% to the KEGG orthologs with strongest negative loadings in PC1: **a** Including modern _Homo_ samples, grouped by KEGG ortholog, **b** Including modern _Homo_ samples, grouped by host genus, **c** Excluding modern _Homo_ samples, grouped by KEGG ortholog, and **d** Excluding modern _Homo_ samples, grouped by host genus. All genera that individually contributed <12% are grouped together as g__Other.
-
-![HUMAnN2 PC2 positive ortholog barplots](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R48_SM9_supplemental_humann2_KO_bars_PC2_pws.png)
-**Figure R48 | Microbial genus contributions to KOs with the strongest loadings in PC2 characterizing _Pan/Gorilla/Alouatta_.** Bar graphs of the genera, summed from species, which contribute >12% to the KEGG orthologs with strongest positive loadings in PC2: **a** Including modern _Homo_, grouped by KEGG ortholog, **b** Including modern _Homo_, grouped by host genus, **c** and the strongest negative loadings in PC2 excluding modern _Homo_, grouped by KEGG ortholog, and **d** Excluding modern _Homo_, grouped by host genus. All genera that individually contributed <12% are grouped together as g__Other.
-
-![HUMAnN2 PC2 negative ortholog biplots](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R49_SM10_supplemental_humann2_KO_bars_PC2_neg.png)
-**Figure R49 | Microbial genus contributions to KOs with the strongest negative loadings in PC2.** Bar graphs of the genera, summed from species, that contribute >12% to the KEGG orthologs with strongest negative loadings in PC2 **a** Including modern _Homo_, grouped by KEGG ortholog, **b** Including modern _Homo_, grouped by host genus, **c** Excluding modern _Homo_, grouped by KEGG ortholog, and **d** Excluding modern _Homo_, grouped by host genus. All genera that individually contributed <12% are grouped together as g__Other.
-
-![HUMAnN2 KEGG ortholog major biomolecule PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R40-R50_SM_humann2/R40-R50_SM_Composite_figures/R50_SM11_suplemental_humann2_pcas_KO_categories.png)
-**Figure R50 | PCAs using KEGG orthologs belonging to specific metabolic pathway categories.** KEGG orthologs in pathways that process major biomolecules all separate samples by host genus in a pattern similar to that seen in taxonomy, metabolic pathways, and all KEGG orthologs. **a** All KEGG orthologs in the Carbohydrate metabolism pathways. **b** All KEGG orthologs in the Amino acid metabolism pathways. **c** All KEGG orthologs in the Lipid metabolism pathways.
->>>>>>> 3e76957707a186778589d9b0f7173e8639c39cc4
-
 
 ### 12.4 AADDER Analysis
 
@@ -3073,7 +3017,6 @@ which had trouble with the special characters in several protein names.
 All analysis of AADDER functional profiles can be found in the R markdown
 document here `02-scripts.backup/148-imv-aadder_evolution_function_cleaned.Rmd`.
 
-<<<<<<< HEAD
 ![AADDER PCAs](05-images/Figure_R41-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R52_SN1_supplemental_aadder_pct_assigned_reads.png)
 **Figure R52 | SEED category statistics at different pathway levels are reported by AADDER.** **a** Proportion of total reads assigned to a SEED category by AADDER. **b** Proportion of reads assigned to the SEED Carbohydrates category at all levels, excluding outlier samples. **c** Proportion of reads assigned to an enzyme in the SEED Carbohydrate category, excluding outlier samples. **d** Total number of enzymes in the Carbohydrate category in each sample. e Total abundance (number of reads) of enzymes in the Carbohydrate category in each sample. Note the different scale in each panel. * P < 0.05, ** P < 0.01, *** P<0.001.
 
@@ -3103,38 +3046,6 @@ document here `02-scripts.backup/148-imv-aadder_evolution_function_cleaned.Rmd`.
 
 ![AADDER PCAs](05-images/Figure_R41-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R61_SN10_suplemental_aadder_pcas_category.png)
 **Figure R61 | PCAs using SEED-classified proteins belonging to specific metabolic pathway categories.** Proteins in pathways that process major biomolecules do not each separate samples by host genus in a pattern similar to that seen in taxonomy, and all proteins. **a** Only proteins in the Carbohydrates category separate the samples by host genera in a pattern similar to that seen for taxonomy and all proteins. **b** Amino acid category proteins do not separate samples by host genera as distinctly as Carbohydrate category proteins. **c** Proteins in the Fatty acids, Lipids, and Isoprenoids category do not separate samples by host genera as distinctly as Carbohydrate category proteins.
-=======
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R51_SN1_supplemental_aadder_pct_assigned_reads.png)
-**Figure R51 | SEED category statistics at different pathway levels are reported by AADDER.** **a** Proportion of total reads assigned to a SEED category by AADDER. **b** Proportion of reads assigned to the SEED Carbohydrates category at all levels, excluding outlier samples. **c** Proportion of reads assigned to an enzyme in the SEED Carbohydrate category, excluding outlier samples. **d** Total number of enzymes in the Carbohydrate category in each sample. e Total abundance (number of reads) of enzymes in the Carbohydrate category in each sample. Note the different scale in each panel. * P < 0.05, ** P < 0.01, *** P<0.001.
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R52_SN2_suplemental_aadder_pcas.png)
-**Figure R52 | SEED-based enzyme composition of calculus samples clusters host genera distinctly.** **a** PCA with all samples and all enzymes. **b** PCA with decontam-identified enzymes removed and outlier samples removed. **c** PCA of oral samples (plaque and calculus) with decontam-identified enzymes and outlier samples removed. **d**  PCA of calculus samples with decontamination-identified enzymes and outlier samples removed.
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R53_SN3_supplemental_aadder_biplots.png)
-**Figure R53 | PCA biplots with the proteins with the top 10 positive and negative loadings on PC1 and PC2 of SEED protein-level entries identified by AADDER.** **a** Top loadings of PC1 including modern day humans. **b** Top loadings of PC1 excluding modern day humans. **c** Top loadings of PC2 including modern day humans. **d** Top loadings of PC2 excluding modern day humans. Bold protein names indicate these proteins remained in the top 10 when removing modern day humans from analysis. Note in panels B and D (without modern Homo samples) that the y-axis has been reversed to maintain orientation with the other PCAs.
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R54_SN4_supplemental_aadder_heatmap.png)
-**Figure R54 | Heat maps showing the centered log ratio-transformed abundance of the top 10 proteins with strongest loadings from the PCA including modern _Homo_.** Host genus is indicated by the colored bars to the right, where blue is _Alouatta_, purple is _Gorilla_, green is _Pan_, and orange is _Homo_. Symbols in _Homo_ indicate different groups, where triangle pointed up is Neanderthal, square is pre-agricultural human, circle is pre-antibiotic human, and triangle pointed down is modern day human. a PC1 negative top 10 proteins with strongest loadings. **b** PC1 positive top 10 proteins with strongest loadings. **c** PC2 negative top 10 proteins with strongest loadings. **d** PC2 positive top 10 proteins with strongest loadings.
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R55_SN5_supplemental_aadder_heatmap_nomod.png)
-**Figure R55 | Heat maps showing the centered log ratio-transformed abundance of the top 10 proteins with strongest loadings from the PCA excluding modern _Homo_.** Host genus is indicated by the colored bars to the right, where blue is _Alouatta_, purple is _Gorilla_, green is _Pan_, and orange is _Homo_. Symbols in _Homo_ indicate different groups, where triangle pointed up is Neanderthal, square is pre-agricultural human, and circle is pre-antibiotic human. a PC1 negative top 10 proteins with strongest loadings. **b** PC1 positive top 10 proteins with strongest loadings. **c** PC2 negative top 10 proteins with strongest loadings. **d** PC2 positive top 10 proteins with strongest loadings.
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R56_SN6_supplemental_aadder_bars_PC1_neg.png)
-**Figure R56 | Species contributions to proteins with the strongest negative loadings in PC1.** Bar graphs of the species that contribute >15% to the proteins with strongest negative loadings in PC1. **a**  Including modern _Homo_ samples, grouped by protein. Symbols indicate the same proteins in panel C. **b** Including modern _Homo_ samples, grouped by host genus. **c** Excluding modern _Homo_ samples, grouped by protein. Symbols indicate the same proteins in panel A. **d** Excluding modern _Homo_ samples, grouped by host genus. All genera that individually contributed <15% are grouped together as Other. Protein names correspond to the numbers in the tables of Figure R53, where pc1/pc2 indicate the component, p/n indicate positive/negative, and the final number indicates the protein. Note different colors for panels A/B and C/D.
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R57_SN7_supplemental_aadder_bars_PC1_pws.png)
-**Figure R57 | Microbial genus contributions to proteins with the strongest positive loadings in PC1.** Bar graphs of the species that contribute >15% to the proteins with strongest positive loadings in PC1. **a** Including modern _Homo_ grouped by protein. Symbols indicate the same proteins in panel C. **b** grouped by host genus, **c** excluding modern _Homo_ grouped by protein. Symbols indicate the same proteins in panel A. **d** with no modern day humans grouped by host genus. All genera that individually contributed <15% are grouped together as Other. Protein names correspond to the numbers in the tables of Figure R53, where pc1/pc2 indicate the component, p/n indicate positive/negative, and the final number indicates the protein. Note different colors for panels A/B and C/D.
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R58_SN8_supplemental_aadder_bars_PC2_pws.png)
-**Figure R58 | Species contributions to proteins with the strongest PC2 loadings in the direction characterizing _Alouatta/Gorilla/Pan_.** Bar graphs of the genera, summed from species, which contribute >15% to the proteins with strongest positive loadings in PC2. a Including modern _Homo_ samples, grouped by protein. Symbols indicate the same proteins in panel C. **b** Including modern _Homo_ samples, grouped by host genus. **c** Excluding modern _Homo_ samples, grouped by protein. Symbols indicate the same proteins in panel A. **d** Excluding modern _Homo_ samples, grouped by host genus. All genera that individually contributed <15% are grouped together as Other. Protein names correspond to the numbers in the tables of Figure R53, where pc1/pc2 indicate the component, p/n indicate positive/negative, and the final number indicates the protein. Note different colors for panels A/B and C/D. 
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R59_SN9_supplemental_aadder_bars_PC2_neg.png)
-**Figure R59 | Microbial genus contributions to proteins with the strongest negative loadings in PC2.** Bar graphs of the genera, summed from species, that contribute >15% to the proteins with strongest negative loadings in PC2. **a** Including modern _Homo_ samples, grouped by enzyme. Symbols indicate the same proteins in panel C. **b** Including modern _Homo_ samples, grouped by host genus. **c** Excluding modern _Homo_ samples, grouped by enzyme. Symbols indicate the same proteins in panel A. **d** Excluding modern _Homo_ samples, grouped by host genus. All genera that individually contributed <15% are grouped together as Other. Protein names correspond to the numbers in the tables of Figure R53, where pc1/pc2 indicate the component, p/n indicate positive/negative, and the final number indicates the protein. Note different colors for panels A/B and C/D.
-
-![AADDER PCAs](05-images/Figure_R40-R50-SM_R51-R60-SN_Functional_analyses/R51-R60_SN_aadder/R51-R60_SN_Composite_files/R60_SN10_suplemental_aadder_pcas_category.png)
-**Figure R60 | PCAs using SEED-classified proteins belonging to specific metabolic pathway categories.** Proteins in pathways that process major biomolecules do not each separate samples by host genus in a pattern similar to that seen in taxonomy, and all proteins. **a** Only proteins in the Carbohydrates category separate the samples by host genera in a pattern similar to that seen for taxonomy and all proteins. **b** Amino acid category proteins do not separate samples by host genera as distinctly as Carbohydrate category proteins. **c** Proteins in the Fatty acids, Lipids, and Isoprenoids category do not separate samples by host genera as distinctly as Carbohydrate category proteins.
->>>>>>> 3e76957707a186778589d9b0f7173e8639c39cc4
-
 
 ### 12.7 Overlap between HUMAnN2 and AADDER
 
