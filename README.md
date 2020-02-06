@@ -199,32 +199,24 @@ Species                                       | Strain      | Date           | C
 _Homo sapiens_                                | HG19        | 2016-01-14     | Complete     | Reference      | http://hgdownload.cse.ucsc.edu/downloads.html#human
 _Actinomyces dentalis_                        | DSM 19115   | 2019-02-25     | Scaffold     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/429/225/GCF_000429225.1_ASM42922v1/
 _Campylobacter gracilis_                      | -           | 2019-05-22     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/
+_Aggregatibacter aphrophilus_                 | W10433      | 2017-06-14     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/022/985/GCF_000022985.1_ASM2298v1/
 _Capnocytophaga gingivalis_                   | ATCC 33624  | 2019-02-25     | Contigs      | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/174/755/GCF_000174755.1_ASM17475v1/
 _Corynebacterium matruchotii_                 | ATCC 14266  | 2019-05-22     | Contigs      | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/175/375/GCF_000175375.1_ASM17537v1/
+_Desulfobulbus_ sp. oral taxon 041            | Dsb1-5      | 2018-06-06     | Contigs      | Assembly       | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/403/865/GCA_000403865.1_Dsb1-5/
 _Fretibacterium fastidiosum_                  | -           | 2018-12-11     | Chromosome   | Unknown        | https://www.ncbi.nlm.nih.gov/nuccore/FP929056.1
 _Fusobacterium hwasookii_                     | ChDC F206   | 2019-10-27     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/455/105/GCF_001455105.1_ASM145510v1/
+_Fusobacterium nucleatum_ subsp. _nucleatum_  | ATCC 25586  | 2017-06-14     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/325/GCF_000007325.1_ASM732v1/
 _Olsenella sp. oral taxon 807_                | 807         | 2019-01-10     | Complete     | Unknown        | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/189/515/GCF_001189515.2_ASM118951v2/
 _Ottowia sp. oral taxon 894_                  | 894         | 2019-05-22     | Complete     | Unknown        | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/262/075/GCF_001262075.1_ASM126207v1/
 _Porphyromonas gingivalis_                    | ATCC 33277  | 2018-12-11     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/010/505/GCF_000010505.1_ASM1050v1/
 _Prevotella loescheii_                        | DSM 19665   | 2019-05-22     | Scaffolds    | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/378/085/GCF_000378085.1_ASM37808v1/
 _Pseudopropionibacterium propionicum_         | F0230a      | 2018-12-11     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/277/715/GCF_000277715.1_ASM27771v1
+_Rothia dentocariosa_                         | ATCC 17831  | 2017-06-14     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/164/695/GCF_000164695.2_ASM16469v2/
 _Selenomonas sp. F0473_                       | F0473       | 2019-05-22     | Scaffolds    | Unknown        | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/315/545/GCF_000315545.1_Seleno_sp_F0473_V1/
-_Streptococcus gordonii_                      | CH1         | 2019-02-13     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/017/005/GCF_000017005.1_ASM1700v1
+_Streptococcus gordonii_                      | CH1         | 2018-06-14     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/017/005/GCF_000017005.1_ASM1700v1
 _Streptococcus sanguinis_                     | SK36        | 2018-12-11     | Complete     | Reference      | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/014/205/GCF_000014205.1_ASM1420v1/
 _Tannerella forsythia_                        | 92A2        | 2018-12-18     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/238/215/GCF_000238215.1_ASM23821v1/
-_Treponema socranskii subsp. paredies_        | ATCC 35535  | 2019-02-28     | Scaffolds    | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/413/015/GCF_000413015.1_Trep_socr_subsp_paredis_ATCC_35535_V1/
-
-**TODO**!
-
-_SCREENING__
-_Aggregatibacter aphrophilus_                 | W10433      | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
-_Desulfobulbus_ sp. oral taxon 041            | Dsb1-5      | 2018-06-06     | Contigs      | Assembly       | https://www.ncbi.nlm.nih.gov/genome
-_Fusobacterium nucleatum_ subsp. _nucleatum_  | ATCC 25586  | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
-_Pseudopropionibacterium propionicum_         | F0230a      | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
-_Rothia dentocariosa_                         | ATCC 17831  | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
-_Streptococcus gordonii_                      | CH1         | 2017-06-14     | Complete     | Representative | https://www.ncbi.nlm.nih.gov/genome
-_Treponema socranskii_                        | ATCC 35535  | 2018-05-31     | Scaffold     | Representative | https://www.ncbi.nlm.nih.gov/genome
-
+_Treponema socranskii subsp. paredies_        | ATCC 35535  | 2018-05-31     | Scaffolds    | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/413/015/GCF_000413015.1_Trep_socr_subsp_paredis_ATCC_35535_V1/
 
 ## 3 Repository Structure
 
