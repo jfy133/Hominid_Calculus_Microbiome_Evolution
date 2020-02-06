@@ -1,0 +1,518 @@
+---
+title: "Deep Evolution: Core Microbiome Parameter Exploration"
+output: html_notebook
+---
+
+## Preparation
+
+This notebook shows the outcome of some of the parameter testing for the 
+core microbiome analysis of the deep evolution project.
+
+Load Libraries
+
+```{r}
+library(tidyverse)
+library(ggalluvial)
+library(scales)
+library(ggbeeswarm)
+library(data.table)
+library(patchwork)
+```
+
+Load data
+
+```{r}
+data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup") %>%
+  list.files("08a-*", full.names = T) %>% 
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
+         Database = map(file_name, ~str_split(.x, "_")[[1]][7] %>% str_replace("maltdb", "") %>% as.character) %>% unlist,
+         Min_Supp = map(file_name, ~str_split(.x, "_")[[1]][8]) %>% unlist,
+         Inds_Frac = map(file_name, ~str_split(.x, "_")[[1]][9] %>% str_replace("fracinds", "") %>% as.numeric) %>% unlist,
+         Pops_Frac = map(file_name, ~str_split(.x, "_")[[1]][10] %>% str_replace("fracpops", "") %>% as.numeric) %>% unlist,
+         Single_Pops_Dropped = map(file_name, ~str_split(.x, "_")[[1]][11] %>% str_replace("singleindpopsdropped", "") %>% as.logical) %>% unlist,
+         Grouping = map(file_name, ~str_split(.x, "_")[[1]][12]) %>% unlist,
+         Level = map(file_name, ~str_split(.x, "_")[[1]][13]) %>% unlist,
+         Date = map(file_name, ~str_split(.x, "_")[[1]][14]) %>% unlist %>% str_replace(".tsv", "")) %>%
+  select(-file_name) %>%
+  filter(Date == "20190902",
+         !Min_Supp %in% c(0.08, 0.09) ) %>%
+  unnest()
+
+data_raw <- Sys.glob("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup") %>%
+  list.files("08b-*", full.names = T) %>% 
+  enframe(name = NULL, value = "file_name") %>%
+  mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
+         Database = map(file_name, ~str_split(.x, "_")[[1]][7] %>% str_replace("maltdb", "") %>% as.character) %>% unlist,
+         Min_Supp = map(file_name, ~str_split(.x, "_")[[1]][8]) %>% unlist,
+         Inds_Frac = map(file_name, ~str_split(.x, "_")[[1]][9] %>% str_replace("fracinds", "") %>% as.numeric) %>% unlist,
+         Pops_Frac = map(file_name, ~str_split(.x, "_")[[1]][10] %>% str_replace("fracpops", "") %>% as.numeric) %>% unlist,
+         Single_Pops_Dropped = map(file_name, ~str_split(.x, "_")[[1]][11] %>% str_replace("singleindpopsdropped", "") %>% as.logical) %>% unlist,
+         Grouping = map(file_name, ~str_split(.x, "_")[[1]][12]) %>% unlist,
+         Level = map(file_name, ~str_split(.x, "_")[[1]][13]) %>% unlist,
+         Date = map(file_name, ~str_split(.x, "_")[[1]][14]) %>% unlist %>% str_replace(".tsv", "")) %>%
+  select(-file_name) %>%
+  filter(Date == "20190902") %>%
+  unnest() %>%
+  bind_rows(data_raw)
+
+
+```
+
+## Aesthetics
+
+Colour Combinations
+
+```{r}
+colours <- c(`Alouatta` = "#1f78b4", 
+              `Alouatta:Gorilla` = "#a6cee3", 
+              `Alouatta:Gorilla:Homo` = "#b15928", 
+              `Alouatta:Gorilla:Pan` = "#fdbf6f", 
+              `Alouatta:Gorilla:Pan:Homo` = "#cab2d6", 
+              `Alouatta:Gorilla:Pan:Homo:Control` = "#525252", 
+              `Alouatta:Homo` = "#ffff99", 
+              `Alouatta:Pan` = "#fb8072", 
+              `Alouatta:Pan:Homo` = "#fdb462", 
+              `Control` = "#252525", 
+              `Gorilla` = "#6a3d9a", 
+              `Gorilla:Pan` = "#bc80bd", 
+              `Gorilla:Pan:Homo` = "#b3de69", 
+              `Gorilla:Pan:Homo:Control` = "#969696", 
+              `Homo` = "#ff7f00", 
+              `Pan` = "#33a02c", 
+              `Pan:Homo` = "#fee090", 
+              `Pan:Homo:Control` = "#d9d9d9",
+             `Control` = "lightgrey"
+             )
+```
+
+
+## Min. Support Comparison
+
+### All Host Combinations
+
+```{r, fig.width=7, fig.height=7}
+
+data_minsup_all <- data_raw %>%
+  filter(!Single_Pops_Dropped) %>%
+  select(Database, Combination, Min_Supp, Taxon, Tax_Level)
+
+ggplot(data_minsup_all,
+       aes(x = Min_Supp, stratum = Combination, alluvium = Taxon,
+           label = Combination)) +
+  geom_flow(stat = "alluvium",
+            color = "darkgray",
+            lode.guidance = "zigzag", na.rm = F) +
+  geom_stratum(aes(fill = Combination), na.rm = F) +
+  scale_fill_manual(values = colours) +
+  xlab("Minimum Support Threshold") +
+  ylab("Number of Taxa") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(legend.position = "bottom") +
+  facet_wrap(Database ~ Tax_Level, scales = "free_y")
+
+
+```
+
+We can see in most cases, the _Alouatta_ and _Pan_ core taxa are reduced 
+significantly when increasing the minimum support value from 0.01 to 0.04.
+There is also fewer combination assignment changes when increasing 
+0.04 to 0.07. 
+]
+
+### Monophyletic Host Combinations 
+
+To look at finer detail, we can look at the assigments to our expected 
+phylogenetic core
+
+```{r, fig.width=7, fig.height=5}
+data_minsup_mhc <- data_raw %>%
+  filter(!Single_Pops_Dropped,
+         Combination %in% c("Pan:Homo", "Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo:Control", "Gorilla:Pan:Homo:Control", "Pan:Homo:Control")) %>%
+  mutate(Combination = factor(Combination, c("Pan:Homo", "Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo:Control", "Gorilla:Pan:Homo:Control", "Pan:Homo:Control") )) %>%
+  select(Database, Tax_Level, Min_Supp, Combination, Taxon, )
+
+plot_mhc <- ggplot(data_minsup_mhc,
+       aes(x = Min_Supp, stratum = Combination, alluvium = Taxon,
+           label = Combination)) +
+  geom_flow(stat = "alluvium",
+            color = "darkgray",
+            lode.guidance = "zigzag", na.rm = F) +
+  geom_stratum(aes(fill = Combination), na.rm = F) +
+  scale_fill_manual(values = colours) +
+  xlab("Minimum Support Threshold") +
+  ylab("Number of Taxa") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(legend.position = "right") +
+  facet_wrap(Database ~ Tax_Level, scales = "free_y")
+
+plot_mhc
+
+ ggsave(paste("99-coremicrobiome_presenceabsence_alluival_minsupportcomparison_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), 
+        plot_mhc, 
+        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        device = cairo_pdf, 
+        width = 7,
+        height = 5, 
+        units = "in",
+        dpi = 600)
+ 
+  ggsave(paste("99-coremicrobiome_presenceabsence_alluival_minsupportcomparison_", format(Sys.Date(), "%Y%m%d"),".png", sep = ""), 
+        plot_mhc, 
+        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        device = "png", 
+        width = 7,
+        height = 5, 
+        units = "in",
+        dpi = 600)
+  
+write_tsv(data_minsup_mhc, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_table_minsupportcomparison_", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+```
+
+We we confirm that increasing our minimum support from 0.04 to 0.07 we remove 
+all combinations including controls, removing potential laboratory control 
+taxa. We see about half of each category being lost to other non-monophyletic
+assignments when increasing 0.01 to 0.4, however again much fewer assignments 
+changes between 0.04 and 0.07.
+
+### Monophyletic Host Combinations 0.04 to 0.07 only.
+
+To get a better feeling of the different types of combination assignments, we
+can firstly remove the 0.01 category as this is likely consisting a lot of 
+low-abundant taxa (or tail), which in our context will be difficult to separate 
+from noise - either from misassignments from unspecific short reads, damage,
+or background environmental contamination.
+
+```{r}
+data_minsup_mhcreduced <- data_raw %>%
+  filter(!Single_Pops_Dropped,
+         Combination %in% c("Pan:Homo", "Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo:Control"),
+         Min_Supp != 0.01) %>%
+  select(Database, Combination, Min_Supp, Taxon, Tax_Level)
+
+ggplot(data_minsup_mhcreduced,
+       aes(x = Min_Supp, stratum = Combination, alluvium = Taxon,
+           label = Combination)) +
+  geom_flow(stat = "alluvium",
+            color = "darkgray",
+            lode.guidance = "zigzag", na.rm = F) +
+  geom_stratum(aes(fill = Combination), na.rm = F) +
+  scale_fill_manual(values = colours) +
+  xlab("Minimum Support Threshold") +
+  ylab("Number of Taxa") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(legend.position = "bottom") +
+  facet_wrap(Database ~ Tax_Level, scales = "free_y")
+```
+
+Using our more confident 0.04 and 0.07 categories, we can see there
+are 2-3 changing of asignments to combinations outside the monophyletic expected
+combinations, and a few reassignments. We can check more specifically what these
+are as follows.
+
+```{r}
+data_minsup_mhcreduced %>%
+  spread(Min_Supp, Combination) %>%
+  filter(`0.04` != `0.07`) %>%
+  arrange(Database, Tax_Level)
+```
+
+Here we can see 2 changes for nt genus, 4 for nt species, and 4 for RefSeq 
+genus and 3 for refseq species. All taxa other than Mycobacterium are isolated
+from the oral cavity. Mycobacterium is a highly diverse environmental taxon. As
+we do not calculate core with actual abundance (other than filtering by 
+the minimum support value), this likely is retained as core in samples as it is
+a combination of control and burial environment _Mycobacterium_ reads, rather
+than being a true oral taxa. The other taxa that are reassigned from a 
+(+control) core to host only - _Streptococus_, _Actinomyces_ and 
+_Corynebacterium_ are diverse taxa that reside in many parts of the human body. 
+It is likely these alignments are combinations of ancient oral and modern skin 
+contamination, and are reassigned as the lower-abundant skin contamination is 
+removed by increasing to 0.07, leaving the highly abundant oral assignments. 
+As all other taxa are known to be isolated or specfic to the oral cavity this 
+suggests their authenticity. Most changes to  the `Pan:Homo` combination are 
+from anaerobic bacteria (e.g. _Tannerella_, _Treponema_,  _Olsenella_) - 
+representative of the stronger signal of these taxa in _Homo_ and _Pan_ vs. 
+_Gorilla_ and _Alouatta_ which have lower abundances of later colonisers, 
+whereas to _Gorilla:Pan:Homo_, these are aerobic taxa typically represent early 
+colonisers - which are more prevalent in 
+_Gorilla_.
+
+## Single Population
+
+```{r, fig.width=7, fig.height=5}
+data_singpop <- data_raw %>%
+  filter(Min_Supp == 0.07 & Tax_Level == "genus" | Min_Supp == 0.04 & Tax_Level == "species",
+         Database == "nt") %>%
+         #Combination %in% c("Pan:Homo", "Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo:Control")) %>%
+  select(Database, Min_Supp, Combination, Single_Pops_Dropped, Taxon, Tax_Level)
+
+plot_singpop <- ggplot(data_singpop,
+       aes(x = Single_Pops_Dropped, stratum = Combination, alluvium = Taxon,
+           label = Combination)) +
+  geom_flow(stat = "alluvium",
+            color = "darkgray") +
+  geom_stratum(aes(fill = Combination)) +
+  scale_fill_manual(values = colours) +
+  xlab("Single Individual Population Dropped?") +
+  ylab("Number of Taxa") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  facet_wrap(Database ~ Tax_Level) +
+  theme(legend.position = "right")
+
+
+plot_singpop
+
+ ggsave(paste("99-coremicrobiome_presenceabsence_alluival_singleindpopcomparison_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), 
+        plot_singpop, 
+        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        device = cairo_pdf, 
+        width = 7,
+        height = 5, 
+        units = "in",
+        dpi = 600)
+ 
+  ggsave(paste("99-coremicrobiome_presenceabsence_alluival_singleindpopcomparison_", format(Sys.Date(), "%Y%m%d"),".png", sep = ""), 
+        plot_singpop, 
+        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        device = "png", 
+        width = 7,
+        height = 5, 
+        units = "in",
+        dpi = 600)
+  
+
+```
+
+No difference at species level for both nt and refseq databasee. We 
+do see one change at species and genus level with the nt database.
+
+To identify what change this is
+
+```{r}
+data_raw %>%
+  filter(Min_Supp == 0.07 & Tax_Level == "genus" | Min_Supp == 0.04 & Tax_Level == "species",
+         Database == "nt") %>%
+         #Combination %in% c("Pan:Homo", "Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo:Control")) %>%
+  select(Database, Min_Supp, Combination, Single_Pops_Dropped, Taxon, Tax_Level) %>% 
+  distinct() %>%
+  spread(Single_Pops_Dropped, Combination) %>%
+  filter(`FALSE` != `TRUE`) %>%
+  arrange(Tax_Level, `TRUE`) %>%
+  rename(Retained = `FALSE`,
+         Dropped = `TRUE`)
+
+## But to save
+
+data_singpop_save <- data_raw %>%
+  filter(Min_Supp == 0.07 & Tax_Level == "genus" | Min_Supp == 0.04 & Tax_Level == "species",
+         Database == "nt") %>%
+         #Combination %in% c("Pan:Homo", "Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo", "Alouatta:Gorilla:Pan:Homo:Control")) %>%
+  select(Database, Min_Supp, Combination, Single_Pops_Dropped, Taxon, Tax_Level)
+
+write_tsv(data_singpop_save, paste("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_table_singleindpopcomparison_", format(Sys.Date(), "%Y%m%d"),".tsv", sep = ""))
+
+```
+
+We see in both cases they drop outside our expected mono-phyletic filtering - 
+i.e. they aren't in Gorilla.
+
+## WTF Mycobacterium?
+
+We also note that we have _Mycobacterium_ still being maintained in our nt core.
+
+```{r}
+data_minsup_mhc %>% filter(Taxon == "Mycobacterium")
+```
+
+This is a bit odd as it's a common environmental contaminant. Indeed, even 
+at 0.04% minimum support it is actually in a core with the controls. Lets see
+if we can look a little closer at this. Is it also in genus in refseq? 
+
+So it seems to be limited to just genus nt. Lets check this.
+
+```{r}
+data_raw %>%
+    filter(!Single_Pops_Dropped) %>% filter(grepl("Myco", Taxon))
+```
+
+So that would suggest generally that the actual Mycobacterium assignments, 
+despite being abundant are very diverse, so the the species level assignments 
+are not passing the MinSupport threshold.
+
+
+We can check this more specifically.
+
+```{r}
+metadata <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>%
+ rename(Individual = `#SampleID`)
+
+  data_out_sampfil <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv")
+  
+  bad_samples <- data_out_sampfil %>% 
+      filter(!withinfluctuationvariation_pass) %>%
+      pull(sample)
+  
+   contaminants_species <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+   
+   ## At Species Level
+ raw_malt_species <- read_tsv("/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+ 
+   minsupp_malt <- "Min_Support_Reads_Threshold_MALT"
+   minsupp_multiplier <- 1
+
+data_cleaner_new <- function(x, meta_dat, supp_col, ms_mltpr) {
+  supp_col <- enquo(supp_col)
+  ms_mltpr <- enquo(ms_mltpr)
+  
+  colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam", "", colnames(x))
+  colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(x))
+  colnames(x) <- gsub("_S0_L001_R1_001.fastq.extractunmapped.bam", "", colnames(x))
+  colnames(x) <- gsub("_S0_L003_R1_001.sorted.bam.unmapped", "", colnames(x))
+  colnames(x)[1] <- "Taxon"
+  x <- x %>%
+    gather(Individual, Value, 2:ncol(x)) %>%
+    mutate(Value = as.numeric(Value)) %>%
+    left_join(select(meta_dat, Individual, one_of(c(!! supp_col)), Age)) %>%
+    rename(Orig_Threshold = !! supp_col) %>%
+    mutate(Multiplier = as.numeric(!! ms_mltpr)) %>%
+    mutate(Threshold = Orig_Threshold * Multiplier) %>%
+    mutate(Threshold = as.numeric(Threshold)) %>%
+    mutate(Filter_Passed = if_else(Value == 0,
+      1,
+      if_else(Value >= Threshold, 1, 0)
+    )) %>%
+    filter(Filter_Passed == 1) %>% # ,
+    # Age != "ModernDay") %>%
+    select(Taxon, Individual, Value)
+  return(x)
+}
+
+   drop_single <- F
+   
+myco_data <- clean_malt_species <- data_cleaner_new(
+  raw_malt_species, metadata,
+  minsupp_malt, minsupp_multiplier
+) %>%
+  mutate(Software = "MALT", Tax_Level = "species") %>%
+  left_join(metadata) %>%
+  filter(grepl("Mycobacterium", Taxon))
+
+```
+
+Set aesthetics
+
+```{r}
+common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+```
+
+
+To see the overall number of _Mycobacterium_ **species** level assignments
+
+```{r}
+## Have to remove accidently UDG treated library
+myco_per_group <- myco_data %>% 
+  group_by(Host_Common, Individual) %>% 
+  summarise(Alignments = sum(Value)) %>%
+  filter(!is.na(Host_Common)) %>%
+ggplot(aes(Host_Common, Alignments)) + 
+  geom_boxplot() +
+  geom_beeswarm(pch = 21, alpha = 0.7, aes(fill = Host_Common)) +
+  coord_flip() +
+  xlab("Group") +
+  scale_fill_manual(values = common_colours) +
+  scale_y_log10(labels = comma) +
+  labs(tag = "a") +
+  theme_minimal(base_family = "Roboto", base_size = 7) +
+  theme(legend.position = "none")
+
+myco_per_group
+```
+
+We indeed see that Mycobacterium is highly prevalent in environmental samples.
+It is however lower in library controls, which is why it is not picked up in
+the core-microbiome min-support threshold increase (as in the min support 
+removes most of the alignments in the controls when increased too high, so it 
+is not considered a core  to controls when increasing to 0.07 with genus, but 
+is removed at the lower threshold at 0.04 for species).
+
+We can also look at the types of _Mycobacterium_ species that these assignments
+are derived from.
+
+
+```{r}
+myco_per_indiviudal <- myco_data %>% 
+  group_by(Taxon) %>% 
+  filter(Value > 0) %>% 
+  summarise(`No. Individuals` = n()) %>%
+  arrange(`No. Individuals`) %>%
+  mutate(Taxon = as_factor(Taxon)) %>%
+ggplot(aes(Taxon, `No. Individuals`)) +
+  geom_bar(stat = "identity") +
+  coord_flip()  +
+  labs(tag = "b") +
+  theme_minimal(base_family = "Roboto", base_size = 7)
+
+myco_per_indiviudal
+```
+
+The highest two sources of _Mycobacterium_ (kansasii, avium) alignments across all individuals 
+are water-borne taxa, again suggesting this is derived from environmental 
+contamination.
+
+We can also see how they are represented in the NCBI genome database (which we
+use as a proxy for nt).
+
+```{r}
+refseq_genomes <- fread("https://ftp.ncbi.nlm.nih.gov/genomes/refseq/assembly_summary_refseq.txt") %>% as_tibble() 
+```
+
+And plot
+
+```{r}
+refseq_genomes %>% filter(grepl("Mycobacterium", organism_name)) %>%
+  group_by(organism_name) %>%
+  summarise(`No. Assemblies` = n()) %>%
+  filter(`No. Assemblies` > 10) %>%
+  arrange(`No. Assemblies`) %>%
+  mutate(organism_name = as_factor(organism_name)) %>%
+  rename(Taxon = organism_name) %>%
+ggplot(aes(Taxon, `No. Assemblies`)) +
+  geom_bar(stat = "identity") +
+  geom_text(y = 10, hjust = 0.1, aes(label = `No. Assemblies`), colour = "black") +
+  coord_flip()  +
+  theme_minimal(base_family = "Roboto", base_size = 7)
+  
+```
+
+ We see that _avium_ and _kansaii_ are 2nd and 4th in the highest number of
+  assemblies, suggesting they are likely over-represented in the database.
+
+to save plot for paper
+
+```{r, fig.width=7, fig.height=3.5}
+myco_final <- myco_per_group + myco_per_indiviudal
+
+ ggsave(paste("99-coremicrobiome_presenceabsence_mycobacterium_investigation_", format(Sys.Date(), "%Y%m%d"),".pdf", sep = ""), 
+        plot = myco_final, 
+        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        device = cairo_pdf, 
+        width = 7,
+        height = 3.5, 
+        units = "in",
+        dpi = 600)
+ 
+  ggsave(paste("99-coremicrobiome_presenceabsene_mycobacterium_investigation_", format(Sys.Date(), "%Y%m%d"),".png", sep = ""), 
+        plot = myco_final, 
+        path = "/home/fellows/projects1/microbiome_calculus/evolution/04-analysis/screening/presenceabsence_intersection.backup/", 
+        device = "png", 
+        width = 7,
+        height = 3.5, 
+        units = "in",
+        dpi = 600)
+```
+
