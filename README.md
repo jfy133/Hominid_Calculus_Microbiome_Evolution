@@ -2245,7 +2245,7 @@ also summarised in Table R8.
 **Table R8 | Results of ‘automated’ super-reference species selection for downstream phylogenetic analysis.** Production dataset was mapped for each genus with EAGER to a combined reference of all species of the calculus microbiome core genome calculated above. Metrics were number of reads, breadth coverage, depth coverage, competitive mapping score, percentage of species reads over all genus reads. Species were then filtered those that had a number metrics that the species exceeded the genus mean plus standard deviation of the metric was more than 1. In cases of ties, either a named species or more complete genome reconstruction selected. In cases where unnamed species are the top candidate, either the next best taxon with an official name or where the isolation source was ‘oral cavity’ were selected.
 
 | Genus                     | Species                                                   | Metrics Passed | Selected |
-|---------------------------|----------------------------------------------  -----------|---------------:|----------|
+|---------------------------|-----------------------------------------------------------|---------------:|----------|
 | _Actinomyces_             | _Actinomyces dentalis DSM 19115_                          | 5              | TRUE     |
 | _Campylobacter_           | _Campylobacter_ sp. AAUH-44UCsig-a                        | 3              | FALSE    |
 | _Campylobacter_           | _Campylobacter gracilis_                                  | 2              | TRUE     |
