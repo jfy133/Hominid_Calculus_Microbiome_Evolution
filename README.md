@@ -2820,13 +2820,6 @@ analysis can be seen in `06-additional_data_files` under Data R35.
 
 **Figure R38 | Bayesian skyline plot of population expansion of the amylase-binding protein B gene _(abpB)_.** The population shows expansion at ~7000 years before the present, with a decline at around 500 years before the present. However, the uneven distribution of samples across time make the results unreliable, and we do not draw any conclusions from these results.
 
-A list of accession numbers of abpB sequences collected for bayesian skyline
-analysis can be seen in `06-additional_data_files` under Data R35. 
-
-![BEAST2 abpB skyline plot](05-images/Figure_R38_SO_beast/R37_sky_apbB_noGOY.png)
-
-**Figure R38 | Bayesian skyline plot of population expansion of the amylase-binding protein B gene _(abpB)_.** The population shows expansion at ~7000 years before the present, with a decline at around 500 years before the present. However, the uneven distribution of samples across time make the results unreliable, and we do not draw any conclusions from these results.
-
 ### 12.3 HUMANn2
 
 In addition to the taxonomic profile, the functional profile of dental calculus
