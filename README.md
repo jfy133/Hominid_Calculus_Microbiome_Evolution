@@ -2735,7 +2735,90 @@ _Streptococcus_ reads to amylase binding protein-like reads as in
 
 #### 12.2.3 Amylase bayesian skyline analysis
 
-> :warning: Irina to write!
+We additionally identified reads in the screening dataset originating from *abpA* and *abpB* by independently using BLAST and mapping against a selected set of reference sequences of *abpA* and *abpB*. All reference abpA sequences in fasta format were built into a blast database:
+```bash
+makeblastdb -in <abp_gene>.fasta -dbtype nucl -title <abp_gene> -out <abp_gene>
+```
+
+and then all screening samples were searched against both databases using blast command line tools: 
+```bash
+## ran once with <abp_database> for abpA and again with <abp_database> for abpB
+gzip -dcf <SAMPLENAME>.fastq.gz | blastn -db <abp_database> -query - -out $(basename <SAMPLENAME> .fasta.gz).out -num_descriptions 20 -num_alignments 20 -num_threads 12
+```
+
+All reads that hit any reference sequence were extracted from a blast format output file to a list using the script `ncbiblastparser.pl` downloaded from `https://github.com/mel-astar/mel-ngs/blob/master/utils/ncbiblastparser.pl`
+
+```bash
+ncbiblastparser.pl <(gzip -dcf <SAMPLENAME>.out) 1 "$(echo <SAMPLENAME>)".parsed
+grep -v 'No hits found' "$(echo <SAMPLENAME>)".parsed > "$(echo <SAMPLENAME>)".hits
+```
+
+The read ID of all sequences with a hit in the blast output were copied to a list 
+```bash
+awk '{print $1}' <SAMPLENAME>.hits > <SAMPLENAME>.list
+```
+
+This list was used to extract the reads from the original fastq files using seqtk into new files to be mapped against *apbA* and *abpB* references sequences:
+
+```bash
+zcat <SAMPLENAME>.fastq.gz | seqkit grep -f <SAMPLENAME>.list > <SAMPLENAME>.fastq
+```
+
+The individual *abpA* and *abpB* sequences were indexed with bwa for mapping: 
+```bash
+for f in *.fasta; do bwa index -p `basename $f .fasta` $f; done
+```
+
+and then each BLAST-hit read sample file was mapped against each *abpA* and *abpB* reference sequence:
+```bash
+bwa aln -n 0.01 -l 32 <reference_abp_sequence> <SAMPLENAME>.fastq > <SAMPLENAME>.abp_reference_seqence.sai
+
+bwa samse /AP018338_abpA <SAMPLENAME>.abp_reference_seqence.sai <SAMPLENAME> > <SAMPLENAME>.abp_reference_seqence.sam
+```
+
+Finally files were converted to bam format, mapped reads selected out, duplicate reads removed from the mapped read only file, and the duplicate-removed mapped-only read file was indexed:
+```bash
+# convert sam to bam
+for f in *.sam; do samtools view -bS $f | samtools sort - $(basename $f .sam).bam; done
+
+# select only mapped reads
+for f in *.bam; do; samtools view -b -F4 $f > $(basename $f .bam).mapped.bam; done
+
+# remove duplicates from mapped reads
+for f in *mapped.bam; do 
+samtools rmdup -s $f $(basename $f .bam)_rmdup.bam 2>&1 >/dev/null  | cut -d' ' -f 6 > $(basename $f .bam)_dup.txt # collects read IDs of the duplicate reads
+samtools index $(basename $f .bam)_rmdup.bam
+done
+
+# index the mapped, dupliate-removed bam files
+for f in *rmdup.bam; do; samtools index $f $(basename $f .bam).bai; done
+```
+
+All alignments were visually inspected with IGV, and consensus sequences from
+mapping against the *Streptococcus gordonii* str. Challis (NC_009785) reference
+*abpA* and *abpB* sequences were exported from IGV if they covered at least 40%
+of the reference at least 1X : On the alignment track right-click to bring up a
+menu and select 'Copy consensus sequence'. All consensus sequences were pasted
+into a text file in fasta format that included the NC_009785 reference sequence,
+and this was used as an alignment file. The consensus sequence fasta file was
+uploaded to Geneious v 8.0.5 and exported in a nexus file format.
+
+The consensus sequence nexus file was uploaded into BEAUTi BEAUTi for Bayesian
+skyline analysis with BEAST2 v 2.4.7., and dates were added, either as estimated
+from archaeological context, or from known collection dates of modern data. All
+parameters were left at default with the GTR substitution model, a strict clock,
+and coalescent Bayesian skyline model. The MCMC chain length was 800000000 with
+sampling every 80000 states. The chain converged but inspection of the tree
+structure in DensiTree showed no structure for *abpA*, and we therefore did not
+proceed with BEAST analysis to date expansion of *abpA*. However, we generated a
+skyline plot from the *abpB* data, which is shown in Figure R38.
+
+A list of accession numbers of abpB sequences collected for bayesian skyline
+analysis can be seen in `06-additional_data_files` under Data R35. 
+
+![BEAST2 abpB skyline plot](05-images/Figure_R38_SO_beast/R37_sky_apbB_noGOY.png)
+
+**Figure R38 | Bayesian skyline plot of population expansion of the amylase-binding protein B gene _(abpB)_.** The population shows expansion at ~7000 years before the present, with a decline at around 500 years before the present. However, the uneven distribution of samples across time make the results unreliable, and we do not draw any conclusions from these results.
 
 A list of accession numbers of abpB sequences collected for bayesian skyline
 analysis can be seen in `06-additional_data_files` under Data R35. 
