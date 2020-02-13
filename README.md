@@ -945,27 +945,28 @@ comes after the adapters which would be the poly Gs. Poly G tails would
 only affect single index reads, where the read itself is too short and doesn't
 have an adapter to indicate the read has ended.
 
-To get post-polyG trimming stats, we firstly imported the same symlinks to the 
-raw data as input to [preprocessing](#611-script-version), but  into 
-`04-analysis/screening/eager/polyGremoval_input`.
-
-With then run `fastp` on each of these folders to generate reads without
-potential poly-G tails.
-
-Then we run the complexity filter on these to remove the poly-Gs using 
-[`fastp`](https://github.com/OpenGene/fastp). This will remove/trim any read
-where the last 10 reads are all Gs.
+1. AdapterRemoval with no quality trimming or merging, just adapter removal
 
 ```bash
-
-sbatch 02-scripts.backup/099-polyGcomplexity_filter.sh
-
+sbatch 02-scripts.backup/099-polyGcomplexity_filter_preFastPprep.sh
 ```
 
-The output is then stored in 
-`04-analysis/screening/eager/polyGremoval_input/output`.
+2. Clean up the output in `04-analysis/screening/eager/polyGremoval_input/output/` with
 
-From there, we can run EAGER on the poly-G trimmed files into polyGremoval_output
+```bash
+find . ! -name '*fastq.gz' -type f -delete
+```
+
+3. Run FastP on output of AdapterRemoval with
+
+```bash
+sbatch 02-scripts.backup/099-polyGcomplexity_filter.sh
+```
+
+4. Finally try running mapping on output of FastP again with EAGER. Need to run 
+   AR still to merge but not important for re-clipping as there shouldn't be 
+   any adapters, so will put minimum adapter overlap to 11 (EAGER doesn't allow 
+   merging only)
 
 ```
 Organism: Human
@@ -973,11 +974,12 @@ Age: Ancient
 Treated Data: non-UDG
 Pairment: Single End (R1) or Paired End (R1/R2)
 Input is already concatenated (skip merging): N
-Concatenate Lanewise together: N (HiSeq) or Y (NextSeq)
+Concatenate Lanewise together: N (as lane concatenation already done)
 Reference: HG19
 Name of mitochondrial chromosome: chrMT
 
 AdapterRemoval: N
+  minimum adapter overlap: 11
 Mapping: BWA
   Seedlength: 32
   Max # diff: 0.01
@@ -987,142 +989,14 @@ Mapping: BWA
 Remove Duplicates: DeDup
   Treat all reads as merged: Y
 Damage Calculation: Y
-CleanUp: On
-Create Report: Off
-
-```
-
---
-
-> THIS IS OLD
-
- Then we for the first round of mapping we use the input parameters per sequencing 
-configuration, and the mapping pipeline as follows: 
-
-```
-Organism: Human
-Age: Ancient
-Treated Data: non-UDG
-Pairment: Single End (R1) or Paired End (R1/R2)
-Input is already concatenated (skip merging): N
-Concatenate Lanewise together: N (HiSeq) or Y (NextSeq)
-Reference: HG19
-Name of mitocondrial chromosome: chrMT
-
-AdapterRemoval: Y
-Mapping: BWA
-  Seedlength: 32
-  Max # diff: 0.01
-  Qualityfilter: 0
-  Filter unmapped: On
-  Extract Mapped/Unmapped: Off
-Remove Duplicates: DeDup
-  Treat all reads as merged: On
-DamageCalculation: DamageProfiler
 CleanUp: On
 Create Report: On
 
 ```
 
-We then update the `find` path and number of jobs in the array in the script 
-`02-scripts.backup/18-eager_microbiota_slurm_array.sh` to the new input directory and number
-of libraries.
-
-Once completed, we can perform a clean up FASTQs to reduce our footprint 
-
-```bash
-cd 04-analysis/screening/eager/polyGremoval_input
-
-rm -r 04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.collapsed.gz \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.collapsed.truncated.gz \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.discarded.gz \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.pair1.truncated.gz \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.pair2.truncated.gz \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.settings \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/*.singleton.truncated.gz \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/DONE.AdapterRemovaldefault \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/DONE.AdapterRemovalFixReadPrefix \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/DONE.CombineFastQ \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/DONE.TrackFastQ \
-04-analysis/screening/eager/polyGremoval_input/*/1-AdapClip/track_fastq.log \
-04-analysis/screening/eager/polyGremoval_input/*/3-Mapper/ \
-04-analysis/screening/eager/polyGremoval_input/*/4-Samtools/ \
-04-analysis/screening/eager/polyGremoval_input/*/6-QualiMap \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.bam \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.bai \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.hist \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.log \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/*.bam.mtnucratio \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.CleanSam \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.DeDup \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.MTToNucRatioCalculator \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.SamtoolsIndexDedup \
-04-analysis/screening/eager/polyGremoval_input/*/5-DeDup/DONE.SamtoolsSortDeDup
-```
-
-and now use `samtools` to convert our mapped Human DNA reads (after DeDup) back to 
-FASTQ.
-
-```bash
-INDIR=04-analysis/screening/eager/polyGremoval_input/
-
-for LIBDIR in "$INDIR"/*/; do
-  LIBNAME=$(echo "$LIBDIR" | rev | cut -d/ -f2 | rev)
-  if [ -f "$INDIR"/"$LIBNAME"/5-DeDup/*mappedonly.sorted.cleaned_rmdup.sorted.bam.fq.gz ]; then
-    printf "\n $LIBNAME already Processed \n\n"
-  else
-    echo "$LIBNAME"
-    samtools fastq $(readlink -f $INDIR/$LIBNAME/5-DeDup/*mappedonly.sorted.cleaned_rmdup.sorted.bam) | gzip > $(readlink -f $INDIR/$LIBNAME/5-DeDup/*mappedonly.sorted.cleaned_rmdup.sorted.bam).fq.gz
-  fi
-done
-
-```
-
-
-Once completed, we prepare the final round of EAGER mapping to generate the 
-EAGER ReportTable mapping information but without poly-G reads.
-
-```bash
-cd 04-analysis/screening/eager/polyGremoval_output/
-mkdir input output
-cd input
-
-find 04-analysis/screening/eager/polyGremoval_input/ -name '*.polyGtrimmed.fq.gz' -type f | while read LINE; do 
-  mkdir $(echo $LINE | rev | cut -d/ -f3 | rev) && ln -s "$LINE" $(echo $LINE | rev | cut -d/ -f3 | rev); 
-done
-
-```
-
-And set up EAGER with the following settings
-
-```
-Organism: Human
-Age: Ancient
-Treated Data: non-UDG
-Pairment: Single End 
-Input is already concatenated (skip merging): Y
-Concatenate Lanewise together: N
-Reference: HG19
-Name of mitocondrial chromosome: chrMT
-
-AdapterRemoval: N
-Mapping: BWA
-  Seedlength: 32
-  Max # diff: 0.01
-  Qualityfilter: 0
-  Filter unmapped: On
-  Extract Mapped/Unmapped: Off
-Remove Duplicates: DeDup
-  Treat all reads as merged: Y
-Damage Calculation: Y
-CleanUp: On
-Create Report: Off
-
-```
-
-> /END OLD
-
---
+And submit with 
+`02-scripts.backup/02-scripts.backup/021-eager_microbiota_slurm_array.sh` after
+updating the path in find.
 
 The resulting human mapping data after poly-G removal can be seen in 
 `00-documentation.backup/99-PolyGRemoved_HumanMapping_EAGERReport_output.csv`
