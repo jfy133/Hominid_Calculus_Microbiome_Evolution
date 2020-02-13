@@ -22,7 +22,7 @@ library(patchwork)
 Set project directory (if required!)
 
 ```{r}
-proj_dir <- "../"
+proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
 ```
 
 Load files to be analysed
@@ -31,9 +31,9 @@ Load files to be analysed
 ## Screening
 
 ```{r}
-metadata_sample <- read_csv(paste0(proj_dir, "../00-documentation.backup/01-calculus_microbiome_deep_evolution_samplescontrols_metadata_20190523.csv"))
-metadata_individual <- read_tsv(paste0(proj_dir, "../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
-metadata_library_screening <- read_csv(paste0(proj_dir, "../00-documentation.backup/03-human_filtering_statistics_20190522.csv"))
+metadata_sample <- read_csv(paste0(proj_dir, "00-documentation.backup/01-calculus_microbiome_deep_evolution_samplescontrols_metadata_20200107.csv"))
+metadata_individual <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+metadata_library_screening <- read_csv(paste0(proj_dir, "00-documentation.backup/03-human_filtering_statistics_20190522.csv"))
 
 metadata_library_screening_polyg <- read_csv(paste0(proj_dir, "04-analysis/screening/eager/polyGremoval_output/output/Report_output.csv"))
 ```
@@ -42,7 +42,7 @@ metadata_library_screening_polyg <- read_csv(paste0(proj_dir, "04-analysis/scree
 
 ```{r}
 metadata_library_deep <- read_csv(paste0(proj_dir, "03-preprocessing/deep/human_filtering/output/Report_output.csv"))
-metadata_individual_deep <- read_tsv(paste0(proj_dir, "../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv"))
+metadata_individual_deep <- read_tsv(paste0(proj_dir, "00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv"))
 ```
 
 # Data Wranging
@@ -101,7 +101,7 @@ metadata_combined_screening_summary  <- metadata_combined_screening %>%
   mutate(Total_AnalysisReadyReads = Total_Processed_Reads - Total_Mapped_Reads,
          Age = if_else(grepl("ModernDay", Group), "Modern", "Ancient"))
 ```
-
+\
 > Note: Total_Mapped_Reads appears to be reported incorrectly. The DeDup
 log reports a number which when removing this from input mapped reads does not
 result in the number contained in the output BAM file itself. We will
@@ -217,6 +217,8 @@ metadata_sample  %>%
   summarise(N = n())
 ```
 
+> Note that there are two 'samples' for GDN although that is technically wrong. 
+
 For blanks, we can do the following
 
 ```{r}
@@ -224,14 +226,18 @@ metadata_library_screening %>%
   rename(Library_Name = Sample_Name) %>%
   left_join(metadata_library_screening_polyg_clean) %>%
   left_join(metadata_sample, by = c("Library_Name" = "Sample")) %>%
+  mutate(PolyG_Percent_Endogenous = (PolyG_Mapped_Reads / Post_Clip_and_Merge) * 100) %>%
   filter(grepl("EXB|LIB", Library_Name)) %>%
   group_by(Group) %>%
-  summarise_at(vars(Raw_Reads, Post_Clip_and_Merge, Percent_Endogenous_DNA), list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
+  summarise_at(vars(Raw_Reads, Post_Clip_and_Merge, Percent_Endogenous_DNA, PolyG_Percent_Endogenous), list(Mean = mean, SD = sd, Min = min, Max = max)) %>%
   gather(Metric, Value, 2:ncol(.)) %>% 
   arrange(Group, Metric) %>%
   mutate(Value = round(Value, 2))
 
+
 ```
+
+> Note that EXB0{20..23}.A0102 actually is a resequencing of the A0101 versions because the former failed.
 
 ## Deep
 
@@ -412,7 +418,7 @@ final_screening_plot <- plot_screening_rawreads +
 
 ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_" , 
              format(Sys.Date(), "%Y%m%d"),".pdf"), 
-       plot = final_screening__plot, 
+       plot = final_screening_plot, 
        device = cairo_pdf, 
        width = 7, 
        height = 5, 
