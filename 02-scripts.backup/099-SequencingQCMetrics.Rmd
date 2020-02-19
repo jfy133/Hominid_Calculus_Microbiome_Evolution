@@ -157,6 +157,8 @@ metadata_combined_deep <- metadata_library_deep_summary %>%
 
 ## Screening
 
+### Per Dataset
+
 Set general function
 
 ```{r}
@@ -238,6 +240,16 @@ metadata_library_screening %>%
 ```
 
 > Note that EXB0{20..23}.A0102 actually is a resequencing of the A0101 versions because the former failed.
+
+### Per Individual
+
+```{r}
+metadata_combined_screening_summary %>% 
+  mutate(Individual = str_sub(Sample, 1, 6)) %>% 
+  summarise(Raw_Reads = sum(Total_Raw_Reads),
+            )
+```
+
 
 ## Deep
 

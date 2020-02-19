@@ -1,0 +1,142 @@
+---
+title: "Deep Evolutoin - Sequencing Results and Human Content Assessment v2"
+output: html_notebook
+---
+
+# Introduction
+
+This notebook is to generate a variety of summary statistics for the 
+sequencing results and human content of the libraries generated for this project.
+
+More specifically in the supplementary information of the journal article, we want to summarise the following:
+
+* the number of reads sequenced
+* the number of 'analysis-ready-reads' (i.e. the preprocessed and quality-filtered reads going into the microbiome analysis)
+* the approximate human DNA content (i.e. endogneous DNA of poly-G reads)
+
+For a supplementary table, these numbers should be per _individual_. But for the text, this should be per group with averages and standard deviations (and sample sizes).
+
+In both cases, this should be rpeoted separately for the screening (non-UDG treated) and production (full-UDG treatment) datasets.
+
+We can also automate the generation of this text, and additional plots here.
+
+# Infrastructure
+
+Load tidyverse for data wrangling and plotting
+
+```{r}
+library(tidyverse)
+library(ggbeeswarm)
+library(scales)
+library(patchwork)
+library(janitor)
+```
+
+# Data Manipulation
+
+## Screening
+
+For the screening data, we need to first get our base per-individual metadata file, the sequencing stats and separate poly-G mapping information.
+
+```{r}
+
+raw_scr_metadata <- read_tsv("/home/fellows/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>% 
+  janitor::clean_names(., "snake") %>%
+  rename(individual = individual_id)
+
+raw_scr_seqstats <- read_csv("/home/fellows/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/00-documentation.backup/03-human_filtering_statistics_20190522.csv") %>% 
+  janitor::clean_names(., "snake") %>%
+  rename(sample = sample_name)
+
+raw_scr_polygmap <- read_csv("/home/fellows/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/00-documentation.backup/99-PolyGRemoved_HumanMapping_EAGERReport_output.csv") %>% 
+  janitor::clean_names(., "snake") %>%
+  rename(sample = sample_name) %>%
+  rename_at(vars(-contains("sample")), function(x) paste0("polyg_", x))
+
+```
+
+We also need to do some cleanup so each file is compatible with eachother.
+
+```{r}
+
+## Remove seq stats values from metadata file - THESE COLUMNS NEED TO BE UPDATED AFTER THIS SCRIPT
+data_scr_metadata <- raw_scr_metadata %>% 
+  select(-contains("seq"), -contains("sum"), -contains("percent"), -contains("reads"), -lab_protocol, -number_sample_id ) %>%
+  select(individual, everything())
+
+## Fix seqtats indiviudal names - only new calculus needs be to reconstructed
+data_scr_seqstats <- raw_scr_seqstats %>% mutate(individual = map(sample, function(x) {
+  case_when( grepl("SRR", x) ~ x, 
+             grepl("ERR", x) ~ x,
+             grepl("ElSidron", x) ~ x,
+             grepl("Spy", x) ~ x,        
+             grepl("Chimp", x) ~ x,
+             grepl("EXB", x) ~ x,
+             grepl("LIB", x) ~ x,
+             TRUE ~ str_sub(x, 1, 6)
+             )
+          }
+  ) %>% unlist) %>% select(individual, everything())
+
+data_scr_polygmap <- raw_scr_polygmap %>% mutate(individual = map(sample, function(x) {
+  case_when( grepl("SRR", x) ~ x, 
+             grepl("ERR", x) ~ x,
+             grepl("ElSidron", x) ~ x,
+             grepl("Spy", x) ~ x,        
+             grepl("Chimp", x) ~ x,
+             grepl("EXB", x) ~ x,
+             grepl("LIB", x) ~ x,
+             TRUE ~ str_sub(x, 1, 6)
+             )
+          }
+  ) %>% unlist) %>% select(individual, everything())
+```
+
+Now we can bind the tables together. As we have multiple samples and seuqencing
+runs for each individual, we will left join the metadata onto the seqstats first,
+and as we didn't poly-G the environmental sources will do that last.
+
+```{r}
+data_scr_all <- data_scr_seqstats %>% full_join(data_scr_metadata) %>% full_join(data_scr_polygmap)
+```
+
+Now we need to select the columns we want to summarise per individual.
+
+
+```{r}
+data_scr_all %>% select(individual, 
+                        sample, 
+                        study,
+                        accession_id,
+                        env,
+                        host_genus,
+                        raw_reads, 
+                        post_clip_and_merge, 
+                        percent_merged_content_post_clip_and_merge, 
+                        post_duplicate_removal_reads, 
+                        cluster_factor, 
+                        mt_dna_reads, 
+                        median_fragment_length, 
+                        gc_content_percent, 
+                        non_human_reads,
+                        ...)
+```
+
+We can now split into a two tables, and filter each for for 
+'newly sequenced-only' and all calculus samples.
+
+This per-individual 
+
+From these two tables, we then summarise further for reporting in text
+
+## Production
+
+We can also clean these up 
+
+# Results
+
+## Table
+
+## Text
+
+## Plots
