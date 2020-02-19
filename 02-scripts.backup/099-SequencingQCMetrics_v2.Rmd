@@ -40,7 +40,7 @@ For the screening data, we need to first get our base per-individual metadata fi
 
 ```{r}
 
-raw_scr_metadata <- read_tsv("/home/fellows/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>% 
+raw_scr_metadata <- read_tsv("/home/fellows/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20200219.tsv") %>% 
   janitor::clean_names(., "snake") %>%
   rename(individual = individual_id)
 
@@ -104,26 +104,78 @@ Now we need to select the columns we want to summarise per individual.
 
 
 ```{r}
-data_scr_all %>% select(individual, 
-                        sample, 
-                        study,
-                        accession_id,
-                        env,
-                        host_genus,
-                        raw_reads, 
-                        post_clip_and_merge, 
-                        percent_merged_content_post_clip_and_merge, 
-                        post_duplicate_removal_reads, 
-                        cluster_factor, 
-                        mt_dna_reads, 
-                        median_fragment_length, 
-                        gc_content_percent, 
-                        non_human_reads,
-                        ...)
+data_scr_samples <- data_scr_all %>%   
+  select(individual,
+         sample, 
+         study,
+         accession_id,
+         env,
+         host_genus,
+         raw_reads, 
+         post_clip_and_merge, 
+         percent_merged_content_post_clip_and_merge, 
+         post_duplicate_removal_reads,
+         percent_endogenous_dna,
+         polyg_endogenous_dna_percent,
+         cluster_factor, 
+         median_fragment_length,
+         polyg_median_fragment_length, 
+         gc_content_percent, 
+         polyg_gc_content_in_percent,
+         non_human_reads) %>%
+  mutate(
+    percent_endogenous_dna = round(percent_endogenous_dna, 3)
+    )
+```
+
+> It looks like poly-G clipping actually massively improved the number of reads
+retained by AdapterRemoval. I think this is likely due to quality filtering, as
+the tail clipping would have removed a lot of low quality bases that overall
+would have made the read very low quality and maybe discarded. Unfortunately 
+that wasn't a part of the EAGER pipeline when originally run so we have lost 
+some power here. I tried to re-run the pipeline with same version of EAGER, but
+this was now broken on our system and I couldn't be bothered to get it to run. 
+As the human DNA is is only a 'reference' point and not important for the rest 
+of the downstream analysis however, I will therefore only report the polyG 
+stats for endogenous DNA, read length, GC content, which still work as they
+are relative measures.
+
+Now we can summarise these per individual.
+
+TODO: Try loading new metadata file and add pasting of string columns
+
+```{r}
+data_scr_indivs <- data_scr_samples %>% 
+  group_by(individual,
+           study,
+           accession_id,
+           env,
+           host_genus) %>%
+  summarise(total_raw_reads = sum(raw_reads), 
+            total_post_clip_and_merge = sum(post_clip_and_merge), 
+            mean_percent_merged_content_post_clip_and_merge = mean(percent_merged_content_post_clip_and_merge, na.rm = T), 
+            total_post_duplicate_removal_reads = sum( post_duplicate_removal_reads),
+            mean_percent_endogenous_dna = mean(percent_endogenous_dna),
+            mean_polyg_endogenous_dna_percent = mean(polyg_endogenous_dna_percent),
+            mean_cluster_factor = mean(cluster_factor), 
+            mean_median_fragment_length = mean(median_fragment_length),
+            mean_polyg_median_fragment_length = mean(polyg_median_fragment_length), 
+            mean_gc_content_percent = mean(gc_content_percent), 
+            mean_polyg_gc_content_in_percent  = mean(polyg_gc_content_in_percent),
+            total_non_human_reads = sum(non_human_reads)
+            )
 ```
 
 We can now split into a two tables, and filter each for for 
 'newly sequenced-only' and all calculus samples.
+
+```{r}
+data_scr_indivis_new <- data_scr_indivs %>% filter(study == "This_study", env != "ModernDayHumans_1")
+
+data_scr_indivis_calculus <- data_scr_indivs %>% filter(study == "This_study", env != "ModernDayHumans_1")
+```
+
+
 
 This per-individual 
 
