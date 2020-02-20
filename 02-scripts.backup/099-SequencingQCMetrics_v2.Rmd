@@ -48,10 +48,10 @@ raw_scr_seqstats <- read_csv("/home/fellows/Documents/Projects-Calculus_Evo/Anth
   janitor::clean_names(., "snake") %>%
   rename(sample = sample_name)
 
-raw_scr_polygmap <- read_csv("/home/fellows/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/00-documentation.backup/99-PolyGRemoved_HumanMapping_EAGERReport_output.csv") %>% 
+raw_scr_polygtrimmedmap <- read_csv("/home/fellows/Documents/Projects-Calculus_Evo/Anthropoid_Calculus_Microbiome_Evolution/00-documentation.backup/99-PolyGRemoved_HumanMapping_EAGERReport_output.csv") %>% 
   janitor::clean_names(., "snake") %>%
   rename(sample = sample_name) %>%
-  rename_at(vars(-contains("sample")), function(x) paste0("polyg_", x))
+  rename_at(vars(-contains("sample")), function(x) paste0("polygtrimmed_", x))
 
 ```
 
@@ -61,33 +61,40 @@ We also need to do some cleanup so each file is compatible with eachother.
 
 ## Remove seq stats values from metadata file - THESE COLUMNS NEED TO BE UPDATED AFTER THIS SCRIPT
 data_scr_metadata <- raw_scr_metadata %>% 
-  select(-contains("seq"), -contains("sum"), -contains("percent"), -contains("reads"), -lab_protocol, -number_sample_id ) %>%
+  select(-contains("seq"), 
+         -contains("sum"), 
+         -contains("percent"), 
+         -contains("reads"), 
+         -lab_protocol, 
+         -number_sample_id ) %>%
   select(individual, everything())
 
 ## Fix seqtats indiviudal names - only new calculus needs be to reconstructed
-data_scr_seqstats <- raw_scr_seqstats %>% mutate(individual = map(sample, function(x) {
-  case_when( grepl("SRR", x) ~ x, 
-             grepl("ERR", x) ~ x,
-             grepl("ElSidron", x) ~ x,
-             grepl("Spy", x) ~ x,        
-             grepl("Chimp", x) ~ x,
-             grepl("EXB", x) ~ x,
-             grepl("LIB", x) ~ x,
-             TRUE ~ str_sub(x, 1, 6)
-             )
+data_scr_seqstats <- raw_scr_seqstats %>% 
+  mutate(individual = map(sample, function(x) {
+    case_when( grepl("SRR", x) ~ x, 
+               grepl("ERR", x) ~ x,
+               grepl("ElSidron", x) ~ x,
+               grepl("Spy", x) ~ x,        
+               grepl("Chimp", x) ~ x,
+               grepl("EXB", x) ~ x,
+               grepl("LIB", x) ~ x,
+               TRUE ~ str_sub(x, 1, 6)
+               )
           }
   ) %>% unlist) %>% select(individual, everything())
 
-data_scr_polygmap <- raw_scr_polygmap %>% mutate(individual = map(sample, function(x) {
-  case_when( grepl("SRR", x) ~ x, 
-             grepl("ERR", x) ~ x,
-             grepl("ElSidron", x) ~ x,
-             grepl("Spy", x) ~ x,        
-             grepl("Chimp", x) ~ x,
-             grepl("EXB", x) ~ x,
-             grepl("LIB", x) ~ x,
-             TRUE ~ str_sub(x, 1, 6)
-             )
+data_scr_polygtrimmed <- raw_scr_polygtrimmedmap %>% 
+  mutate(individual = map(sample, function(x) {
+    case_when( grepl("SRR", x) ~ x, 
+               grepl("ERR", x) ~ x,
+               grepl("ElSidron", x) ~ x,
+               grepl("Spy", x) ~ x,        
+               grepl("Chimp", x) ~ x,
+               grepl("EXB", x) ~ x,
+               grepl("LIB", x) ~ x,
+               TRUE ~ str_sub(x, 1, 6)
+               )
           }
   ) %>% unlist) %>% select(individual, everything())
 ```
@@ -97,7 +104,9 @@ runs for each individual, we will left join the metadata onto the seqstats first
 and as we didn't poly-G the environmental sources will do that last.
 
 ```{r}
-data_scr_all <- data_scr_seqstats %>% full_join(data_scr_metadata) %>% full_join(data_scr_polygmap)
+data_scr_all <- data_scr_seqstats %>% 
+  full_join(data_scr_metadata) %>% 
+  full_join(data_scr_polygtrimmed)
 ```
 
 Now we need to select the columns we want to summarise per individual.
@@ -108,20 +117,21 @@ data_scr_samples <- data_scr_all %>%
   select(individual,
          sample, 
          study,
-         accession_id,
          env,
          host_genus,
+         host_common,
+         accession_id,
          raw_reads, 
          post_clip_and_merge, 
          percent_merged_content_post_clip_and_merge, 
          post_duplicate_removal_reads,
          percent_endogenous_dna,
-         polyg_endogenous_dna_percent,
+         polygtrimmed_endogenous_dna_percent,
          cluster_factor, 
          median_fragment_length,
-         polyg_median_fragment_length, 
+         polygtrimmed_median_fragment_length, 
          gc_content_percent, 
-         polyg_gc_content_in_percent,
+         polygtrimmed_gc_content_in_percent,
          non_human_reads) %>%
   mutate(
     percent_endogenous_dna = round(percent_endogenous_dna, 3)
@@ -136,50 +146,114 @@ that wasn't a part of the EAGER pipeline when originally run so we have lost
 some power here. I tried to re-run the pipeline with same version of EAGER, but
 this was now broken on our system and I couldn't be bothered to get it to run. 
 As the human DNA is is only a 'reference' point and not important for the rest 
-of the downstream analysis however, I will therefore only report the polyG 
+of the downstream analysis however, I will therefore only report the polygtrimmed 
 stats for endogenous DNA, read length, GC content, which still work as they
 are relative measures.
 
 Now we can summarise these per individual.
 
-TODO: Try loading new metadata file and add pasting of string columns
-
 ```{r}
 data_scr_indivs <- data_scr_samples %>% 
   group_by(individual,
            study,
-           accession_id,
            env,
-           host_genus) %>%
+           host_genus,
+           host_common,
+           accession_id) %>%
   summarise(total_raw_reads = sum(raw_reads), 
             total_post_clip_and_merge = sum(post_clip_and_merge), 
             mean_percent_merged_content_post_clip_and_merge = mean(percent_merged_content_post_clip_and_merge, na.rm = T), 
             total_post_duplicate_removal_reads = sum( post_duplicate_removal_reads),
             mean_percent_endogenous_dna = mean(percent_endogenous_dna),
-            mean_polyg_endogenous_dna_percent = mean(polyg_endogenous_dna_percent),
+            mean_polygtrimmed_endogenous_dna_percent = mean(polygtrimmed_endogenous_dna_percent),
             mean_cluster_factor = mean(cluster_factor), 
             mean_median_fragment_length = mean(median_fragment_length),
-            mean_polyg_median_fragment_length = mean(polyg_median_fragment_length), 
+            mean_polygtrimmed_median_fragment_length = mean(polygtrimmed_median_fragment_length), 
             mean_gc_content_percent = mean(gc_content_percent), 
-            mean_polyg_gc_content_in_percent  = mean(polyg_gc_content_in_percent),
+            mean_polygtrimmed_gc_content_in_percent  = mean(polygtrimmed_gc_content_in_percent),
             total_non_human_reads = sum(non_human_reads)
-            )
+            ) %>%
+  mutate(age = case_when(grepl("ModernDay", env) ~ "modernday",
+                         grepl("ARS", individual) ~ "comparative_source",
+                         grepl("Control", env) ~ "control",
+                         grepl("ERR|SRR", individual) ~ "comparative_source",
+                         TRUE ~ "ancient"))
 ```
 
 We can now split into a two tables, and filter each for for 
-'newly sequenced-only' and all calculus samples.
+'newly sequenced-only' and all calculus samples. We will also make a new column
+indicating the age of the samples.
 
 ```{r}
-data_scr_indivis_new <- data_scr_indivs %>% filter(study == "This_study", env != "ModernDayHumans_1")
+data_scr_indivis_new <- data_scr_indivs %>%
+  filter(study == "This_study", env != "ModernDayHumans_1")
 
-data_scr_indivis_calculus <- data_scr_indivs %>% filter(study == "This_study", env != "ModernDayHumans_1")
+data_scr_indivis_calculus <- data_scr_indivs %>% 
+  filter(study == "This_study" | study == "Weyrich2017" | study == "Velsko2019")
+
 ```
 
+From these two tables, we then summarise further for reporting in text. Firstly
+we can summarise across the whole dataset of how many reads we generated
+_in total_ for ancient calculus, modern calculus, and controls. We also
+want to report the ARS samples there.
 
+```{r}
+summary_scr_datasettotals <- data_scr_indivs %>% 
+  filter(grepl("This_study|Jeong2018", study)) %>%
+  group_by(age) %>%
+  summarise(dataset_total_raw_reads = sum(total_raw_reads),
+            dataset_mean_raw_reads = mean(total_raw_reads),
+            dataset_sd_raw_reads = sd(total_raw_reads),
+            dataset_max_raw_reads = max(total_raw_reads),
+            dataset_min_raw_reads = min(total_raw_reads)) %>%
+  mutate_if(is.numeric, function(x) format(x, big.mark = ","))
 
-This per-individual 
+summary_scr_datasettotals
 
-From these two tables, we then summarise further for reporting in text
+text_scr_datasettotals <- summary_scr_datasettotals %>% 
+  nest(dataset_mean_raw_reads, dataset_total_raw_reads, dataset_sd_raw_reads, dataset_max_raw_reads, dataset_min_raw_reads) %>% 
+  deframe
+```
+
+Secondly for each group of the newly sequenced calculus libraries we can 
+summarise the raw reads sequenced, poly-G endogenous DNA. Then we can summarise 
+the analysis ready reads for all calculus samples used in the study 
+(i.e. ours, plus Weyrich and Velsko). In both cases we will report number of 
+individuals, ancient/modern calculus/controls separately.
+
+```{r}
+summary_scr_new <- data_scr_indivis_new %>% 
+  group_by(host_common, age) %>%
+  summarise(mean_raw_reads = mean(total_raw_reads),
+            sd_raw_reads = sd(total_raw_reads),
+            mean_polygtrimmed_endogenous_dna = mean(mean_polygtrimmed_endogenous_dna_percent),
+            sd_polygtrimmed_endogenous_dna = sd(mean_polygtrimmed_endogenous_dna_percent)) %>%
+  mutate_at(vars(contains("raw_reads")), .funs = as.integer) %>%
+  mutate_if(is.integer, function(x) format(x, big.mark = ",") ) %>%
+  mutate_if(is.double, function(x) round(x, digits = 3))
+
+summary_scr_new
+
+text_scr_new <- summary_scr_new %>% 
+  tidyr::unite(host_common, c(host_common, age)) %>%
+  select(host_common, everything()) %>%
+  nest(mean_raw_reads, sd_raw_reads, mean_polygtrimmed_endogenous_dna, sd_polygtrimmed_endogenous_dna) %>%
+  deframe
+  
+```
+
+Now we can report the number of analysis ready reads. This now will cover all
+the _calculus_ used in the dataset, i.e. including Velsko 2019 and Weyrich 2017.
+
+```{r}
+data_scr_indivis_calculus %>% 
+  group_by(host_common, age) %>%
+  summarise(mean_non_human_reads = mean(total_non_human_reads),
+            sd_non_human_reads = sd(total_non_human_reads)) %>%
+  mutate_if(is.numeric, function(x) round(x, digits = 0) %>% format(big.mark = ","))
+```
+
 
 ## Production
 
@@ -189,6 +263,23 @@ We can also clean these up
 
 ## Table
 
+Extended Data 1 - Screening Dataset
+
+```{r}
+data_scr_indivis_new
+```
+
 ## Text
+
+
+
+For the screening dataset, we newly generated a total of `r text_scr_datasettotals$ancient$dataset_total_raw_reads` raw reads for ancient calculus (mean: `r text_scr_datasettotals$ancient$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$ancient$dataset_sd_raw_reads`; minimum: `r text_scr_datasettotals$ancient$dataset_min_raw_reads`; maximum: `r text_scr_datasettotals$ancient$dataset_max_raw_reads`), and `r text_scr_datasettotals$modernday$dataset_total_raw_reads` for modern clinical calculus (mean: `r text_scr_datasettotals$modernday$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$modernday$dataset_sd_raw_reads` per individual, minimum: `r text_scr_datasettotals$modernday$dataset_min_raw_reads`, maximum: `r text_scr_datasettotals$modernday$dataset_max_raw_reads`). For negative controls, the mean and standard deviation were `r text_scr_datasettotals$control$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$control$dataset_sd_raw_reads`. For environmental (archaeological bone) controls, the mean and standard deviation were `r text_scr_datasettotals$comparative_source$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$comparative_source$dataset_sd_raw_reads` reads. Per sample sequencing details for the screening dataset are provided in Extended Dataset S1. For further information about library concatenation, see the Extended Data Repository, Data File S8. 
+
+After poly-G trimming to remove NextSeq artefacts that can map to repetitive regions of the human reference genome, the proportion of human DNA per group was as follows: Alouatta, 1.25% ± 0.32; Gorilla, 8.61 ± 14.53; Pan, 1.01% ± 1.43; Homo (Neanderthal), 21.96% ± 30.29; Homo (Human), 4.96% ± 22.84. For modern clinical calculus, the mean and standard deviation of human DNA was 2.20% ± 6.87 (see External Data Repository, Fig. SAB). For negative controls, the mean and standard deviation of human DNA was 3.38% ± 3.26 for extraction negative controls, and 4.59% ± 10.47 for library negative controls. We note that Gorilla and Neanderthal samples, which were obtained from museums, have a higher proportion of contaminating human DNA compared to other more recently collected calculus samples. This likely due to both increased sample handling and a lower degree of endogenous biomolecular preservation in these samples, which makes the contaminating human DNA signal more prominent. 
+
+For the final pre-processing and human-DNA removed dataset, the mean and standard deviation of ancient reads per group (after to human DNA removal) were as follows: Alouatta (n = 5), xxx ± xxx; Gorilla (n = 29), xxx ± xxx; Pan (n = 20), xxx ± xxx; Homo (Neanderthal, n = 11), xxx ± xxx; Homo (Human, n = 24), xxx ± xxx. The mean and standard deviation for modern clinical calculus (n = 18) samples were xxx ± xxx. For negative controls, the mean and standard deviation were xxx ± xxx for extraction controls and xxx ± xxx for library controls.
+
+Following the removal of human DNA, the remaining non-human quality filtered and preprocessed reads were designated ‘analysis ready’ screening reads and were used for downstream analyses. 
+
 
 ## Plots
