@@ -53,6 +53,11 @@ raw_scr_polygtrimmedmap <- read_csv("/home/fellows/Documents/Projects-Calculus_E
   rename(sample = sample_name) %>%
   rename_at(vars(-contains("sample")), function(x) paste0("polygtrimmed_", x))
 
+
+raw_pro_metadata <-
+  
+raw_pro_stats <- 
+
 ```
 
 We also need to do some cleanup so each file is compatible with eachother.
@@ -224,6 +229,9 @@ individuals, ancient/modern calculus/controls separately.
 
 ```{r}
 summary_scr_new <- data_scr_indivis_new %>% 
+  ungroup() %>%
+  mutate(host_commo_n_ = if_else(grepl("Control", host_common), "Control", host_common),
+         host_commo_n_ = str_replace_all(host_common, " ", "_") %>% str_replace_all("\\(", "") %>% str_replace_all("\\)", "")) %>%
   group_by(host_common, age) %>%
   summarise(mean_raw_reads = mean(total_raw_reads),
             sd_raw_reads = sd(total_raw_reads),
@@ -247,11 +255,24 @@ Now we can report the number of analysis ready reads. This now will cover all
 the _calculus_ used in the dataset, i.e. including Velsko 2019 and Weyrich 2017.
 
 ```{r}
-data_scr_indivis_calculus %>% 
+summary_scr_indivs_calculus <- data_scr_indivis_calculus %>% 
+  ungroup() %>%
+  mutate(host_commo_n_ = if_else(grepl("Control", host_common), "Control", host_common),
+         host_commo_n_ = str_replace_all(host_common, " ", "_") %>% str_replace_all("\\(", "") %>% str_replace_all("\\)", "")) %>%
   group_by(host_common, age) %>%
   summarise(mean_non_human_reads = mean(total_non_human_reads),
-            sd_non_human_reads = sd(total_non_human_reads)) %>%
+            sd_non_human_reads = sd(total_non_human_reads),
+            n_individuals = n()) %>%
   mutate_if(is.numeric, function(x) round(x, digits = 0) %>% format(big.mark = ","))
+
+summary_scr_indivs_calculus
+
+text_scr_indivs_calculus <- summary_scr_indivs_calculus %>%
+  tidyr::unite(host_common, c(host_common, age)) %>%
+  select(host_common, everything()) %>%
+  nest(mean_non_human_reads, sd_non_human_reads, n_individuals) %>%
+  deframe
+  
 ```
 
 
@@ -263,7 +284,11 @@ We can also clean these up
 
 ## Table
 
-Extended Data 1 - Screening Dataset
+Extended Data 1
+
+### Screening
+
+
 
 ```{r}
 data_scr_indivis_new
@@ -271,15 +296,20 @@ data_scr_indivis_new
 
 ## Text
 
+### Screening
 
+For the screening dataset, we newly generated a total of `r text_scr_datasettotals$ancient$dataset_total_raw_reads` raw reads for ancient calculus (mean: `r text_scr_datasettotals$ancient$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$ancient$dataset_sd_raw_reads`; minimum: `r text_scr_datasettotals$ancient$dataset_min_raw_reads`; maximum: `r text_scr_datasettotals$ancient$dataset_max_raw_reads`), and `r text_scr_datasettotals$modernday$dataset_total_raw_reads` for modern clinical calculus (mean: `r text_scr_datasettotals$modernday$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$modernday$dataset_sd_raw_reads` per individual, minimum: `r text_scr_datasettotals$modernday$dataset_min_raw_reads`, maximum: `r text_scr_datasettotals$modernday$dataset_max_raw_reads`). For negative controls, the mean and standard deviation were `r text_scr_datasettotals$control$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$control$dataset_sd_raw_reads`. For environmental (archaeological bone) controls, the mean and standard deviation were `r text_scr_datasettotals$comparative_source$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$comparative_source$dataset_sd_raw_reads` reads. Per sample sequencing details for the screening dataset are provided in Extended Dataset **S1**. For further information about library concatenation, see the Extended Data Repository, Data File **S8**. 
 
-For the screening dataset, we newly generated a total of `r text_scr_datasettotals$ancient$dataset_total_raw_reads` raw reads for ancient calculus (mean: `r text_scr_datasettotals$ancient$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$ancient$dataset_sd_raw_reads`; minimum: `r text_scr_datasettotals$ancient$dataset_min_raw_reads`; maximum: `r text_scr_datasettotals$ancient$dataset_max_raw_reads`), and `r text_scr_datasettotals$modernday$dataset_total_raw_reads` for modern clinical calculus (mean: `r text_scr_datasettotals$modernday$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$modernday$dataset_sd_raw_reads` per individual, minimum: `r text_scr_datasettotals$modernday$dataset_min_raw_reads`, maximum: `r text_scr_datasettotals$modernday$dataset_max_raw_reads`). For negative controls, the mean and standard deviation were `r text_scr_datasettotals$control$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$control$dataset_sd_raw_reads`. For environmental (archaeological bone) controls, the mean and standard deviation were `r text_scr_datasettotals$comparative_source$dataset_mean_raw_reads` ± sd `r text_scr_datasettotals$comparative_source$dataset_sd_raw_reads` reads. Per sample sequencing details for the screening dataset are provided in Extended Dataset S1. For further information about library concatenation, see the Extended Data Repository, Data File S8. 
+After poly-G trimming of newly sequenced calculus (to remove NextSeq artefacts that can map to repetitive regions of the human reference genome), the proportion of human DNA per group was as follows: _Alouatta_, `r text_scr_new$Alouatta_ancient$mean_polygtrimmed_endogenous_dna`% ± sd `r text_scr_new$Alouatta_ancient$sd_polygtrimmed_endogenous_dna`; _Gorilla_, `r text_scr_new$Gorilla_ancient$mean_polygtrimmed_endogenous_dna`% ± sd `r text_scr_new$Gorilla_ancient$sd_polygtrimmed_endogenous_dna`; _Pan_, `r text_scr_new$Pan_ancient$mean_polygtrimmed_endogenous_dna`% ± sd `r text_scr_new$Pan_ancient$sd_polygtrimmed_endogenous_dna`; _Homo_ (Neanderthal), `r text_scr_new$Homo_Neanderthal_ancient$mean_polygtrimmed_endogenous_dna`% ± sd `r text_scr_new$Homo_Neanderthal_ancient$sd_polygtrimmed_endogenous_dna`; _Homo_ (Modern Human), `r text_scr_new$Homo_Modern_Human_ancient$mean_polygtrimmed_endogenous_dna`% ± sd `r text_scr_new$Homo_Modern_Human_ancient$sd_polygtrimmed_endogenous_dna`. For modern clinical calculus, the mean and standard deviation of human DNA was `r text_scr_new$Homo_Modern_Human_modernday$mean_polygtrimmed_endogenous_dna`% ± sd `r text_scr_new$Homo_Modern_Human_modernday$sd_polygtrimmed_endogenous_dna`. For controls, the mean and standard deviation of human DNA was `r text_scr_new$Control_control$mean_polygtrimmed_endogenous_dna`% ± sd `r text_scr_new$Control_control$sd_polygtrimmed_endogenous_dna`. We note that Gorilla and Neanderthal samples, which were obtained from museums, have a higher proportion of contaminating human DNA compared to other more recently collected calculus samples. This likely due to both increased sample handling and a lower degree of endogenous biomolecular preservation in these samples, which makes the contaminating human DNA signal more prominent.
 
-After poly-G trimming to remove NextSeq artefacts that can map to repetitive regions of the human reference genome, the proportion of human DNA per group was as follows: Alouatta, 1.25% ± 0.32; Gorilla, 8.61 ± 14.53; Pan, 1.01% ± 1.43; Homo (Neanderthal), 21.96% ± 30.29; Homo (Human), 4.96% ± 22.84. For modern clinical calculus, the mean and standard deviation of human DNA was 2.20% ± 6.87 (see External Data Repository, Fig. SAB). For negative controls, the mean and standard deviation of human DNA was 3.38% ± 3.26 for extraction negative controls, and 4.59% ± 10.47 for library negative controls. We note that Gorilla and Neanderthal samples, which were obtained from museums, have a higher proportion of contaminating human DNA compared to other more recently collected calculus samples. This likely due to both increased sample handling and a lower degree of endogenous biomolecular preservation in these samples, which makes the contaminating human DNA signal more prominent. 
+For the final pre-processing and human-DNA removed dataset used for downstream analysis (including previously publised calculus from Weyrich et al. and Velsko et al.), the mean and standard deviation of ancient reads per group were as follows: _Alouatta_ (_n_ = `r text_scr_indivs_calculus$Alouatta_ancient$n_individuals`), `r text_scr_indivs_calculus$Alouatta_ancient$mean_non_human_reads` ± sd `r text_scr_indivs_calculus$Alouatta_ancient$sd_non_human_reads`; _Gorilla_ (_n_ = `r text_scr_indivs_calculus$Gorilla_ancient$n_individuals`), `r text_scr_indivs_calculus$Gorilla_ancient$mean_non_human_reads` ± sd `r text_scr_indivs_calculus$Gorilla_ancient$sd_non_human_reads`; _Pan_ (_n_ = `r text_scr_indivs_calculus$Pan_ancient$n_individuals`), `r text_scr_indivs_calculus$Pan_ancient$mean_non_human_reads` ± sd `r text_scr_indivs_calculus$Pan_ancient$sd_non_human_reads`; _Homo_ (Neanderthal, _n_ = `r text_scr_indivs_calculus$Homo_Neanderthal_ancient$n_individuals`), `r text_scr_indivs_calculus$Homo_Neanderthal_ancient$mean_non_human_reads` ± sd `r text_scr_indivs_calculus$Homo_Neanderthal_ancient$sd_non_human_reads`; _Homo_ (Modern Human, _n_ = `r text_scr_indivs_calculus$Homo_Modern_Human_ancient$n_individuals`), `r text_scr_indivs_calculus$Homo_Modern_Human_ancient$mean_non_human_reads` ± sd `r text_scr_indivs_calculus$Homo_Modern_Human_ancient$sd_non_human_reads`. The mean and standard deviation for modern clinical calculus (_n_ = `r text_scr_indivs_calculus$Homo_Modern_Human_modernday$n_individuals`) samples were `r text_scr_indivs_calculus$Homo_Modern_Human_modernday$mean_non_human_reads` ± sd `r text_scr_indivs_calculus$Homo_Modern_Human_modernday$sd_non_human_reads`. For controls (_n_ = `r text_scr_indivs_calculus$Control_control$n_individuals`), `r text_scr_indivs_calculus$Control_control$mean_non_human_reads` ± sd `r text_scr_indivs_calculus$Control_control$sd_non_human_reads`.
 
-For the final pre-processing and human-DNA removed dataset, the mean and standard deviation of ancient reads per group (after to human DNA removal) were as follows: Alouatta (n = 5), xxx ± xxx; Gorilla (n = 29), xxx ± xxx; Pan (n = 20), xxx ± xxx; Homo (Neanderthal, n = 11), xxx ± xxx; Homo (Human, n = 24), xxx ± xxx. The mean and standard deviation for modern clinical calculus (n = 18) samples were xxx ± xxx. For negative controls, the mean and standard deviation were xxx ± xxx for extraction controls and xxx ± xxx for library controls.
+### Production
 
-Following the removal of human DNA, the remaining non-human quality filtered and preprocessed reads were designated ‘analysis ready’ screening reads and were used for downstream analyses. 
+For the production dataset, we newly sequenced a total of `r text_pro_datasettotals$ancient$dataset_total_raw_reads` reads, with a mean and standard deviation of `r text_pro_datasettotals$ancient$dataset_mean_raw_reads` ± sd `r text_pro_datasettotals$ancient$dataset_sd_raw_reads` reads per UDG-treated ancient calculus individual (minimum: `r text_pro_datasettotals$ancient$dataset_min_raw_reads`; maximum: `r text_pro_datasettotals$ancient$dataset_max_raw_reads`).
 
+After sequence quality filtering, preprocessing (adapter removal and read merging), and human DNA removal (all as above), the remaining reads were designated ‘analysis ready’ production reads. The mean and standard deviation of analysis ready ancient reads per group were as follows: Alouatta (n = 3), 110,247,421 ± 50,136,787; Gorilla (n = 3), 88,927,251 ± 59,587,055; Pan (n = 4), 155,248,637 ± 72,527,567; Homo (Neanderthal, n = 3), 133,092,916 ± 167,706,862; Homo (Human, n = 6), 56,926,392 ± 25,792,155 (Exernal Data Repository, Fig. SAC). Modern clinical samples used for analysis with this dataset are the same as for the screening dataset above; no UDG treatment was performed as this is unnecessary for modern samples that lack damage. Further preprocessing statistics for the production dataset are provided in Extended Dataset S1. Additional information regarding library merging and sequencing statistics are provided in the External Data Repository, Data File **S10**. 
+
+The R notebook used for visualisations of screening and production sequencing results is provided in the External Data Repository, Section X.
 
 ## Plots
