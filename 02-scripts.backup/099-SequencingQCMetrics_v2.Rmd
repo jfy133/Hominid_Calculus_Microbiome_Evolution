@@ -474,13 +474,214 @@ Now we can plot per individual stats for newly sequenced samples.
 
 R1 - all newly sequenced individuals with raw reads, processed reads, polyG endogenous and analysis-ready reads
 
+Prepare data
+
 ```{r}
-data_pro_indivis_new
+data_scr_indivis_new_plot <- data_scr_indivis_new %>% 
+  ungroup() %>%
+  filter(age != "control") %>% 
+  mutate(host_common = factor(host_common, levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)"))) %>%
+  mutate(age = if_else(age == "ancient", "Ancient", "Modern Day"))
 ```
 
+Raw reads
+
+```{r}
+plot_scr_indivis_new_rawreads <- ggplot(data_scr_indivis_new_plot, 
+                                        aes(host_common, total_raw_reads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = age), colour = "black", shape = 21, stroke = 0.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Number of Sequencing Raw Reads") +
+  labs(tag = "a") +
+  scale_y_continuous(breaks = seq(0, 
+                                  150000000, 
+                                  10000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))  +
+  labs(fill = "Age")
+
+plot_scr_indivis_new_rawreads
+```
+
+Post C&M Reads
+
+```{r}
+plot_scr_indivis_new_postcm <- ggplot(data_scr_indivis_new_plot, 
+                                        aes(host_common, total_post_clip_and_merge)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = age), colour = "black", shape = 21, stroke = 0.2) +
+  xlab("Host (Common Name)") +
+  ylab("Number of Processed Reads") +
+  labs(tag = "b") +
+  scale_fill_brewer(palette = "Set1") +
+  scale_y_continuous(breaks = seq(0, 
+                                  150000000, 
+                                  10000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  labs(fill = "Age")
+
+plot_scr_indivis_new_postcm
+```
+
+Post-polyG trimmed endogenous DNA
+
+```{r}
+plot_scr_indivis_new_polygendo <- ggplot(data_scr_indivis_new_plot, 
+                                        aes(host_common, mean_polygtrimmed_endogenous_dna_percent)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = age), colour = "black", shape = 21, stroke = 0.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Human DNA after PolyG removal (%)") +
+  labs(tag = "c") +
+  scale_y_log10(limits = c(0.01, 100), labels = function(x) format(x, big.mark = ",", scientific = F)) +
+  annotation_logticks(sides = "l", scaled = T, colour = "lightgrey") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  labs(fill = "Age")
+  
+
+plot_scr_indivis_new_polygendo
+```
+
+```{r}
+plot_scr_indivis_new_readyreads <- ggplot(data_scr_indivis_new_plot, 
+                                        aes(host_common, total_non_human_reads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = age), colour = "black", shape = 21, stroke = 0.2) +
+  xlab("Host (Common Name)") +
+  ylab("Number of Non-Human Reads (Analysis-Ready)") +
+  labs(tag = "b") +
+  scale_fill_brewer(palette = "Set1") +
+  scale_y_continuous(breaks = seq(0, 
+                                  150000000, 
+                                  10000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  labs(fill = "Age")
+
+plot_scr_indivis_new_readyreads
+```
+
+And combine together and save
+
+```{r}
+final_screening_plot <- plot_scr_indivis_new_rawreads + 
+  plot_scr_indivis_new_postcm +
+  plot_scr_indivis_new_polygendo + 
+  plot_scr_indivis_new_readyreads +
+  plot_layout(ncol = 2)
+
+ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       path = "../05-images/Figure_R01_SAB_SequencingQC_screening/",
+       plot = final_screening_plot, 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       path = "../05-images/Figure_R01_SAB_SequencingQC_screening/",
+       plot = final_screening_plot, 
+       device = "png", 
+       width = 7, 
+       height = 5, 
+       units = "in", 
+       dpi = 300)
+```
 
 
 ### Production
 
-R2 - all newly sequenced individuals with raw reads, processed reads, polyG endogenous and analysis-ready reads
+R2 - all newly sequenced individuals with raw reads, and analysis-ready reads
 
+Prepare data
+
+```{r}
+data_pro_indivis_new_plot <- data_pro_indivis_new %>% 
+  ungroup() %>%
+  filter(age != "control") %>% 
+  mutate(host_common = factor(host_common, levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)"))) %>%
+  mutate(age = if_else(age == "ancient", "Ancient", "Modern Day"))
+```
+
+Raw reads
+
+```{r}
+plot_pro_indivis_new_rawreads <- ggplot(data_pro_indivis_new_plot, 
+                                        aes(host_common, total_raw_reads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = age), colour = "black", shape = 21, stroke = 0.2) +
+  scale_fill_brewer(palette = "Set1") +
+  xlab("Host (Common Name)") +
+  ylab("Number of Sequencing Raw Reads") +
+  labs(tag = "a") +
+  scale_y_continuous(breaks = seq(0, 
+                                  500000000, 
+                                  50000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))  +
+  labs(fill = "Age")
+
+plot_pro_indivis_new_rawreads
+```
+
+And analysis ready reads
+
+```{r}
+plot_pro_indivis_new_readyreads <- ggplot(data_pro_indivis_new_plot, 
+                                        aes(host_common, total_non_human_reads)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(aes(fill = age), colour = "black", shape = 21, stroke = 0.2) +
+  xlab("Host (Common Name)") +
+  ylab("Number of Non-Human Reads (Analysis-Ready)") +
+  labs(tag = "b") +
+  scale_fill_brewer(palette = "Set1") +
+  scale_y_continuous(breaks = seq(0, 
+                                  500000000, 
+                                  50000000),
+                     labels = comma) +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  labs(fill = "Age")
+
+plot_pro_indivis_new_readyreads
+```
+
+And combine together and save
+
+```{r}
+final_screening_plot <- plot_pro_indivis_new_rawreads + 
+  plot_pro_indivis_new_readyreads +
+  plot_layout(ncol = 2)
+
+ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Production_Ancient_" , 
+             format(Sys.Date(), "%Y%m%d"),".pdf"), 
+       path = "../05-images/Figure_R02_SAC_SequencingQC_deep//",
+       plot = final_screening_plot, 
+       device = cairo_pdf, 
+       width = 7, 
+       height = 5, 
+       units = "in", 
+       dpi = 600)
+
+ggsave(paste0("SupFigX_SequencingQCSummaries_NewCalculusOnly_Production_Ancient_" , 
+             format(Sys.Date(), "%Y%m%d"),".png"), 
+       path = "../05-images/Figure_R02_SAC_SequencingQC_deep/",
+       plot = final_screening_plot, 
+       device = "png", 
+       width = 7, 
+       height = 5, 
+       units = "in", 
+       dpi = 300)
+```
