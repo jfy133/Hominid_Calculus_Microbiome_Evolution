@@ -1010,11 +1010,11 @@ can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
 
 ![Sequencing QC New Calculus Screening Dataset](05-images/Figure_R01_SAB_SequencingQC_screening/SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_20200220.png)
 
-**Figure R1 | Sequencing metric distributions of the screening dataset of ancient and modern calculus samples newly sequenced during this study.** **a** Raw sequencing read counts (prior to adapter removal and merging). **b** Pre-processed read counts after adapter removal and read merging. **c** Proportion of human DNA. **d** Count of non-human reads used for downstream analysis (pre-processed reads with human sequences removed).
+**Figure R1 | Sequencing metric distributions of the screening dataset of ancient and modern calculus samples newly sequenced during this study.** Each point represents a single indiviudal (i.e. all samples, libraries and re-sequencing runs combined). **a** Raw sequencing read counts (prior to adapter removal and merging). **b** Pre-processed read counts after adapter removal and read merging. **c** Proportion of human DNA. **d** Count of non-human reads used for downstream analysis (pre-processed reads with human sequences removed).
 
 ![Sequencing QC New Calculus Production Dataset](05-images/Figure_R02_SAC_SequencingQC_deep/SupFigX_SequencingQCSummaries_NewCalculusOnly_Production_Ancient_20200220.png)
 
-**Figure R2 | Sequencing read count distributions of the production dataset of ancient calculus samples newly sequenced during this study.** **a** Raw sequencing reads (prior adapter removal and merging), **b** Number of reads used for downstream analysis (processed reads with human sequences removed).
+**Figure R2 | Sequencing read count distributions of the production dataset of ancient calculus samples newly sequenced during this study.** Each point represents a single indiviudal (i.e. all samples, libraries and re-sequencing runs combined). **a** Raw sequencing reads (prior adapter removal and merging), **b** Number of reads used for downstream analysis (processed reads with human sequences removed).
 
 The general metadata file for all main individual-level pre-processing 
 statistics can be seen in `06-additional_data_files` under Data R4. This file
