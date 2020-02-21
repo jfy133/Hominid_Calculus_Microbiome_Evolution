@@ -33,12 +33,12 @@ Load data
 ```{r}
 
 ## Amino acid alignment
-abpA_aa <-  read.alignment(file = "GC00002917_aa_aln.fa", format = "fasta")
-abpB_aa <- read.alignment(file = "GC00000227_1_aa_aln.fa", format = "fasta")
+abpA_aa <-  read.alignment(file = "../04-analysis/screening/streptococcus_investigation.backup/panX/abpA_abpB_cluster_alignments/GC00002917_aa_aln.fa", format = "fasta")
+abpB_aa <- read.alignment(file = "../04-analysis/screening/streptococcus_investigation.backup/panX/abpA_abpB_cluster_alignments/GC00000227_1_aa_aln.fa", format = "fasta")
 
 ## nucleotide alignment
-abpA_na <-  read.alignment(file = "GC00002917_na_aln.fa", format = "fasta")
-abpB_na <- read.alignment(file = "GC00000227_1_na_aln.fa", format = "fasta")
+abpA_na <-  read.alignment(file = "../04-analysis/screening/streptococcus_investigation.backup/panX/abpA_abpB_cluster_alignments/GC00002917_na_aln.fa", format = "fasta")
+abpB_na <- read.alignment(file = "../04-analysis/screening/streptococcus_investigation.backup/panX/abpA_abpB_cluster_alignments/GC00000227_1_na_aln.fa", format = "fasta")
 ```
 
 We can convert these to comparable alignments as well, and inspect
@@ -73,7 +73,7 @@ pair-wise combination of annotations.
 
 plot_distance <- function(x, name) {
   ggplot(x, aes(Identity)) +
-    geom_histogram(bins = 100) +
+    geom_histogram(bins = 50) +
     ggtitle(name) +
     scale_x_continuous(breaks = seq(0, 1, 0.05)) +
     theme_minimal(base_family = "Roboto")
@@ -134,7 +134,7 @@ abpA_aa_filter <- abpA_aa_gorddist %>% filter(Identity <= 0.4472136) %>% print()
 abpA_na_filter <- abpA_na_gorddist %>% filter(Identity <= 0.4472136) %>% print()
 ```
 
-This only reuslts in 2 similar sequences, one is it'self, and another
+This only results in 2 similar sequences, one is it'self, and another
 which is probably a mislabelled taxon.
 
 We can double check the alignment itself though
