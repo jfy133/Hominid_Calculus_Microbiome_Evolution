@@ -29,9 +29,9 @@ proj_dir <- "../"
 Load files to be analysed - fortunately nt stats are already in metadat
 
 ```{r}
-metadata <- read_tsv(paste0(proj_dir, "../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+metadata <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
 
-data_refseq_raw <- read_tsv(paste0(proj_dir, "../00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics_refseq_bacarchhomo_gcs_20181122_20190410.tsv"))
+data_refseq_raw <- read_tsv(paste0(proj_dir, "00-documentation.backup/05-MALT_taxonomic_binning_summary_statistics_refseq_bacarchhomo_gcs_20181122_20190410.tsv"))
 ```
 
 We will also load a MEGAN table for nt at domain level to look at 

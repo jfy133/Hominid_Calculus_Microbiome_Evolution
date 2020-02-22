@@ -31,9 +31,9 @@ proj_dir <- "../"
 Load files to be analysed 
 
 ```{r}
-metadata <- read_tsv(paste0(proj_dir, "../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
+metadata <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
 
-data_16smapping <- read_csv(paste0(proj_dir, "../00-documentation.backup/05-16s_extraction_statistics_20190507.csv"), skip = 1)
+data_16smapping <- read_csv(paste0(proj_dir, "00-documentation.backup/05-16s_extraction_statistics_20190507.csv"), skip = 1)
 
 data_16sclustering <- read_delim(paste0(proj_dir, "04-analysis/screening/qiime/output/otu_picking/otu_table_summary.txt"), skip = 14, delim = " ")
 ```
@@ -155,9 +155,13 @@ Calculate percentage of 16s reads from all all processed reads
 
 ```{r}
 data_16smapping_full <- data_16smapping_full %>% 
-  mutate(Percent_16sReads_of_Library = (Count / Individual_Seq_Depth) * 100)
+  mutate(Percent_16sReads_of_Library = (Count / Individual_Seq_Depth) * 100) %>%
+  filter(!is.na(Percent_16sReads_of_Library))
 ```
 
+Note we had to remove the Neanderthal and Sediment rows because we do not have
+post-C&M sequencing depth for these individuals as they were already 
+pre-processed in a different way to us.
 
 Summary statistics across all samples
 
@@ -165,7 +169,7 @@ Summary statistics across all samples
 ## Across everything
 data_16smapping_full %>% pull(Count) %>% summary
 
-data_16smapping_full %>% pull(Percent_16sReads_of_Library) %>% summary
+data_16smapping_full %>% pull(Percent_16sReads_of_Library) %>% summary()
 
 ```
 
