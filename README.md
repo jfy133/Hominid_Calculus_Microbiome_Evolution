@@ -1173,7 +1173,7 @@ With these OTU table and the database, the R notebook
 the visualisation.
 
 The resulting list(s) of individuals passing or failing to pass this threshold 
-can be seen in `06-additional_data_files` under Data R16 or
+can be seen in `06-additional_data_files` under Data R17 or
 `04-analysis/screening/cumulative_decay.backup`
 
 ![Schematic of how Cumulative Percentage Decay Plots Work](05-images/Figure_R08_SCE_CumulativeDecay_Schematic/CumulativeDecay_Schematic.png)
@@ -1481,7 +1481,7 @@ For plotting of these for comparison with the cumulative percent decay plots,
  `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`. 
 
  The final proportions (with standard deviation) can be seen in 
-`06-additional_data_files` under Data R17.
+`06-additional_data_files` under Data R18.
 
 ![Comparison between Sourcetracker and CumulativePercentDecay Plots](05-images/Figure_R14_SCB_Sourcetracker_vs_CumulativePercentdecay/SupFigX_SourcetrackerVsCPD_st2bar_cpdtext_20190923.png)
 
@@ -1551,7 +1551,7 @@ We then run Decontam following the Decontam tutorial vignette on CRAN in the
 script, and also described here `02-scripts.backup/015-decontam_contamination_detection_analysis.Rmd`.
 
 The final list of contaminants for all methods and databases can be seen in 
-`06-additional_data_files` under Data R18.
+`06-additional_data_files` under Data R19.
 
 **Table R4 | Summary of OTUs detected across each shotgun taxonomic binner/classifier and databases as potential contaminants by the R package decontam.** MetaPhlAn2 was run for functional analysis [below](#1231-metaphlan2). While MetaPhlAn2 was run as reference but wasn't utilised, the contaminants were not removed downstream due to unknown effects of removing these for [HUMANn2](#1232-humann2).
 
@@ -1765,7 +1765,7 @@ Generation of phenotyping data was performed via
 using Inkscape, which was recorded in the file
 `00-documentation.backup/99-Heatmap_ManualBlockDescriptions_alltaxa_minsupportmultiplier4_minprevalence4_databasent_metadata.tsv`
 
-Figures can be seen in collated in `06-additional_data_files` under Data R19 or 
+Figures can be seen in collated in `06-additional_data_files` under Data R20 or 
 individual files can in `04-analysis/screening/compositional_heatmaps.backup`.
 
 #### 9.2.1 Zero replacement validation
@@ -1797,7 +1797,7 @@ Rscript 02-scripts.backup/21-Indicator_analysis.R
 ```
 
 and the results can be seen can be seen in 
-`06-additional_data_files` under Data R20 or in 
+`06-additional_data_files` under Data R21 or in 
 `04-analysis/screening/indicspecies.backup`.
 
 ### 9.3 Clustering by Diet?
@@ -1856,7 +1856,7 @@ and
 **Figure R25 | Alluvial diagram showing effects of increasing the minimum abundance threshold to the MALT OTU table-based core microbiome calculations. Increasing from 0.04% to 0.07% shows minimal changes in combination assignment.** Comparisons are between the nt (top) and RefSeq (bottom) databases, and at genus (left) and species (right) taxonomic levels. Stacked bars represent the number of taxa to each combination, and alluviums represent the assignment of a given taxon between each minimum support threshold. Plots created using the ggalluvial R package 273, with input data as MALT aligned and MEGAN exported OTU tables excluding putative laboratory contaminants, badly preserved samples, and taxa with minimum support values < 0.07% (genus level) and < 0.04% (species level).
 
 The raw data for the min. support permutation comparison can be seen under
-`06-additional_data_files` in Data R22.
+`06-additional_data_files` in Data R23.
 
 We additionally also checked the effect of removing the single individual 
 population in Gorillas with the script version of the core microbiome notebook,
@@ -1884,8 +1884,8 @@ done
 
 **Figure R26 | Alluvial diagram showing effects of dropping and retaining a single-individual Gorilla population in core microbiome calculations at genus and species taxonomic levels.** Dropping the single-individual population results in minor combination assignments, mostly taxa being assigned to being core to the compositionally similar Alouatta combinations. Stacked bars represent the number of taxa to each combination, and alluviums represent the assignment of a given taxon between dataset. Plots created using the ggalluvial R package, with input as MALT NCBI nt aligned and MEGAN exported OTU tables with putative laboratory contaminants, badly preserved samples, and taxa with minimum support values < 0.07% (genus level) and < 0.04% (species level) removed.
 
-The raw data for the min. support permutation comparison can be seen under
-`06-additional_data_files` in Data R23.
+The raw data for the comparison of excluding single individual populations can 
+be seen under`06-additional_data_files` in Data R24.
 
 Individual visualisations and results for each parameter run can be seen in 
 `04-analysis/screening/presenceabsence_intersection.backup/`
@@ -1909,8 +1909,8 @@ combination.
 **Figure R28 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a 'core' microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
 
 The final list of taxa at both species and genus level can also be seen in
-`06-additional_data_files` under Data R21. Comparison of the core assignments
-for different taxa can be seen in `06-additional_data_files` under Data R24.
+`06-additional_data_files` under Data R22. Comparison of the core assignments
+for different databases can be seen in `06-additional_data_files` under Data R25.
 
 ### 10.2 Core Microbiome MaltExtract
 
@@ -2063,7 +2063,7 @@ as above with `wget`.
 > names (see [Scholz and Kilian 2016](http://dx.doi.org/10.1099/ijsem.0.001367))
 
 You can alternatively see a list of all genomes downloaded for each 
-super-reference in `06-additional_data_files` under Data R25.
+super-reference in `06-additional_data_files` under Data R26.
 
 We convert the FASTA headers to a format suitable for `samtools` (given we 
 don't have chromosomes) with 
@@ -2113,7 +2113,7 @@ Create Report: On
 ```
 
 The settings above in table format can be seen in `06-additional_data_files`
-under Data R26.
+under Data R27.
 
 > The EAGER mapping results files are not provided here due to the large size, 
 > other than the ReportTable files.
@@ -2134,7 +2134,7 @@ bedtools coverage -a 01-data/genomes/"$genus"/collapsed_"$genus"_superreference.
 
 Output results for this statistics can also be see under 
 `04-analysis/deep/eager/superreference_mapping/output` or collated in
-`06-additional_data_files` under Data R27.
+`06-additional_data_files` under Data R28.
 
 ### 11.4 Comparative single reference mapping
 
@@ -2149,7 +2149,7 @@ species for the two requirements above. This is described in
 `02-scripts.backup/031-superreferencemapped_genotyping_stats.Rmd`. The 
 selection based on the different metrics were performed manually and via
 an automated system, which is summarised in `06-additional_data_files` under
-Data R28. 
+Data R29. 
 
 The finally selected taxa were as follows
 
@@ -2215,10 +2215,10 @@ representative genome taxa FASTAs instead.
 
 Summary plots of the single genome mappings can be seen under 
 `02-scripts.backup/099-SingleGenome_MappingStatistics_Summary.Rmd`. Corresponding
-EAGER statistics can be seen in `06-additional_data_files` under Data R31.
+EAGER statistics can be seen in `06-additional_data_files` under Data R32.
 
 Summary statistics comparing mapping to a super-reference and single reference
-genome can be seen in `06-additional_data_files` under Data R29.
+genome can be seen in `06-additional_data_files` under Data R30.
 
 > The reference genome files are not provided here due to the large size
 
@@ -2289,7 +2289,7 @@ the two mapping strategies, we can look in the R notebook
 
 A summary table of percentage of multi-allelic SNPs when running 
 MultiVCFAnalyzer using both mapping methods can be seen in 
-`06-additional_data_files` under Data R30.
+`06-additional_data_files` under Data R31.
 
 From this script we see the super-reference mapping strategy doesn't work 
 very often it reducing the number of multi-allelic SNPs, and 
@@ -2503,7 +2503,7 @@ _Tannerella forsythia_ and _Porphyromonas gingivalis_.
 We can take the deduplicated bedfiles and run `bedtools` coverage on them, using
 a collection of virulence factors described in the literature. This list 
 including NCBI gene locus tags can be seen in `06-additional_data_files` under
-Data R34.
+Data R35.
 
 ```bash
 bedtools coverage -a <REFERENCE>.gff -b <BAM> > <OUT FILE>.tsv
@@ -2535,7 +2535,7 @@ variation, and certain groups of Streptococci displaying amylase activity.
 Firstly, we can look at the distribution of different types of streptococci groups
 within each of our host genera. We generated a 'consensus' table of streptococci
 groups and their reported amylase-binding protein activity (as reported in the
-literature), described here in `06-additional_data_files` under Data R32 or 
+literature), described here in `06-additional_data_files` under Data R33 or 
 under `00-documentation.backup/25-streptococcus_cladegroup_amylasegroup_database.tsv`.
 
 Using the MALT species level OTU tables from the screening dataset, we 
@@ -2584,7 +2584,7 @@ We then performed a filtering procedure to the files due to
 the inclusion of highly diverged sequences, as described in 
 `02-scripts.backup/048-panX_streptococcus_amylasebindingproteincluster_detection.Rmd`.
 The final list of annotations can be seen in `06-additional_data_files` under 
-Data R33.
+Data R34.
 
 We then used the R script `02-scripts.backup/049-Streptoccocus_superreference_amylasebinding_coordinate_reconstruction.R` 
 to recover the coordinates of these sequences from the super-reference FASTA, 
@@ -2688,7 +2688,7 @@ proceed with BEAST analysis to date expansion of *abpA*. However, we generated a
 skyline plot from the *abpB* data, which is shown in Figure R38.
 
 A list of accession numbers of abpB sequences collected for bayesian skyline
-analysis can be seen in `06-additional_data_files` under Data R35. 
+analysis can be seen in `06-additional_data_files` under Data R36. 
 
 ![BEAST2 abpB skyline plot](05-images/Figure_R38_SO_beast/R37_sky_apbB_noGOY.png)
 
