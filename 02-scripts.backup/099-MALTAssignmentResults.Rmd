@@ -26,7 +26,12 @@ Set project directory (if required!)
 proj_dir <- "../"
 ```
 
-Load files to be analysed - fortunately nt stats are already in metadat
+Load files to be analysed - fortunately nt stats are already in metadata.
+
+> Important: the NT file had to be manually modified after generation, due 
+> to log files containing duplicate log entries of broken FASTQ files or issues 
+> when we had HDD space limitations, so were re-run. These duplicates/broken
+> entries were therefore deleted.
 
 ```{r}
 metadata <- read_tsv(paste0(proj_dir, "00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv"))
@@ -343,7 +348,7 @@ final_refseq_plot <- ggplot(data_refseq_clean, aes(Host_Common, RefSeq_Percentag
   xlab("Host (Common Name)") +
   ylab("Percent Reads with Taxonomic Assignment (%)") +
   scale_shape_manual(values = env_shapes, name = "Population") +
-  scale_colour_manual(values =env_colours, "Population") +
+  scale_colour_manual(values = env_colours, "Population") +
   labs(title = "Custom RefSeq Database (2018)") +
   ylim(0, 100) +
   theme_minimal(base_size = 7, base_family = "Roboto") +
@@ -391,7 +396,7 @@ summary_bothdb %>%
   geom_line() + 
   ylab("Mean Percent Reads with Taxonomic Assignment (%)") +
   ylim(0, 100) +
-  scale_colour_manual(values = env_colours, "Population") + 
+  scale_colour_manual(values = common_colours, "Population") + 
   scale_shape_manual(values = common_shapes) +
   theme_minimal(base_size = 7, base_family = "Roboto")
 ```
