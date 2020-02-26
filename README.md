@@ -1851,7 +1851,7 @@ and
 
 `00-documentation.backup/24-intersection_proktaxapassingthresholdstaxalist_20190211.tsv`
 
-![Minimum support value optimisation for core microbiome calculation](05-images/Figure_R25_SFA_CoreMicrobiome_Alluvial_Minsupport/99-coremicrobiome_presenceabsence_alluival_minsupportcomparison_20190902.png)
+![Minimum support value optimisation for core microbiome calculation](05-images/Figure_R25_SFA_CoreMicrobiome_Alluvial_Minsupport/99-coremicrobiome_presenceabsence_alluival_minsupportcomparison_20200226.png)
 
 **Figure R25 | Alluvial diagram showing effects of increasing the minimum abundance threshold to the MALT OTU table-based core microbiome calculations. Increasing from 0.04% to 0.07% shows minimal changes in combination assignment.** Comparisons are between the nt (top) and RefSeq (bottom) databases, and at genus (left) and species (right) taxonomic levels. Stacked bars represent the number of taxa to each combination, and alluviums represent the assignment of a given taxon between each minimum support threshold. Plots created using the ggalluvial R package 273, with input data as MALT aligned and MEGAN exported OTU tables excluding putative laboratory contaminants, badly preserved samples, and taxa with minimum support values < 0.07% (genus level) and < 0.04% (species level).
 
@@ -1880,7 +1880,7 @@ done
 
 ```
 
-![Comparison of effect of removing single individual population on core microbiome calculations](05-images/Figure_R26_SFB_CoreMicrobiome_Alluvial_SinglePop/99-coremicrobiome_presenceabsence_alluival_singleindpopcomparison_20190902.png)
+![Comparison of effect of removing single individual population on core microbiome calculations](05-images/Figure_R26_SFB_CoreMicrobiome_Alluvial_SinglePop/99-coremicrobiome_presenceabsence_alluival_singleindpopcomparison_20200226.png)
 
 **Figure R26 | Alluvial diagram showing effects of dropping and retaining a single-individual Gorilla population in core microbiome calculations at genus and species taxonomic levels.** Dropping the single-individual population results in minor combination assignments, mostly taxa being assigned to being core to the compositionally similar Alouatta combinations. Stacked bars represent the number of taxa to each combination, and alluviums represent the assignment of a given taxon between dataset. Plots created using the ggalluvial R package, with input as MALT NCBI nt aligned and MEGAN exported OTU tables with putative laboratory contaminants, badly preserved samples, and taxa with minimum support values < 0.07% (genus level) and < 0.04% (species level) removed.
 
