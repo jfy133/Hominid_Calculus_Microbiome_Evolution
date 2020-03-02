@@ -27,7 +27,7 @@ Load our standard metadata
 
 
 ```{r}
-metadata <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv") %>% select(sample_name, Env, Host_Genus, Host_Common) %>%
+metadata <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20200220.tsv") %>% select(sample_name, Env, Host_Genus, Host_Common) %>%
 rename(sample = sample_name)
 ```
 
@@ -256,7 +256,7 @@ genome_data <- Sys.glob("../04-analysis/deep/eager/initial_single_genome/output/
   enframe(name = NULL, value = "file_name") %>%
   filter(grepl("Tannerella|Porphyromonas", file_name)) %>%
   mutate(file_contents = map(file_name, ~read_csv(.x) %>% eager_cleaner)) %>%
-  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 3)  %>% head(n = 1)) %>% unlist) %>%
   unnest() %>%
   select(reference, sample_name, mean_fold_coverage, percent_coverage_morethan_1x) %>%
   rename(chrom = reference,
@@ -314,8 +314,8 @@ breadth <- Sys.glob("../04-analysis/deep/eager/initial_single_genome/output/*/*/
   list.files("*virulence_breadth*", full.names = T) %>%
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_names = c("chrom", "start", "stop", "Gene", "reads", "bases_covered", "Gene_length", "fraction_covered"))))) %>%
-  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
-         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 4) %>% head(n = 1)) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 3) %>% head(n = 1)) %>% unlist) %>%
   select(-file_name, reference, sample, file_contents) %>%
   unnest()
 
@@ -323,8 +323,8 @@ depth <- Sys.glob("../04-analysis/deep/eager/initial_single_genome/output/*/*/5-
   list.files("*virulence_depth*", full.names = T) %>%
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_names = c("chrom", "start", "stop", "Gene", "depth"))))) %>%
-  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
-         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 4) %>% head(n = 1)) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 3) %>% head(n = 1)) %>% unlist) %>%
   select(-file_name, reference, sample, file_contents) %>%
   unnest()
 
@@ -492,9 +492,9 @@ of each non-overlapping 100bp window of the genome.
 raw <- Sys.glob("../04-analysis/deep/eager/initial_single_genome/output/*/*/5-DeDup") %>%
   list.files("*.binned.tsv.gz", full.names = T) %>%
   enframe(name = NULL, value = "file_name") %>%
-  mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x)))) %>%
-  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
-         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_types = "dddd")))) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 4) %>% head(n = 1)) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 3) %>% head(n = 1)) %>% unlist) %>%
   select(-file_name, reference, sample, file_contents) %>%
   unnest()
 
@@ -746,8 +746,8 @@ breadth_all <- Sys.glob("../04-analysis/deep/eager/initial_single_genome/output/
   list.files("*all_breadth*", full.names = T) %>%
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_names = c("chrom", "source", "feature", "start", "stop", "score", "strand", "frame", "Gene", "reads", "bases_covered", "Gene_length", "fraction_covered"))))) %>%
-  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
-         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 4) %>% head(n = 1) ) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 3) %>% head(n = 1)) %>% unlist) %>%
   select(-file_name, reference, sample, file_contents) %>%
   unnest() %>%
   filter(feature == "gene")
@@ -756,8 +756,8 @@ depth_all <- Sys.glob("../04-analysis/deep/eager/initial_single_genome/output/*/
   list.files("*all_depth*", full.names = T) %>%
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, function(x) suppressMessages(read_tsv(x, col_names = c("chrom", "source", "feature", "start", "stop", "score", "strand", "frame", "Gene", "depth"))))) %>%
-  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1,12)) %>% unlist,
-         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1,13)) %>% unlist) %>%
+  mutate(reference = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 4) %>% head(n = 1) ) %>% unlist,
+         sample = map(file_name, ~str_split(.x, "/") %>% pluck(1) %>% tail(n = 3) %>% head(n = 1)) %>% unlist) %>%
   select(-file_name, reference, sample, file_contents) %>%
   unnest() %>%
   filter(feature == "gene")
@@ -766,17 +766,58 @@ depth_all <- Sys.glob("../04-analysis/deep/eager/initial_single_genome/output/*/
 
 ### Genome coverage distribution
 
-We can out of curiosity look at the distribution of coverages of the genes
+We can out of curiosity look at the distribution of coverages of the genes.
+
 
 ```{r}
-ggplot(depth_all, aes(sample, depth)) +
-  geom_boxplot() +
-  facet_wrap(~reference) +
-  coord_flip()
+## Using standard deviation statistically incorrect witha  mean
+# depth_all_medians_sd <- depth_all %>% group_by(reference, sample) %>%
+#  summarise(median_depth = median(depth),
+#            upper = median(depth) + sd(depth),
+#            lower = median(depth) - sd(depth))
+
+## This works OK, but for close to normal skewed incorporates more outliers 
+## and excludes close-to-peak more likely related gene-coverages.  
+# depth_all_medians_quant <- depth_all %>% group_by(reference, sample) %>%
+#   summarise(median_depth = median(depth),
+#             upper = quantile(depth, 0.90),
+#             lower = quantile(depth, 0.10))
+
+## This works nicely for normally distributed stuff, maybe doesn't work so well
+## for more uniform distributions, but can't do much with that anyway
+depth_all_medians <- depth_all %>% group_by(reference, sample) %>%
+  summarise(median_depth = median(depth),
+            upper = median(depth) + (median(depth) * 0.75),
+            lower = median(depth) - (median(depth) * 0.75))
+
+
+
+
+one <- ggplot(depth_all, aes(depth)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(reference~sample, scales = "free") +
+  geom_vline(data = depth_all_medians, aes(xintercept = median_depth), colour = "red") +
+  geom_vline(data = depth_all_medians, aes(xintercept = upper), colour = "blue", linetype = "dashed") +
+  geom_vline(data = depth_all_medians, aes(xintercept = lower), colour = "blue", linetype = "dashed")
+
+
+
+one + two
+
 ```
 
-We can now calculate the median, and standard deviation with the upper and
-lower bounds around the median.
+As in many cases we do-not have normal distributions visual inspection, so we
+will use the median. As many of the samples also clearly have outliers of genes
+with massively over-covered or under-covered, we will set a 'by-rule-of-thumb' 
+threshold around the median, of the median plus/minus 75% (of the median). This
+will hopefully trim outliers from normally or skewed distributions, while 
+maintaining the bulk - and for uniform distributions remove some 'cruft' at
+the ends.
+
+We will also remove genes which are less than 70% complete, as we cannot
+say whether they are pseudogenes, have deleted chunks or just low coverage
+therefore can't make a statement whether they are truly present or absent 
+
 
 ```{r}
 
@@ -786,19 +827,14 @@ genes_all_breadthfiltered <- left_join(depth_all, breadth_all) %>%
 
 genes_all_bounds <- genes_all_breadthfiltered %>% 
   group_by(reference, sample) %>%
-  summarise(sd_allgenes_coverage = sd(depth),
-            median_allgenes_coverage = median(depth)) %>%
-  mutate(upper = median_allgenes_coverage + ceiling(sd_allgenes_coverage),
-         lower = median_allgenes_coverage - ceiling(sd_allgenes_coverage))
+  summarise(upper = median(depth) + (median(depth) * 0.75),
+            median_allgenes_coverage = median(depth),
+            lower = median(depth) - (median(depth) * 0.75))
 
 ```
 
-We note some lower bounds can go negative, suggesting very large deviation here.
 
-However, we will also remove later any genome than has less than 50 overall 
-breadth coverage, given the observations made above.
-
-Now can remove any gene for each species/mapping that falls the range.
+Now can remove any gene for each species/mapping that falls the defined range.
 
 ```{r}
 genes_all_final <- left_join(genes_all_breadthfiltered, genes_all_bounds) %>%
