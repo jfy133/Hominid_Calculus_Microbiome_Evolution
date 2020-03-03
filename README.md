@@ -799,7 +799,11 @@ data at `06-additional_data_files` under Data R7 or
 dataset the same is either under Data 9 or 
 at `00-documentation/17-samples_deep_library_merging_information_20190708.csv`.
 
-However in general this can be worked out by merging together any library that 
+The structure of the MPI-SHH sample naming system can be seen here:
+
+![MPI-SHH LIMS naming structure](05-images/Figure_R00_XXX_MPISHHLIMSNameStructure/MPI-SHH_LIMS_NamingStructure.png)
+
+Library merging in this case can therefore be worked out by merging together any library that 
 shares the first six character section of each library. For example:
 
 ```
