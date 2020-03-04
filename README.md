@@ -335,7 +335,9 @@ malt-build \
 
 For the custom NCBI Genome RefSeq database containing bacterial and archaea
 assemblies at scaffold, chromosome and complete levels - we follow the
-R notebook  here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_walkthrough_20181029.Rmd`
+R notebook  here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_walkthrough_20181029.Rmd`. 
+A corresponding list of genomes selected for use in this database can be seen 
+in in `06-additional_data_files` under Data R10.
 
 ### 4.2 AADDER Database
 
@@ -346,8 +348,6 @@ calls the `adder-build` command as provided in the MEGAN install directory's
 `tools` folder. Note we have to change the `MEGAN.vmoptions` to have a large 
 enough memory allocation in the MEGAN install directory.
 
-A list of genomes used in this list can be seen in `06-additional_data_files`
-under Data R10.
 
 ### 4.3 BWA Indexing
 
@@ -405,9 +405,9 @@ All raw FASTQ files should be downloaded sample specific directories in
 
 General laboratory and sequencing and meta information about all newly generated 
 libraries for this study can be seen in 
-`06-additional_data_files/`. under Data R1 and Data R2.
+`06-additional_data_files/`. under Data R01 and Data R02.
 
-The same information but for controls can be seen in Data R3.
+The same information but for controls can be seen in Data R03.
 
 ### 5.1 Additional Individuals
 
@@ -475,7 +475,8 @@ additional criteria of:
   * Aim for approximately 50/50 male and female where possible
 
 The files were downloaded from the NCBI SRA and EBI ENA 
-databases. A list of these libraries can be seen in the 'mapping' file 
+databases. A list of these libraries can be seen either in 
+`06-additional_data_files` under R04 in the 'mapping' file 
 `02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`. 
 Metadata on the HMP samples can be seen in 
 `00-documentation/99-sourcemetadata-hmp_SraRunTable_allRuns.tsv`, with 
@@ -636,7 +637,7 @@ Create Report: On
 ```
 
 These settings can be seen in table format in `06-additional_data_files` 
-under Data R5.
+under Data R05.
 
 The EAGER runs can then be submitted with 
 
@@ -782,11 +783,11 @@ don't worry, this is related to the cluster factor calculation for when there
 are no human reads after de-duplication. I just manually fill in with NA.
 
 The summarised results from this preprocessing can be seen in 
-`06-additional_data_files` under Data R6
+`06-additional_data_files` under Data R06
 
 For the deep data, the EAGER table was used for report statistics (see below for
 further information), and can be seen in `06-additional_data_files` under 
-Data R8.
+Data R08.
 
 #### 6.2.3 Library Merging
 
@@ -794,9 +795,9 @@ Next, we can merge together libraries that have been sequenced multiple times,
 or Individuals with multiple calculus samples.
 
 A list of libraries that have been merged together can be seen for the screening
-data at `06-additional_data_files` under Data R7 or
+data at `06-additional_data_files` under Data R07 or
 `00-documentation/04-library_merging_information.csv`. For the production 
-dataset the same is either under Data 9 or 
+dataset the same is either under Data R09 or 
 at `00-documentation/17-samples_deep_library_merging_information_20190708.csv`.
 
 The structure of the MPI-SHH sample naming system can be seen here:
@@ -1010,7 +1011,7 @@ The resulting human mapping data after poly-G removal can be seen in
 ### 6.4 Processing Results Summary
 
 Sequencing quality control results for both screening and production datasets
-can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
+can be seen in `02-scripts.backup/099-SequencingQCMetrics_v2.Rmd`
 
 ![Sequencing QC New Calculus Screening Dataset](05-images/Figure_R01_SAB_SequencingQC_screening/SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_20200220.png)
 
@@ -1021,7 +1022,7 @@ can be seen in `02-scripts.backup/099-SequencingQCMetrics.Rmd`
 **Figure R2 | Sequencing read count distributions of the production dataset of ancient calculus samples newly sequenced during this study.** Each point represents a single indiviudal (i.e. all samples, libraries and re-sequencing runs combined). **a** Raw sequencing reads (prior adapter removal and merging), **b** Number of reads used for downstream analysis (processed reads with human sequences removed).
 
 The general metadata file for all main individual-level pre-processing 
-statistics can be seen in `06-additional_data_files` under Data R4. This file
+statistics can be seen in `06-additional_data_files` under Data R04. This file
 is typically used as input for all downstream analyses, when required.
 
 ## 7 Metagenomic Screening
@@ -1168,8 +1169,9 @@ from MEGAN at species level and a database of taxa with their 'sources'.
 We have already generated the OTU above.
 
 For the database, you can follow the steps as recorded in 
-`02-scripts.backup/013-Organism_Isolation_Source_Database_Generation.Rmd`. The database also 
-requires manual curation over time. This database is stored under
+`02-scripts.backup/013-Organism_Isolation_Source_Database_Generation.Rmd`. The 
+database also requires manual curation over time. This database itself can be 
+seen under `06-additional_data_files` under Data R16, or stored under
 `00-documentation` as `07-master_oralgenome_isolationsource_database.tsv`
 
 With these OTU table and the database, the R notebook 
@@ -2059,7 +2061,7 @@ contact with archaeological samples (such as activated sludge).
 
 The outcome of these filtering steps can be seen in the files 
 `00-documentation.backup/18-Core_Microbiome_AssemblyDownload_*`, with the final 
-files used for downloading ending with  "*filtered". This files were downloaded 
+files used for downloading ending with  "\*filtered". This files were downloaded 
 as above with `wget`.
 
 > _Pseudopropionibacterium_ is generated in a different manner due to recent clade
