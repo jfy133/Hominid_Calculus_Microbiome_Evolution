@@ -1,6 +1,6 @@
 # Anthropoid Calculus Microbiome Evolution
 
-Additional code, analysis and results for Fellows Yates, J.A. _et al._ (2020) XXXX.
+Additional code, analysis and results to extend the supplementary information of Fellows Yates, J.A. _et al._ (2020) XXXX. Please read section R1 before proceeding. 
 
 ## Table of Contents
 
@@ -41,9 +41,10 @@ Additional code, analysis and results for Fellows Yates, J.A. _et al._ (2020) XX
     - [R8.5.2 Contaminant Impact Check](#r852-contaminant-impact-check)
 - [R9 Compositional Analysis](#r9-compositional-analysis)
     - [R9.1 Principal Coordinate Analysis](#r91-principal-coordinate-analysis)
-    - [R9.2 Hierarchical Clustering Heatmaps](#r92-hierarchical-clustering-heatmaps)
-    - [R9.2.2 Indicator Analysis](#r922-indicator-analysis)
-    - [R9.3 Clustering by Diet?](#r93-clustering-by-diet)
+    - [R9.2 PERMANOVA](#r92-permanova)
+    - [R9.3 Hierarchical Clustering Heatmaps](#r93-hierarchical-clustering-heatmaps)
+    - [R9.3.2 Indicator Analysis](#r932-indicator-analysis)
+    - [R9.4 Clustering by Diet?](#r94-clustering-by-diet)
 - [R10 Core Microbiome Analysis](#r10-core-microbiome-analysis)
     - [R10.1 Core Microbiome Calculation](#r101-core-microbiome-calculation)
     - [R10.2 Core Microbiome MaltExtract](#r102-core-microbiome-maltextract)
@@ -75,7 +76,14 @@ additional data files, R notebooks, scripts and commands where a
 program was initiated directly from the command line as well as additional 
 results.
 
-Briefly, code can be found under the directory `02-scripts.backup`, 'raw' 
+The following objects referred to in the supplementary information of the paper
+can be found here:
+ * External Data Repository Section RXX (in this README)
+ * External Data Repository Figure RXX (in this README and under `05-images/`.)
+ * External Data Repository Table RXX (in this README)
+ * External Data Repository File RXX  (in this README and under `06-additional_data_files/`.)
+
+Code can be found under the directory `02-scripts.backup`, 'raw' 
 analysis results can be seen under `04-analysis`. 'Cleaned-up'/summary analysis 
 results and metadata files can be seen under `00-documentation`. Figures 
 displayed within this README are stored under `05-images`. Additional data 
@@ -1706,6 +1714,9 @@ Individual plots can be seen in `04-analysis/screening/philr.backup`
 
 More specific comparisons of different parameters can be seen in Figures R18-20.
 
+Given the sparse nature of our data, we compared between two zero-replacement
+methods. This was performed with the script `02-scripts.backup/017-PhILR_PCoA_ZeroReplacementComparison_20190527.Rmd`.
+
 ![Zero replacement method comparison for PCoA](05-images/Figure_R19_SEA_PCoAPsuedoCountvsCZM/SuppFigSXX_PhiLRPCoA_ZeroReplacementComparison_EDIT.png)
 
 **Figure R19 | Principal coordinate analysis comparing pseudocount and cumulative zero multiplication zero-replacement methods.** Reconstruction of Fig. 1 of main article (but with all sources), shows little differences in the relationships between samples between each method. Scatterplot displays euclidean distances based on genus-level PhILR ratios of all well preserved samples and sources (without controls), putative laboratory contaminants removed, and low abundant taxa removed by a minimum support value of 0.07%. Grey symbols represent comparative sources.
@@ -1718,7 +1729,13 @@ More specific comparisons of different parameters can be seen in Figures R18-20.
 
 **Figure R21 | Principal Coordinate Analysis of well-preserved calculus microbiomes at prokaryotic genus taxonomic level by host genus.** Visual inspection shows distinct centroids of each host genus, albeit with overlap with others. Input is PhILR transformed OTU tables without sources and controls and low preservation samples removed. Low abundant taxa removed if under 0.07% of overall alignments ('min. support'). **a** NCBI nt database axis 1 and 2, **b** NCBI nt database axis 2 and 3, **c** Custom NCBI RefSeq database axis 1 and 2, and **d** Custom NCBI RefSeq database axis 2 and 3.
 
-Output from the PERMANOVA related analysis can be seen in Tables R5-7
+### R9.2 PERMANOVA
+
+To provide statistical support for the observations made from the PCoAs above,
+PERMANOVA analysis was additionally run alongside the PCoAs. This were run
+in the same R notebook as the PCoAs above.
+
+The PERMANOVA output related analysis can be seen in Tables R5-7
 
 **Table R5 | Result of PERMANOVA comparing host genera at genus and species level with NCBI nt and custom NCBI RefSeq databases.** Calculus microbiomes composition of _Gorilla_, _Pan_ and _Homo_ are distinct at all taxonomic and database combinations. _Alouatta_ has been removed due to small sample size. Results of PERMANOVA as implemented in the `adonis()` function in the R package vegan and applied to euclidean distances of filtered and PhILR-transformed MALT alignment OTU tables. Putative laboratory contaminants and badly-preserved samples have been removed. Test statistic is 'pseudo-F'.
 
@@ -1771,7 +1788,11 @@ Output from the PERMANOVA related analysis can be seen in Tables R5-7
 | refseq   | species         | 0.04        | Adonis | RsquaredGroups    | 0.332 | 0.059              |
 | refseq   | species         | 0.04        | Adonis | RsquaredResiduals | 0.668 | 0.059              |
 
-### R9.2 Hierarchical Clustering Heatmaps
+The R script for summarising the results across all runs is also stored in
+`017-PhILR_PCoA_summaries.R`, and the output files for each combination are in 
+  `00-documentation` under `philr_permanova_*_summary.tsv`.
+
+### R9.3 Hierarchical Clustering Heatmaps
 
 To further visualise drivers of similarity and differences between the different
 host genera, we applied hierarchical clustering on the contaminant and
@@ -1815,7 +1836,7 @@ using Inkscape, which was recorded in the file
 Figures can be seen in collated in `06-additional_data_files` under Data R20 or 
 individual files can in `04-analysis/screening/compositional_heatmaps.backup`.
 
-#### R9.2.1 Zero replacement validation
+#### R9.3.1 Zero replacement validation
 
 Next we can check whether this result is affected by the zero replacement model,
 with the same script otherwise the same settings.
@@ -1830,7 +1851,7 @@ Comparing the zero replacement methods shows no difference between clustering.
 There is cosmetic tree topology changes but  only by clade flipping - no 
 structural changes. The output is saved as in the same directory at above.
 
-### R9.2.2 Indicator Analysis
+### R9.3.2 Indicator Analysis
 
 To confirm the species corresponding to the groups in the hierarchical clustering
 we ran Indicator Analysis to find species that are 'indicative' of certain 
@@ -1847,7 +1868,7 @@ and the results can be seen can be seen in
 `06-additional_data_files` under Data R21 or in 
 `04-analysis/screening/indicspecies.backup`.
 
-### R9.3 Clustering by Diet?
+### R9.4 Clustering by Diet?
 
 To revisit the question and results posed by Weyrich et al (2017) _Nature_ 
 regarding clustering of the calculus microbiomes individuals by subsistence 
@@ -1870,6 +1891,8 @@ The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`.
 
 ### R10.1 Core Microbiome Calculation
 
+#### R10.1.1 Core Microbiome Procedure
+
 Given the overlap between each host genus as identified above, we also wished 
 to find microbiota taxa that are potentially present across various 
 combinations of the host genera. 
@@ -1884,10 +1907,14 @@ notebook is also provided under
 
 **Figure R24 | Schematic of parameters used for selecting taxa considered to be core to a host genus population and host genus population themselves.** Requiring half of individuals of a population (to be core to a population) allows for inter-individual biological variability and preservation variability. Requiring two-thirds of the populations of a host genus (to be core to a host genus), ensures a particular taxon is core in multiple populations or subspecies and is not unique to a single population (which may also reflect preservational or curational backgrounds). _Alouatta_ is exempt from the population level parameter due to the inclusion of only a single population.
 
-Once optimal parameters for prevalence and abundance were chosen by permutating
+#### R10.1.2 Min. Support Testing
+
+Optimal parameters for prevalence and abundance were chosen by permutating
 population fractions and min. support values respectively (minimising retention 
 of environment contaminants and retaining well characterised oral taxa as  
-reference) (see `02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.Rmd`), we collated the results from each database and taxonomic level into 
+reference).
+
+Code for this procedure can be seen in `02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.Rmd`), we collated the results from each database and taxonomic level into 
 a single set of results using the R script 
 `02-scripts.backup/018-CoreMicrobiome_summaries_20190902.R`. This collected set 
 of results can be seen in 
@@ -1898,15 +1925,33 @@ and
 
 `00-documentation.backup/24-intersection_proktaxapassingthresholdstaxalist_20190211.tsv`
 
+We found that parameters of 50% of a population individuals, and 66% of host 
+populations requiring a taxon to be present accounted for robustness against 
+preservation and biological variability, while having enough 
+individuals/populations to for corroboration that a taxaon could be considered 
+'core'.
+
+Figure R25 shows the results of increasing the minimum support filter at
+genus and species level for both databases.
+
 ![Minimum support value optimisation for core microbiome calculation](05-images/Figure_R25_SFA_CoreMicrobiome_Alluvial_Minsupport/99-coremicrobiome_presenceabsence_alluival_minsupportcomparison_20200226.png)
 
 **Figure R25 | Alluvial diagram showing effects of increasing the minimum abundance threshold to the MALT OTU table-based core microbiome calculations. Increasing from 0.04% to 0.07% shows minimal changes in combination assignment.** Comparisons are between the nt (top) and RefSeq (bottom) databases, and at genus (left) and species (right) taxonomic levels. Stacked bars represent the number of taxa to each combination, and alluviums represent the assignment of a given taxon between each minimum support threshold. Plots created using the ggalluvial R package 273, with input data as MALT aligned and MEGAN exported OTU tables excluding putative laboratory contaminants, badly preserved samples, and taxa with minimum support values < 0.07% (genus level) and < 0.04% (species level).
 
+Setting a 0.07% minimum support value at genus level and 0.04% for species was
+sufficient to remove all well-known environmental or contaminant taxa while
+retaining well-known oral taxa. Furthermore, these parameters generally removed
+remaining laboratory contaminants being considered core to a 'controls + host 
+genus' combination.
+
 The raw data for the min. support permutation comparison can be seen under
 `06-additional_data_files` in Data R23.
 
+#### R10.1.3 Single Population Testing
+
 We additionally also checked the effect of removing the single individual 
 population in Gorillas with the script version of the core microbiome notebook,
+(`02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.R`)
 and permutating whether any populations with a single individual were dropped 
 or not.
 
@@ -1937,6 +1982,8 @@ be seen under`06-additional_data_files` in Data R24.
 Individual visualisations and results for each parameter run can be seen in 
 `04-analysis/screening/presenceabsence_intersection.backup/`
 
+#### R10.1.4 Investigation into Mycobacterium as Core Genus
+
 We also observed that _Mycobacterium_ was able to pass our minimum support 
 despite being a common soil contaminant. We investigated this further 
 (see main article for more details.) in an extension of the original Core
@@ -1953,11 +2000,21 @@ combination.
 
 ![Core microbiome Upset plots at genus and species level for Nt and RefSeq databases](05-images/Figure_R28_SFC_CoreMicrobiome_UpSetPlots/FigureSXX-CoreMicrobiome_UpSetR_combined.png)
 
+#### R10.1.5 Core Microbiome Intersection Between Hosts
+
+Due to the large number of categories, which can make reading Venn diagrams 
+difficult to understand, we can summarise the number of taxa in each host 
+combination in an UpSet plot. Code for this can also be seen in the 
+`02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.Rmd` notebook.
+
 **Figure R28 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a 'core' microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
 
 The final list of taxa at both species and genus level can also be seen in
-`06-additional_data_files` under Data R22. Comparison of the core assignments
-for different databases can be seen in `06-additional_data_files` under Data R25.
+`06-additional_data_files` under Data R22. 
+
+Comparison of the core assignments for the two databases was generated with 
+`02-scripts/18-CoreMicrobiome_database_Comparison`, and the outcome can be 
+seen in `06-additional_data_files` under Data R25.
 
 ### R10.2 Core Microbiome MaltExtract
 
