@@ -1,8 +1,10 @@
 # Anthropoid Calculus Microbiome Evolution
 
+Additional code, analysis and results for Fellows Yates, J.A. _et al._ (2020) XXXX.
+
 <!-- MarkdownTOC autolink="true" levels="1,2" -->
 
-- [R1 Preamble](#r1-preamble)
+- [R1 Introduction](#r1-introduction)
 - [R2 Resources](#r2-resources)
 - [R3 Software Paths](#r3-software-paths)
 - [R4 Database and Genome Indexing](#r4-database-and-genome-indexing)
@@ -17,7 +19,7 @@
 
 <!-- /MarkdownTOC -->
 
-## R1 Preamble
+## R1 Introduction
 
 This README acts as **walk-through** guidance of the order of analyses for 
 Fellows Yates, J.A. _et al._ (2020) XXXX. The repository also contains 
@@ -25,12 +27,21 @@ additional data files, R notebooks, scripts and commands where a
 program was initiated directly from the command line as well as additional 
 results.
 
-While as many data (text) files as possible are included within the repository, 
-this is not possible for all (e.g. FASTQ/BAM files). Raw data can be 
-found on the ENA under project accession ID: PRJEB34569. 
+Briefly, code can be found under the directory `02-scripts.backup`, 'raw' 
+analysis results can be seen under `04-analysis`. 'Cleaned-up'/summary analysis 
+results and metadata files can be seen under `00-documentation`. Figures 
+displayed within this README are stored under `05-images`. Additional data 
+files for fast access/referral in the main publication can be seen under 
+`06-additional_data_files`.
 
-The general structure of this project is typically as follows (although
-variants will occur):
+> `01-data` and `03-preprocessing` only contains empty directories as these 
+contain very large sequencing files that cannot be uploaded to this repository.
+They are kept here so if reproducing analysis, paths in scripts do not need to 
+be modified. Raw data can be found on the ENA under project accession ID: 
+PRJEB34569. 
+
+In more detail, general structure of this project is typically as follows 
+(although variants will occur):
 
 ```text
 README.md             ## This walkthrough
