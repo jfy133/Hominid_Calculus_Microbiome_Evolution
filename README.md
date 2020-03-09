@@ -25,7 +25,7 @@ Additional code, analysis and results for Fellows Yates, J.A. _et al._ (2020) XX
 - [R6 Data Preprocessing](#r6-data-preprocessing)
     - [R6.1 Preprocessing](#r61-preprocessing)
     - [R6.2 Post-Processing](#r62-post-processing)
-    - [6.3 Poly-G Trimming Assessment](#63-poly-g-trimming-assessment)
+    - [R6.3 Poly-G Trimming Assessment](#r63-poly-g-trimming-assessment)
     - [R6.4 Processing Results Summary](#r64-processing-results-summary)
 - [R7 Metagenomic Screening](#r7-metagenomic-screening)
     - [R7.1 MALT](#r71-malt)
@@ -970,7 +970,7 @@ lanes was done for the deep sequencing samples. However the statistics were
 summarised across replicates using the R notebook 
 `02-scripts.backup/099-eager_table_individual_summarised.Rmd`.
 
-### 6.3 Poly-G Trimming Assessment
+### R6.3 Poly-G Trimming Assessment
 
 The human DNA GC content could be a bit off in some of the new libraries 
 generated in this study, as we are sequencing with Illumina NextSeqs, which 
