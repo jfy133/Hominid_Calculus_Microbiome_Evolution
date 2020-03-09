@@ -42,7 +42,7 @@ They are kept here so if reproducing analysis, paths in scripts do not need to
 be modified. Raw data can be found on the ENA under project accession ID: 
 PRJEB34569. 
 
-In more detail, general structure of this project is typically as follows 
+In more detail, the general structure of this project is typically as follows 
 (although variants will occur):
 
 ```text
