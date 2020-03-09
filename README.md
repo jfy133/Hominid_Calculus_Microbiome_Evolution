@@ -2,6 +2,8 @@
 
 Additional code, analysis and results for Fellows Yates, J.A. _et al._ (2020) XXXX.
 
+## Table of Contents
+
 <!-- MarkdownTOC autolink="true" levels="1,2" -->
 
 - [R1 Introduction](#r1-introduction)
