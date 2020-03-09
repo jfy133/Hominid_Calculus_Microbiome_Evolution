@@ -1,10 +1,13 @@
 # Anthropoid Calculus Microbiome Evolution
 
+Additional supplementary information and code, data repository for Fellows Yates, J.A. _et al._ (2020) XXXX
+--
+
 <!-- MarkdownTOC autolink="true" levels="1,2" -->
 
 - [R1 Preamble](#r1-preamble)
 - [R2 Resources](#r2-resources)
-- [R3 Repository Structure](#r3-repository-structure)
+- [R3 Software Paths](#r3-software-paths)
 - [R4 Database and Genome Indexing](#r4-database-and-genome-indexing)
 - [R5 Data Acquisition](#r5-data-acquisition)
 - [R6 Data Preprocessing](#r6-data-preprocessing)
@@ -17,25 +20,74 @@
 
 <!-- /MarkdownTOC -->
 
-
 ## R1 Preamble
 
-This README is a walk-through of the R notebooks, R scripts and Bash scripts 
-stored in this repository, and used in the Anthropoid Calculus Microbiome 
-Evolution project.
-
-Scripts are referred to within the publication: 
-Fellows Yates, J.A. _et al._ (2020) XXXX.
+This README acts as **walk-through** guidance of the order of analyses for 
+Fellows Yates, J.A. _et al._ (2020) XXXX. The repository also contains 
+additional data files, R notebooks, scripts and commands where a
+program was initiated directly from the command line as well as additional 
+results.
 
 While as many data (text) files as possible are included within the repository, 
-however this is not possible for all (e.g. FASTQ/BAM files). Raw data can be 
+this is not possible for all (e.g. FASTQ/BAM files). Raw data can be 
 found on the ENA under project accession ID: PRJEB34569. 
 
-This analysis was performed on a server running Ubuntu 14.04 LTS, and a SLURM 
-submission scheduler. Some scripts or commands may heavily refer to SLURM, 
-however these are directly related to our system. As far as we can, we have 
-removed SLURM commands and/or MPI-SHH specific paths or parameters, but you 
-should always check this for each command and script.
+The general structure of this project is typically as follows (although
+variants will occur):
+
+```text
+README.md             ## This walkthrough
+00-documentation/     ## Contains main metadata files and summary result files
+  00-document_1.txt
+  01-document_2.txt
+01-data/              ## Only contains directories where raw data FASTQ files
+  raw_data/           ## are stored (must be downloaded yourself, not included 
+    screening/        ## due to large file size)
+    deep/
+  databases/
+    <database_1>/
+02-scripts.backup/    ## Contains all scripts and R notebooks used in this project
+  000-ANALYSIS_CONFIG ## and referred to throughout this README
+  001-script.sh
+  002-notebook.Rmd
+03-preprocessing      ## Only contains directories where pre-processed FASTQ files
+  screening/          ## are stored (must be processed yourself, not included 
+    human_filtering/  ## due to large file size)
+      input/
+      output/
+    library_merging/
+      input/
+      output/
+  deep/
+    human_filtering
+      input/
+      output/
+    library_merging/
+      input/
+      output/
+04-analysis/         ## Contains all small(ish) results files from analyses, 
+  screening/         ## such as tables, .txt. files etc. Large files (BAM, RAM6
+    analysis_1/      ##  etc.) not included here due to large suze and must be
+      input          ##  generated yourself
+      output
+    analysis_2/
+      input
+      output
+  deep/
+    analysis_1/
+      input
+     output
+    analysis_2/
+      input
+      output
+05-images/           ## Stores images displayed in this README
+  Figure_R01/
+  Figure_R02/
+06-additional_data_files  ## A fast look-up location for certain important files
+                          ## referred to in the supplementary text of the 
+                          ## associated manuscript. Typically copies of files
+                          ## stored in 04-analysis.
+```
 
 > Important: The code in this repository was written over multiple 'learning' 
 > years by non-bioinformaticians. Quality will vary and may not be immediately 
@@ -48,16 +100,18 @@ should always check this for each command and script.
 > begins with `../0{1,2,4}`. If it does not, let us know and we will fix
 > this accordingly.
  
-This README section acts as **walk-through** guidance of the order of analyses, 
-and which R notebooks and scripts were used. It also includes commands where a
-program was initiated directly from the command line.
-
 ## R2 Resources
 
 Here is a list of programs and databases that will be used in this analysis
 and that you should have ready installed/downloaded prior carrying out the
 analysis. Note that the download and set up of the databases are described 
 below.
+
+This analysis was performed on a server running Ubuntu 14.04 LTS, and a SLURM 
+submission scheduler. Some scripts or commands may heavily refer to SLURM, 
+however these are directly related to our system. As far as we can, we have 
+removed SLURM commands and/or MPI-SHH specific paths or parameters, but you 
+should always check this for each command and script.
 
 ### R2.1 Software
 
@@ -217,68 +271,7 @@ _Streptococcus sanguinis_                     | SK36        | 2018-12-11     | C
 _Tannerella forsythia_                        | 92A2        | 2018-12-18     | Complete     | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/238/215/GCF_000238215.1_ASM23821v1/
 _Treponema socranskii subsp. paredies_        | ATCC 35535  | 2018-05-31     | Scaffolds    | Representative | ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/413/015/GCF_000413015.1_Trep_socr_subsp_paredis_ATCC_35535_V1/
 
-## R3 Repository Structure
-
-### R3.1 General Directory Structure
-
-The general structure of this project is typically as follows (although
-variants will occur):
-
-```text
-README.md             ## This walkthrough
-00-documentation/     ## Contains main metadata files and summary result files
-  00-document_1.txt
-  01-document_2.txt
-01-data/              ## Only contains directories where raw data FASTQ files
-  raw_data/           ## are stored (must be downloaded yourself, not included 
-    screening/        ## due to large file size)
-    deep/
-  databases/
-    <database_1>/
-02-scripts.backup/    ## Contains all scripts and R notebooks used in this project
-  000-ANALYSIS_CONFIG ## and referred to throughout this README
-  001-script.sh
-  002-notebook.Rmd
-03-preprocessing      ## Only contains directories where pre-processed FASTQ files
-  screening/          ## are stored (must be processed yourself, not included 
-    human_filtering/  ## due to large file size)
-      input/
-      output/
-    library_merging/
-      input/
-      output/
-  deep/
-    human_filtering
-      input/
-      output/
-    library_merging/
-      input/
-      output/
-04-analysis/         ## Contains all small(ish) results files from analyses, 
-  screening/         ## such as tables, .txt. files etc. Large files (BAM, RAM6
-    analysis_1/      ##  etc.) not included here due to large suze and must be
-      input          ##  generated yourself
-      output
-    analysis_2/
-      input
-      output
-  deep/
-    analysis_1/
-      input
-     output
-    analysis_2/
-      input
-      output
-05-images/           ## Stores images displayed in this README
-  Figure_R01/
-  Figure_R02/
-06-additional_data_files  ## A fast look-up location for certain important files
-                          ## referred to in the supplementary text of the 
-                          ## associated manuscript. Typically copies of files
-                          ## stored in 04-analysis.
-```
-
-### R3.2 Analysis Profile
+## R3 Software Paths
 
 Some scripts used in this project use variables stored a central profile called
 `02-scripts.backup/000-analysis_profile`. These variables indicate the location
@@ -289,10 +282,10 @@ You will need to replace the paths stored there to where each tool is stored
 on your personal server, I have replaced our central storage to `<YOUR_PATH>`, 
 however you will need to check each path correctly.
 
-> Note: not all scripts use the profile, so please check each one before running
+> Note: not all scripts use the 'profile', so please check each one before running
 
-For direct commands (i.e. not used in a script), the path will be defined in
-the command block.
+For direct commands (i.e. not used in a script), the path will either 
+be defined in the command block or assumed already in your `$PATH`.
 
 ## R4 Database and Genome Indexing
 
