@@ -430,7 +430,7 @@ O=SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.dict
 
 ### R4.4 UniRef Database
 
-For acquiring the UniRef database for [HUMANn2](#123-humann2), we used the script
+For acquiring the UniRef database for [HUMANn2](#r123-humann2), we used the script
 that comes with HUMANn2, and run as follows:
 
 ```bash
@@ -1104,7 +1104,7 @@ a input directory with wild-cards to all the files and an output directory.
 04-analysis/screening/malt/nt
 ```
 
-For the CustomRefSeq database, see [below](#124-aadder-analysis)
+For the CustomRefSeq database, see [below](#r124-aadder-analysis)
 
 > The RMA6 files are not provided here due to the large size.
 
@@ -1166,7 +1166,7 @@ level.
 These are saved in `04-analysis/screening/megan.backup`
 
 The corresponding `.megan`, `.nwk`  and OTU tables at various taxonomic
-levels (as exported by MEGAN) for both Nt and [RefSeq](#125-malt-refSeq) 
+levels (as exported by MEGAN) for both Nt and [RefSeq](#r125-malt-refSeq) 
 databases can be seen in `06-additional_data_files` under Data R11.
 
 #### R7.2.2 Additional Raw OTU Tables
@@ -1448,7 +1448,7 @@ This summary can also be  seen in `06-additional_data_files` under Data R13.
 Sourcetracker (I realised later) doesn't do rarefaction properly as it 
 allows sampling with replacement of the OTUS. Therefore, we need to remove
 samples that have less than 1000 OTUs (which is the default rarefaction level
-in Sourcetracker - [see below](#823-sourcetracker)). So next we need to filter our OTU table
+in Sourcetracker - [see below](#r823-sourcetracker)). So next we need to filter our OTU table
 to remove samples that have less than that threshold. Looking at the table
 summary shows that fortunately this will remove very few samples and 
 will remove mostly blanks.
@@ -1560,7 +1560,7 @@ Code for statistical testing and visualisation can also be seen in the data repo
 
 #### R8.4.1 MEx-IPA
 
-To rapidly screen for damage patterns indicative of ancient DNA on the observed core microbiome ([see below](#10-core-microbiome-analysis)), we [ran MaltExtract](#102-core-microbiome-maltextract) on all output of MALT, with the core microbiome 
+To rapidly screen for damage patterns indicative of ancient DNA on the observed core microbiome ([see below](#r10-core-microbiome-analysis)), we [ran MaltExtract](#r102-core-microbiome-maltextract) on all output of MALT, with the core microbiome 
 as input list.
 
 We then developed [MEx-IPA](https://github.com/jfy133/MEx-IPA) to rapidly visualise ancient DNA characteristics across all samples and core taxa.
@@ -1577,7 +1577,7 @@ can be seen below in Figure R16.
 
 To generate additional confirmation of damage patterns in oral taxa, the 
 screening data was mapped to a subset of observed core microbiome reference 
-genomes (see [below](#111-production-dataset-sequencing-depth-calculatons)), using 
+genomes (see [below](#r111-production-dataset-sequencing-depth-calculatons)), using 
 EAGER.
 
 DamageProfiler results were collated and visualised in the R script
@@ -1609,7 +1609,7 @@ script, and also described here `02-scripts.backup/015-decontam_contamination_de
 The final list of contaminants for all methods and databases can be seen in 
 `06-additional_data_files` under Data R19.
 
-**Table R4 | Summary of OTUs detected across each shotgun taxonomic binner/classifier and databases as potential contaminants by the R package decontam.** MetaPhlAn2 was run for functional analysis [below](#1231-metaphlan2). While MetaPhlAn2 was run as reference but wasn't utilised, the contaminants were not removed downstream due to unknown effects of removing these for [HUMANn2](#1232-humann2).
+**Table R4 | Summary of OTUs detected across each shotgun taxonomic binner/classifier and databases as potential contaminants by the R package decontam.** MetaPhlAn2 was run for functional analysis [below](#r1231-metaphlan2). While MetaPhlAn2 was run as reference but wasn't utilised, the contaminants were not removed downstream due to unknown effects of removing these for [HUMANn2](#r1232-humann2).
 
 | Binning Method | Database   | Taxonomic Level | Total OTUs Detected (n) | Contaminants Detected (n) | Contaminants Detected (%) |
 |----------------|------------|-----------------|-------------------------|---------------------------|---------------------------|
@@ -2074,7 +2074,7 @@ species of interest.
 To calculate this, we map to a range of taxa of interest (either from 
 observations in the dataset or from broad literature review). We selected
 the following species - downloaded the reference or representative strains
-from NCBI, and indexed as [above](#43-bwa-indexing).
+from NCBI, and indexed as [above](#r43-bwa-indexing).
 
 The Initial species that were selected are:
 
@@ -2147,7 +2147,7 @@ Extracts of the selected samples were sent for UDG treatment and deep sequencing
 ### R11.2 Super-reference construction
 
 We decided to generate phylogenies based on the core genera 
-[identified above](#10-core-microbiome-analysis). To generate the super-reference,
+[identified above](#R10-core-microbiome-analysis). To generate the super-reference,
 we can use the notebook 
 `02-scripts.backup/99-phylogeny_reference_genome_collection.Rmd`. 
 This notebook downloads the NCBI Genome assembly reports, performs filtering 
@@ -2180,7 +2180,7 @@ this we can use the script `02-scripts.backup/099-collapse_fastas.sh`, which
 combines them but exporting coordinates (also in bed format) indicating where
 each species FASTA entry is present in the super-reference FASTA.
 
-FASTAs were indexed as [above](#43-bwa-indexing)
+FASTAs were indexed as [above](#r43-bwa-indexing)
 
 > Reference files and indices are not included due to large size
 
@@ -2309,12 +2309,12 @@ also summarised in Table R8.
 | _Treponema_               | _Treponema socranskii_ subsp. _paredis_ ATCC 35535        | 5              | TRUE     |
 
 The reference genomes of the selected taxa can be copied from the 
-[super-reference downloaded files](#112-super-reference-construction), 
+[super-reference downloaded files](#r112-super-reference-construction), 
 and multiple chromosomes are collapsed as again described in 
 `02-scripts.backup/99-phylogeny_reference_genome_collection.Rmd`.
 
 EAGER can then be run again with the same settings for the 
-[Super-reference mapping](#113-super-reference-alignment-and-species selection), 
+[Super-reference mapping](#r113-super-reference-alignment-and-species-selection), 
 but with the single 
 representative genome taxa FASTAs instead.
 
@@ -2533,7 +2533,7 @@ building the same phylogenies but with the screening counterparts of each sample
 (i.e. with damage, and lower coverage), with a few extra individuals i.e. PLV001
 and RIG001 for pre-14ky BP, and OFN001 for post-14ky BP.
 
-We set up EAGER the same way as [above](#111-production-dataset-sequencing-depth-calculations) 
+We set up EAGER the same way as [above](#r111-production-dataset-sequencing-depth-calculations) 
 (retaining the stricter alignment parameters to try and reduce the effect of damage).
 
 Once completed, we check the coverage statistics of each EAGER run as in
@@ -2631,7 +2631,7 @@ For the actual filtering and identification of presence/absence, we load the
 
 #### R12.2.1 Streptococcus Distribution
 
-In the hierarchical clustering ([above](#92-hierarchical-clustering-heatmaps)), we
+In the hierarchical clustering ([above](#r92-hierarchical-clustering-heatmaps)), we
 observed the relative abundance and prevalence of Streptococci varied between 
 host genus. We therefore wished to explore this further - given the interest
 in human evolutionary history regarding the role of amylase copy number 
@@ -3065,7 +3065,7 @@ As a validation, we also want to use AADDERR - a tool which infers functional
 characteristics based on the annotations of a MALT/MEGAN reference database. 
 
 This uses `.gff` files to compare taxonomic assignments with annotations, which
-we downloaded [above](#42-aadder-database). A list of genomes used in this list 
+we downloaded [above](#r42-aadder-database). A list of genomes used in this list 
 can be seen in `06-additional_data_files` under Data R10.
 
 We will run this against the filtered RefSeq genomes we built above both
