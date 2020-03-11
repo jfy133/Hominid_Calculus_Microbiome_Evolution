@@ -70,11 +70,15 @@ Additional code, analysis and results to extend the supplementary information of
 
 ## R1 Introduction
 
-This README acts as **walk-through** guidance of the order of analyses for 
-Fellows Yates, J.A. _et al._ (2020) XXXX. The repository also contains 
-additional data files, R notebooks, scripts and commands where a
-program was initiated directly from the command line as well as additional 
-results.
+This README acts as **walkthrough** guidance of the order of analyses for 
+Fellows Yates, J.A. _et al._ (2020) XXXX. It acts as a **practical methods** 
+supplement as well as for displaying additional **figures** only. Justification 
+and discussion of figures and results are sparsely described, and the main 
+publication should be referred to for scientific interpretation and context.
+
+The repository contains additional data files, R notebooks, scripts and 
+commands where a program was initiated directly from the command line, as well 
+as _some_ additional results.
 
 The following objects referred to in the supplementary information of the paper
 can be found here:
@@ -2243,6 +2247,8 @@ Output results for this statistics can also be see under
 
 ### R11.4 Comparative single reference mapping
 
+#### R11.4.1 Reference selection methods
+
 To compare the effect on genotyping when using a super-reference rather than a 
 single representative genome, we also need a single genome to compare to.
 Furthermore, as we wish to run phylogenies of the outcome - we want to find
@@ -2251,32 +2257,27 @@ sufficient coverage for genotyping.
 
 For this we can calculate a variety of metrics, and select the best fitting
 species for the two requirements above. This is described in
-`02-scripts.backup/031-superreferencemapped_genotyping_stats.Rmd`. The 
-selection based on the different metrics were performed manually and via
-an automated system, which is summarised in `06-additional_data_files` under
-Data R29. 
+`02-scripts.backup/031-superreferencemapped_genotyping_stats.Rmd`. 
 
-The finally selected taxa were as follows
+The final list of selected taxa via visual inspection were as follows
 
-Genus                      | Majority Vote                                
----------------------------|-----------------------------------------------
-_Actinomyces_              | Actinomyces_dentalis_DSM_19115 
-_Campylobacter_            | Campylobacter_gracilis
-_Capnocytophaga_           | Capnocytophaga_gingivalis_ATCC_33624
-_Corynebacterium_          | Corynebacterium_matruchotii_ATCC_14266
-_Fretibacterium_           | Fretibacterium_fastidiosum
-_Fusobacterium_            | Fusobacterium_hwasookii_ChDC_F206
-_Olsenella_                | Olsenella_sp_oral_taxon_807
-_Ottowia_                  | Ottowia_sp_oral_taxon_894
-_Porphyromonas_            | Porphyromonas_gingivalis_ATCC_33277
-_Prevotella_               | Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930
-_Pseudopropionibacterium_  | Pseudopropionibacterium_propionicum_F0230a
-_Selenomonas_              | Selenomonas_sp_F0473
-_Streptococcus_            | Streptococcus_sanguinis_SK36
-_Tannerella_               | Tannerella_forsythia_92A2
-_Treponema_                | Treponema_socranskii_subsp_paredis_ATCC_35535
+* _Actinomyces_              - Actinomyces_dentalis_DSM_19115 
+* _Campylobacter_            - Campylobacter_gracilis
+* _Capnocytophaga_           - Capnocytophaga_gingivalis_ATCC_33624
+* _Corynebacterium_          - Corynebacterium_matruchotii_ATCC_14266
+* _Fretibacterium_           - Fretibacterium_fastidiosum
+* _Fusobacterium_            - Fusobacterium_hwasookii_ChDC_F206
+* _Olsenella_                - Olsenella_sp_oral_taxon_807
+* _Ottowia_                  - Ottowia_sp_oral_taxon_894
+* _Porphyromonas_            - Porphyromonas_gingivalis_ATCC_33277
+* _Prevotella_               - Prevotella_loescheii_DSM_19665_=_JCM_12249_=_ATCC_15930
+* _Pseudopropionibacterium_  - Pseudopropionibacterium_propionicum_F0230a
+* _Selenomonas_              - Selenomonas_sp_F0473
+* _Streptococcus_            - Streptococcus_sanguinis_SK36
+* _Tannerella_               - Tannerella_forsythia_92A2
+* _Treponema_                - Treponema_socranskii_subsp_paredis_ATCC_35535
 
-Output from the species selection can be seen in 
+Output from the automated species selection can be seen in 
 `04-analysis/deep/competitive_mapping.backup/species_selection`. This is
 also summarised in Table R8.
 
@@ -2308,6 +2309,14 @@ also summarised in Table R8.
 | _Tannerella_              | _Tannerella forsythia_ 92A2                               | 5              | TRUE     |
 | _Treponema_               | _Treponema socranskii_ subsp. _paredis_ ATCC 35535        | 5              | TRUE     |
 
+#### R11.4.1 Reference selection comparison and final selection
+
+The selection based on the different metrics were performed manually and via
+an automated system, which is compared in `06-additional_data_files` under
+Data R29. The list above in Table R8 showed high concordance with the visual
+inspection, and therefore the visual taxon selection was used only when 
+there was not a clear 'winner' from the automated selection (e.g. Selenomonas) 
+
 The reference genomes of the selected taxa can be copied from the 
 [super-reference downloaded files](#r112-super-reference-construction), 
 and multiple chromosomes are collapsed as again described in 
@@ -2338,7 +2347,7 @@ can reduce the level of cross-mapping, we need a way of assessing the level
 of multi-allelic positions occur in each mapping.
 
 For this we can use MultiVCFAnalyzer, which when given a GATK UnifiedGenotyper 
-VCF file where the reference ploidy was ('pretendedly') set to 2, will report
+VCF file where the reference ploidy was ('fakely') set to 2, will report
 the fraction of reads that hold an allele in 'heterozygous' sites (i.e. 
 positions where there is a possible reference and a possible alternative allele - which is not expected in haploid bacteria).
 
@@ -2394,7 +2403,7 @@ the two mapping strategies, we can look in the R notebook
 
 A summary table of percentage of multi-allelic SNPs when running 
 MultiVCFAnalyzer using both mapping methods can be seen in 
-`06-additional_data_files` under Data R31.
+`06-additional_data_files` under Data R30.
 
 From this script we see the super-reference mapping strategy doesn't work 
 very often it reducing the number of multi-allelic SNPs, and 
@@ -2451,7 +2460,10 @@ generating a few summary statistics for the alignment, filtering based on the
 number of positions, and then pairwise-deletion neighbour-joining phylogenies.
 
 To ensure a enough positions are present for distance calculations between 
-samples we require a minimum 1000 of called positions for each sample XXX
+samples we require a minimum 1000 of called positions for each sample, the 
+filtering of which is included in `02-scripts.backup/042-generate_NJ_tree.R`.
+
+e.g.
 
 ```bash
 
@@ -2506,7 +2518,8 @@ represent different species (due to sub-optimal reference selection), and the
 clustering of the Red Lady of El Mirón (EMN001)  with the Neanderthals is 
 because they share the same regions of the genome which are not present in 
 the other clade (leading to more similar distance calculations). Alternatively, 
-the Neanderthals and EMN001 may have very small regions of the genome covered (given their age) and the distance calculated is just highly conserved regions 
+the Neanderthals and EMN001 may have very small regions of the genome covered 
+(given their age) and the distance calculated is just highly conserved regions 
 with low diversity.
 
 To check this, we can build a distribution of the numbers of positions 
@@ -2516,11 +2529,11 @@ and the same for each Human individual - and see if the
 MN001/Neanderthal median falls outside the range of the EMN001/Human and 
 Human/Human combinations.
 
+This is implemented in version three within `02-scripts.backup/044-SNPAlignment_SharedData_Analysis_20190915.Rmd`.
+
 ![El Mirón shared number of SNPs with Neanderthals and Humans](05-images/Figure_R33_SGE_ElMironOverlappingSNPsAnalysis/SharedSNP_Comparison_EMNwithNeanderthals_vs_EMNwithoutNeanderthals_COMBINED.png)
 
 **Figure R33 | Comparison of number shared positions of EMN001 and Neanderthals, compared to humans used to generate production dataset phylogenies.** EMN001 and Neanderthal pairwise combinations do not show having shared number of positions falling outside the range of all human to human pairwise combinations. Histogram represents a count of all pairwise human combinations that have a given number of shared positions. All individuals with less than 1000 positions in each SNP alignment have been removed. Orange solid line represents median number of positions of EMN001 shared with each human, and red dashed line represents median shared between EMN001 and each Neanderthal individual.
-
-This is implemented in version three within `02-scripts.backup/044-SNPAlignment_SharedData_Analysis_20190915.Rmd`.
 
 The output files for can be seen in `04-analysis/deep/phylogenies`
 
