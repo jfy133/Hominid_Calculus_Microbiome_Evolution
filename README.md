@@ -3039,36 +3039,79 @@ humann2_regroup_table -i humann2_genefamilies.tsv -g uniref90_ko -o humann2_gene
 All analysis and figure generation for HUMAnN2 data can be found in the R markdown
 document here `02-scripts.backup/144-imv-oral_evolution_humann2_fxn_cleaned.Rmd`.
 
+
+We used pathway abundance data to perform PCAs, wich were plotted to visualize
+the relationships between samples and controls, as well as within and between
+samples.
 ![HUMAnN2 PCAs](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R41_SM1_supplemental_humann2_pcas.png)
 **Figure R41 | Principal components analysis of pathway abundances identified by HUMAnN2.** PCA of pathway abundances with **a** all samples and controls, **b** outlier samples removed, **c** only plaque and calculus samples, **d** only calculus samples. Outliers were determined for pathway abundances based on plotting with the controls samples (not plaque) in panel A.
 
+
+The differences in the number of assignments to UniRef90 categories, KEGG
+orthologs, and KEGG carbohydrate orthologs between sample groups were explored. 
 ![HUMAnN2 read assignments](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R42_SM2_supplemental_humann2_pct_assigned.png)
 **Figure R42 | HUMAnN2 read assignment statistics.** All graphs have outlier samples removed. **a** Percent of reads assigned to a UniRef90 protein, outlier samples removed. **b** Proportion of UniRef90 assignments that grouped to KEGG orthologs. **c** The total number of KEGG orthologs in any of the 15 KEGG Carbohydrate pathways in each sample. **d** Abundance of KEGG orthologs in any of the 15 KEGG Carbohydrate pathways in each sample. * P < 0.05, ** P < 0.01, *** P<0.001. 
 
+
+We used KEGG ortholog abundance data to perform PCAs, wich were plotted to
+visualize the relationships between samples and controls, as well as within and
+between samples.
 ![HUMAnN2 KEGG Ortholog PCAs](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R43_SM3_supplemental_humann2_pcas_KOs.png)
 **Figure R43 | Principal components analysis of KEGG orthologs separates host genera.** PCA of pathway abundances with **a** all samples and controls, **b** outlier samples removed, **c** only plaque and calculus samples, **d** only calculus samples. Outliers were determined for pathway abundances based on plotting with the controls samples (not plaque) in panel A.
 
+
+Biplots were used to visualize the KEGG orthologs with strongest loadings in PC1
+and PC2, to understand what drives separation of sample groups.  
 ![HUMAnN2 KEGG Ortholog PCA biplots](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R44_SM4_supplemental_humann2_KOs_biplots.png)
 **Figure R44 | PCA biplots with the KEGG orthologs (Figure R39/SM3D above) with the top 10 strongest positive and negative loadings on PC1 and PC2.** **a** Top loadings of PC1 with all _Homo_ samples. **b** Top loadings of PC1 without modern _Homo_ samples. **c** Top loadings of PC2 with all _Homo_ samples. **d** Top loadings of PC2 without modern _Homo_ samples. Note in panels b and d (without modern _Homo_ samples) that the y-axis has been reversed to maintain orientation with the other PCAs.
 
+
+The abundance of each of the orthologs plotted in the biplots above were
+visualized in heat maps to visualize the difference between host groups, 
+including modern _Homo_. 
 ![HUMAnN2 heat maps including modern humans](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R45_SM5_supplemental_humann2_KO_heatmaps.png)
 **Figure R45 | Heat maps showing the centered log ratio-transformed abundance of the top 10 proteins with strongest loadings from the PCA including modern _Homo_.** Host genus is indicated by the colored bars to the right, where blue is _Alouatta_, purple is _Gorilla_, green is _Pan_, and orange is _Homo_. Symbols in _Homo_ indicate different groups, where triangle pointed up is Neanderthal, square is pre-agricultural human, circle is pre-antibiotic human, and triangle pointed down is modern day human. **a** PC1 positive top 10 KEGG orthologs with strongest loadings. **b** PC1 negative top 10 KEGG orthologs with strongest loadings. **c** PC2 positive top 10 KEGG orthologs with strongest loadings. **d** PC2 negative top 10 KEGG orthologs with strongest loadings. 
 
+
+The abundance of each of the orthologs plotted in the biplots above were
+visualized in heat maps to visualize the difference between host groups, 
+excluding modern _Homo_. 
 ![HUMAnN2 heat maps excluding modern humans](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R46_SM6_supplemental_humann2_KO_nomod_heatmaps.png)
 **Figure R46 | Heat maps showing the centered log ratio-transformed abundance of the top 10 proteins with strongest loadings from the PCA excluding modern _Homo_.** Host genus is indicated by the colored bars to the right, where blue is _Alouatta_, purple is _Gorilla_, green is _Pan_, and orange is _Homo_. Symbols in _Homo_ indicate different groups, where triangle pointed up is Neanderthal, square is pre-agricultural human, and circle is pre-antibiotic human. **a** PC1 positive top 10 KEGG orthologs with strongest loadings. **b** PC1 negative top 10 KEGG orthologs with strongest loadings. **c** PC2 positive top 10 KEGG orthologs with strongest loadings. **d** PC2 negative top 10 KEGG orthologs with strongest loadings. 
 
+
+We looked at whether specific species contributed the orthologs with strongest
+loadings in the biplots above to look for host-specific species contributions to
+orthologs. First we looked at the orthologs in strongest positive loadings in PC1.
 ![HUMAnN2 PC1 positive ortholog barplots](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R47_SM7_supplemental_humann2_KO_bars_PC1_pws.png)
 **Figure R47 | Microbial genus contributions to KOs with the strongest positive loadings in PC1.** Bar graphs of the genera, summed from species, that contribute >12% to the KEGG orthologs with strongest positive loadings in PC1: **a** Including modern _Homo_ samples, grouped by KEGG ortholog, **b** Including modern _Homo_ samples, grouped by host genus, **c** Excluding modern _Homo_ samples, grouped by KEGG ortholog, and **d** Excluding modern _Homo_ samples, grouped by host genus. All genera that individually contributed <12% are grouped together as g__Other.
 
+
+We looked at whether specific species contributed the orthologs with strongest
+loadings in the biplots above to look for host-specific species contributions to
+orthologs. Then we looked at the orthologs in strongest negative loadings in PC1.
 ![HUMAnN2 PC1 negative ortholog barplots](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R48_SM8_supplemental_humann2_KO_bars_PC1_neg.png)
 **Figure R48 | Microbial genus contributions to KOs with the strongest negative loadings in PC1.** Bar graphs of the genera, summed from species, that contribute >12% to the KEGG orthologs with strongest negative loadings in PC1: **a** Including modern _Homo_ samples, grouped by KEGG ortholog, **b** Including modern _Homo_ samples, grouped by host genus, **c** Excluding modern _Homo_ samples, grouped by KEGG ortholog, and **d** Excluding modern _Homo_ samples, grouped by host genus. All genera that individually contributed <12% are grouped together as g__Other.
 
+
+We looked at whether specific species contributed the orthologs with strongest
+loadings in the biplots above to look for host-specific species contributions to
+orthologs. Then we looked at the orthologs in strongest positive loadings in PC2.
 ![HUMAnN2 PC2 positive ortholog barplots](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R49_SM9_supplemental_humann2_KO_bars_PC2_pws.png)
 **Figure R49 | Microbial genus contributions to KOs with the strongest loadings in PC2 characterizing _Pan/Gorilla/Alouatta_.** Bar graphs of the genera, summed from species, which contribute >12% to the KEGG orthologs with strongest positive loadings in PC2: **a** Including modern _Homo_, grouped by KEGG ortholog, **b** Including modern _Homo_, grouped by host genus, **c** and the strongest negative loadings in PC2 excluding modern _Homo_, grouped by KEGG ortholog, and **d** Excluding modern _Homo_, grouped by host genus. All genera that individually contributed <12% are grouped together as g__Other.
 
+
+We looked at whether specific species contributed the orthologs with strongest
+loadings in the biplots above to look for host-specific species contributions to
+orthologs. Last we looked at the orthologs in strongest negative loadings in PC2.
 ![HUMAnN2 PC2 negative ortholog biplots](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R50_SM10_supplemental_humann2_KO_bars_PC2_neg.png)
 **Figure R50 | Microbial genus contributions to KOs with the strongest negative loadings in PC2.** Bar graphs of the genera, summed from species, that contribute >12% to the KEGG orthologs with strongest negative loadings in PC2 **a** Including modern _Homo_, grouped by KEGG ortholog, **b** Including modern _Homo_, grouped by host genus, **c** Excluding modern _Homo_, grouped by KEGG ortholog, and **d** Excluding modern _Homo_, grouped by host genus. All genera that individually contributed <12% are grouped together as g__Other.
 
+
+Lastly, we looked at whether KEGG orthologs in specific metabolic pathways were
+as distinct between host groups as all KEGG orthologs combined, by performing
+and plotting PCAs with KEGG orthologs from only the Carbohydrate, Amino acid,
+and Lipid metabolic pathways. 
 ![HUMAnN2 KEGG ortholog major biomolecule PCAs](05-images/Figure_R41-R51-SM_R52-R61-SN_Functional_analyses/R41-R51_SM_humann2/R41-R51_SM_Composite_figures/R51_SM11_suplemental_humann2_pcas_KO_categories.png)
 **Figure R51 | PCAs using KEGG orthologs belonging to specific metabolic pathway categories.** KEGG orthologs in pathways that process major biomolecules all separate samples by host genus in a pattern similar to that seen in taxonomy, metabolic pathways, and all KEGG orthologs. **a** All KEGG orthologs in the Carbohydrate metabolism pathways. **b** All KEGG orthologs in the Amino acid metabolism pathways. **c** All KEGG orthologs in the Lipid metabolism pathways.
 
