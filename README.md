@@ -1333,7 +1333,9 @@ A crucial part of any ancient DNA study is to control for preservation of the
 DNA content of any analysed samples. Due to taphonomic processes, the original 
 endogenous DNA can be come very degraded and also entire lost. This can lead
 to samples containing only contaminant DNA and thus cause major skews and
-complications in downstream analysis.
+complications in downstream analysis. Identifying both well-preserved samples 
+containing a sufficient fraction of the original microbiome, but equally that
+they DNA is not derived from modern contamination. 
 
 <a id="r81-cumulative-proportion-decay-plots"></a>
 ### R8.1 Cumulative Percent Decay Plots
@@ -1731,9 +1733,10 @@ alignments.
 
 We also explored whether this ratio could be used as an additional validation of
 oral microbiome preservation in ancient samples. Visualisation and statistical 
-testing of these ratios can be seen in the figure below, and was generated in 
+testing of these ratios can be seen in the figure below, and was generated as
+described in the R notebook 
 `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`. For discussion
-of the results please refer to the main publication. 
+of the results, please refer to the main publication. 
 
 ---
 
@@ -1751,14 +1754,17 @@ of the results please refer to the main publication.
 
 #### R8.4.1 MEx-IPA
 
-To rapidly screen for damage patterns indicative of ancient DNA on the observed core microbiome ([see below](#r10-core-microbiome-analysis)), we [ran MaltExtract](#r102-core-microbiome-maltextract) on all output of MALT, with the core microbiome
-as input list.
+To rapidly screen for damage patterns indicative of ancient DNA on the 
+observed core microbiome ([see below](#r10-core-microbiome-analysis)), we 
+[ran MaltExtract](#r102-core-microbiome-maltextract) on all output of MALT, 
+with the core microbiome as input list.
 
 We then developed [MEx-IPA](https://github.com/jfy133/MEx-IPA) to rapidly visualise ancient DNA characteristics across all samples and core taxa.
 
 The results files for this analysis are are stored in the MEx-IPA GitHub
 repository. Example reports for the two oldest Neanderthals (PES001 and GDN001),
-can be seen below in Figure R16.
+can be seen below in Figure R16, where both cases show for multiple known
+oral species display indicative characteristics of true endogenous DNA.
 
 ---
 
@@ -1771,12 +1777,13 @@ can be seen below in Figure R16.
 #### R8.4.2 DamageProfiler
 
 To generate additional confirmation of damage patterns in oral taxa, the
-screening data was mapped to a subset of observed core microbiome reference
-genomes (see [below](#r111-production-dataset-sequencing-depth-calculatons)), using
-EAGER.
+screening data was also mapped to a subset of observed core microbiome 
+reference genomes (see 
+[below](#r111-production-dataset-sequencing-depth-calculatons)), using EAGER.
 
-DamageProfiler results were collated and visualised in the R script
-`02-scripts.backup/099-Coretaxa_SubSet_DamageProfiler_Summary.R`. An example of the range of damage signals in ancient Human remains can be seen below in Figure R17.
+DamageProfiler results were collated and visualised with the R script
+`02-scripts.backup/099-Coretaxa_SubSet_DamageProfiler_Summary.R`. An example of the range of damage signals in ancient Human remains can be seen below in Figure R17. Again showing the presence of multiple well-preserved endogenous DNA of
+oral taxa. 
 
 ---
 
@@ -1795,20 +1802,25 @@ The collated results for the whole screening dataset are stored in the file
 <a id="r851-decontam"></a>
 ### R8.5.1 decontam
 
-To remove possible contaminating species from our samples that are derived from
-the laboratory environment, we can use the R package `decontam`. The idea here
+In addition to identifying well preserved samples, we can also remove possibly 
+contaminating species from our samples that are derived from the 
+laboratory environment, we can use the R package `decontam`. The idea here
 is to use this to reduce the number of noisy taxa in the downstream
-compositional analysis, e.g. reducing the over-plotting of the loadings of PCAs.
+compositional analysis, e.g. false positive clustering due to laboratory batch
+ effects. 
+
+The method in the `decontam` package uses library quantification information
+to trace inverse correlations in OTU abundance compared to DNA abundance - where
+laboratory derived taxa appear more abundant in controls versus true samples.
 
  We manually added the library quantification values (qPCR) to our
 main metadata file
 `02-scripts.backup/02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`.
 
-We then run Decontam following the Decontam tutorial vignette on CRAN in the
-script, and also described here `02-scripts.backup/015-decontam_contamination_detection_analysis.Rmd`.
+We then ran `decontam` following the `decontam` tutorial vignette on CRAN as described here `02-scripts.backup/015-decontam_contamination_detection_analysis.Rmd`.
 
 The final list of contaminants for all methods and databases can be seen in
-`06-additional_data_files` under Data R19.
+`06-additional_data_files` under Data R19 and `04-analysis/screening/decontam.backup`, with a summary below in Table R4.
 
 ---
 
@@ -1830,14 +1842,15 @@ The final list of contaminants for all methods and databases can be seen in
 
 We observed a high number of putative contaminant OTUs when using our strict
 decontam parameters. We wanted to see how much this would provisionally impact
-our downstream analyses by investigating how mean actual reads the OTUs consist
-of in our sample. The R notebook
+our downstream analyses by investigating how many actual reads the OTUs consist
+of a sample. The R notebook
 `02-scripts.backup/099-decontam_OTU_impact_check.Rmd` describes how we did this.
 
-We that despite large numbers of contaminants are detected by decontam as a
+We see that despite large numbers of contaminants are detected by decontam as a
 fraction of overall OTUs, this only makes up a minority fraction of actual
 alignments in the MALT OTU table in well preserved samples - suggesting that
-the majority of contaminants are derived from low-abundant taxa.
+the majority of contaminants are derived from low-abundant taxa. This
+is shown in figure R18.
 
 ---
 
@@ -1850,34 +1863,47 @@ the majority of contaminants are derived from low-abundant taxa.
 <a id="r9-compositional-analysis"></a>
 ## R9 Compositional Analysis
 
+After filtering to contain only well-preserved samples and removing possible
+contaminants, we then could begin comparison of the calculus microbiomes of
+our different host groups. We wanted to identify taxonomic similarities and 
+differences between each of the groups to help reconstruct the evolutionary 
+(co-)history of the microbiomes and their hosts.
+
 <a id="r91-principal-coordinate-analysis"></a>
 ### R9.1 Principal Coordinate Analysis
 
 To explore if we have a structure in our data that can describe differences
-between each group we want to explore, we can perform a Principal Coordinate
+between each group we want to explore, we performed a Principal Coordinate
 Analysis to reduce
-the variation between the samples to human-readable dimensions, using
-Compositional Data (CoDA) principles - here implemented with PhILR.
+the variation between the samples to human-readable dimensions. An important
+aspect of this analysis was the use
+Compositional Data (CoDA) principles - here implemented with PhILR - which 
+allow us to apply 'traditional' statistics to taxonomic group comparisons.
 
-Due to the notebook ending up having lots of options, I also used `knitr::purl()`
-to create a Script version of the R notebook that accepts arguments.
+The steps for the generation of PCoA are described in the R notebook 
+`02-scripts.backup/017-PhILR_PCoA_20190527.Rmd`. However, the notebook ending 
+up having lots of options during parameter exploration  (see below). Therefore 
+I also used `knitr::purl()`to create a script version of the R notebook that
+accepts arguments via the command line.
 
-To generate the script
+To generate the script, we ran:
 
 ```r
 knitr::purl("02-scripts.backup/017-PhILR_PCoA_20190527.Rmd", "02-scripts.backup/017-PhILR_PCoA_20190527_script.R", documentation = 2)
 ```
 
-Now we will generate PCoAs based on different sets of combinations of variables
-of:
+Then we generated the PCoAs based on different sets of combinations of 
+variables of:
 
-- Whether to use the NCBI nt database or custom NCBI RefSeq
-- Whether analysed at genus or species taxonomic level of taxa in the OTU table
+- Whether to use the NCBI nt database or custom NCBI RefSeq OTU tables
+- Whether to analyse at genus or species taxonomic level of taxa in the OTU table
 - Whether comparative sources are included or not
 - Whether controls are included or not
 - Whether to include low preservation samples or not
-- Which low preservation samples filtering list to use (see Cumulative Percentage Decay notebook above for explanation)
-- Either minimum support value of 7 (genus) or 4 (species) [the value in the commands are multipliers of 0.01, the default MALT min. support value set above]
+- Which low preservation samples filtering list to use (see the Cumulative Percentage Decay notebook for further above for futher explanation)
+- Either minimum support multipler of 7 for genus or 4 for species (the value in the commands are multipliers of 0.01: the default MALT min. support value set above; the parameters were selected based on the core microbiome calculations [below](r1012-min-support-testing))
+
+The commands for these permutates are therefore as follows:
 
 ```bash
 i=7
@@ -1923,12 +1949,14 @@ The R script for summarising the results across all runs is named
 `017-PhILR_PCoA_summaries.R`, and the output files for each combination are in
   `00-documentation` under `philr_permanova_*_summary.tsv`.
 
-Individual plots can be seen in `04-analysis/screening/philr.backup`
+Individual plots of each of the PCoAs and additional considerations can be 
+seen in `04-analysis/screening/philr.backup` More specific comparisons of different parameters can be seen in Figures R19-21. For discussion of the 
+results, refer to the main publication.
 
-More specific comparisons of different parameters can be seen in Figures R18-20.
-
-Given the sparse nature of our data, we compared between two zero-replacement
-methods. This was performed with the script `02-scripts.backup/017-PhILR_PCoA_ZeroReplacementComparison_20190527.Rmd`.
+Of particular note, given the sparse nature of our data, we compared between 
+two zero-replacement methods. This was performed with the script 
+`02-scripts.backup/017-PhILR_PCoA_ZeroReplacementComparison_20190527.Rmd`, and
+we observed little differences (Figure R19).
 
 ---
 
@@ -1949,11 +1977,13 @@ methods. This was performed with the script `02-scripts.backup/017-PhILR_PCoA_Ze
 <a id="r92-permanova"></a>
 ### R9.2 PERMANOVA
 
-To provide statistical support for the observations made from the PCoAs above,
-PERMANOVA analysis was additionally run alongside the PCoAs. This were run
-in the same R notebook as the PCoAs above.
+To provide statistical support for the observations made from the PCoAs above 
+of host groups having putatively distinct calculus microbiomes, we performed
+PERMANOVA analysis. This were run in the same R notebook as the PCoAs above 
+(`02-scripts.backup/017-PhILR_PCoA_20190527.Rmd`).
 
-The PERMANOVA output related analysis can be seen in Tables R5-7
+The PERMANOVA output related analysis can be seen in Tables R5-7, of which
+further interpretation can be found in the main text.
 
 ---
 
@@ -2010,7 +2040,7 @@ The PERMANOVA output related analysis can be seen in Tables R5-7
 
 ---
 
-The R script for summarising the results across all runs is also stored in
+The R script for summarising the results across all runs is also
 `017-PhILR_PCoA_summaries.R`, and the output files for each combination are in
   `00-documentation` under `philr_permanova_*_summary.tsv`.
 
