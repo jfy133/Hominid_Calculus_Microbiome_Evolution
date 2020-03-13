@@ -1738,7 +1738,7 @@ of the results please refer to the main publication.
 ---
 
 <p align="center">
-  <img src=""05-images/Figure_R15_SCC_RatioEukaryoticVNonEukaryoticRatio_Comparison/SupFigX_eukaryoticratioplot_ancientcalculusonly_20190704.png" width="75%" height = "75%">
+  <img src="05-images/Figure_R15_SCC_RatioEukaryoticVNonEukaryoticRatio_Comparison/SupFigX_eukaryoticratioplot_ancientcalculusonly_20190704.png" width="75%" height = "75%">
 </p>
 
 **Figure R15 | Comparison of ratios of bacterial/archaeal/viral over eukaryotic alignments, between ancient calculus samples that passed the cumulative decay cut off for preservation.** Samples not passing the preservation threshold as estimated with the cumulative percent decay plots, tend to have smaller ratio and therefore greater amounts of eukaryotic DNA reads being assigned. Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT.
