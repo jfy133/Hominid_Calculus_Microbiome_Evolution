@@ -1332,7 +1332,7 @@ DNA content of any analysed samples. Due to taphonomic processes, the original
 endogenous DNA can be come very degraded and also entire lost. This can lead
 to samples containing only contaminant DNA and thus cause major skews and
 complications in downstream analysis.
- Th
+
 <a id="r81-cumulative-proportion-decay-plots"></a>
 ### R8.1 Cumulative Percent Decay Plots
 
@@ -1342,9 +1342,9 @@ preservation of the original oral signature within each individual.
 To get a rapid idea of the level of identifiable oral taxa in each individual,
 I came up with a simple visualisation, based on the decay of the fraction of
 oral taxa identified when looking fro most to least abundant taxa within a 
-sample, to show how abundant the oral signal in the samples are. The concept is
-further described in the main publication, but a schematic on how to interpret 
-them can be seen here:
+sample, to show how abundant the (hpoefully endogenous) oral signal in the 
+samples are. The concept is further described in the main publication, but a 
+schematic on how to interpret them can be seen here:
 
 ---
 
@@ -2649,12 +2649,23 @@ A summary table of percentage of multi-allelic SNPs when running
 MultiVCFAnalyzer using both mapping methods can be seen in
 `06-additional_data_files` under Data R30.
 
-From this script we see the super-reference mapping strategy doesn't work
-very often it reducing the number of multi-allelic SNPs, and
-further results in often a large decrease in the number of positions overall
-on the reference itself - therefore reducing the phylogenetically-informative
-data. We therefore selected the single representative genome mappings for
-downstream analysis.
+---
+
+![Comparison of multi-allelic SNPs between super-reference and single-genome mapping](05-images/multiallelicsnprate_singlevssuperreferencegenome_transformnone_20200125.png)
+
+**Figure R62 | Comparison of the number of multi-allelic single nucleotide variants (SNPs) identified when using a single representative genome mapping strategy versus a multi-reference genome (super-reference) mapping approach.** Analysis was performed on selected abundant and prevalent species representatives of core anthropoid genera, using the production dataset. Multi-allelic SNPs are sites called with more than the expected 1 allele (given haploid bacteria) – indicating cross mapping from other strains or related species. To reduce the occurrence of these and improve phylogenetic power, mapping to multiple species of a genera (vs the single representative) to attract away mis-mapping reads was attempted. Arrows indicate direction of change in the percentage of multi-allelic sites between single genome (grey circle outline) and super-reference (black circle outline) mapping strategies. The expected reduction in the percentage of multi-allelic SNPs (from right to left on the x-axis) between the two strategies is not observed to consistently occur and with minor effect. Furthermore, in most cases when a reduction occurs, these samples have already very few SNPs (size circles) usable for phylogenetic analysis.  Statistics are summarized from the ‘SNP statistics’ file from the output of MultiVCFAnalyzer with a ‘homozygous’ threshold of 0.9, a ‘heterozygous’ threshold of 0.1, and a minimum coverage threshold of 2. 
+
+> Note: the figure ID is out of order due to missing upload during initial writing of this walkthrough.  
+
+---
+
+From this script and in the figure above, we observed that the super-reference 
+mapping strategy did not work very often at reducing the number of 
+multi-allelic SNPs, and further often resulted in often a large decrease in the
+number of positions overall on the reference itself - therefore reducing the 
+phylogenetically-informative number of sites. We therefore selected the single 
+representative genome mappings for downstream analysis to ensure maximal 
+information for relationship calculuations.
 
 Additionally, in the notebook we also show that we identified the most common
 fraction of a majority allele was 0.7, therefore we can use this to
