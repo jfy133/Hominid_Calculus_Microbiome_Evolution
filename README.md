@@ -322,6 +322,8 @@ NCBI RefSeq      | Custom                       | Nov. 2018     | [ftp://ftp.ncb
 SILVA            | 128_SSURef_Nr99              | Mar. 2017     | [http://ftp.arb-silva.de/release_128/Exports/](http://ftp.arb-silva.de/release_128/Exports/)
 UniRef           | uniref90_ec_filtered_diamond | Oct. 2018     | [https://bitbucket.org/biobakery/humann2](https://bitbucket.org/biobakery/humann2)
 
+> :warning: SILVA FASTA was modified after downloading replacing Us with Cs
+
 <a id="r24-single-reference-genomes"></a>
 ### R2.4 Single Reference Genomes
 
@@ -1376,7 +1378,8 @@ display the curves.
 
 The resulting list(s) of individuals passing or failing to pass this threshold
 can be seen in `06-additional_data_files` under Data R17 or
-`04-analysis/screening/cumulative_decay.backup`
+`04-analysis/screening/cumulative_decay.backup`, and summaries of how many
+samples passed the calculated threshold in the tables below.
 
 ---
 
@@ -1429,20 +1432,21 @@ can be seen in `06-additional_data_files` under Data R17 or
 <a id="r82-source-estimation"></a>
 ### R8.2 Source Estimation
 
+We next wanted to compare to a less-suitable but more established approach to
+compare the screening method to, which is Sourcetracker analysis. However this
+typically uses an OTU table of 16S rRNA reads to estimate the proportion of OTUs
+derived from the sources that are also in your sample.
+
 #### R8.2.1 16S Extraction
 
-We next want to compare to a less-suitable but more established approach to
-compare the screening method to, which is Sourcetracker analysis. However this
-typically uses an OTU table of 16S rRNA reads for the proportion estimation of the
-sources in your sample.
+As we have shotgun data, we instead extracted reads with sequence similarity
+to translated 16S rRNA sequences and ran on that.
 
-As we have shotgun data, we will instead extract reads with sequence similarity
-to 16S rRNA and run with that.
-
-The script `02-scripts.backup/009-preprocessing-16s_mapping` works very much the same
-way as with the human DNA preprocessing, but mapping to the SILVA database and
-converting the mapped only reads to FASTA format with a particular header
-format (>sample.name_1) that works with QIIME.
+The script `02-scripts.backup/009-preprocessing-16s_mapping` works very much 
+the same way as with the [human DNA preprocessing](#r611-script-version), but 
+mapping to the SILVA database and converting the unmapped-only reads to FASTA 
+format, with a particular header format (`>sample.name_1`) that is
+compatible with QIIME.
 
 ```bash
 INDIR=02-scripts.backup/03-preprocessing/screening/library_merging
@@ -1461,9 +1465,9 @@ for LIBDIR in "$INDIR"/*/; do
 done
 ```
 
-To get the number of 16S rRNA reads that mapped, we can run the script
-`02-scripts.backup/06-16s_extraction_statistics.sh`, and copy the resulting file
-into our documents directory with
+To get the number of 16S rRNA reads that mapped, we can ran script
+`02-scripts.backup/06-16s_extraction_statistics.sh`, and copied the resulting 
+file into our documents directory with
 
 ```bash
 SCRIPTS=02-scripts.backup/02-scripts.backup
@@ -1482,12 +1486,10 @@ cp 16s_extraction_statistics_"$(date +"%Y%m%d")".csv ../../00-documentation.back
 
 The summary statistics for the number of 16S reads identified can be seen in
 `06-additional_data_files` under Data R12 or
-`00-documentation.backup/05-16s_extraction_statistics.csv`
+`00-documentation.backup/05-16s_extraction_statistics.csv`, as well as in the
+figures below.
 
-While we have these reads, we still don't know what taxa they are derived from.
 
-Summary statistic visualisation of mapping can be
-seen under `02-scripts.backup/099-16sResults.Rmd`
 
 ---
 
@@ -1501,19 +1503,23 @@ seen under `02-scripts.backup/099-16sResults.Rmd`
 
 ---
 
+Summary statistic visualisation of mapping can be seen under 
+`02-scripts.backup/099-16sResults.Rmd`
+
 #### R8.2.2 16S Clustering
 
-For this we can use QIIME to cluster the reads by similarity then assign a
-taxonomic 'name'. We will stick with OTU clustering rather than the more
+To assign taxonomic identifications to the identified 16S reads, we used then 
+used QIIME (v1.9) to cluster the reads by similarity, and assign a
+taxonomic 'name'. We remained with using OTU clustering rather than the more
 recent (and more powerful/statistically valid) ASV (amplicon sequence variant)
 methods. This is because we are not dealing directly with amplicon data, and we
-has also have damage which would affect reliability of assignment. Finally, the
+also have damage which would affect reliability of assignment. Finally, the
 more recent version of QIIME, QIIME2, has been made much less flexible for
 non-amplicon data (at the time of writing) and I couldn't work out how to adapt
-the data. For our rough preservational screening purposes using QIIME 1 is
-sufficient.
+the data. For our rough preservational screening purposes using QIIME 1.9 was 
+deemed sufficient.
 
-Firstly, we have to make a combined FASTA file containing all the 16S reads
+Firstly, we made a combined FASTA file containing all the 16S reads
 from all the samples.
 
 ```bash
@@ -1531,11 +1537,10 @@ done
 
 > The FASTA file is not provided here due to their large size.
 
-For OTU clustering itself we need to define some parameter that have
-been adapted for shotgun data by LMAMR in Oklahoma, in a file named
-`02-scripts.backup/010-params_CrefOTUpick.txt`
-
-The parameters in this file are as in Table R3
+For OTU clustering itself, we additionally defined custom parameters that have
+been adapted for shotgun data by LMAMR in Oklahoma. These are stored in the 
+file `02-scripts.backup/010-params_CrefOTUpick.txt`, as well as in the table 
+below.
 
 ---
 
@@ -1551,8 +1556,8 @@ The parameters in this file are as in Table R3
 
 ---
 
-To actually run the clustering analysis and generate our OTU table we need to
-do the following.
+To actually run the clustering analysis and generate our OTU table we ran the 
+following.
 
 ```bash
 INDIR=04-analysis/screening/qiime/input
@@ -1574,7 +1579,7 @@ pick_closed_reference_otus.py \
 
 ```
 
-Once finished we can then re-gzip the input fasta file with:
+Once finished we re-gzipped the input fasta file to save disk space with:
 
 ```bash
 INDIR=04-analysis/screening/qiime/input
@@ -1582,7 +1587,7 @@ INDIR=04-analysis/screening/qiime/input
 pigz -p 4 "$INDIR/silva_16s_reads_concatenated.fna"
 ```
 
-To get some basic statistics about the OTU picking we can use the BIOM package
+To get some basic statistics about the OTU picking, we used the BIOM package
 that came with the QIIME environment.
 
 ```bash
@@ -1601,12 +1606,11 @@ head "$OUTDIR"/otu_picking/otu_table_summary.txt -n 20
 This summary can also be  seen in `06-additional_data_files` under Data R13.
 
 Sourcetracker (I realised later) doesn't do rarefaction properly as it
-allows sampling with replacement of the OTUS. Therefore, we need to remove
-samples that have less than 1000 OTUs (which is the default rarefaction level
-in Sourcetracker - [see below](#r823-sourcetracker)). So next we need to filter our OTU table
-to remove samples that have less than that threshold. Looking at the table
-summary shows that fortunately this will remove very few samples and
-will remove mostly blanks.
+allows sampling with replacement of the OTUS. Therefore, we needed to manually
+remove samples that have less than 1000 OTUs (which is the default rarefaction 
+level in Sourcetracker - [see below](#r823-sourcetracker)). Looking at the table
+summary in Data R13 summary shows that fortunately this will remove very few 
+samples and will remove mostly blanks.
 
 ```bash
 cd 04-analysis/screening/qiime/output/otu_picking
@@ -1625,11 +1629,11 @@ biom summarize-table -i "$INDIR"/otu_table_1000OTUsfiltered.biom >> \
 head "$INDIR"/otu_table_1000OTUsfiltered_summary.txt -n 20
  ```
 
-We also only want to look at genus level assignments, given species specific
-IDs will be unreliable given damage and different mixtures of strain in
+We also only wanted to look at genus level assignments, given species specific
+IDs could be unreliable due to damage and different mixtures of strain in
 different individuals.
 
-For filtering to Genus (L6) level:
+To filter to Genus (L6) level we then did
 
 ```bash
 cd 04-analysis/screening/qiime/output/otu_picking
@@ -1642,16 +1646,14 @@ summarize_taxa.py \
 -a \
 -L 6
 
-## Fixed crappy taxon ID that breaks loading into R when running Sourcetracker :+1:
+## Fix crappy taxon ID that breaks loading into R when running Sourcetracker :+1: due to hanging quote
 sed s#\'Solanum#Solanum#g otu_table_1000OTUsfiltered_L6.txt > otu_table_1000OTUsfiltered_L6_cleaned.tsv
 ```
 
 With this final OTU table - as seen (in both biom or TSV format) in
 `06-additional_data_files` under Data R14 or
-`04-analysis/screening/qiime/output/otu_picking` -  we can now run Sourcetracker.
-
-Summary statistic visualisation of clustering can be
-seen under `02-scripts.backup/099-16sResults.Rmd`.
+`04-analysis/screening/qiime/output/otu_picking` -  we could now run 
+Sourcetracker.
 
 ---
 
@@ -1665,14 +1667,25 @@ seen under `02-scripts.backup/099-16sResults.Rmd`.
 
 ---
 
+Summary statistic visualisation of clustering was generated via the Rmarkdown 
+notebook `02-scripts.backup/099-16sResults.Rmd`.
+
 #### R8.2.3 Sourcetracker
+
+With the OTU tables, we are now able to compare the environmental sources
+(plaque, gut, skin, sediment etc.) to each of the calculus samples and estimate
+the proportion of each sample that resembles the sources. This thus can 
+help indicate the level of (hopefully) endogenous oral-content preservation in
+the samples.
 
 Sourcetracker requires a OTU table (generated above) and a metadata file
 that tells the program what libraries in the OTU are a 'sink' or a 'source'.
-This metadata file in this case is recorded here,
+This metadata file used in this case is recorded here,
 `02-scripts.backup/02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`,
-which I try to use for all downstream analysis. In particular here we need to
-ensure we have a 'Env' and a 'SourceSink' column.
+which I then tried to use for all downstream analysis. In particular here we 
+needed to ensure there was an 'Env' and a 'SourceSink' column.
+
+To then to run Sourcetracker we ran the following command:
 
 ```bash
 ## change to new directory for output directories
@@ -1691,9 +1704,11 @@ sourcetracker_for_qiime.r \
 
 ```
 
-For plotting of these for comparison with the cumulative percent decay plots,
+For plotting of these - with comparison to the cumulative percent decay plots,
  I use the following R notebook to summarise the results:
- `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`.
+ `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`. Discussion
+ of the comparison can be seen in the main publication, however there was
+ a generally good concordance between the two approaches.
 
  The final proportions (with standard deviation) can be seen in
 `06-additional_data_files` under Data R18.
@@ -1709,20 +1724,25 @@ For plotting of these for comparison with the cumulative percent decay plots,
 <a id="r83-ratio-of-eukaryotic-to-prokaryotic-alignments"></a>
 ### R8.3 Ratio of Eukaryotic to Prokaryotic Alignments
 
-We also noted that less well preserved samples appear to generally contain
-larger numbers of eukaryotic alignments. If explored further, this could also
-potentially act as a guidance indicator for levels of preservation of ancient
-dental calculus samples.
+Returning back to the MALT tables and cumulative percent decay plots, we had 
+also observed that the older the samples and the weaker indication of oral 
+content samples appeared to have a greater ratio of prokaryotic to eukartotic 
+alignments.
+
+We also explored whether this ratio could be used as an additional validation of
+oral microbiome preservation in ancient samples. Visualisation and statistical 
+testing of these ratios can be seen in the figure below, and was generated in 
+`02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`. For discussion
+of the results please refer to the main publication. 
 
 ---
 
-![Comparison of Eukaryotic to Prokaryotic ratios for preservation](05-images/Figure_R15_SCC_RatioEukaryoticVNonEukaryoticRatio_Comparison/SupFigX_eukaryoticratioplot_ancientcalculusonly_20190704.png)
+<img src="05-images/Figure_R15_SCC_RatioEukaryoticVNonEukaryoticRatio_Comparison/SupFigX_eukaryoticratioplot_ancientcalculusonly_20190704.png" width="50%" height="50%")
 
 **Figure R15 | Comparison of ratios of bacterial/archaeal/viral over eukaryotic alignments, between ancient calculus samples that passed the cumulative decay cut off for preservation.** Samples not passing the preservation threshold as estimated with the cumulative percent decay plots, tend to have smaller ratio and therefore greater amounts of eukaryotic DNA reads being assigned. Ratios are based on the number of reads aligned the NCBI nt (2017) database using MALT.
 
 ---
 
-Code for statistical testing and visualisation can also be seen in the data repository under `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`.
 
 <a id="r84-damage-patterns"></a>
 ### R8.4 Damage Patterns
