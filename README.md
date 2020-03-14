@@ -2044,34 +2044,41 @@ The R script for summarising the results across all runs is also
 `017-PhILR_PCoA_summaries.R`, and the output files for each combination are in
   `00-documentation` under `philr_permanova_*_summary.tsv`.
 
+Overall we found that despite some overlap (as seen in the PCoA analysis, the 
+calculus microbiomes of each host genus could be considered statistically 
+distinct.
+
 <a id="r93-hierarchical-clustering-heatmaps"></a>
 ### R9.3 Hierarchical Clustering Heatmaps
 
-To further visualise drivers of similarity and differences between the different
-host genera, we applied hierarchical clustering on the contaminant and
-preservation filtered MALT OTU tables.
+To visualise possible drivers of similarity and differences between the 
+different host genera, we applied hierarchical clustering on the contaminant and
+preservation filtered MALT OTU tables, which are then displayed as heatmaps.
 
-This is performed in the R notebook and script
+This is performed in the R notebook and script version
 `02-scripts.backup/045-Compositional_Heatmaps.R(md)`
 
-The procedure script that performs CLR transformation of the OTU matrix (rather
- than PhILR, to retain actual taxa classes driving differences)
-and unsupervised clustering of host taxa and microbial taxa. The used clustering
-algorithm is selected automatically within the script.
+The procedure again follows CoDa principles by performing CLR 
+transformation of the OTU matrix (rather than PhILR as so to retain information 
+on the actual taxa classes that are driving differences), upon which 
+unsupervised clustering of host taxa and microbial taxa is applied. The 
+actually used clustering algorithm is selected automatically within the script.
+Finally, a heatmap representation of the clustering is generated.
 
-The script allows filtering as above (database, taxonomic levels, with/without
-sources, with/without controls, with/without bad samples (+ bad sample removal
+The script version allows additional filtering as above for the Principle 
+Coordinate and PERMANOVA analyses(database, taxonomic levels, with/without 
+sources, with/without controls, with/without bad samples (+ bad sample removal 
 method option)) and also additional taxon filtering, zero-replacement method,
-additional min. support filtering and a prevalence filter (i.e. a taxon is
-only kept if it is in _n_ number of individuals across the dataset)
+additional min. support filtering. Finally, an additional filter was included: a 
+prevalence filter (i.e. a taxon is only kept if it is in _n_ number of
+individuals across the dataset)
 
-We look for the parameters with the best overall bootstrap support
-in the deepest nodes (i.e. the ones we are most interested in - splits between
-host genus level clades)
+We modified the above parameters to find the combination that resulted in the
+most robust overall bootstrap support in the deepest nodes (i.e. the ones we 
+are most interested in this study - splits between host genus level clades)
 
 ```bash
 ## Additional min. support filtering, no genus filtering
-Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt species noSources noControls out withinvariation none pseudo 4 0
 Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt species noSources noControls out withinvariation none pseudo 4 5
 ```
 
@@ -2079,60 +2086,66 @@ The sample clustering with no taxon filtering, additional min. support of 0.04,
 and prevalence filtering set to 5 was selected. This was based on it having
 generally the highest bootstrap values in the internal nodes, and the phylogeny
 showing 'cleanest' clustering of individuals of the same host genus falling
-together.
+together. Interpretation of these heatmaps is described in the main publication.
 
-Generation of phenotyping data was performed via
-`02-scripts.backup/046-bacdive_searcher.R`, and added manually to the heatmap plots
-using Inkscape, which was recorded in the file
+To aid interpretation, phenotypic data of the taxa displayed in the heatmap was 
+performed via `02-scripts.backup/046-bacdive_searcher.R`, and added manually to 
+the heatmap plots using Inkscape, which was recorded in the file
 `00-documentation.backup/99-Heatmap_ManualBlockDescriptions_alltaxa_minsupportmultiplier4_minprevalence4_databasent_metadata.tsv`
 
-Figures can be seen in collated in `06-additional_data_files` under Data R20 or
-individual files can in `04-analysis/screening/compositional_heatmaps.backup`.
+The final figures for both databases can be seen collated in 
+`06-additional_data_files` under Data R20 or individual files in
+ `04-analysis/screening/compositional_heatmaps.backup`.
+
+ In general we observed _Gorilla_ and _Alouatta_ displayed more diversity of
+ aerobic taxa,  whereas _Pan_ had lower diversity but consisted primarily of
+ anaerobic and late colonising taxa. 
 
 #### R9.3.1 Zero replacement validation
 
-Next we can check whether this result is affected by the zero replacement model,
-with the same script otherwise the same settings.
+We also checked whether the hierarchical clustering results was affected by the 
+zero replacement model, with the same script otherwise the same settings.
 
 ```bash
 Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt species noSources noControls out withinvariation none czm 4 5
-Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd refseq species noSources noControls out withinvariation none pseudo 4 5
-Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd mp2 species noSources noControls out withinvariation none pseudo 4 5
+
 ```
 
-Comparing the zero replacement methods shows no difference between clustering.
-There is cosmetic tree topology changes but  only by clade flipping - no
+Comparing the zero replacement methods showed no difference between clustering.
+There were only cosmetic tree topology changes with by clade rotation i.e. no
 structural changes. The output is saved as in the same directory at above.
 
 <a id="r932-indicator-analysis"></a>
 ### R9.3.2 Indicator Analysis
 
-To confirm the species corresponding to the groups in the hierarchical clustering
-we ran Indicator Analysis to find species that are 'indicative' of certain
-host genera combinations. This was performed with the R notebook
-`02-scripts.backup/020-Indicator_analysis_20190808.Rmd`.
+To confirm that the species corresponding to the grouping observed in the 
+hierarchical clustering, we ran Indicator Analysis to find species that are 
+'indicative' of certain host genera combinations. This was performed with the R 
+notebook `02-scripts.backup/020-Indicator_analysis_20190808.Rmd`.
 
-This was run using the command with
+The results can be seen can be seen in `06-additional_data_files` under Data 
+R21 or in `04-analysis/screening/indicspecies.backup`, with discussion in
+the main publication.
 
-```bash
-Rscript 02-scripts.backup/21-Indicator_analysis.R
-```
-
-and the results can be seen can be seen in
-`06-additional_data_files` under Data R21 or in
-`04-analysis/screening/indicspecies.backup`.
 
 <a id="r94-clustering-by-diet"></a>
 ### R9.4 Clustering by Diet
 
-To revisit the question and results posed by Weyrich et al (2017) _Nature_
+To revisit the question and results posed by Weyrich _et al._ (2017) _Nature_,
 regarding clustering of the calculus microbiomes individuals by subsistence
-strategy, we performed PCoA, PERMANOVA, hierarchical clustering on Neanderthals
-and ancient humans. This was performed in the notebook
+strategy, we reperformed PCoA, PERMANOVA, hierarchical clustering on 
+Neanderthals and ancient humans - however in this case with a more balanced
+sampling strategy. This was performed in the notebook
 `02-scripts.backup/017-PERMANOVA_HomoOnly_Dietary_20190916.Rmd` and
 corresponding script version.
 
-The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`.
+The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`
+and seen in Figures R22 and R23. More discussion is seen in the main 
+publication, however overall we observe that we are unable to distinguish 
+between each 'subsistence' strategy given other factors such as age or region.
+Much more balanced and controlled sampling is required to address this question
+to recover whether diet indeed effects the taxonomic compositional of oral
+microbiomes.
 
 ---
 
@@ -2154,15 +2167,20 @@ The results are saved in `04-analysis.backup/screening/philr_dietary.backup/`.
 
 #### R10.1.1 Core Microbiome Procedure
 
-Given the overlap between each host genus as identified above, we also wished
-to find microbiota taxa that are potentially present across various
+Given the overlap between each host genus as identified 
+[above](#r91-compositional-analysis) in the principle coordinate analysis, we 
+also wished to find microbiota taxa that are potentially present across various
 combinations of the host genera.
 
-For this we ran a core microbiome analysis (intersection of presence/absence
-values), as shown in the R notebook
+For this we ran a core microbiome estimation analysis via intersection of 
+presence/absence of different OTUs, as shown in the R notebook
 `02-scripts.backup/018-CoreMicrobiome_20190902.Rmd`. A script version of the
 notebook is also provided under
 `02-scripts.backup/018-CoreMicrobiome_20190902_script.R`.
+
+See the notebook and main publication for more details in how the intersection
+procedure was constructed (to control for biological and preservational 
+variation), however Figure R24 shows a schematic for this.
 
 ---
 
@@ -2172,15 +2190,31 @@ notebook is also provided under
 
 ---
 
+We found that parameters of 50% of a population individuals, and 66% of host
+populations requiring a taxon to be present accounted for robustness against
+preservation and biological variability, while having enough
+individuals/populations to for corroboration that a taxon could be considered
+'core'.
+
 #### R10.1.2 Min. Support Testing
 
-Optimal parameters for prevalence and abundance were chosen by permutating
-population fractions and min. support values respectively (minimising retention
-of environment contaminants and retaining well characterised oral taxa as
-reference).
+Visual inspection of the initial results of the intersection analysis with the 
+number of individual parameters selected above, showed incorporation of 
+well-known environmental contaminatant taxa still occurred.
 
-Code for this procedure can be seen in `02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.Rmd`), we collated the results from each database and taxonomic level into
-a single set of results using the R script
+We therefore took a conservative approach and explored further optimal minimum
+support values (extrapolated from [above](#r712-malt-summary-statistics)) that 
+removed well-known environmental taxa but did not equally move well-known
+oral-specific taxa.
+
+To do this we re-ran with a variant of the notebook in the section
+[above](r1011-core-microbiome-procedure), but with different minimum support 
+multipliers.
+
+Code for this procedure can be seen in 
+`02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.Rmd`), we 
+collated the results from each database and taxonomic level into a single set 
+of results using the R script 
 `02-scripts.backup/018-CoreMicrobiome_summaries_20190902.R`. This collected set
 of results can be seen in
 
@@ -2189,12 +2223,6 @@ of results can be seen in
 and
 
 `00-documentation.backup/24-intersection_proktaxapassingthresholdstaxalist_20190211.tsv`
-
-We found that parameters of 50% of a population individuals, and 66% of host
-populations requiring a taxon to be present accounted for robustness against
-preservation and biological variability, while having enough
-individuals/populations to for corroboration that a taxon could be considered
-'core'.
 
 Figure R25 shows the results of increasing the minimum support filter at
 genus and species level for both databases.
@@ -2218,8 +2246,14 @@ The raw data for the min. support permutation comparison can be seen under
 
 #### R10.1.3 Single Population Testing
 
-We additionally also checked the effect of removing the single individual
-population in Gorillas with the script version of the core microbiome notebook,
+During sample-preservation filtering 
+[above](#r81-cumulative-percent-decay-plots), one of the Gorilla populations
+was left with a single individual - which could cause a 'false positive' 
+support for a core taxa, if the taxa wasn't actually present in most individuals
+of that population.
+
+We therefore looked a the effect of removing the single individual
+population for Gorillas, with the script version of the core microbiome notebook,
 (`02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.R`)
 and permutating whether any populations with a single individual were dropped
 or not.
@@ -2253,14 +2287,19 @@ The raw data for the comparison of excluding single individual populations can
 be seen under`06-additional_data_files` in Data R24.
 
 Individual visualisations and results for each parameter run can be seen in
-`04-analysis/screening/presenceabsence_intersection.backup/`
+`04-analysis/screening/presenceabsence_intersection.backup/`.
+
+Discussion of these results can be seen in the main publication. In general,
+only minor differences were observed suggesting the Gorilla core was generally
+robust.
 
 #### R10.1.4 Investigation into Mycobacterium as Core Genus
 
-We also observed that _Mycobacterium_ was able to pass our minimum support
-despite being a common soil contaminant. We investigated this further
-(see main article for more details.) in an extension of the original Core
-Microbiome calculation script which is under `02-scripts.backup` as
+In the resulting list of taxa that were a part of the core of each combination 
+of host taxa, we observed that _Mycobacterium_  was able to pass our minimum 
+support despite being a common soil contaminant.  We investigated this further 
+in an extension of the original Core Microbiome calculation script which is 
+under `02-scripts.backup` as
 `099-CoreMicrobiome_ParameterTesting_and_MycobacteriumInvestigation_20190902.Rmd`
 
 ---
@@ -2271,18 +2310,21 @@ Microbiome calculation script which is under `02-scripts.backup` as
 
 ---
 
-Finally, for each database and taxonomic level, we generated Upset plots
-summarising the number of genera and species found in each core microbiome
-combination.
+We noted that the taxa being picked up with MALT were indeed highly prevelent
+soil contaminants that are typically waterborne, and we therefore concluded
+this was likely derived from taphonomic causes.
 
 ---
 
-
 #### R10.1.5 Core Microbiome Intersection Between Hosts
 
-Due to the large number of categories, which can make reading Venn diagrams
-difficult to understand, we can summarise the number of taxa in each host
-combination in an UpSet plot. Code for this can also be seen in the
+For results interpretation, we wanted to create a visualisation to efficiently
+summarise the number of taxa associated with the core of each host combination.
+
+Due to the large number of categories, Venn diagrams become difficult to 
+understand due to the inclusion of many layers of overlapping combinations. 
+Instead,  we summarised the number of taxa in each host via an UpSet plot. Code 
+for this can also be seen in the 
 `02-scripts.backup/018-CoreMicrobiome_ParameterTesting_20190902.Rmd` notebook.
 
 ---
