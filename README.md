@@ -6,7 +6,7 @@ proceeding.
 
 ## Table of Contents
 
-<!-- MarkdownTOC levels="1,2,3" autolink="true"-->
+<!-- MarkdownTOC levels=1,2,3 autolink="true" -->
 
 - [R1 Introduction](#r1-introduction)
 - [R2 Resources](#r2-resources)
@@ -16,7 +16,7 @@ proceeding.
   - [R2.4 Single Reference Genomes](#r24-single-reference-genomes)
 - [R3 Software Paths](#r3-software-paths)
 - [R4 Database and Genome Indexing](#r4-database-and-genome-indexing)
-  - [R4.1 MALT Database](#r41-malt-database)
+  - [R4.1 MALT Databases](#r41-malt-databases)
   - [R4.2 AADDER Database](#r42-aadder-database)
   - [R4.3 BWA Indexing](#r43-bwa-indexing)
   - [R4.4 UniRef Database](#r44-uniref-database)
@@ -28,13 +28,13 @@ proceeding.
   - [R6.1 Preprocessing](#r61-preprocessing)
   - [R6.2 Post-Processing](#r62-post-processing)
   - [R6.3 Poly-G Trimming Assessment](#r63-poly-g-trimming-assessment)
-  - [R6.4 Processing Results Summary](#r64-processing-results-summary)
+  - [R6.4 Preprocessing Results Summary](#r64-preprocessing-results-summary)
 - [R7 Metagenomic Screening](#r7-metagenomic-screening)
   - [R7.1 MALT](#r71-malt)
   - [R7.2 MEGAN](#r72-megan)
-  - [R7.3 Database Comparison](#r73-database-comparison)
+  - [R7.3 Assigned Reads Summaries and Database Comparison](#r73-assigned-reads-summaries-and-database-comparison)
 - [R8 Preservation Screening](#r8-preservation-screening)
-  - [R8.1 Cumulative Proportion Decay Plots](#r81-cumulative-proportion-decay-plots)
+  - [R8.1 Cumulative Percent Decay Plots](#r81-cumulative-percent-decay-plots)
   - [R8.2 Source Estimation](#r82-source-estimation)
   - [R8.3 Ratio of Eukaryotic to Prokaryotic Alignments](#r83-ratio-of-eukaryotic-to-prokaryotic-alignments)
   - [R8.4 Damage Patterns](#r84-damage-patterns)
@@ -70,7 +70,6 @@ proceeding.
 
 <!-- /MarkdownTOC -->
 
-<a id="r1-introduction"></a>
 ## R1 Introduction
 
 This README acts as **walkthrough** guidance of the order of analyses for
@@ -173,7 +172,6 @@ README.md             ## This walkthrough
 > begins with `../0{1,2,4}`. If it does not, let us know and we will fiz
 > this accordingly.
 
-<a id="r2-resources"></a>
 ## R2 Resources
 
 Here is a list of programs and databases that will be used in this analysis
@@ -187,7 +185,6 @@ however these are directly related to our system. As far as we can, we have
 removed SLURM commands and/or MPI-SHH specific paths or parameters, but you
 should always check this for each command and script.
 
-<a id="r21-software"></a>
 ### R2.1 Software
 
 Name                    | Version                 | Citation
@@ -223,7 +220,6 @@ Geneious                | R8                      | [https://www.geneious.com/](
 IGV                     | 2.4                     | [https://software.broadinstitute.org/software/igv/](https://software.broadinstitute.org/software/igv/)
 Inkscape                | 0.92                    | [www.inkscape.org](www.inkscape.org)
 
-<a id="r22-r-packages"></a>
 ### R2.2 R Packages
 
 Here we used R version 3.6.1
@@ -310,7 +306,6 @@ Here we used R version 3.6.1
 |    adegenet    |   2.1.1    |                               [https://github.com/thibautjombart/adegenet](https://github.com/thibautjombart/adegenet)                               |
 |      ade4      |   1.7-13   |      [http://pbil.univ-lyon1.fr/ADE-4](http://pbil.univ-lyon1.fr/ADE-4) |
 
-<a id="r23-sequence-databases"></a>
 ### R2.3 Sequence Databases
 
 If did not come with package itself, we downloaded the following:
@@ -324,7 +319,6 @@ UniRef           | uniref90_ec_filtered_diamond | Oct. 2018     | [https://bitbu
 
 > :warning: SILVA FASTA was modified after downloading replacing Us with Cs
 
-<a id="r24-single-reference-genomes"></a>
 ### R2.4 Single Reference Genomes
 
 Species                                       | Strain      | Date           | Completeness | Type           | Source
@@ -353,7 +347,6 @@ _Treponema socranskii subsp. paredies_        | ATCC 35535  | 2018-05-31     | S
 
 > :warning: The reference files are not provided here due to their large size.
 
-<a id="r3-software-paths"></a>
 ## R3 Software Paths
 
 Some scripts used in this project use variables stored a central profile called
@@ -370,10 +363,8 @@ however you will need to check each path correctly.
 For direct commands (i.e. not used in a script), the path will either
 be defined in the command block or assumed already in your `$PATH`.
 
-<a id="r4-database-and-genome-indexing"></a>
 ## R4 Database and Genome Indexing
 
-<a id="r41-malt-database"></a>
 ### R4.1 MALT Databases
 
 #### R4.1.1 nt
@@ -420,7 +411,6 @@ R notebook  here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_co
 A corresponding list of genomes selected for use in this database can be seen
 in in `06-additional_data_files` under Data R10.
 
-<a id="r42-aadder-database"></a>
 ### R4.2 AADDER Database
 
 To build the `aadder` database for functional analysis - based on the custom
@@ -430,7 +420,6 @@ calls the `adder-build` command as provided in the MEGAN install directory's
 `tools` folder. Note we have to change the `MEGAN.vmoptions` to have a large
 enough memory allocation in the MEAN install directory.
 
-<a id="r43-bwa-indexing"></a>
 ### R4.3 BWA Indexing
 
 The SILVA reference database, and all single genomes (HG19, bacterial etc.) were
@@ -455,7 +444,6 @@ O=SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.dict
 
 > :warning: The indexing files are not provided here due to their large size.
 
-<a id="r44-uniref-database"></a>
 ### R4.4 UniRef Database
 
 For acquiring the UniRef database for [HUMANn2](#r123-humann2), we used the script
@@ -467,7 +455,6 @@ humann2_databases --download uniref uniref90_ec_filtered_diamond 01-data/databas
 
 > :warning: The database files are not provided here due to their large size.
 
-<a id="r45-database-analysis-profile"></a>
 ### R4.5 Database analysis profile
 
 For the scripts using `analysis_profile` file, ensure to update the paths in
@@ -485,7 +472,6 @@ GREENGENESDB=<PATH_TO>/tools/qiime-environment/1.9.1/lib/python2.7/site-packages
 HG19REF=<PATH_TO>/Reference_Genomes/Human/HG19/hg19_complete.fasta
 ```
 
-<a id="r5-data-acquisition"></a>
 ## R5 Data Acquisition
 
 All raw FASTQ files should be downloaded sample specific directories in `01-data/public_data/raw`.
@@ -499,7 +485,6 @@ The same information but for controls can be seen in Data R03.
 > :warning: FASTQ files are not provided here due to their large size. Please see
 ENA under accession ID: PRJEB34569
 
-<a id="r51-additional-individuals"></a>
 ### R5.1 Additional Individuals
 
 In addition to the samples sequenced in this study (or generated by our
@@ -543,7 +528,6 @@ The just renamed files were just symlinked into the above.
 > :warning: FASTQ files are not provided here due to their large size. Please see
 corresponding locations described above
 
-<a id="r52-comparative-sources"></a>
 ### R5.2 Comparative Sources
 
 In addition to ancient and calculus samples, we also require comparative data
@@ -647,7 +631,6 @@ The final merged individual fastq files were moved to individual directories in
 > :warning: FASTQ files are not provided here due to their large size. Please see
 corresponding locations described above
 
-<a id="r6-data-preprocessing"></a>
 ## R6 Data Preprocessing
 
 Now downloaded, we started preprocessing by performing a sequencing quality
@@ -670,7 +653,6 @@ The output of both methods of preprocessing was stored in `03-preprocessing/scre
 
 Procedure is described in more detail in the next sections.
 
-<a id="r61-preprocessing"></a>
 ### R6.1 Preprocessing
 
 #### R6.1.1 Script Version
@@ -846,7 +828,6 @@ done
 
 > :warning: The per-sample EAGER output files are not provided here due to their large size.
 
-<a id="r62-post-processing"></a>
 ### R6.2 Post-Processing
 
 #### R6.2.1 EAGER preprocessing dataset BAM to FASTQ Conversion
@@ -860,10 +841,9 @@ FILES=($(find -L 03-preprocessing/{screening,deep}/human_filtering/output/{FUM,G
 for i in 1:${#FILES[@]}; do
   samtools fastq ${FILES[$i]} | gzip > ${FILES[$i]} .fq.gz;
 done
-
 ```
 
->  :warning: The unmapped-read FASTQ files are not provided here due to their large size.
+> :warning: The unmapped-read FASTQ files are not provided here due to their large size.
 
 #### R6.2.2 Statistics
 
@@ -947,7 +927,7 @@ for DIR in ../../screening/human_filtering/output/*/; do
 done
 ```
 
-##### Libraries not requiring merging
+##### Libraries requiring merging
 
 Then we removed the imported directories  of 'extra' samples/libraries that
 needed to be merged.
@@ -1040,7 +1020,6 @@ summarised across multiple libraries using the R notebook
 
 Visualisation of summary statistics can also be seen [below](#r64-preprocessing-results-summary).
 
-<a id="r63-poly-g-trimming-assessment"></a>
 ### R6.3 Poly-G Trimming Assessment
 
 The human DNA GC content could be a bit off in some of the new libraries
@@ -1096,7 +1075,7 @@ the output of which was stored in `04-analysis/screening/eager` under the
     Concatenate Lanewise together: N (as lane concatenation already done)
     Reference: HG19
     Name of mitochondrial chromosome: chrMT
-   
+  
     AdapterRemoval: N
       minimum adapter overlap: 11
     Mapping: BWA
@@ -1111,8 +1090,8 @@ the output of which was stored in `04-analysis/screening/eager` under the
     CleanUp: On
     Create Report: On
     ```
-   
-To run each EAGER run in parallel, we again used 
+  
+To run each EAGER run in parallel, we again used
 `02-scripts.backup/02-scripts.backup/021-eager_microbiota_slurm_array.sh` after
 updating the path in find.
 
@@ -1124,7 +1103,6 @@ Visualisation of summary poly-G trimming statistics can also be seen [below](#r6
 > :warning: The EAGER run output files are not provided here due to their large
 > size.
 
-<a id="r64-processing-results-summary"></a>
 ### R6.4 Preprocessing Results Summary
 
 Sequencing quality control results for both screening and production datasets
@@ -1150,10 +1128,8 @@ The general metadata file for all main individual-level pre-processing
 statistics can be seen in `06-additional_data_files` under Data R04. This file
 is typically used as input for all downstream analyses, when required.
 
-<a id="r7-metagenomic-screening"></a>
 ## R7 Metagenomic Screening
 
-<a id="r71-malt"></a>
 ### R7.1 MALT
 
 For the first step of analysing the microbiome content of the dental calculus,
@@ -1230,7 +1206,6 @@ column of our the final main screening metadata file
 Summary statistics on the number of reads assigned per individual to the
 MALT and RefSeq databases can be seen [below](#r73-assigned-reads-summaries-and-database-comparison)
 
-<a id="r72-megan"></a>
 ### R7.2 MEGAN
 
 #### R7.2.1 MEGAN Running
@@ -1284,7 +1259,6 @@ be seen in `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`.
 Visualisation of this analysis can be seen
 [below](#r73-assigned-reads-summaries-and-database-comparison)
 
-<a id="r73-database-comparison"></a>
 ### R7.3 Assigned Reads Summaries and Database Comparison
 
 To get an overview of the 'mapability' of the (merged) samples used in this, we
@@ -1327,7 +1301,6 @@ for further discussion of these observations.
 
 ---
 
-<a id="r8-preservation-screening"></a>
 ## R8 Preservation Screening
 
 A crucial part of any ancient DNA study is to control for preservation of the
@@ -1338,7 +1311,6 @@ complications in downstream analysis. Identifying both well-preserved samples
 containing a sufficient fraction of the original microbiome, but equally that
 they DNA is not derived from modern contamination.
 
-<a id="r81-cumulative-proportion-decay-plots"></a>
 ### R8.1 Cumulative Percent Decay Plots
 
 The MALT OTU table(s) alone does not give us much information about the genetic
@@ -1432,7 +1404,6 @@ samples passed the calculated threshold in the tables below.
 
 ---
 
-<a id="r82-source-estimation"></a>
 ### R8.2 Source Estimation
 
 We next wanted to compare to a less-suitable but more established approach to
@@ -1722,7 +1693,6 @@ For plotting of these - with comparison to the cumulative percent decay plots,
 
 ---
 
-<a id="r83-ratio-of-eukaryotic-to-prokaryotic-alignments"></a>
 ### R8.3 Ratio of Eukaryotic to Prokaryotic Alignments
 
 Returning back to the MALT tables and cumulative percent decay plots, we had
@@ -1747,7 +1717,6 @@ of the results, please refer to the main publication.
 
 ---
 
-<a id="r84-damage-patterns"></a>
 ### R8.4 Damage Patterns
 
 #### R8.4.1 MEx-IPA
@@ -1794,10 +1763,8 @@ oral taxa.
 The collated results for the whole screening dataset are stored in the file
 `00-documentation.backup/14-damageprofiler_screening_3p_5p_summaries_20191113.csv`.
 
-<a id="r85-laboratory-contaminants"></a>
 ### R8.5 Laboratory Contaminants
 
-<a id="r851-decontam"></a>
 ### R8.5.1 decontam
 
 In addition to identifying well preserved samples, we can also remove possibly
@@ -1835,7 +1802,6 @@ The final list of contaminants for all methods and databases can be seen in
 
 ---
 
-<a id="r852-contaminant-impact-check"></a>
 ### R8.5.2 Contaminant Impact Check
 
 We observed a high number of putative contaminant OTUs when using our strict
@@ -1858,7 +1824,6 @@ is shown in figure R18.
 
 ---
 
-<a id="r9-compositional-analysis"></a>
 ## R9 Compositional Analysis
 
 After filtering to contain only well-preserved samples and removing possible
@@ -1867,7 +1832,6 @@ our different host groups. We wanted to identify taxonomic similarities and
 differences between each of the groups to help reconstruct the evolutionary
 (co-)history of the microbiomes and their hosts.
 
-<a id="r91-principal-coordinate-analysis"></a>
 ### R9.1 Principal Coordinate Analysis
 
 To explore if we have a structure in our data that can describe differences
@@ -1972,7 +1936,6 @@ we observed little differences (Figure R19).
 
 ---
 
-<a id="r92-permanova"></a>
 ### R9.2 PERMANOVA
 
 To provide statistical support for the observations made from the PCoAs above
@@ -2046,7 +2009,6 @@ Overall we found that despite some overlap (as seen in the PCoA analysis, the
 calculus microbiomes of each host genus could be considered statistically
 distinct.
 
-<a id="r93-hierarchical-clustering-heatmaps"></a>
 ### R9.3 Hierarchical Clustering Heatmaps
 
 To visualise possible drivers of similarity and differences between the
@@ -2113,7 +2075,6 @@ Comparing the zero replacement methods showed no difference between clustering.
 There were only cosmetic tree topology changes with by clade rotation i.e. no
 structural changes. The output is saved as in the same directory at above.
 
-<a id="r932-indicator-analysis"></a>
 ### R9.3.2 Indicator Analysis
 
 To confirm that the species corresponding to the grouping observed in the
@@ -2125,7 +2086,6 @@ The results can be seen can be seen in `06-additional_data_files` under Data
 R21 or in `04-analysis/screening/indicspecies.backup`, with discussion in
 the main publication.
 
-<a id="r94-clustering-by-diet"></a>
 ### R9.4 Clustering by Diet
 
 To revisit the question and results posed by Weyrich _et al._ (2017) _Nature_,
@@ -2158,10 +2118,8 @@ Much more balanced and controlled sampling is required to address this question
 to recover whether diet indeed effects the taxonomic compositional of oral
 microbiomes.
 
-<a id="r10-core-microbiome-analysis"></a>
 ## R10 Core Microbiome Analysis
 
-<a id="r101-core-microbiome-calculation"></a>
 ### R10.1 Core Microbiome Calculation
 
 #### R10.1.1 Core Microbiome Procedure
@@ -2348,9 +2306,8 @@ seen in `06-additional_data_files` under Data R25.
 Overall we found that core genera and species did exist across all host genera
 in this study. These taxa span all layers of the known biofilm structure in
 modern human calculus, suggesting a highly conserved structural core across
-deep time. See main publication for further discussion. 
+deep time. See main publication for further discussion.
 
-<a id="r102-core-microbiome-maltextract"></a>
 ### R10.2 Core Microbiome MaltExtract
 
 To further verify the authenticity of the ancient nature of the core microbiome
@@ -2382,7 +2339,6 @@ MaltExtract \
 See [above](#r841-mex-ipa) for the raw MaltExtract results - as this data has
 been uploaded to the Github repository for MEx-IPA.
 
-<a id="r11-genome-reconstruction-and-phylogenetics"></a>
 ## R11 Genome Reconstruction and Phylogenetics
 
 We next wanted to test whether the phylogenies of specific oral taxa also
@@ -2401,7 +2357,6 @@ predicted effect would be reads from off-target reads would be attracted to
 the original related strains/species and thus would not be present on the
 reference of interest itself.
 
-<a id="r111-production-dataset-sequencing-depth-calculations"></a>
 ### R11.1 Production dataset sequencing depth calculations
 
 For optimal phylogenetic reconstruction, high coverage genomes are generally
@@ -2490,7 +2445,6 @@ functional analysis analysis.
 > Additional samples were also included if previously deep sequenced for
 > other contexts
 
-<a id="r112-super-reference-construction"></a>
 ### R11.2 Super-reference construction
 
 Now with the deep sequenced subset of individuals, we then decided to select
@@ -2543,7 +2497,6 @@ FASTAs were indexed as [above](#r43-bwa-indexing)
 
 > :warning: Reference files and indices are not included due to large size
 
-<a id="r113-super-reference-alignment-and-species-selection"></a>
 ### R11.3 Super-reference alignment and species selection
 
 The production dataset was then mapped to each of the core genus
@@ -2601,7 +2554,6 @@ Output results for this statistics can also be see under
 `04-analysis/deep/eager/superreference_mapping/output` or collated in
 `06-additional_data_files` under Data R28.
 
-<a id="r114-comparative-single-reference-mapping"></a>
 ### R11.4 Comparative single reference mapping
 
 #### R11.4.1 Reference selection methods
@@ -2720,7 +2672,6 @@ genome can be seen in `06-additional_data_files` under Data R30.
 
 ---
 
-<a id="r115-performance-of-super-reference-vs-single-genome-mapping"></a>
 ### R11.5 Performance of super-reference vs. single genome mapping
 
 As the main target of this comparison of mapping strategies was to see if we
@@ -2797,7 +2748,7 @@ below in Figure R62.
 
 **Figure R62 | Comparison of the number of multi-allelic single nucleotide variants (SNPs) identified when using a single representative genome mapping strategy versus a multi-reference genome (super-reference) mapping approach.** Analysis was performed on selected abundant and prevalent species representatives of core anthropoid genera, using the production dataset. Multi-allelic SNPs are sites called with more than the expected 1 allele (given haploid bacteria) – indicating cross mapping from other strains or related species. To reduce the occurrence of these and improve phylogenetic power, mapping to multiple species of a genera (vs. the single representative) to attract away mis-mapping reads was attempted. Arrows indicate direction of change in the percentage of multi-allelic sites between single genome (grey circle outline) and super-reference (black circle outline) mapping strategies. The expected reduction in the percentage of multi-allelic SNPs (from right to left on the x-axis) between the two strategies is not observed to consistently occur and with minor effect. Furthermore, in most cases when a reduction occurs, these samples have already very few SNPs (size circles) usable for phylogenetic analysis.  Statistics are summarized from the ‘SNP statistics’ file from the output of MultiVCFAnalyzer with a ‘homozygous’ threshold of 0.9, a ‘heterozygous’ threshold of 0.1, and a minimum coverage threshold of 2.
 
-> Note: the figure ID is out of order due to missing upload during initial writing of this walk-through. 
+> Note: the figure ID is out of order due to missing upload during initial writing of this walk-through.
 
 ---
 
@@ -2811,10 +2762,10 @@ mappings for downstream analysis to ensure maximal information for relationship
 calculations.
 
 Additionally, in the notebook we also show that we identified the most common
-fraction of a majority allele in multi-allelic positions was 0.7. This allowed 
+fraction of a majority allele in multi-allelic positions was 0.7. This allowed
 us to identify optimal fraction parameter when dealing with multi-allelic SNPs
-within MultiVCFAnalyzer, to boost the the number of semi-confident SNP 
-positions (by including majority-call alleles in phylogenetically useful 
+within MultiVCFAnalyzer, to boost the the number of semi-confident SNP
+positions (by including majority-call alleles in phylogenetically useful
 positions, under the assumptions majority calls derive from the target
 species of interest).
 
@@ -2826,20 +2777,19 @@ species of interest).
 
 ---
 
-Aggregation of this threshold parameter observation across all mappings can be 
+Aggregation of this threshold parameter observation across all mappings can be
 seen in `04-analysis/deep/competitive_mapping.backup/multiallelic_snps/`.
 
-<a id="r116-variant-calling-and-single-allelic-position-assessment"></a>
 ### R11.6 Variant calling and single-allelic position assessment
 
-For final variant calling for phylogenetic analysis, we re-ran 
+For final variant calling for phylogenetic analysis, we re-ran
 MultiVCFAnalyzer to create our final SNP Alignments based on the single genome
 reference mappings.
 
 We ran the same MultiVCFAnalyzer command as above, but with the slightly
 relaxed homozygous fraction parameter and turning off reporting of heterozygous
 positions by setting the heterozygous parameter to the same as the homozygous.
-Therefore we retained only 'confident' (not UPAC uncertainty) nucleotides in the 
+Therefore we retained only 'confident' (not UPAC uncertainty) nucleotides in the
 alignments.
 
 ```bash
@@ -2861,15 +2811,14 @@ NA \
 
 The final snpAlignment and snpStatistics files can be seen in `04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/`
 
-> :warning: The remaining MultiVCFAnalyzer results are not provided here due to 
+> :warning: The remaining MultiVCFAnalyzer results are not provided here due to
 > large size.
 
-<a id="r117-phylogenies"></a>
 ### R11.7 Phylogenies
 
 For the phylogenies themselves, I wrote a custom R script that allows for
 generating a few summary statistics for the alignment, filtering based on
-number of positions of an entry in the SNP alignment, and then 
+number of positions of an entry in the SNP alignment, and then
 pairwise-deletion neighbour-joining phylogenies. See main publication for
 justification behind the pairwise-deletion and NJ trees.
 
@@ -2935,32 +2884,31 @@ the pairwise number of overlapping bases between each sample can be seen in
 
 ---
 
-Overall we saw a general concordance whereby strains from the same host genera 
+Overall we saw a general concordance whereby strains from the same host genera
 clustered together, but the relationships between these clades did not match
-the phylogenetic relationships between the hosts. See main publication for 
+the phylogenetic relationships between the hosts. See main publication for
 further discussion on the interpretation of the trees topologies.
 
-<a id="r118-pre--and-post-14k-bp-observation-verification"></a>
 ### R11.8 Pre- and Post-14k BP Observation Verification
 
-In the trees generated above, we also observed that single deep sequenced 
-pre-14ky BP individual (Red Lady/EMN001) _always_ clustered with Neanderthals, 
+In the trees generated above, we also observed that single deep sequenced
+pre-14ky BP individual (Red Lady/EMN001) _always_ clustered with Neanderthals,
 whereas post-14ky BP individuals mostly fell with modern day humans.
 
 #### R11.8.1 Production dataset overlapping positions analysis
 
 One possible cause of this clustering could be that the two clades could
-represent different species (due to sub-optimal reference selection), and 
-therefore the clustering of the Red Lady of El Mirón (EMN001) with the 
-Neanderthals is because they share the same regions of the genome, which are 
-not present in the other clade (leading to more similar distance calculations). 
-Alternatively, the Neanderthals and EMN001 may have very small regions of the 
-genome covered (given their age) and the distance calculated is just highly 
+represent different species (due to sub-optimal reference selection), and
+therefore the clustering of the Red Lady of El Mirón (EMN001) with the
+Neanderthals is because they share the same regions of the genome, which are
+not present in the other clade (leading to more similar distance calculations).
+Alternatively, the Neanderthals and EMN001 may have very small regions of the
+genome covered (given their age) and the distance calculated is just highly
 conserved regions with low diversity.
 
 To check this, we built a distribution of the numbers of positions
 present in both of of all pair-wise combinations of humans individuals. Then we
-can calculated the median number of overlapping SNPs of EMN001 with each 
+can calculated the median number of overlapping SNPs of EMN001 with each
 Neanderthals, and the same for each human individual - and see if the
 EMN001/Neanderthal median fell outside the range of the EMN001/Human and
 Human/Human combinations.
@@ -2979,7 +2927,7 @@ This is implemented in 'Version three' within the R notebook
 ---
 
 The output files for can be seen in `04-analysis/deep/phylogenies/` with files
-starting with `SharedSNP*`. 
+starting with `SharedSNP*`.
 
 Overall we observed Neanderthals did not have any more or less SNP positions
 than other human combinations, suggesting clustering is not due to conserved
@@ -2988,29 +2936,29 @@ or reconstruction of the wrong species genome used in the SNP alignment.
 #### R11.8.2 Screening datasets phylogenies
 
 We also wanted to see if this clustering of the pre-14ky individual with
-Neanderthals held when adding additional European individuals, which was not 
+Neanderthals held when adding additional European individuals, which was not
 available in the deep sequencing dataset.
 
-For this, we attempted building the same phylogenies but with the screening 
-counterparts of each sample (i.e. with damage, and lower coverage), with a 
-few extra individuals i.e. PLV001 and RIG001 for pre-14ky BP, and OFN001 for 
+For this, we attempted building the same phylogenies but with the screening
+counterparts of each sample (i.e. with damage, and lower coverage), with a
+few extra individuals i.e. PLV001 and RIG001 for pre-14ky BP, and OFN001 for
 post-14ky BP. While even though this would result in even _lower_ resolution
-phylogenies compared the already simplified neighbour-joining trees, 
+phylogenies compared the already simplified neighbour-joining trees,
 corroboration of topology (even if with lower bootstrap) could support a true
 biological signal regarding the observed pattern.
 
-We set up EAGER the same way as 
+We set up EAGER the same way as
 [above](#r111-production-dataset-sequencing-depth-calculations)
-(retaining the stricter alignment parameters to try and reduce the effect of 
+(retaining the stricter alignment parameters to try and reduce the effect of
 damage).
 
 Once completed, we checked the coverage statistics of each EAGER run as in
-`02-scripts.backup/056-Phylogenies_Screening_EMNCheck_EAGERResults.Rmd`. 
+`02-scripts.backup/056-Phylogenies_Screening_EMNCheck_EAGERResults.Rmd`.
 The individual ReportTables can be seen in
 `04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanayzer/output`.
 Although low coverage was yielded overall, we try to build phylogenies anyway.
 
-> :warning: The EAGER mapping results files are not provided here due to their 
+> :warning: The EAGER mapping results files are not provided here due to their
 large size other than the ReportTable files.
 
 We again ran MultiVCFAnalyzer with the same parameters above, but to a new
@@ -3033,7 +2981,7 @@ NA \
 <VCF_3>
 ```
 
-Then same as above, we attempted to make the same 8 better supported 
+Then same as above, we attempted to make the same 8 better supported
 phylogenies trees from the deep sequenced data with:
 
 ```bash
@@ -3046,7 +2994,7 @@ done
 
 The results can be seen in `04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanayzer/output`
 
-> :warning: Only a subset of MultiVCFAnalyzer files are uploaded here, due to 
+> :warning: Only a subset of MultiVCFAnalyzer files are uploaded here, due to
 > large size
 
 With these we can load into the R markdown document
@@ -3064,21 +3012,19 @@ figures can be seen under `04-analysis/screening/EMN_Neanderthal_phylogeny_check
 
 ---
 
-In general we saw, albeit at lower resolution, similar patterns where the 
+In general we saw, albeit at lower resolution, similar patterns where the
 pre-14ky individuals still fell with the Neanderthal individuals, while the
 post-14k individuals fell with other ancient and/or modern humans.
 
-<a id="r12-functional-analysis"></a>
 ## R12 Functional Analysis
 
 In addition to taxonomic relationships in the calculus microbiomes of each host
-genus we wanted to explore overall _functional_ differences, and also more to 
-see if we could traces changes virulence factors of what is typically 
-considered 'pathogenic' red complex taxa (but is increasingly being shown to 
-be either opportunistic commensals or having many commensal relatives) over 
+genus we wanted to explore overall _functional_ differences, and also more to
+see if we could traces changes virulence factors of what is typically
+considered 'pathogenic' red complex taxa (but is increasingly being shown to
+be either opportunistic commensals or having many commensal relatives) over
 the evolution of Anthropoids.
 
-<a id="r121-virulence-factors"></a>
 ### R12.1 Virulence Factors
 
 Given that we identified in the production dataset significant numbers of reads
@@ -3101,10 +3047,10 @@ bedtools coverage -a <REFERENCE>.gff -b <BAM> > <OUT FILE>.tsv -mean
 ```
 
 For the actual filtering of individuals with overall genomic low coverage (i.e.
-retaining individuals that had sufficient coverage that we could say with 
-reasonable confidence of a true presence- or absence - Figure R35) and the 
-actual identification of presence/absence of these genes, we loaded the 
-resulting TSV files into R with the notebook 
+retaining individuals that had sufficient coverage that we could say with
+reasonable confidence of a true presence- or absence - Figure R35) and the
+actual identification of presence/absence of these genes, we loaded the
+resulting TSV files into R with the notebook
  `02-scripts.backup/054-virulence_investigation.Rmd`.
 
 ---
@@ -3119,21 +3065,20 @@ resulting TSV files into R with the notebook
 
 ---
 
-For _Tannerella forsythia_ we saw that most virulence factors were present 
-within most individuals of the deep sequenced dataset, whereas there was 
-more variation in in _P. gingivalis_, with the Mfa family of fimbrae genes 
+For _Tannerella forsythia_ we saw that most virulence factors were present
+within most individuals of the deep sequenced dataset, whereas there was
+more variation in in _P. gingivalis_, with the Mfa family of fimbrae genes
 seemingly missing in _Alouatta_ and _Pan_.
 
-<a id="r122-amylase"></a>
 ### R12.2 Amylase
 
 #### R12.2.1 Streptococcus Distribution
 
-In the hierarchical clustering ([above](#r92-hierarchical-clustering-heatmaps)), 
+In the hierarchical clustering ([above](#r92-hierarchical-clustering-heatmaps)),
 we observed the relative abundance and prevalence of Streptococci varied between
 host genus. We therefore wished to explore this further - given the interest
 in human evolutionary history regarding the role of amylase copy number
-variation (see main publication for an overview), and certain groups of 
+variation (see main publication for an overview), and certain groups of
 Streptococci displaying amylase activity.
 
 Firstly, we looked at the distribution of different types of streptococci groups
@@ -3157,9 +3102,9 @@ database, as in the notebook
 
 ---
 
-In both the screening and deep sequencing datasets, we observed that _Homo_ 
-had greater fractions of alignments to Streptococci that have been empirically 
-shown to display amylase-binding activity compared to other host genera 
+In both the screening and deep sequencing datasets, we observed that _Homo_
+had greater fractions of alignments to Streptococci that have been empirically
+shown to display amylase-binding activity compared to other host genera
 (although also with a greater level of overall Streptococci reads aligning to
 untested taxa in the non-_Homo_ hosts)
 
@@ -3170,16 +3115,16 @@ host-genera, and the observation that Humans tend to have more prominent signals
 of amylase-binding-activity positive species, we also looked at whether amylase-
 binding genes could actually be detected within each host genus.
 
-We decided to use the production dataset for this, as it would provide higher 
-confidence that a gene is present, given the higher whole-depth depth 
+We decided to use the production dataset for this, as it would provide higher
+confidence that a gene is present, given the higher whole-depth depth
 coverages in this dataset. Given that sections of amylase-binding protein
-(B) sequence are present in other genes (and variants in other species), we 
-also wanted to find all possible 'amylase-binding-protein gene'-like sequences 
+(B) sequence are present in other genes (and variants in other species), we
+also wanted to find all possible 'amylase-binding-protein gene'-like sequences
 in the super-reference. So as to maximise our sensitivity in finding reads
  putatively deriving from the actual amylase binding protein gene.
 
-For this we recovered all amylase-like reads from our Streptococcus 
-super-reference with the tool panX, using the Genbank files for each 
+For this we recovered all amylase-like reads from our Streptococcus
+super-reference with the tool panX, using the Genbank files for each
 reference.
 
 ```bash
@@ -3190,11 +3135,11 @@ pan-genome-analysis/panX.py \
 -t 32
 ```
 
-Plugging the output into the panX visualisation companion tool (see the panX 
-[documentation](https://github.com/neherlab/pan-genome-visualization/), we 
+Plugging the output into the panX visualisation companion tool (see the panX
+[documentation](https://github.com/neherlab/pan-genome-visualization/), we
 searched for the _abpA_ and _abpB_ genes as annotated in the well-annotated
-`_Streptococcus gordonii` genome, and downloaded the corresponding FASTA 
-alignments of similar sequences from the sequence alignment table. The 
+`_Streptococcus gordonii` genome, and downloaded the corresponding FASTA
+alignments of similar sequences from the sequence alignment table. The
 alignments can be seen under
 `04-analysis/screening/streptococcus_investigation.backup/panX/abpA_abpB_cluster_alignments`.
 
@@ -3212,7 +3157,7 @@ which was exported as a BED file.
 > :warning: The super-reference FASTA files are not included here to large size.
 
 For each sample's mapping to the _Streptococcus_ super-reference, we then
-ran bedtools to recover statistics on the coverage of each annotated gene 
+ran bedtools to recover statistics on the coverage of each annotated gene
 entry.
 
 ```bash
@@ -3227,8 +3172,8 @@ The resulting files were then loaded into to assess the ratio of all
 _Streptococcus_ reads to amylase binding protein-like reads as in
 `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`.
 
-We observed that calculated ratios were much higher in _Homo_ (with 
-Neanderthals falling within the range of humans) than other primates. See the 
+We observed that calculated ratios were much higher in _Homo_ (with
+Neanderthals falling within the range of humans) than other primates. See the
 main publication for the implications of this.
 
 #### R12.2.3 Amylase bayesian skyline analysis
@@ -3236,9 +3181,9 @@ main publication for the implications of this.
 Given this pattern, we were interested if we could infer any more information
 about the evolutionary history of these genes.
 
-We therefore identified reads in the screening dataset originating from 
-specifically the *abpA* and *abpB* genes by independently using BLAST and mapping 
-against a selected set of reference sequences of *abpA* and *abpB*. 
+We therefore identified reads in the screening dataset originating from
+specifically the *abpA* and *abpB* genes by independently using BLAST and mapping
+against a selected set of reference sequences of *abpA* and *abpB*.
 
 All reference abpA sequences in fasta format were built into a blast database:
 
@@ -3246,7 +3191,7 @@ All reference abpA sequences in fasta format were built into a blast database:
 makeblastdb -in <abp_gene>.fasta -dbtype nucl -title <abp_gene> -out <abp_gene>
 ```
 
-and then all screening samples were searched against both databases using 
+and then all screening samples were searched against both databases using
 blast command line tools:
 
 ```bash
@@ -3254,8 +3199,8 @@ blast command line tools:
 gzip -dcf <SAMPLENAME>.fastq.gz | blastn -db <abp_database> -query - -out $(basename <SAMPLENAME> .fasta.gz).out -num_descriptions 20 -num_alignments 20 -num_threads 12
 ```
 
-All reads that hit any reference sequence were extracted from a blast format 
-output file to a list using the script `ncbiblastparser.pl` downloaded 
+All reads that hit any reference sequence were extracted from a blast format
+output file to a list using the script `ncbiblastparser.pl` downloaded
 from `https://github.com/mel-astar/mel-ngs/blob/master/utils/ncbiblastparser.pl`
 
 ```bash
@@ -3263,15 +3208,15 @@ ncbiblastparser.pl <(gzip -dcf <SAMPLENAME>.out) 1 "$(echo <SAMPLENAME>)".parsed
 grep -v 'No hits found' "$(echo <SAMPLENAME>)".parsed > "$(echo <SAMPLENAME>)".hits
 ```
 
-The read ID of all sequences with a hit in the blast output were copied to a 
+The read ID of all sequences with a hit in the blast output were copied to a
 list
 
 ```bash
 awk '{print $1}' <SAMPLENAME>.hits > <SAMPLENAME>.list
 ```
 
-This list was used to extract the reads from the original fastq files using 
-seqtk into new files to be mapped against *apbA* and *abpB* references 
+This list was used to extract the reads from the original fastq files using
+seqtk into new files to be mapped against *apbA* and *abpB* references
 sequences:
 
 ```bash
@@ -3282,12 +3227,12 @@ The individual *abpA* and *abpB* sequences used for the BLASt database were then
 indexed with bwa for mapping:
 
 ```bash
-for f in *.fasta; do 
+for f in *.fasta; do
   bwa index -p `basename $f .fasta` $f
 done
 ```
 
-Each BLAST-hit read sample file was mapped against each *abpA* and *abpB* 
+Each BLAST-hit read sample file was mapped against each *abpA* and *abpB*
 reference sequence:
 
 ```bash
@@ -3296,20 +3241,20 @@ bwa aln -n 0.01 -l 32 <reference_abp_sequence> <SAMPLENAME>.fastq > <SAMPLENAME>
 bwa samse /AP018338_abpA <SAMPLENAME>.abp_reference_seqence.sai <SAMPLENAME> > <SAMPLENAME>.abp_reference_seqence.sam
 ```
 
-Finally files were converted to bam format, mapped reads selected out, 
-duplicate reads removed from the mapped read only file, and the 
-duplicate-removed mapped-only read file was indexed with the following 
+Finally files were converted to bam format, mapped reads selected out,
+duplicate reads removed from the mapped read only file, and the
+duplicate-removed mapped-only read file was indexed with the following
 procedure:
 
 ```bash
 # convert sam to bam
-for f in *.sam; do 
+for f in *.sam; do
   samtools view -bS $f | samtools sort - $(basename $f .sam).bam
 done
 
 # select only mapped reads
 for f in *.bam; do
-  samtools view -b -F4 $f > $(basename $f .bam).mapped.bam 
+  samtools view -b -F4 $f > $(basename $f .bam).mapped.bam
 done
 
 # remove duplicates from mapped reads
@@ -3327,23 +3272,23 @@ done
 All alignments were visually inspected with IGV, and consensus sequences from
 mapping against the *Streptococcus gordonii* str. Challis (NC_009785) reference
 *abpA* and *abpB* sequences were exported from IGV if they covered at least 40%
-of the reference at least 1X. To do this, on the alignment track we 
-right-clicked to bring up a menu and select 'Copy consensus sequence'. 
-All consensus sequences were then pasted into a text file in fasta format that 
-included the NC_009785 reference sequence, and this was used as an alignment 
-file. The consensus sequence fasta file was uploaded to Geneious v 8.0.5 and 
+of the reference at least 1X. To do this, on the alignment track we
+right-clicked to bring up a menu and select 'Copy consensus sequence'.
+All consensus sequences were then pasted into a text file in fasta format that
+included the NC_009785 reference sequence, and this was used as an alignment
+file. The consensus sequence fasta file was uploaded to Geneious v 8.0.5 and
 exported in a nexus file format.
 
 The consensus sequence nexus file was uploaded into BEAUTi, for Bayesian
 skyline analysis with BEAST2 v 2.4.7., and dates were added, either as estimated
-from archaeological context (see main publication and extended data ), or from 
-known collection dates of modern data. All parameters were left at default with 
-the GTR substitution model, a strict clock, and coalescent Bayesian skyline 
-model. The MCMC chain length was 800,000,000 with sampling every 80,000 states. 
+from archaeological context (see main publication and extended data ), or from
+known collection dates of modern data. All parameters were left at default with
+the GTR substitution model, a strict clock, and coalescent Bayesian skyline
+model. The MCMC chain length was 800,000,000 with sampling every 80,000 states.
 
-While the chain converged, inspection of the tree structure in DensiTree showed 
-no structure for *abpA*, and we therefore did not proceed with BEAST analysis 
-to attempt date expansion of *abpA*. However, we generated a skyline plot from 
+While the chain converged, inspection of the tree structure in DensiTree showed
+no structure for *abpA*, and we therefore did not proceed with BEAST analysis
+to attempt date expansion of *abpA*. However, we generated a skyline plot from
 the *abpB* data, which is shown in Figure R38.
 
 A list of accession numbers of abpB sequences collected for bayesian skyline
@@ -3357,10 +3302,9 @@ analysis can be seen in `06-additional_data_files` under Data R36.
 
 ---
 
-Due to low and uneven sample sizes, we were unable to draw confident 
+Due to low and uneven sample sizes, we were unable to draw confident
 conclusions from these results.
 
-<a id="r123-humann2"></a>
 ### R12.3 HUMANn2
 
 In addition to the taxonomic profile, the functional profile of dental calculus
@@ -3476,7 +3420,7 @@ OUTDIR=04-analysis/screening/metaphlan2/output
 For merging of the estimated read count files, we ran the
 `016-metaphlan2_readcount_table_generator.Rmd` notebook.
 
-For merging of the 'mapped reads method', the output actually gave both the 
+For merging of the 'mapped reads method', the output actually gave both the
 name of the read and a given taxonomic ID. To merge we thus ran:
 
 ```bash
@@ -3487,10 +3431,10 @@ done > mp2_merged_readsmapped_table_all_"$(date +%Y%m%d)".txt
 
 ```
 
-Note that all of those files needed to be -1 because the count included a 
+Note that all of those files needed to be -1 because the count included a
 header.
 
-> :warning: Individual MetaPhlAn2 files are not provided here due to redundancy 
+> :warning: Individual MetaPhlAn2 files are not provided here due to redundancy
 with combined file(s)
 
 The summarised output MetaPhlAn2 files can be seen in `06-additional_data_files`
@@ -3498,7 +3442,7 @@ under Data R15.
 
 Finally, some read statistics by applying the same 0.01% threshold used in MALT
 were gained via the `099-MetaPhlan2_Summary_statistics.R` script. These were
-then manually added to the main analysis metadata file (Data R04 in 
+then manually added to the main analysis metadata file (Data R04 in
 `06-additional_data_files`).
 
 ---
@@ -3514,7 +3458,7 @@ then manually added to the main analysis metadata file (Data R04 in
 ---
 
 The numbers of reads with taxonomic assignment were across all taxa, as
-expected from a) the marker-gene profiling approach used by MetaPhlAn2 and 
+expected from a) the marker-gene profiling approach used by MetaPhlAn2 and
 b) ancient samples with large amounts of 'unknown' environmental contamination.
 Interestingly, the level of reads identified in Plaque samples was much more
 high and consistent than all other groups.
@@ -3524,7 +3468,7 @@ high and consistent than all other groups.
 Once we had the MetaPhlAn2 profiles, we ran run HUMANn2 with the following
 command.
 
-> :warning: The following was adapted from a SLURM array script and should be 
+> :warning: The following was adapted from a SLURM array script and should be
 adjusted accordingly to run on each sample
 
 ```bash
@@ -3538,7 +3482,7 @@ humann2 \
 
 ```
 
-:warning: The output temporary files (which don't appear to be removed) are 
+:warning: The output temporary files (which don't appear to be removed) are
 HUGE. We removed them after successful running by doing the following:
 
 ```bash
@@ -3575,7 +3519,7 @@ humann2_join_tables --input . --output humann2_pathabundance.tsv --file_name pat
 
 ```
 
-We also wanted to put the output in KEGG format. To do this we firstly 
+We also wanted to put the output in KEGG format. To do this we firstly
 downloaded the re-grouping database
 
 ```bash
@@ -3592,8 +3536,8 @@ humann2_regroup_table -i humann2_genefamilies.tsv -g uniref90_ko -o humann2_gene
 
 > :warning: HUMANn2 output files are not provided here due to large size
 
-All indepth analysis and figure generation for HUMAnN2 data can be found in the 
-R markdown document here 
+All indepth analysis and figure generation for HUMAnN2 data can be found in the
+R markdown document here
 `02-scripts.backup/144-imv-oral_evolution_humann2_fxn_cleaned.Rmd`. However,
 a brief overview with figures can be seen here.
 
@@ -3663,7 +3607,7 @@ excluding modern _Homo_ samples.
 
 We looked at whether specific species contributed the orthologs with strongest
 loadings in the biplots above to look for host-specific species contributions to
-orthologs. First we looked at the orthologs in strongest positive loadings in 
+orthologs. First we looked at the orthologs in strongest positive loadings in
 PC1.
 
 ---
@@ -3686,7 +3630,7 @@ orthologs. Then we looked at the orthologs in strongest negative loadings in PC1
 
 We looked at whether specific species contributed the orthologs with strongest
 loadings in the biplots above to look for host-specific species contributions to
-orthologs. Then we looked at the proteins in strongest PC2 loadings 
+orthologs. Then we looked at the proteins in strongest PC2 loadings
 characterizing non-human primates.
 
 ---
@@ -3698,7 +3642,7 @@ characterizing non-human primates.
 
 We looked at whether specific species contributed the orthologs with strongest
 loadings in the biplots above to look for host-specific species contributions to
-orthologs. Last we looked at the proteins in strongest PC2 loadings 
+orthologs. Last we looked at the proteins in strongest PC2 loadings
 characterizing _Homo_.
 
 ---
@@ -3722,11 +3666,10 @@ and Lipid metabolic pathways independently.
 
 See the main publication for interpretation of the functional patterns
 
-<a id="r124-aadder-analysis"></a>
 ### R12.4 AADDER Analysis
 
-As a validation, we also used AADDER (bundled with MEGAN6) - a tool which 
-infers functional characteristics based on the annotations of a MALT/MEGAN 
+As a validation, we also used AADDER (bundled with MEGAN6) - a tool which
+infers functional characteristics based on the annotations of a MALT/MEGAN
 reference database.
 
 This uses `.gff` files to compare taxonomic assignments with annotations, which
@@ -3736,7 +3679,6 @@ can be seen in `06-additional_data_files` under Data R10.
 We ran this against the custom RefSeq genomes we built above both
 with MALT (fasta files) and AADDER (gff files).
 
-<a id="r125-malt-refseq"></a>
 ### R12.5 MALT RefSeq
 
 We then ran MALT but instead of immediately producing RMA6 files, we
@@ -3771,7 +3713,6 @@ The corresponding `.megan`, `.nwk`  and OTU tables at various taxonomic
 levels (as exported by MEGAN) can be seen in `06-additional_data_files` under
 Data R11.
 
-<a id="r126-running-aadder"></a>
 ### R12.6 Running AADDER
 
 Then we run AADDER
@@ -3819,16 +3760,16 @@ for each microbial species, so the individual read counts per species per sample
 was lost. The species list and read count for ech host genus was exported from
 MEGAN as a tsv (and stored in `04-analysis/screening/aadder/tables/`).
 
-We manually added an additional 6 columns with a text editor Find and Replace 
-function: Host_Genus, Protein, PC1 code, PC2 code, PC1nomodcode, and 
-PC2nomodcode. The PC<number>code columns indicate the order of proteins from 
-strongest loading (1) to lowest loading (10) of the top 10 strongest loadings 
-in PC1 and PC2, for positive values and negative values. The 
-PC<number>nomodcode columns indicate the same loading order, but for the PCAs 
-that excluded modern *Homo* samples. For example, pc1n3 is the protein with 
-the 3rd strongest negative loading in PC1, and pc1p3 is the protein with the 
-3rd strongest positive loading in PC1. These codes were used to make the 
-protein names manageable and consistent in R, which had trouble with the 
+We manually added an additional 6 columns with a text editor Find and Replace
+function: Host_Genus, Protein, PC1 code, PC2 code, PC1nomodcode, and
+PC2nomodcode. The PC<number>code columns indicate the order of proteins from
+strongest loading (1) to lowest loading (10) of the top 10 strongest loadings
+in PC1 and PC2, for positive values and negative values. The
+PC<number>nomodcode columns indicate the same loading order, but for the PCAs
+that excluded modern *Homo* samples. For example, pc1n3 is the protein with
+the 3rd strongest negative loading in PC1, and pc1p3 is the protein with the
+3rd strongest positive loading in PC1. These codes were used to make the
+protein names manageable and consistent in R, which had trouble with the
 special characters in several protein names.
 
 All analysis of AADDER functional profiles can be found in the R markdown
@@ -3889,8 +3830,8 @@ excluding modern _Homo_ samples.
 ---
 
 We looked at whether specific species contributed the proteins with strongest
-loadings in the biplots above to look for host-specific microbial species 
-contributions to proteins. First we looked at the proteins in strongest 
+loadings in the biplots above to look for host-specific microbial species
+contributions to proteins. First we looked at the proteins in strongest
 negative loadings in PC1.
 
 ---
@@ -3901,8 +3842,8 @@ negative loadings in PC1.
 ---
 
 We looked at whether specific species contributed the proteins with strongest
-loadings in the biplots above to look for host-specific microbial species 
-contributions to proteins. Then we looked at the proteins in strongest positive 
+loadings in the biplots above to look for host-specific microbial species
+contributions to proteins. Then we looked at the proteins in strongest positive
 loadings in PC1.
 
 ---
@@ -3913,8 +3854,8 @@ loadings in PC1.
 ---
 
 We looked at whether specific species contributed the proteins with strongest
-loadings in the biplots above to look for host-specific microbial species 
-contributions to proteins. Then we looked at the proteins in strongest PC2 
+loadings in the biplots above to look for host-specific microbial species
+contributions to proteins. Then we looked at the proteins in strongest PC2
 loadings characterizing non-human primates.
 
 ---
@@ -3925,8 +3866,8 @@ loadings characterizing non-human primates.
 ---
 
 We looked at whether specific species contributed the proteins with strongest
-loadings in the biplots above to look for host-specific microbial species 
-contributions to proteins. Last we looked at the proteins in strongest PC2 
+loadings in the biplots above to look for host-specific microbial species
+contributions to proteins. Last we looked at the proteins in strongest PC2
 loadings characterizing _Homo_.
 
 ---
@@ -3950,21 +3891,20 @@ and Fatty acid metabolic pathways independently.
 
 See main publication for discussion of these results.
 
-<a id="r127-overlap-between-humann2-and-aadder"></a>
 ### R12.7 Overlap between HUMAnN2 and AADDER
 
 Finally, we wanted to see how many genes identified in the samples were
 identified by both HUMAnN2 and AADDER, within major biomolecule processing
-pathways (Amino acids, Carbohydrates, Fatty acids/Lipids). 
+pathways (Amino acids, Carbohydrates, Fatty acids/Lipids).
 
-Both the HUMAnN2 KEGG orthologs and the AADDER SEED proteins include the 
-Enzyme Commission number (EC number) on a majority of the orthologs/proteins 
-they report, so we compared the EC numbers between the two programs. 
+Both the HUMAnN2 KEGG orthologs and the AADDER SEED proteins include the
+Enzyme Commission number (EC number) on a majority of the orthologs/proteins
+they report, so we compared the EC numbers between the two programs.
 
-For HUMAnN2, all orthologs that are included in the KEGG Metabolism Pathways 
-'Amino acid', 'Carbohydrate', and 'Lipid' were individually selected out of the 
-full HUMAnN2 ortholog list. For AADDER, all proteins in the pathways 
-Amino Acids, Carbohydrates, and Fatty Acids, Lipids, and Isoprenoids were 
-selected out of the full AADDER table. All analyses based on EC numbers can be 
+For HUMAnN2, all orthologs that are included in the KEGG Metabolism Pathways
+'Amino acid', 'Carbohydrate', and 'Lipid' were individually selected out of the
+full HUMAnN2 ortholog list. For AADDER, all proteins in the pathways
+Amino Acids, Carbohydrates, and Fatty Acids, Lipids, and Isoprenoids were
+selected out of the full AADDER table. All analyses based on EC numbers can be
 found in the R markdown document here
 `02-scripts.backup/149-imv-aa-carbs-lipids_kegg-vs-seed.Rmd`.
