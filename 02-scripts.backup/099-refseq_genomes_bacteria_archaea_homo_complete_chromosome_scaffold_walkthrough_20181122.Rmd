@@ -142,7 +142,6 @@ sbatch \
 -e slurm.%j.err \
 --mail-type=fail \
 --mail-type=time_limit \
---mail-use=fellows@shh.mpg.de \
 -J "cat_cause_23k_genomes_too_much_for_malt-build" \
 --wrap="find ../01-data/databases/refseq/genomes/bacteria_archea_homo_20181122/raw/ -name \*.fna.gz -print0 | xargs -0 cat >> /../01-data/databases/refseq/genomes/bacteria_archea_homo_20181122/refseq_genomes_bacteria_archaea_homo_complete_chromosome_scaffold_20181122.fna.gz && find ../01-data/databases/refseq/genomes/bacteria_archea_homo_20181122/raw/ -name \*.fna.gz -print0 | xargs -0 rm"
 ```

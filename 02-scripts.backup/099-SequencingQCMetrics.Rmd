@@ -22,7 +22,7 @@ library(patchwork)
 Set project directory (if required!)
 
 ```{r}
-proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
+proj_dir <- ""
 ```
 
 Load files to be analysed

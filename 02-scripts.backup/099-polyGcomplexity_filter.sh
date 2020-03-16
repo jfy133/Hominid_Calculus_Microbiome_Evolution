@@ -5,15 +5,12 @@
 #SBATCH -t 0-02:00            						# walltime (D-HH:MM) (here 0 days, 8hours, 0 minutes)
 #SBATCH --partition=short						# partition (queue) to submit to 
 #SBATCH --array=0-187%8
-#SBATCH -o /projects1/clusterhomes/fellows/slurm_logs/slurm.%j.out      # STDOUT (the standard output stream)
-#SBATCH -e /projects1/clusterhomes/fellows/slurm_logs/slurm.%j.err      # STDERR (the output stream for errors)
 #SBATCH --mail-type=fail          					# notifications for job to abort
 #SBATCH --mail-type=time_limit          				# notifications for job to abort
-#SBATCH --mail-use=fellows@shh.mpg.de 					# these notifications will be sent to your shh.mpg.de email-address.
 #SBATCH -J "fastp_polyGtrim_SlurmArray"					# name of job
 
 
-DIRS=($(find -L /projects1/microbiome_calculus/evolution/04-analysis/screening/eager/polyGremoval_input/output -maxdepth 2 -mindepth 2 -type d ))
+DIRS=($(find -L 04-analysis/screening/eager/polyGremoval_input/output -maxdepth 2 -mindepth 2 -type d ))
 DIRNAME=${DIRS[$SLURM_ARRAY_TASK_ID]}
 OUTDIR="${DIRNAME/_input\/output/_output/input}"
 
@@ -27,7 +24,7 @@ if [ -z "$REVERSE" ]; then
   B_NAME=$(basename "${FORWARD[0]}")
   FORFILE="${B_NAME/_L00[1-9]_/_L000_}"
 
-  /projects1/users/fellows/bin.backup/fastp/fastp \
+  fastp \
   -i "$FORWARD" \
   -o "$OUTDIR"/"${FORFILE}".pG.fq.gz \
   --trim_poly_g \
@@ -45,7 +42,7 @@ else
   REVFILE="${REV_B_NAME/_L00[1-9]_/_L000_}"
 
 
-  /projects1/users/fellows/bin.backup/fastp/fastp \
+  fastp \
   -i "$FORWARD" \
   -I "$FORWARD" \
   -o "$OUTDIR"/"${FORFILE}".pG.fq.gz \

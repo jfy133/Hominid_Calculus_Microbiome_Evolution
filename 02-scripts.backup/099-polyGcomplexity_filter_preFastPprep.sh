@@ -4,16 +4,13 @@
 #SBATCH --mem 8000                					# memory pool for all cores (here 8GB)
 #SBATCH -t 0-23:00            						# walltime (D-HH:MM) (here 0 days, 8hours, 0 minutes)
 #SBATCH --partition=medium						# partition (queue) to submit to
-#SBATCH -o /projects1/clusterhomes/fellows/slurm_logs/slurm.%j.out      # STDOUT (the standard output stream)
-#SBATCH -e /projects1/clusterhomes/fellows/slurm_logs/slurm.%j.err      # STDERR (the output stream for errors)
 #SBATCH --array=0-187%8
 #SBATCH --mail-type=FAIL,ARRAY_TASKS          					# notifications for job to abort
 #SBATCH --mail-type=time_limit          				# notifications for job to abort
-#SBATCH --mail-use=fellows@shh.mpg.de 					# these notifications will be sent to your shh.mpg.de email-address.
 #SBATCH -J "AdapterRemovalTrimOnly_SlurmArray"						# name of job
 
-INDIR=/projects1/microbiome_calculus/evolution/04-analysis/screening/eager/polyGremoval_input/input
-OUTDIR=/projects1/microbiome_calculus/evolution/04-analysis/screening/eager/polyGremoval_input/output
+INDIR=04-analysis/screening/eager/polyGremoval_input/input
+OUTDIR=04-analysis/screening/eager/polyGremoval_input/output
 
 DIRS=($(find -L "$INDIR" -maxdepth 2 -mindepth 2 -name '*' -type d))
 DIRNAME=${DIRS[$SLURM_ARRAY_TASK_ID]}
@@ -30,7 +27,7 @@ REVERSE=($(find -L "$DIRNAME" -name '*_R2_*.gz' -type f | sort))
 
 if [ -z "$REVERSE" ]; then
   echo "SINGLE END"
-  /projects1/users/fellows/bin.backup/miniconda3/envs/adapterremoval/bin/AdapterRemoval \
+  AdapterRemoval \
   --file1 "${FORWARD[@]}" \
   --basename "$LIBOUTDIR"/"$LIBNAME"_S0_L000_ \
   --gzip \

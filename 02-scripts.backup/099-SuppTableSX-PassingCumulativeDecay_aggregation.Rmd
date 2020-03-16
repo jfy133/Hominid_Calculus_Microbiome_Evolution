@@ -10,10 +10,10 @@ the cumulative percent decay plots for low preservation samples detection.
 
 # Infrastructure
 
-Set project directory
+Set project directory (if required!)
 
 ```{r}
-proj_dir <- "/home/fellows/projects1/microbiome_calculus/evolution/"
+proj_dir <- ""
 ```
 
 ## Libraries
@@ -133,9 +133,9 @@ summary_general
 To save the three
 
 ```{r}
-write_tsv(final_data, paste0("/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryData/SuppDataSX-PassingCumulativeDecay/SuppDataSX-PassCumulativeDecay_PerIndividualPassFail_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
-#write_tsv(summary_env, paste0("/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryTables/SuppTableSX-PassingCumulativeDecay/SuppDataSX-PassCumulativeDecay_EnvPassFailSummary_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
-write_tsv(summary_general, paste0("/home/fellows/Dropbox (MPI SHH)/Projects/0-Calculus_Oral_Evolution/1-Oral_Deep_Evolution/06-manuscripts/SupplementaryTables/SuppTableSX-PassingCumulativeDecay/SuppDataSX-PassCumulativeDecay_GeneralPassFailSummary_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
+write_tsv(final_data, paste0("04-analysis/screening/cumulative_decay.backup/SuppDataSX-PassCumulativeDecay_PerIndividualPassFail_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
+#write_tsv(summary_env, paste0("04-analysis/screening/cumulative_decay.backup/SuppDataSX-PassCumulativeDecay_EnvPassFailSummary_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
+write_tsv(summary_general, paste0("04-analysis/screening/cumulative_decay.backup/SuppDataSX-PassCumulativeDecay_GeneralPassFailSummary_", format(Sys.Date(), "%Y%m%d"), ".tsv"))
 
 ```
 

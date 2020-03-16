@@ -8,8 +8,6 @@
 #SBATCH --mail-type=begin         # notifications for job to begin 
 #SBATCH --mail-type=end           # notifications for job to end
 #SBATCH --mail-type=fail          # notifications for job to abort
-#SBATCH --mail-user=fellows@shh.mpg.de # these notifications will be sent to your shh.mpg.de email-address. 
-
 
 FILE="$(readlink -f $1)"
 OUTDIR="$(readlink -f $2)"
