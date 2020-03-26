@@ -2565,7 +2565,7 @@ reference genome
 
 For this, we needed a single genome to compare to, however the presence/absence
 based
-[core microbiome analysis](#r10115-core-microbiome-intersection-between-hosts)
+[core microbiome analysis](#r1015-core-microbiome-intersection-between-hosts)
 nor [heatmaps](#r93-hierarchical-clustering-heatmaps) above did not provide
 much  information on the most optimal species to select for each core genus for
 comparison (i.e. should we select _Streptococcus sanguinis_ or
@@ -3074,7 +3074,7 @@ seemingly missing in _Alouatta_ and _Pan_.
 
 #### R12.2.1 Streptococcus Distribution
 
-In the hierarchical clustering ([above](#r92-hierarchical-clustering-heatmaps)),
+In the hierarchical clustering ([above](#r93-hierarchical-clustering-heatmaps)),
 we observed the relative abundance and prevalence of streptococci varied between
 host genus. We therefore wished to explore this further - given the interest
 in human evolutionary history regarding the role of amylase copy number
