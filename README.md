@@ -169,7 +169,7 @@ README.md             ## This walkthrough
 >
 > We have tried to auto-replace all file paths to make it relative to this
 > repository. This may not have been perfect, so please check the path
-> begins with `../0{1,2,4}`. If it does not, let us know and we will fiz
+> begins with `../0{1,2,4}`. If it does not, let us know and we will fix
 > this accordingly.
 
 ## R2 Resources
@@ -200,7 +200,7 @@ GATK                    | 3.5                     | DePristo et al. 2011 Nat. Ge
 mapDamage               | 2.0.6                   | Jónsson et al. ‎2013 Bioinformatics
 DeDup                   | 0.12.1                  | Peltzer et al. 2016 Genome Bio
 MALT                    | 0.4.0                   | Herbig et al. 2016 bioRxiv, Vagene et al. 2018 Nat. Eco. Evo.
-MEGANCE                 | 6.12.0                  | Huson et al. 2016 PLoS Comp. Bio.
+MEGAN CE                | 6.12.0                  | Huson et al. 2016 PLoS Comp. Bio.
 FastP                   | 0.19.3                  | Chen et al. 2018 Bioinformatics
 Entrez Direct           | Jun 2016                | [http://www.ncbi.nlm.nih.gov/books/NBK179288](http://www.ncbi.nlm.nih.gov/books/NBK179288)
 QIIME                   | 1.9.1                   | Caporaso et al. 2010 Nat. Methods.
@@ -213,7 +213,7 @@ MultiVCFAnalyzer        | 0.87                    | Bos et al. 2014 Nature
 bedtools                | 2.25.0                  | Quinlan et al. 2010 Bioinformatics
 panX                    | 1.5.1                   | Ding et al. 2018 Nucleic Acids Research
 MetaPhlAn2              | 2.7.1                   | Truong et al. 2015 Nat. Methods
-HuMANn2                 | 0.11.2                  | Franzosa et al. 2018 Nat. Methods.
+HuMAnN2                 | 0.11.2                  | Franzosa et al. 2018 Nat. Methods.
 blastn                  | 2.7.1+                  | Package: blast 2.7.1, build Oct 18 2017 19:57:24
 seqtk                   | 1.2-r95-dirty           | [https://github.com/lh3/seqtk](https://github.com/lh3/seqtk)
 Geneious                | R8                      | [https://www.geneious.com/](https://www.geneious.com/)
@@ -226,85 +226,85 @@ Here we used R version 3.6.1
 
 |      name      |  version   |                                                  URL                                                   |
 |:---------------|:-----------|:-------------------------------------------------------------------------------------------------------|
-|    markdown    |    1.1     |                                  [https://github.com/rstudio/markdown](https://github.com/rstudio/markdown)                                   |
-| zCompositions  |  1.3.2-1   |                                              Not provided                                              |
-|   truncnorm    |   1.0-8    |                               [https://github.com/olafmersmann/truncnorm](https://github.com/olafmersmann/truncnorm)                                |
-|      NADA      |   1.6-1    |                                              Not provided                                              |
-|    survival    |  2.44-1.1  |                                  [https://github.com/therneau/survival](https://github.com/therneau/survival)                                  |
-|      XML       | 3.98-1.20  |                                     [http://www.omegahat.net/RSXML](http://www.omegahat.net/RSXML)                                      |
-|    viridis     |   0.5.1    |                                 [https://github.com/sjmgarnier/viridis](https://github.com/sjmgarnier/viridis)                                  |
-|  viridisLite   |   0.3.0    |                               [https://github.com/sjmgarnier/viridisLite](https://github.com/sjmgarnier/viridisLite)                                |
-|  VennDiagram   |   1.6.20   |                                              Not provided                                              |
-| futile.logger  |   1.4.3    |                                              Not provided                                              |
-|      vcfR      |   1.8.0    |             [https://github.com/knausb/vcfR](https://github.com/knausb/vcfR)              |
-|    usedist     |   0.1.0    |                                              Not provided                                              |
-|     UpSetR     |   1.4.0    |                                   [http://github.com/hms-dbmi/UpSetR](http://github.com/hms-dbmi/UpSetR)                                    |
+|      ade4      |   1.7-13   |                                              [http://pbil.univ-lyon1.fr/ADE-4](http://pbil.univ-lyon1.fr/ADE-4)                                              |
+|    adegenet    |   2.1.1    |                               [https://github.com/thibautjombart/adegenet](https://github.com/thibautjombart/adegenet)                               |
+|     ALDEx2     |   1.16.0   |                                    [https://github.com/ggloor/ALDEx2](https://github.com/ggloor/ALDEx2)                                    |
+|      amap      |   0.8-17   |                                              Not provided                                              |
+|      ape       |    5.3     |                                       [http://ape-package.ird.fr/](http://ape-package.ird.fr/ )                                      |
+|    BacDiveR    |   0.9.0    |                                [https://github.com/TIBHannover/BacDiveR](https://github.com/TIBHannover/BacDiveR)                                 |
+|     bayesm     |   3.1-3    |                                   [http://www.perossi.org/home/bsm-1](http://www.perossi.org/home/bsm-1)                                    |
+|      boot      |   1.3-23   |                                              Not provided                                              |
+|     broom      |   0.5.2    |                                   [http://github.com/tidyverse/broom](http://github.com/tidyverse/broom)                                    |
+|     clues      |   0.5.9    |                                              Not provided                                              |
+|    cluster     |   2.1.0    |                           [https://svn.r-project.org/R-packages/trunk/cluster](https://svn.r-project.org/R-packages/trunk/cluster)                           |
+|  compositions  |   1.40-2   |                                [http://www.stat.boogaart.de/compositions](http://www.stat.boogaart.de/compositions)                                |
+|    cowplot     |   1.0.0    |                                      [https://wilkelab.org/cowplot](https://wilkelab.org/cowplot)                                      |
+|   data.table   |   1.12.2   |                                         [http://r-datatable.com](http://r-datatable.com)                                         |
+|    dabestr     |   0.2.2    |                                   [https://github.com/ACCLAB/dabestr](https://github.com/ACCLAB/dabestr)                                    |
+|  directlabels  | 2018.05.22 |                               [http://directlabels.r-forge.r-project.org/](http://directlabels.r-forge.r-project.org/)                               |
+|    decontam    |   1.4.0    |                                  [https://github.com/benjjneb/decontam](https://github.com/benjjneb/decontam)                                  |
+|     dplyr      |   0.8.3    |                     [http://dplyr.tidyverse.org](http://dplyr.tidyverse.org)                   |
+|     energy     |   1.7-6    |                                  [https://github.com/mariarizzo/energy](https://github.com/mariarizzo/energy)                                  |
 |    forcats     |   0.4.0    |                   [http://forcats.tidyverse.org](http://forcats.tidyverse.org)                  |
+|      fpc       |   2.2-3    |                           [https://www.unibo.it/sitoweb/christian.hennig/en/](https://www.unibo.it/sitoweb/christian.hennig/en/)                            |
+|     furrr      |   0.1.0    |                                 [https://github.com/DavisVaughan/furrr](https://github.com/DavisVaughan/furrr)                                  |
+| futile.logger  |   1.4.3    |                                              Not provided                                              |
+|     future     |   1.14.0   |                               [https://github.com/HenrikBengtsson/future](https://github.com/HenrikBengtsson/future)                                |
+|   ggalluvial   |   0.9.1    |                                [http://corybrunson.github.io/ggalluvial/](http://corybrunson.github.io/ggalluvial/)                                |
+|   ggbeeswarm   |   0.6.0    |                                 [https://github.com/eclarke/ggbeeswarm](https://github.com/eclarke/ggbeeswarm)                                  |
+|   ggfortify    |   0.4.7    |                                  [https://github.com/sinhrks/ggfortify](https://github.com/sinhrks/ggfortify)                                  |
+|    ggplot2     |   3.2.1    |                   [http://ggplot2.tidyverse.org](http://ggplot2.tidyverse.org)                  |
+|    ggrepel     |   0.8.1    |                                   [http://github.com/slowkow/ggrepel](http://github.com/slowkow/ggrepel)                                    |
+|    ggridges    |   0.5.1    |                                 [https://github.com/clauswilke/ggridges](https://github.com/clauswilke/ggridges)                                 |
+|     ggtree     |   1.16.5   |                               [https://yulab-smu.github.io/treedata-book/](https://yulab-smu.github.io/treedata-book/)                               |
+|     gplots     |  3.0.1.1   |                                              Not provided                                              |
+|   gridExtra    |    2.3     |                                              Not provided                                              |
+|  indicspecies  |   1.7.6    |                                              Not provided                                              |
+|    janitor     |   1.2.0    |                                   [https://github.com/sfirke/janitor](https://github.com/sfirke/janitor)                                    |
+|    lattice     |  0.20-38   |                                 [http://lattice.r-forge.r-project.org/](http://lattice.r-forge.r-project.org/)                                  |
+|    magrittr    |    1.5     |                                              Not provided                                              |
+|    markdown    |    1.1     |                                  [https://github.com/rstudio/markdown](https://github.com/rstudio/markdown)                                   |
+|      MASS      |  7.3-51.4  |                                  [http://www.stats.ox.ac.uk/pub/MASS4/](http://www.stats.ox.ac.uk/pub/MASS4/)                                  |
+|      maps      |   3.3.0    |                                              Not provided                                              |
+|    mixOmics    |   6.8.1    |                                        [http://www.mixOmics.org](http://www.mixOmics.org)                                         |
+|      NADA      |   1.6-1    |                                              Not provided                                              |
+| pairwiseAdonis |   0.0.1    |                                              Not provided                                              |
+|   patchwork    |   0.0.1    |                                 [https://github.com/thomasp85/patchwork](https://github.com/thomasp85/patchwork)                                 |
+|    permute     |   0.9-5    |                                [https://github.com/gavinsimpson/permute](https://github.com/gavinsimpson/permute)                                 |
+|    phangorn    |   2.5.5    |                                 [https://github.com/KlausVigo/phangorn](https://github.com/KlausVigo/phangorn)                                  |
+|     philr      |   1.10.1   |                                   [https://github.com/jsilve24/philr](https://github.com/jsilve24/philr)                                    |
+|    phyloseq    |   1.28.0   |                            [http://dx.plos.org/10.1371/journal.pone.0061217](http://dx.plos.org/10.1371/journal.pone.0061217)                             |
+|     plotly     |   4.9.0    |          [https://plotly-r.com](https://plotly-r.com)           |
+|    phytools    |   0.6-99   |                                 [http://github.com/liamrevell/phytools](http://github.com/liamrevell/phytools)                                  |
+|     psych      |   1.8.12   |      [https://personality-project.org/r/psych](https://personality-project.org/r/psych)      |
 |     purrr      |   0.3.2    |                     [http://purrr.tidyverse.org](http://purrr.tidyverse.org)               |
-|   tidyverse    |   1.2.1    |                [http://tidyverse.tidyverse.org](http://tidyverse.tidyverse.org)             |
-|     tidyr      |   0.8.3    |                     [http://tidyr.tidyverse.org](http://tidyr.tidyverse.org)                     |
-|     tictoc     |    1.0     |                                [http://github.com/collectivemedia/tictoc](http://github.com/collectivemedia/tictoc)                                |
-|     tibble     |   2.1.3    |                   [http://tibble.tidyverse.org/](http://tibble.tidyverse.org/)                 |
-|   textutils    |   0.1-11   |     [http://enricoschumann.net/R/packages/textutils/](http://enricoschumann.net/R/packages/textutils/)    |
-|     taxize     |   0.9.8    | [https://github.com/ropensci/taxize](https://github.com/ropensci/taxize)) |
+|  RColorBrewer  |   1.1-2    |                                              Not provided                                              |
+|     readr      |   1.3.1    |                     [http://readr.tidyverse.org](http://readr.tidyverse.org)                     |
+|     readxl     |   1.3.1    |                   [https://readxl.tidyverse.org](http://github.com/ropensci/rentrez)                    |
+|    rentrez     |   1.2.2    |                                   [http://github.com/ropensci/rentrez](http://github.com/ropensci/rentrez)                                   |
+|    reshape2    |   1.4.3    |                                   [https://github.com/hadley/reshape](https://github.com/hadley/reshape)                                    |
+|   robustbase   |   0.93-5   |                                [http://robustbase.r-forge.r-project.org/](http://robustbase.r-forge.r-project.org/ )                               |
+|    survival    |  2.44-1.1  |                                  [https://github.com/therneau/survival](https://github.com/therneau/survival)                                  |
 |    stringr     |   1.4.0    |                   [http://stringr.tidyverse.org](http://stringr.tidyverse.org)                  |
 |     seqinr     |   3.4-5    |                                  [http://seqinr.r-forge.r-project.org/](http://seqinr.r-forge.r-project.org/)                                  |
 |     scales     |   1.0.0    |                       [https://scales.r-lib.org](https://scales.r-lib.org)                      |
-|    reshape2    |   1.4.3    |                                   [https://github.com/hadley/reshape](https://github.com/hadley/reshape)                                    |
-|    rentrez     |   1.2.2    |                                   [http://github.com/ropensci/rentrez](http://github.com/ropensci/rentrez)                                   |
-|     readxl     |   1.3.1    |                   [https://readxl.tidyverse.org](http://github.com/ropensci/rentrez)                    |
-|     readr      |   1.3.1    |                     [http://readr.tidyverse.org](http://readr.tidyverse.org)                     |
-|  RColorBrewer  |   1.1-2    |                                              Not provided                                              |
-|     psych      |   1.8.12   |      [https://personality-project.org/r/psych](https://personality-project.org/r/psych)      |
-|     plotly     |   4.9.0    |          [https://plotly-r.com](https://plotly-r.com)           |
-|    phytools    |   0.6-99   |                                 [http://github.com/liamrevell/phytools](http://github.com/liamrevell/phytools)                                  |
-|      maps      |   3.3.0    |                                              Not provided                                              |
-|    phyloseq    |   1.28.0   |                            [http://dx.plos.org/10.1371/journal.pone.0061217](http://dx.plos.org/10.1371/journal.pone.0061217)                             |
-|     philr      |   1.10.1   |                                   [https://github.com/jsilve24/philr](https://github.com/jsilve24/philr)                                    |
-|    phangorn    |   2.5.5    |                                 [https://github.com/KlausVigo/phangorn](https://github.com/KlausVigo/phangorn)                                  |
-|   patchwork    |   0.0.1    |                                 [https://github.com/thomasp85/patchwork](https://github.com/thomasp85/patchwork)                                 |
-| pairwiseAdonis |   0.0.1    |                                              Not provided                                              |
-|    cluster     |   2.1.0    |                           [https://svn.r-project.org/R-packages/trunk/cluster](https://svn.r-project.org/R-packages/trunk/cluster)                           |
-|     vegan      |   2.5-6    |                     [https://github.com/vegandevs/vegan](https://github.com/vegandevs/vegan)                     |
-|    mixOmics    |   6.8.1    |                                        [http://www.mixOmics.org](http://www.mixOmics.org)                                         |
-|    lattice     |  0.20-38   |                                 [http://lattice.r-forge.r-project.org/](http://lattice.r-forge.r-project.org/)                                  |
-|      MASS      |  7.3-51.4  |                                  [http://www.stats.ox.ac.uk/pub/MASS4/](http://www.stats.ox.ac.uk/pub/MASS4/)                                  |
-|    janitor     |   1.2.0    |                                   [https://github.com/sfirke/janitor](https://github.com/sfirke/janitor)                                    |
-|  indicspecies  |   1.7.6    |                                              Not provided                                              |
-|    permute     |   0.9-5    |                                [https://github.com/gavinsimpson/permute](https://github.com/gavinsimpson/permute)                                 |
-|   gridExtra    |    2.3     |                                              Not provided                                              |
-|     gplots     |  3.0.1.1   |                                              Not provided                                              |
-|     ggtree     |   1.16.5   |                               [https://yulab-smu.github.io/treedata-book/](https://yulab-smu.github.io/treedata-book/)                               |
-|    ggridges    |   0.5.1    |                                 [https://github.com/clauswilke/ggridges](https://github.com/clauswilke/ggridges)                                 |
-|    ggrepel     |   0.8.1    |                                   [http://github.com/slowkow/ggrepel](http://github.com/slowkow/ggrepel)                                    |
-|   ggfortify    |   0.4.7    |                                  [https://github.com/sinhrks/ggfortify](https://github.com/sinhrks/ggfortify)                                  |
-|   ggbeeswarm   |   0.6.0    |                                 [https://github.com/eclarke/ggbeeswarm](https://github.com/eclarke/ggbeeswarm)                                  |
-|   ggalluvial   |   0.9.1    |                                [http://corybrunson.github.io/ggalluvial/](http://corybrunson.github.io/ggalluvial/)                                |
-|    ggplot2     |   3.2.1    |                   [http://ggplot2.tidyverse.org](http://ggplot2.tidyverse.org)                  |
-|     furrr      |   0.1.0    |                                 [https://github.com/DavisVaughan/furrr](https://github.com/DavisVaughan/furrr)                                  |
-|     future     |   1.14.0   |                               [https://github.com/HenrikBengtsson/future](https://github.com/HenrikBengtsson/future)                                |
-|      fpc       |   2.2-3    |                           [https://www.unibo.it/sitoweb/christian.hennig/en/](https://www.unibo.it/sitoweb/christian.hennig/en/)                            |
-|     dplyr      |   0.8.3    |                     [http://dplyr.tidyverse.org](http://dplyr.tidyverse.org)                   |
-|  directlabels  | 2018.05.22 |                               [http://directlabels.r-forge.r-project.org/](http://directlabels.r-forge.r-project.org/)                               |
-|    decontam    |   1.4.0    |                                  [https://github.com/benjjneb/decontam](https://github.com/benjjneb/decontam)                                  |
-|   data.table   |   1.12.2   |                                         [http://r-datatable.com](http://r-datatable.com)                                         |
-|    dabestr     |   0.2.2    |                                   [https://github.com/ACCLAB/dabestr](https://github.com/ACCLAB/dabestr)                                    |
-|    magrittr    |    1.5     |                                              Not provided                                              |
-|      boot      |   1.3-23   |                                              Not provided                                              |
-|    cowplot     |   1.0.0    |                                      [https://wilkelab.org/cowplot](https://wilkelab.org/cowplot)                                      |
-|  compositions  |   1.40-2   |                                [http://www.stat.boogaart.de/compositions](http://www.stat.boogaart.de/compositions)                                |
-|     bayesm     |   3.1-3    |                                   [http://www.perossi.org/home/bsm-1](http://www.perossi.org/home/bsm-1)                                    |
-|     energy     |   1.7-6    |                                  [https://github.com/mariarizzo/energy](https://github.com/mariarizzo/energy)                                  |
-|   robustbase   |   0.93-5   |                                [http://robustbase.r-forge.r-project.org/](http://robustbase.r-forge.r-project.org/ )                               |
+|     taxize     |   0.9.8    | [https://github.com/ropensci/taxize](https://github.com/ropensci/taxize)) |
 |    tensorA     |   0.36.1   |                                  [http://www.stat.boogaart.de/tensorA](http://www.stat.boogaart.de/tensorA)                                   |
-|     clues      |   0.5.9    |                                              Not provided                                              |
-|     broom      |   0.5.2    |                                   [http://github.com/tidyverse/broom](http://github.com/tidyverse/broom)                                    |
-|    BacDiveR    |   0.9.0    |                                [https://github.com/TIBHannover/BacDiveR](https://github.com/TIBHannover/BacDiveR)                                 |
-|      ape       |    5.3     |                                       [http://ape-package.ird.fr/](http://ape-package.ird.fr/ )                                      |
-|      amap      |   0.8-17   |                                              Not provided                                              |
-|     ALDEx2     |   1.16.0   |                                    [https://github.com/ggloor/ALDEx2](https://github.com/ggloor/ALDEx2)                                    |
-|    adegenet    |   2.1.1    |                               [https://github.com/thibautjombart/adegenet](https://github.com/thibautjombart/adegenet)                               |
-|      ade4      |   1.7-13   |      [http://pbil.univ-lyon1.fr/ADE-4](http://pbil.univ-lyon1.fr/ADE-4) |
+|   textutils    |   0.1-11   |     [http://enricoschumann.net/R/packages/textutils/](http://enricoschumann.net/R/packages/textutils/)    |
+|     tibble     |   2.1.3    |                   [http://tibble.tidyverse.org/](http://tibble.tidyverse.org/)                 |
+|     tictoc     |    1.0     |                                [http://github.com/collectivemedia/tictoc](http://github.com/collectivemedia/tictoc)                                |
+|     tidyr      |   0.8.3    |                     [http://tidyr.tidyverse.org](http://tidyr.tidyverse.org)                     |
+|   tidyverse    |   1.2.1    |                [http://tidyverse.tidyverse.org](http://tidyverse.tidyverse.org)             |
+|   truncnorm    |   1.0-8    |                               [https://github.com/olafmersmann/truncnorm](https://github.com/olafmersmann/truncnorm)                                |
+|     UpSetR     |   1.4.0    |                                   [http://github.com/hms-dbmi/UpSetR](http://github.com/hms-dbmi/UpSetR)                                    |
+|    usedist     |   0.1.0    |                                              Not provided                                              |
+|      vcfR      |   1.8.0    |             [https://github.com/knausb/vcfR](https://github.com/knausb/vcfR)              |
+|     vegan      |   2.5-6    |                     [https://github.com/vegandevs/vegan](https://github.com/vegandevs/vegan)                     |
+|  VennDiagram   |   1.6.20   |                                              Not provided                                              |
+|    viridis     |   0.5.1    |                                 [https://github.com/sjmgarnier/viridis](https://github.com/sjmgarnier/viridis)                                  |
+|  viridisLite   |   0.3.0    |                               [https://github.com/sjmgarnier/viridisLite](https://github.com/sjmgarnier/viridisLite)                                |
+|      XML       | 3.98-1.20  |                                     [http://www.omegahat.net/RSXML](http://www.omegahat.net/RSXML)                                      |
+| zCompositions  |  1.3.2-1   |      Not provided |
 
 ### R2.3 Sequence Databases
 
@@ -325,8 +325,8 @@ Species                                       | Strain      | Date           | C
 ----------------------------------------------|-------------|---------------:|--------------|----------------|-----------------------------------------------------
 _Homo sapiens_                                | HG19        | 2016-01-14     | Complete     | Reference      | [http://hgdownload.cse.ucsc.edu/downloads.html#human](http://hgdownload.cse.ucsc.edu/downloads.html#human)
 _Actinomyces dentalis_                        | DSM 19115   | 2019-02-25     | Scaffold     | Representative | [ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/429/225/GCF_000429225.1_ASM42922v1/](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/429/225/GCF_000429225.1_ASM42922v1/)
-_Campylobacter gracilis_                      | -           | 2019-05-22     | Complete     | Representative | [ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/)
 _Aggregatibacter aphrophilus_                 | W10433      | 2017-06-14     | Complete     | Representative | [ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/022/985/GCF_000022985.1_ASM2298v1/](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/022/985/GCF_000022985.1_ASM2298v1/)
+_Campylobacter gracilis_                      | -           | 2019-05-22     | Complete     | Representative | [ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/745/GCF_001190745.1_ASM119074v1/)
 _Capnocytophaga gingivalis_                   | ATCC 33624  | 2019-02-25     | Contigs      | Representative | [ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/174/755/GCF_000174755.1_ASM17475v1/](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/174/755/GCF_000174755.1_ASM17475v1/)
 _Corynebacterium matruchotii_                 | ATCC 14266  | 2019-05-22     | Contigs      | Representative | [ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/175/375/GCF_000175375.1_ASM17537v1/](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/175/375/GCF_000175375.1_ASM17537v1/)
 _Desulfobulbus_ sp. oral taxon 041            | Dsb1-5      | 2018-06-06     | Contigs      | Assembly       | [ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/403/865/GCA_000403865.1_Dsb1-5/](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/403/865/GCA_000403865.1_Dsb1-5/)
@@ -474,11 +474,11 @@ HG19REF=<PATH_TO>/Reference_Genomes/Human/HG19/hg19_complete.fasta
 
 ## R5 Data Acquisition
 
-All raw FASTQ files should be downloaded sample specific directories in `01-data/public_data/raw`.
+All raw FASTQ files should be downloaded to sample specific directories in `01-data/public_data/raw`.
 
 General laboratory and sequencing and meta information about all newly generated
 libraries for this study can be seen in
-`06-additional_data_files/`. under Data R01 and Data R02.
+`06-additional_data_files/` under Data R01 and Data R02.
 
 The same information but for controls can be seen in Data R03.
 
@@ -523,7 +523,7 @@ cat *fastq.gz > ElSidron1_S0_L000_R1_000.fastq.merged.fq.gz
 The final merged individual fastq files were moved to individual directories in
 `/01-data/public_data/prepped`.
 
-The just renamed files were just symlinked into the above.
+The just renamed files were then symlinked into the folder above.
 
 > :warning: FASTQ files are not provided here due to their large size. Please see
 corresponding locations described above
@@ -546,7 +546,7 @@ Comparative source files were selected based on the following criteria:
 - Must have been generated on an Illumina platform
 - Must have more than 10 million reads
 - Must have yield than 1000 16S rRNA reads in the shotgun data (detected
-  during analysis - see [QIIME section](#r822-16s-clustering))
+  during analysis - see [QIIME section](#r821-16s-extraction))
 
 In addition, the Human Microbiome Project gut and plaque samples had the
 additional criteria of:
@@ -595,7 +595,7 @@ The final fastq files were then placed symlinked to individual directories in
 For the sediment data from Slon et al. 2017, I also resorted to
 downloading the FASTQ files directly. However, unfortunately, the uploaded
 data was actually not 'raw' but the already merged data from the Slon 2017 paper.
-We therefore downloaded the FASTQ data anyway and did a modified pre-processing.
+We downloaded the FASTQ data anyway and did a modified pre-processing.
 
 I did this with the following command, and utilising the file generated from
  the parsing script of the two metadata files which is stored here
@@ -832,8 +832,8 @@ done
 
 #### R6.2.1 EAGER preprocessing dataset BAM to FASTQ Conversion
 
-As EAGER itself does not have ability to convert unmapped read BAMs to FASTQ
-(whereas), we manually ran this for EAGER-preprocessed files with:
+As EAGER itself does not have ability to convert unmapped read BAMs to FASTQ,
+ we manually ran this for EAGER-preprocessed files with:
 
 ```bash
 FILES=($(find -L 03-preprocessing/{screening,deep}/human_filtering/output/{FUM,GOY,PES,GDN}*.2/ -name '*.extractunmapped.bam' -type f))
@@ -871,9 +871,9 @@ are no human reads after de-duplication. I just manually filled these in with NA
 The summarised results from this preprocessing can be seen in
 `06-additional_data_files` under Data R06
 
-For the deep data, the EAGER table was used for report statistics (see below for
-further information), and can be seen in `06-additional_data_files` under
-Data R08.
+For the deep sequenced data, the EAGER table was used for report statistics (see 
+below forfurther information), and can be seen in `06-additional_data_files` 
+under Data R08.
 
 #### R6.2.3 Library Merging
 
@@ -966,8 +966,8 @@ WAL001.A0101/*.fq.gz
 ```
 
 These extras were then merged into a single FASTQ file for each individual using
-`cat`, and placed in an independent file in the output files with the following
-commands
+`cat`, and placed in an independent file in the output directories with the 
+following commands
 
 ```bash
 INDIR=03-preprocessing/screening/human_filtering/output
@@ -1039,7 +1039,7 @@ comes after the adapters which would be the poly Gs. Poly G tails would
 only affect single index reads, where the read itself is too short and doesn't
 have an adapter to indicate the read has ended.
 
-To get improved human DNA content calculations, performed the following steps,
+To get improved human DNA content calculations, we performed the following steps,
 the output of which was stored in `04-analysis/screening/eager` under the
 `polyGremoval*` directories.
 
@@ -1062,7 +1062,7 @@ the output of which was stored in `04-analysis/screening/eager` under the
     ```
 
 4. Finally run the output of FastP again with EAGER. Note that we still need to
-   run AR still to merge but not important for re-clipping as there shouldn't
+   run AR to merge reads, but it's not important for re-clipping as there shouldn't
    be any adapters, so will put minimum adapter overlap to 11 (EAGER doesn't
    allow merging only)
 
@@ -1132,9 +1132,10 @@ is typically used as input for all downstream analyses, when required.
 
 ### R7.1 MALT
 
-For the first step of analysing the microbiome content of the dental calculus,
-controls and comparative samples is to perform taxonomic binning. This allows
-us to rapidly identify what species are present in each library.
+For the first step of analysing the microbiome content of dental calculus,
+controls and comparative samples is to perform taxonomic binning and
+classification. This allows us to rapidly identify what species are present in
+each library.
 
 #### R7.1.1 MALT Running
 
@@ -1224,7 +1225,7 @@ nodes with: Select > Rank > <Taxonomic level>.
 Then, File > Export > Text (CSV) format, selected taxonName_to-count, summarised
 and tab as a separator.
 
-For a 'microbial-only' OTU table (basically not prokaryotes or synthetic DNA
+For a 'microbial-only' OTU table (excluding prokaryotes and synthetic DNA
 sequences), we un-collapsed the tree by firstly selecting
 'collapse non-prokaryotes' under the 'Tree' menu, and then Select > Rank >
 <taxonomic level> to select only Bacteria and Archaea. We also exported
@@ -1242,7 +1243,7 @@ databases can be seen in `06-additional_data_files` under Data R11.
 For faster accessibility to OTU tables at different stages of downstream
 analysis, we made raw MALT OTU tables with and without badly-preserved
 individuals (see [below](#r8-preservation-screening)) and at
-different min. support values (see [below](#r1012-min-support-testing)]
+different min. support values (see [below](#r1012-min-support-testing))
 were generated by the Notebook
 `02-scripts.backup/016-MALT_otutable_generation.Rmd`. These tables are stored
 as `.tsv` files in the `04-analysis/screening/megan.backup`
@@ -1305,23 +1306,23 @@ for further discussion of these observations.
 
 A crucial part of any ancient DNA study is to control for preservation of the
 DNA content of any analysed samples. Due to taphonomic processes, the original
-endogenous DNA can be come very degraded and also entire lost. This can lead
+endogenous DNA can be come very degraded and also entirely lost. This can lead
 to samples containing only contaminant DNA and thus cause major skews and
-complications in downstream analysis. Identifying both well-preserved samples
-containing a sufficient fraction of the original microbiome, but equally that
-they DNA is not derived from modern contamination.
+complications in downstream analysis. Identifying well-preserved samples
+containing a sufficient fraction of the original microbiome is critical, but
+equally so is assessing that their DNA is not derived from modern contamination.
 
 ### R8.1 Cumulative Percent Decay Plots
 
 The MALT OTU table(s) alone does not give us much information about the genetic
 preservation of the original oral signature within each individual.
 
-To get a rapid idea of the level of identifiable oral taxa in each individual,
-I came up with a simple visualisation, based on the decay of the fraction of
-oral taxa identified when looking fro most to least abundant taxa within a
-sample, to show how abundant the (hpoefully endogenous) oral signal in the
-samples are. The concept is further described in the main publication, but a
-schematic on how to interpret them can be seen here:
+To get a rapid idea of the level of identifiable oral taxa in each individual, I
+came up with a simple visualisation to show how abundant the (hpoefully
+endogenous) oral signal in the samples are. It is based on the decay of the
+fraction of oral taxa identified when looking from most to least abundant taxa
+within a sample. The concept is further described in the main publication 
+supplement, but a schematic on how to interpret them can be seen here:
 
 ---
 
@@ -1335,7 +1336,7 @@ This visualisation requires two objects: an OTU table
 from MEGAN at species level (generated [above](#r721-megan-running)) and a
 database of taxa with their 'sources'.
 
-To generate the database or oral taxa, I used the steps outlined in the
+To generate the database of oral taxa, I used the steps outlined in the
 notebook
 `02-scripts.backup/013-Organism_Isolation_Source_Database_Generation.Rmd`.
 
@@ -1348,7 +1349,7 @@ seen under `06-additional_data_files` under Data R16, or stored under
 
 To actually generate the visualisations, the R notebook
 `02-scripts.backup/014-cumulative_proportion_decay_curves.Rmd` describes how to
-calculate the percent decay curves, including burn-in calculations and to
+calculate the percent decay curves, including burn-in calculations, and how to
 display the curves.
 
 The resulting list(s) of individuals passing or failing to pass this threshold
@@ -1406,10 +1407,10 @@ samples passed the calculated threshold in the tables below.
 
 ### R8.2 Source Estimation
 
-We next wanted to compare to a less-suitable but more established approach to
-compare the screening method to, which is Sourcetracker analysis. However this
-typically uses an OTU table of 16S rRNA reads to estimate the proportion of OTUs
-derived from the sources that are also in your sample.
+We next wanted to compare our screening method to a less-suitable but more
+established approach, Sourcetracker analysis. However this typically uses an OTU
+table of 16S rRNA reads to estimate the proportion of OTUs derived from the
+sources that are also in your sample.
 
 #### R8.2.1 16S Extraction
 
@@ -1480,7 +1481,7 @@ Summary statistic visualisation of mapping can be seen under
 
 #### R8.2.2 16S Clustering
 
-To assign taxonomic identifications to the identified 16S reads, we used then
+To assign taxonomic classifications to the identified 16S reads, we used then
 used QIIME (v1.9) to cluster the reads by similarity, and assign a
 taxonomic 'name'. We remained with using OTU clustering rather than the more
 recent (and more powerful/statistically valid) ASV (amplicon sequence variant)
@@ -1650,7 +1651,7 @@ the proportion of each sample that resembles the sources. This thus can
 help indicate the level of (hopefully) endogenous oral-content preservation in
 the samples.
 
-Sourcetracker requires a OTU table (generated above) and a metadata file
+Sourcetracker requires an OTU table (generated above) and a metadata file
 that tells the program what libraries in the OTU are a 'sink' or a 'source'.
 This metadata file used in this case is recorded here,
 `02-scripts.backup/02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`,
@@ -1696,8 +1697,8 @@ For plotting of these - with comparison to the cumulative percent decay plots,
 ### R8.3 Ratio of Eukaryotic to Prokaryotic Alignments
 
 Returning back to the MALT tables and cumulative percent decay plots, we had
-also observed that the older the samples and the weaker indication of oral
-content samples appeared to have a greater ratio of prokaryotic to eukartotic
+also observed that the older samples and those with weaker indication of oral
+content appeared to have a greater ratio of prokaryotic to eukartotic
 alignments.
 
 We also explored whether this ratio could be used as an additional validation of
@@ -1730,8 +1731,8 @@ We then developed [MEx-IPA](https://github.com/jfy133/MEx-IPA) to rapidly visual
 
 The results files for this analysis are are stored in the MEx-IPA GitHub
 repository. Example reports for the two oldest Neanderthals (PES001 and GDN001),
-can be seen below in Figure R16, where both cases show for multiple known
-oral species display indicative characteristics of true endogenous DNA.
+can be seen below in Figure R16, where for multiple known oral species, both
+cases display indicative characteristics of true endogenous DNA.
 
 ---
 
@@ -1836,11 +1837,10 @@ differences between each of the groups to help reconstruct the evolutionary
 
 To explore if we have a structure in our data that can describe differences
 between each group we want to explore, we performed a Principal Coordinate
-Analysis to reduce
-the variation between the samples to human-readable dimensions. An important
-aspect of this analysis was the use
-Compositional Data (CoDA) principles - here implemented with PhILR - which
-allow us to apply 'traditional' statistics to taxonomic group comparisons.
+Analysis to reduce the variation between the samples to human-readable
+dimensions. An important aspect of this analysis was the use of Compositional
+Data (CoDA) principles - here implemented with PhILR - which allow us to apply
+'traditional' statistics to taxonomic group comparisons.
 
 The steps for the generation of PCoA are described in the R notebook
 `02-scripts.backup/017-PhILR_PCoA_20190527.Rmd`. However, the notebook ending
@@ -1863,7 +1863,7 @@ variables of:
 - Whether controls are included or not
 - Whether to include low preservation samples or not
 - Which low preservation samples filtering list to use (see the Cumulative Percentage Decay notebook for further above for futher explanation)
-- Either minimum support multipler of 7 for genus or 4 for species (the value in the commands are multipliers of 0.01: the default MALT min. support value set above; the parameters were selected based on the core microbiome calculations [below](r1012-min-support-testing))
+- Either minimum support multipler of 7 for genus or 4 for species (the value in the commands are multipliers of 0.01: the default MALT min. support value set above; the parameters were selected based on the core microbiome calculations [below](#r1012-min-support-testing))
 
 The commands for these permutates are therefore as follows:
 
@@ -1918,7 +1918,7 @@ results, refer to the main publication.
 Of particular note, given the sparse nature of our data, we compared between
 two zero-replacement methods. This was performed with the script
 `02-scripts.backup/017-PhILR_PCoA_ZeroReplacementComparison_20190527.Rmd`, and
-we observed little differences (Figure R19).
+we observed little difference (Figure R19).
 
 ---
 
@@ -1940,7 +1940,7 @@ we observed little differences (Figure R19).
 
 To provide statistical support for the observations made from the PCoAs above
 of host groups having putatively distinct calculus microbiomes, we performed
-PERMANOVA analysis. This were run in the same R notebook as the PCoAs above
+PERMANOVA analysis. This was run in the same R notebook as the PCoAs above
 (`02-scripts.backup/017-PhILR_PCoA_20190527.Rmd`).
 
 The PERMANOVA output related analysis can be seen in Tables R5-7, of which
@@ -2022,16 +2022,16 @@ The procedure again follows CoDa principles by performing CLR
 transformation of the OTU matrix (rather than PhILR as so to retain information
 on the actual taxa classes that are driving differences), upon which
 unsupervised clustering of host taxa and microbial taxa is applied. The
-actually used clustering algorithm is selected automatically within the script.
+clustering algorithm actually used is selected automatically within the script.
 Finally, a heatmap representation of the clustering is generated.
 
 The script version allows additional filtering as above for the Principle
-Coordinate and PERMANOVA analyses(database, taxonomic levels, with/without
+Coordinate and PERMANOVA analyses (database, taxonomic levels, with/without
 sources, with/without controls, with/without bad samples (+ bad sample removal
 method option)) and also additional taxon filtering, zero-replacement method,
 additional min. support filtering. Finally, an additional filter was included: a
 prevalence filter (i.e. a taxon is only kept if it is in _n_ number of
-individuals across the dataset)
+individuals across the dataset).
 
 We modified the above parameters to find the combination that resulted in the
 most robust overall bootstrap support in the deepest nodes (i.e. the ones we
@@ -2064,7 +2064,7 @@ The final figures for both databases can be seen collated in
 #### R9.3.1 Zero replacement validation
 
 We also checked whether the hierarchical clustering results was affected by the
-zero replacement model, with the same script otherwise the same settings.
+zero replacement model, with the same script and otherwise the same settings.
 
 ```bash
 Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt species noSources noControls out withinvariation none czm 4 5
@@ -2072,7 +2072,7 @@ Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt spec
 ```
 
 Comparing the zero replacement methods showed no difference between clustering.
-There were only cosmetic tree topology changes with by clade rotation i.e. no
+There were only cosmetic tree topology changes with clade rotation, i.e. no
 structural changes. The output is saved as in the same directory at above.
 
 ### R9.3.2 Indicator Analysis
@@ -2090,7 +2090,7 @@ the main publication.
 
 To revisit the question and results posed by Weyrich _et al._ (2017) _Nature_,
 regarding clustering of the calculus microbiomes individuals by subsistence
-strategy, we reperformed PCoA, PERMANOVA, hierarchical clustering on
+strategy, we similarly performed PCoA, PERMANOVA, hierarchical clustering on
 Neanderthals and ancient humans - however in this case with a more balanced
 sampling strategy. This was performed in the notebook
 `02-scripts.backup/017-PERMANOVA_HomoOnly_Dietary_20190916.Rmd` and
@@ -2147,10 +2147,10 @@ variation), however Figure R24 shows a schematic for this.
 
 ---
 
-We found that parameters of 50% of a population individuals, and 66% of host
-populations requiring a taxon to be present accounted for robustness against
-preservation and biological variability, while having enough
-individuals/populations to for corroboration that a taxon could be considered
+We found that requiring a taxon to be present in 50% of a population
+individuals, and 66% of host populations provided robustness against
+preservational and biological variability, while having enough
+individuals/populations for corroboration that a taxon could be considered
 'core'.
 
 #### R10.1.2 Min. Support Testing
@@ -2161,11 +2161,11 @@ well-known environmental contaminatant taxa still occurred.
 
 We therefore took a conservative approach and explored further optimal minimum
 support values (extrapolated from [above](#r712-malt-summary-statistics)) that
-removed well-known environmental taxa but did not equally move well-known
+removed well-known environmental taxa but did not equally remove well-known
 oral-specific taxa.
 
 To do this we re-ran with a variant of the notebook in the section
-[above](r1011-core-microbiome-procedure), but with different minimum support
+[above](#r1011-core-microbiome-procedure), but with different minimum support
 multipliers.
 
 Code for this procedure can be seen in
@@ -2353,7 +2353,7 @@ As a strategy to try and reduce cross-mapping, I came up with the idea to
 map the production dataset to a 'super-reference' of all relevant species of
 a genus (including the target species of interest), and then only genotype on
 the section of the super-reference including the target species of interest. The
-predicted effect would be reads from off-target reads would be attracted to
+predicted effect would be reads from off-target genomes would be attracted to
 the original related strains/species and thus would not be present on the
 reference of interest itself.
 
@@ -2650,7 +2650,7 @@ The reference genomes of the selected taxa were then copied from the
 and multiple chromosomes collapsed as again described in
 `02-scripts.backup/99-phylogeny_reference_genome_collection.Rmd`.
 
-EAGER was be run again with the same settings for the
+EAGER was run again with the same settings for the
 [Super-reference mapping](#r113-super-reference-alignment-and-species-selection),
 but with the single
 representative genome taxa FASTAs instead.
@@ -2730,7 +2730,7 @@ done
 Output files can be seen under
 `04-analysis/deep/multivcfanalyzer/superreference_mapping/output/`
 
-> :warning: Only the snpStatistics files are provided here due to their large
+> :warning: Only the snpStatistics files are provided here due to the large
 > size of the other MultiVCFAnalyzer output files.
 
 To compare the level of heterozygosity as reported in MultiVCFAnalyzer between
@@ -2754,7 +2754,7 @@ below in Figure R62.
 
 From this script and in the figure above, we observed that the super-reference
 mapping strategy did not work very often at reducing the number of
-multi-allelic SNPs, and further often resulted in often a large decrease in the
+multi-allelic SNPs, and further often resulted in a large decrease in the
 number of positions overall on the reference itself - therefore reducing the
 phylogenetically-informative number of sites (see many publication for
 more discussion). We therefore selected the single representative genome
@@ -2823,7 +2823,7 @@ pairwise-deletion neighbour-joining phylogenies. See main publication for
 justification behind the pairwise-deletion and NJ trees.
 
 To ensure a enough positions are present for distance calculations between
-samples we required a minimum 1000 of called positions for each sample, the
+samples we required a minimum of 1000 called positions for each sample, the
 filtering of which is included in `02-scripts.backup/042-generate_NJ_tree.R`.
 
 e.g.
@@ -2956,7 +2956,7 @@ Once completed, we checked the coverage statistics of each EAGER run as in
 `02-scripts.backup/056-Phylogenies_Screening_EMNCheck_EAGERResults.Rmd`.
 The individual ReportTables can be seen in
 `04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanayzer/output`.
-Although low coverage was yielded overall, we try to build phylogenies anyway.
+Although coverage was low overall, we tried to build phylogenies anyway.
 
 > :warning: The EAGER mapping results files are not provided here due to their
 large size other than the ReportTable files.
@@ -2981,8 +2981,8 @@ NA \
 <VCF_3>
 ```
 
-Then same as above, we attempted to make the same 8 better supported
-phylogenies trees from the deep sequenced data with:
+Then same as above, we attempted to recreate the same 8 better-supported
+deep sequenced data phylogenies with:
 
 ```bash
 for i in 04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanalyzer/output/*/snpAlignment.fasta.gz; do
@@ -3028,10 +3028,10 @@ the evolution of Anthropoids.
 ### R12.1 Virulence Factors
 
 Given that we identified in the production dataset significant numbers of reads
-mapping to reference genomes of classically considered and well-studied
-'red complex' pathogenic bacteria across most host genera, we were interested
-to see if we would observe any change in the pathogenicity based on gain/loss of
-identified virulence factors in human strains.
+mapping to reference genomes of well-studied 'red complex' species, classically
+considered pathogens, across most host genera, we were interested to see if we
+would observe any change in the pathogenicity based on gain/loss of identified
+virulence factors in human strains.
 
 For this we used the production mapping datasets to the references of
 _Tannerella forsythia_ and _Porphyromonas gingivalis_.
@@ -3075,11 +3075,11 @@ seemingly missing in _Alouatta_ and _Pan_.
 #### R12.2.1 Streptococcus Distribution
 
 In the hierarchical clustering ([above](#r92-hierarchical-clustering-heatmaps)),
-we observed the relative abundance and prevalence of Streptococci varied between
+we observed the relative abundance and prevalence of streptococci varied between
 host genus. We therefore wished to explore this further - given the interest
 in human evolutionary history regarding the role of amylase copy number
 variation (see main publication for an overview), and certain groups of
-Streptococci displaying amylase activity.
+streptococci displaying amylase-binding activity.
 
 Firstly, we looked at the distribution of different types of streptococci groups
 within each of our host genera. We generated a 'consensus' table of streptococci
@@ -3088,7 +3088,7 @@ literature), described here in `06-additional_data_files` under Data R33 or
 under `00-documentation.backup/25-streptococcus_cladegroup_amylasegroup_database.tsv`.
 
 Using the MALT species level OTU tables from the screening dataset, we
-visualised as stacked bar plots the proportion of Streptococcus alignments
+visualised as stacked bar plots the proportion of _Streptococcus_ alignments
 deriving from each group. We can also applied the same concept to the production
 dataset - but using the _Streptococcus_ super-reference as the reference
 database, as in the notebook
@@ -3103,27 +3103,27 @@ database, as in the notebook
 ---
 
 In both the screening and deep sequencing datasets, we observed that _Homo_
-had greater fractions of alignments to Streptococci that have been empirically
+had greater fractions of alignments to streptococci that have been empirically
 shown to display amylase-binding activity compared to other host genera
-(although also with a greater level of overall Streptococci reads aligning to
+(although also with a greater level of overall streptococci reads aligning to
 untested taxa in the non-_Homo_ hosts)
 
 #### R12.2.2 Amylase binding protein genes abundance
 
 Given the different distributions of the _Streptococcus_ content of each
-host-genera, and the observation that Humans tend to have more prominent signals
-of amylase-binding-activity positive species, we also looked at whether amylase-
+host genus, and the observation that Humans tend to have more prominent signals
+of amylase-binding activity-positive species, we also looked at whether amylase-
 binding genes could actually be detected within each host genus.
 
 We decided to use the production dataset for this, as it would provide higher
 confidence that a gene is present, given the higher whole-depth depth
-coverages in this dataset. Given that sections of amylase-binding protein
-(B) sequence are present in other genes (and variants in other species), we
+coverages in this dataset. Given that sections of amylase-binding protein B
+(_abpB_) sequence are present in other genes (and variants in other species), we
 also wanted to find all possible 'amylase-binding-protein gene'-like sequences
 in the super-reference. So as to maximise our sensitivity in finding reads
  putatively deriving from the actual amylase binding protein gene.
 
-For this we recovered all amylase-like reads from our Streptococcus
+For this we recovered all amylase-like reads from our _Streptococcus_
 super-reference with the tool panX, using the Genbank files for each
 reference.
 
@@ -3138,7 +3138,7 @@ pan-genome-analysis/panX.py \
 Plugging the output into the panX visualisation companion tool (see the panX
 [documentation](https://github.com/neherlab/pan-genome-visualization/), we
 searched for the _abpA_ and _abpB_ genes as annotated in the well-annotated
-`_Streptococcus gordonii` genome, and downloaded the corresponding FASTA
+_Streptococcus gordonii_ genome, and downloaded the corresponding FASTA
 alignments of similar sequences from the sequence alignment table. The
 alignments can be seen under
 `04-analysis/screening/streptococcus_investigation.backup/panX/abpA_abpB_cluster_alignments`.
@@ -3185,7 +3185,7 @@ We therefore identified reads in the screening dataset originating from
 specifically the *abpA* and *abpB* genes by independently using BLAST and mapping
 against a selected set of reference sequences of *abpA* and *abpB*.
 
-All reference abpA sequences in fasta format were built into a blast database:
+All reference _abpA_ sequences in fasta format were built into a blast database:
 
 ```bash
 makeblastdb -in <abp_gene>.fasta -dbtype nucl -title <abp_gene> -out <abp_gene>
@@ -3223,7 +3223,7 @@ sequences:
 zcat <SAMPLENAME>.fastq.gz | seqkit grep -f <SAMPLENAME>.list > <SAMPLENAME>.fastq
 ```
 
-The individual *abpA* and *abpB* sequences used for the BLASt database were then
+The individual *abpA* and *abpB* sequences used for the BLAST database were then
 indexed with bwa for mapping:
 
 ```bash
@@ -3288,8 +3288,8 @@ model. The MCMC chain length was 800,000,000 with sampling every 80,000 states.
 
 While the chain converged, inspection of the tree structure in DensiTree showed
 no structure for *abpA*, and we therefore did not proceed with BEAST analysis
-to attempt date expansion of *abpA*. However, we generated a skyline plot from
-the *abpB* data, which is shown in Figure R38.
+to attempt to date expansion of *abpA*. However, we generated a skyline plot
+from the *abpB* data, which is shown in Figure R38.
 
 A list of accession numbers of abpB sequences collected for bayesian skyline
 analysis can be seen in `06-additional_data_files` under Data R36.
@@ -3321,7 +3321,7 @@ by HUMAnN2, as detailed below.
 
 #### R12.3.1 MetaPhlAn2
 
-In preparation for HUMANn2, we ran MetaPhlan2, running on the whole screening
+In preparation for HUMAnN2, we ran MetaPhlAn2, running on the whole screening
 dataset.
 
 ```bash
@@ -3465,7 +3465,7 @@ high and consistent than all other groups.
 
 #### R12.3.2 Running HUMANn2
 
-Once we had the MetaPhlAn2 profiles, we ran run HUMANn2 with the following
+Once we had the MetaPhlAn2 profiles, we ran run HUMAnN2 with the following
 command.
 
 > :warning: The following was adapted from a SLURM array script and should be
@@ -3715,7 +3715,7 @@ Data R11.
 
 ### R12.6 Running AADDER
 
-Then we run AADDER
+Then we ran AADDER
 
 ```bash
 aadder-run \
@@ -3728,7 +3728,7 @@ pigz -p 112 04-analysis/screening/aadder/output/*
 
 > :warning: AADDERR output files are not provided here due to large size
 
-Finally we ran blast2rma to make it the SAM files loadable into MEGAN
+Finally we ran blast2rma to make the SAM files loadable into MEGAN
 
 ```bash
 blast2rma \
