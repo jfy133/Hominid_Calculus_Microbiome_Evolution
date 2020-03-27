@@ -279,6 +279,7 @@ Here we used R version 3.6.1
 |     psych      |   1.8.12   |      [https://personality-project.org/r/psych](https://personality-project.org/r/psych)      |
 |     purrr      |   0.3.2    |                     [http://purrr.tidyverse.org](http://purrr.tidyverse.org)               |
 |  RColorBrewer  |   1.1-2    |                                              Not provided                                              |
+|   rcompanion   |   2.3.25   |                                              Not provided                                   |
 |     readr      |   1.3.1    |                     [http://readr.tidyverse.org](http://readr.tidyverse.org)                     |
 |     readxl     |   1.3.1    |                   [https://readxl.tidyverse.org](http://github.com/ropensci/rentrez)                    |
 |    rentrez     |   1.2.2    |                                   [http://github.com/ropensci/rentrez](http://github.com/ropensci/rentrez)                                   |
