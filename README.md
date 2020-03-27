@@ -1423,7 +1423,8 @@ to translated 16S rRNA sequences and ran on that.
 
 The script `02-scripts.backup/009-preprocessing-16s_mapping` works very much
 the same way as with the [human DNA preprocessing](#r611-script-version), but
-mapping to the SILVA database and converting the unmapped-only reads to FASTA
+mapping to the SILVA database and converting the unmapped-only reads (i.e.
+non-human reads from the preprocessing) to FASTA
 format, with a particular header format (`>sample.name_1`) that is
 compatible with QIIME.
 
