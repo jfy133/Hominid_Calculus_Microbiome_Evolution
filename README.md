@@ -3173,8 +3173,9 @@ _Streptococcus_ reads to amylase binding protein-like reads as in
 `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`.
 
 We observed that calculated ratios were much higher in _Homo_ (with
-Neanderthals falling within the range of humans) than other primates. See the
-main publication for the implications of this.
+Neanderthals falling within the range of humans for abpB) than other primates.
+See the main publication for the implications of this. This was also 
+statistically confirmed with Mann-Whitney U tests (see R notebook).
 
 #### R12.2.3 Amylase bayesian skyline analysis
 
