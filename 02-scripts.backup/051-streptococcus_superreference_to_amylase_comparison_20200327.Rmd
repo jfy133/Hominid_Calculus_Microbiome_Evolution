@@ -1,0 +1,314 @@
+---
+title: "Amylase Binding Protein Reads from Superreference"
+output: html_notebook
+---
+
+## Set up
+
+Set up
+
+```{r}
+library(tidyverse)
+library(ggbeeswarm)
+library(dabestr)
+library(broom)
+library(rcompanion)
+```
+
+Load genus/stats superrefernece stats (previously generated in notebook 
+`031-supperferencemapped_stats`)
+
+```{r}
+superreference_data <- read_tsv("../04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz")
+
+raw_metadata_deep <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20200220.tsv")
+
+abp_data <- Sys.glob("../04-analysis/deep/eager/superreference_mapping/output/Streptococcus/*/5-DeDup/") %>%
+  list.files("*reads.tsv.gz", full.names = T) %>%
+  enframe(name = NULL, value = "file_path") %>%
+  mutate(file_contents = map(file_path, ~read_tsv(.x, 
+                                                  col_names = c("chrom", "start_coordinate", "end_coordinate", "name", "reads"), 
+                                                  col_types = cols("c", "d", "d", "c", "d"))),
+         individual = map(file_path, ~str_split(.x, "/") %>% unlist() %>% tail(n = 4) %>% head(n = 1)) %>% unlist,
+         abp_type = map(file_path, ~ basename(.x) %>% 
+                          str_split("_") %>% 
+                          pluck(1,6) %>% 
+                          str_split("\\.") %>% 
+                          unlist %>% 
+                          pluck(4) %>%
+                        str_replace("reads", "-like")) %>% unlist)
+```
+
+Set some ordering and aesthetics
+
+```{r}
+host_general_order <- c("ExtractionBlank", "LibraryBlank", "Howler", "Gorilla", "Chimp", "Neanderthal", "PreagriculturalHuman", "PreantibioticHuman", "ModernDayHuman")
+host_genus_order <- c("Control", "Alouatta", "Gorilla", "Pan", "Homo")
+
+common_colours <- c(`0` = "black", Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
+          `Homo (Neanderthal)` = "#fdbf6f", 
+          `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
+          LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
+          Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
+
+common_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1, 
+          `Homo (Neanderthal)` = 2, `Homo (Modern Human)` = 6,
+          ExtractionControl = 3, LibraryControl = 7, Plaque = 9, 
+          Gut = 7, Skin = 14, Sediment = 10, EnvironmentalControl = 12)
+
+ env_shapes <- c(8,
+                0,
+                1,
+                2,
+                0,
+                1,
+                2,
+                5,
+                11,
+                0,
+                12,
+                1,
+                10,
+                2,
+                6,
+                10,
+                13,
+                7,
+                8,
+                14,
+                3,
+                4,
+                12,
+                0)
+
+names(env_shapes) <- c("Howler_Monkey", 
+           "Gorilla_1", 
+           "Gorilla_2", 
+           "Gorilla_3", 
+           "Chimp_1", 
+           "Chimp_2", 
+           "Chimp_3", 
+           "Chimp_4",
+           "Neanderthal", 
+           "PreagriculturalHuman_1", 
+           "PreagriculturalHuman_2", 
+           "PreantibioticHuman_1", 
+           "PreantibioticHuman_2", 
+           "ModernDayHuman_1", 
+           "ModernDayHuman_2", 
+           "ExtractionControl", 
+           "LibraryControl", 
+           "ruralGut", 
+           "sediment", 
+           "skin", 
+           "subPlaque",
+           "supPlaque", 
+           "urbanGut",
+           "EnvironmentalControl")
+```
+
+## Calculations
+
+Get total Streptococcus super-reference reads.
+
+```{r}
+## Collapse the contigs
+superreference_data_meta <- superreference_data %>% 
+  group_by(genus, sample, species) %>%
+  summarise(total_no_reads = sum(no_reads),
+             total_no_bases_covered = sum(no_bases_covered),
+             total_species_length = sum(feature_length),
+             mean_mean_depth_coverage = mean(mean_depth_coverage)
+             ) %>%
+    mutate(percent_covered = (total_no_bases_covered / total_species_length) * 100) %>%
+  group_by(sample) %>%
+  mutate(total_dataset_reads = sum(total_no_reads)) %>%
+  left_join(raw_metadata_deep %>% 
+              select(sample_name, Env, Description, Host_General, 
+                     Host_Genus, Host_Common, Age, total_unmapped_reads), 
+            by = c("sample" = "sample_name")
+            ) %>%
+    filter(Host_Genus != "Control")
+
+superreference_data_total <- superreference_data_meta %>%
+  filter(genus == "Streptococcus") %>%
+  group_by(sample) %>%
+  summarise(total_genus_reads = sum(total_no_reads)) %>%
+  rename(individual = sample)
+```
+
+
+Now clean up abp reads and calculate sums per sample and gene
+
+```{r}
+abp_data_clean <- abp_data %>% 
+  select(individual, abp_type, file_contents) %>%
+  unnest() %>%
+  group_by(individual, abp_type) %>%
+  summarise(total_abp_reads = sum(reads))
+```
+
+Join together
+
+```{r}
+data_combined <- left_join(superreference_data_total, abp_data_clean) %>% 
+  mutate(`Ratio of abp-associated reads to total Streptococcus reads` = total_abp_reads / total_genus_reads) %>%
+  rename(Individual = individual,
+         )
+```
+
+Set ordering
+
+```{r}
+data_combined <- data_combined %>% 
+  mutate(Group = if_else(grepl("DJA|EBO|KNP|MTM|OME", Individual), "Primate", "Non-Primate"),
+         Group = factor(Group, levels = c("Primate", "Non-Primate"))) %>%
+  left_join(raw_metadata_deep, by = c("Individual" = "sample_name")) %>%
+  mutate(Env = factor(Env, levels = names(env_shapes)),
+         Host_Common = factor(Host_Common, levels = names(common_shapes))) %>%
+  arrange(Env) %>%
+  mutate(Individual = as_factor(Individual))
+```
+
+To save
+
+```{r eval = F}
+## And save
+write_tsv(data_combined, "../04-analysis/deep/streptococcus_investigation.backup/Streptococcus_superreference_amylaseReadsOverAllReads_rawdata.tsv")
+```
+
+## Plotting
+
+And plot
+
+```{r}
+final_plot <- ggplot(data_combined, aes(Individual, `Ratio of abp-associated reads to total Streptococcus reads`, fill = Host_Common)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = common_colours) +
+  facet_grid(abp_type ~ Group, scales = "free") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        strip.background = element_rect(colour = "lightgrey"),
+        legend.position = "none")
+
+final_plot
+```
+
+to save
+
+```{r eval = F}
+ggsave(plot = final_plot, 
+       "../04-analysis/deep/streptococcus_investigation.backup/Streptococcus_superreference_amylaseReadsOverAllReads_plot.pdf",
+      device = cairo_pdf,
+      width = 3.5,
+      height = 3.5,
+      units = "in",
+      dpi = 600)
+```
+
+Or
+
+```{r}
+ggplot(data_combined, aes(Group, `Ratio of abp-associated reads to total Streptococcus reads`)) +
+  geom_boxplot() +
+  geom_beeswarm(aes(fill = Host_Common, colour = Host_Common, shape = Host_Common)) +
+  scale_fill_manual(values = common_colours) +
+  scale_shape_manual(values = common_shapes) +
+  scale_colour_manual(values = common_colours) +
+  facet_grid(~ abp_type, scales = "free_x") +
+  theme_minimal(base_size = 7, base_family = "Roboto") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+## Statistical Testing
+
+To verify the differences betwen _Homo_ and non- _Homo_, we want to work out which
+statistical tests we could apply. For this we first need to see if the
+data is normally distributed.
+
+Firstly we can make a reduced data tibble.
+
+```{r}
+data_reduced <- data_combined %>% mutate(Group = case_when(
+  Group == "Primate" ~ "Non-Homo",
+  Group == "Non-Primate" ~ "Homo",
+  TRUE ~ NA_character_
+)) %>% select(Individual, Group, abp_type, `Ratio of abp-associated reads to total Streptococcus reads`, Host_Common) 
+```
+
+
+As an overall visualisation, we can make a Gardner-Altman plot as implemented
+with the `dabestr` package.
+
+```{r}
+
+data_reduced <- data_reduced %>% group_split(abp_type)
+
+names(data_reduced) <- unique(data_combined$abp_type) 
+```
+
+Now we can run the dabest function.
+
+```{r}
+dabestr_result_A <- dabest(data_reduced$`abpA-like`, 
+       Group,`Ratio of abp-associated reads to total Streptococcus reads`, 
+       idx = c("Non-Homo", "Homo"), 
+       paired = FALSE)
+
+dabestr_result_B <- dabest(data_reduced$`abpB-like`, 
+       Group,`Ratio of abp-associated reads to total Streptococcus reads`, 
+       idx = c("Non-Homo", "Homo"), 
+       paired = FALSE)
+
+dabestr_result_A
+dabestr_result_B
+```
+
+To visualise
+
+```{r}
+plot(dabestr_result_A, color.column = Group)
+plot(dabestr_result_B, color.column = Group)
+
+```
+
+However, we don't have normally distributed data so many the G-A plots
+aren't the best.
+
+Instead, we can perform a Mann-Whitney U test as a non-parametric test
+that sampling between two independent populations will likely result as being
+greater or lower between the two populations.
+
+We match the assumptiosn that: observations between the groups are independent,
+we have orddinal data, null hypothesis is the distributions are equal, and 
+alternate is not-equal.
+
+To do this in R:
+
+```{r}
+## Base R
+wilcox.test(data = data_reduced$`abpA-like`, `Ratio of abp-associated reads to total Streptococcus reads` ~ Group) %>% broom::tidy()
+wilcox.test(data = data_reduced$`abpB-like`, `Ratio of abp-associated reads to total Streptococcus reads` ~ Group) %>% broom::tidy()
+```
+
+These are relatively well supported results, as a Mann-whitney U test interally
+does a form of permutation (if I understand it correctly), as it essentially
+looks how many times each sample in one group is higher than each sampele in
+the other. In both cases we have large statistic values and _p_ -values of much
+less than an alpha 0.05
+
+We should also check the effect size, and the precision of the estimation. 
+Here we use the statistic r (which is the Z-value divded by number of sample
+points), and then a confidence interval (at 95%)
+
+```{r}
+# With Coin
+rcompanion::wilcoxonR( data_reduced$`abpA-like`$`Ratio of abp-associated reads to total Streptococcus reads`,  data_reduced$`abpA-like`$Group, ci = T)
+rcompanion::wilcoxonR( data_reduced$`abpB-like`$`Ratio of abp-associated reads to total Streptococcus reads`,  data_reduced$`abpB-like`$Group, ci = T)
+
+```
+
+For abpA, we have a fairly large effect size, but quite a broad CI.
+In contrast, abpB we have an even larger effect size, but with a tighter
+(presumably more precise), if skewed CI. However note that the broad CIs could 
+be due to our small sample size

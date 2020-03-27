@@ -18,7 +18,7 @@ Load genus/stats superrefernece stats (previously generated in notebook
 ```{r}
 superreference_data <- read_tsv("../04-analysis/deep/competitive_mapping.backup/superreference_mapping_statistics_raw_20190522.tsv.gz")
 
-raw_metadata_deep <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20190307.tsv")
+raw_metadata_deep <- read_tsv("../00-documentation.backup/17-Deep_Sequencing_HumanFiltering_Results_20200220.tsv")
 
 abp_data <- Sys.glob("../04-analysis/deep/eager/superreference_mapping/output/Streptococcus/*/5-DeDup/") %>%
   list.files("*reads.tsv.gz", full.names = T) %>%
@@ -26,7 +26,7 @@ abp_data <- Sys.glob("../04-analysis/deep/eager/superreference_mapping/output/St
   mutate(file_contents = map(file_path, ~read_tsv(.x, 
                                                   col_names = c("chrom", "start_coordinate", "end_coordinate", "name", "reads"), 
                                                   col_types = cols("c", "d", "d", "c", "d"))),
-         individual = map(file_path, ~str_split(.x, "/")[[1]][13]) %>% unlist,
+         individual = map(file_path, ~str_split(.x, "/") %>% unlist() %>% tail(n = 4) %>% head(n = 1)) %>% unlist,
          abp_type = map(file_path, ~ basename(.x) %>% 
                           str_split("_") %>% 
                           pluck(1,6) %>% 
