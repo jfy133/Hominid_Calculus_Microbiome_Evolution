@@ -905,8 +905,11 @@ ECO002.C0101
 ```
 
 The two examples represent distinct individuals (but different libraries of a
-single sample or multiple sequencing of the same library), and for this study
-we did not consider differences in sampling source of the calculus.
+single sample in the case of different `.A` characters or multiple sequencing 
+of the same library in the case of the date string `.170817`). In this study
+we did not consider possible differences in sampling tooth source of the 
+calculus, and therefore pooled accordingly either at sampling or 
+_in silico_ here.
 
 ##### Libraries not requiring merging
 
@@ -1093,7 +1096,8 @@ the output of which was stored in `04-analysis/screening/eager` under the
   
 To run each EAGER run in parallel, we again used
 `02-scripts.backup/02-scripts.backup/021-eager_microbiota_slurm_array.sh` after
-updating the path in find.
+updating the path in the `find` command in the script to point to the 
+corresponding EAGER XML directory.
 
 The resulting human mapping data after poly-G removal can be seen in
 `00-documentation.backup/99-PolyGRemoved_HumanMapping_EAGERReport_output.csv`
@@ -1747,7 +1751,7 @@ cases display indicative characteristics of true endogenous DNA.
 To generate additional confirmation of damage patterns in oral taxa, the
 screening data was also mapped to a subset of observed core microbiome
 reference genomes (see
-[below](#r111-production-dataset-sequencing-depth-calculatons)), using EAGER.
+[below](#r111-production-dataset-sequencing-depth-calculations)), using EAGER.
 
 DamageProfiler results were collated and visualised with the R script
 `02-scripts.backup/099-Coretaxa_SubSet_DamageProfiler_Summary.R`. An example of the range of damage signals in ancient Human remains can be seen below in Figure R17. Again showing the presence of multiple well-preserved endogenous DNA of
