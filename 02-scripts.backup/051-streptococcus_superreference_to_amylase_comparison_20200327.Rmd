@@ -279,7 +279,7 @@ Instead, we can perform a Mann-Whitney U test as a non-parametric test
 that sampling between two independent populations will likely result as being
 greater or lower between the two populations.
 
-We match the assumptiosn that: observations between the groups are independent,
+We match the assumptions that: observations between the groups are independent,
 we have orddinal data, null hypothesis is the distributions are equal, and 
 alternate is not-equal.
 
@@ -287,8 +287,17 @@ To do this in R:
 
 ```{r}
 ## Base R
-wilcox.test(data = data_reduced$`abpA-like`, `Ratio of abp-associated reads to total Streptococcus reads` ~ Group) %>% broom::tidy()
-wilcox.test(data = data_reduced$`abpB-like`, `Ratio of abp-associated reads to total Streptococcus reads` ~ Group) %>% broom::tidy()
+result_mwu_abpA <- wilcox.test(data = data_reduced$`abpA-like`, `Ratio of abp-associated reads to total Streptococcus reads` ~ Group) %>% 
+  broom::tidy() %>%
+  mutate(abp_type = "abpA")
+
+result_mwu_abpB <- wilcox.test(data = data_reduced$`abpB-like`, `Ratio of abp-associated reads to total Streptococcus reads` ~ Group) %>% 
+  broom::tidy() %>%
+  mutate(abp_type = "abpB")
+
+## combined
+
+result_mwu_abp <- bind_rows(result_mwu_abpA, result_mwu_abpB)
 ```
 
 These are relatively well supported results, as a Mann-whitney U test interally
@@ -311,4 +320,91 @@ rcompanion::wilcoxonR( data_reduced$`abpB-like`$`Ratio of abp-associated reads t
 For abpA, we have a fairly large effect size, but quite a broad CI.
 In contrast, abpB we have an even larger effect size, but with a tighter
 (presumably more precise), if skewed CI. However note that the broad CIs could 
-be due to our small sample size
+be due to our small sample size.
+
+
+To further check the robustness of the results, we can try a randomisation 
+procedure, where we repeatedley shuffle all the group assignments, and 
+each time to run the test. We expect to see that our result doesn't fall in
+the distribution of the results of the shuffled data, the latter of which 
+would hopefully be reflecting noise.
+
+```{r}
+## For abpA
+bootstrap_abp_mwu <- NULL
+
+for (i in 1:100) {
+    shuffled_data = data_reduced$`abpA-like`
+    shuffled_data$Group <- sample(shuffled_data$Group)
+    result <- wilcox.test(data = shuffled_data, `Ratio of abp-associated reads to total Streptococcus reads` ~ Group) %>%
+      broom::tidy() %>%
+      mutate(abp_type = "abpA")
+    bootstrap_abp_mwu <- bind_rows(bootstrap_abp_mwu, result)
+}
+
+for (i in 1:100) {
+    shuffled_data = data_reduced$`abpB-like`
+    shuffled_data$Group <- sample(shuffled_data$Group)
+    result <- wilcox.test(data = shuffled_data, `Ratio of abp-associated reads to total Streptococcus reads` ~ Group) %>%
+      broom::tidy() %>%
+      mutate(abp_type = "abpB")
+    bootstrap_abp_mwu <- bind_rows(bootstrap_abp_mwu, result)
+}
+
+
+
+```
+
+Now we can plot the distributions, with our true result (with the right
+sample groupings assigned) indicated.
+
+```{r fig.width = 3.5, fig.height=5}
+abp_mwu_bootstrap <- ggplot(bootstrap_abp_mwu, aes(abp_type, p.value)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(pch = 21, alpha = 0.5) +
+  geom_hline(data = result_mwu_abp, aes(yintercept = p.value), colour = "red") +
+  geom_hline(yintercept = 0.05, colour = "darkgrey", linetype = "dotted") +
+  geom_hline(yintercept = 0.01, colour = "darkgrey", linetype = "dashed") +
+  scale_y_log10() +
+  theme_minimal() +
+  ylab("p-value") +
+  xlab("abp Sequence Type") +
+  facet_wrap(~ abp_type, scales = "free_x")
+
+abp_mwu_bootstrap
+
+```
+
+```{r}
+ggsave(plot = abp_mwu_bootstrap, 
+       "../04-analysis/deep/streptococcus_investigation.backup/Streptococcus_superreference_abpratios_mwu_100randomshuffle_comparison.pdf",
+      device = cairo_pdf,
+      width = 3.5,
+      height = 3.5,
+      units = "in",
+      dpi = 600)
+
+ggsave(plot = abp_mwu_bootstrap, 
+       "../04-analysis/deep/streptococcus_investigation.backup/Streptococcus_superreference_abpratios_mwu_100randomshuffle_comparison.png",
+      device = "png",
+      width = 3.5,
+      height = 3.5,
+      units = "in",
+      dpi = 600)
+```
+
+Same for the statistic
+
+```{r}
+abp_mwu_bootstrap <- ggplot(bootstrap_abp_mwu, aes(abp_type, statistic)) +
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
+  geom_beeswarm(pch = 21, alpha = 0.5) +
+  geom_hline(data = result_mwu_abp, aes(yintercept = statistic), colour = "red") + 
+  theme_minimal() +
+  ylab("p-value") +
+  xlab("abp Sequence Type") +
+  facet_wrap(~ abp_type, scales = "free_x")
+
+abp_mwu_bootstrap
+```
+

@@ -3181,7 +3181,19 @@ _Streptococcus_ reads to amylase binding protein-like reads as in
 We observed that calculated ratios were much higher in _Homo_ (with
 Neanderthals falling within the range of humans for abpB) than other primates.
 See the main publication for the implications of this. This was also 
-statistically confirmed with Mann-Whitney U tests (see R notebook).
+statistically confirmed with Mann-Whitney U tests (see R notebook), which were
+also compared to a distribution of p-values of 100 random shuffle of group
+assignments (see figure below).
+
+---
+
+![Comparison of p-values of Mann-Whitney-U test from true data and 100 random group assignments](05-images/Figure_R63_abpStrepRatio_MWU_Randomisation/Streptococcus_superreference_abpratios_mwu_100randomshuffle_comparison.png)
+
+**Figure R63 | Comparison of Mann-Whitney-U _p_-value of _Homo_ and non-_Homo_ abp to _Streptococcus_ super-reference reads against a distribution of randomised sample group assignments** Red line indicates result of test with 'true' group assignments. Dotted and dashed lines represent alphas of 0.05 and 0.01 respectively. Violin distribution represents _p_-values of 100 shuffles of group assignments of samples (i.e. whether a sample is from _Homo_ and non-_Hpmo_ groups), with 25%, 50%, and 75% quantiles. The true results fall well outside distribution of _p_-values from shuffled assignments, which in principle reflects 'random noise'. 
+
+> Note: the figure ID is out of order due to missing upload during initial writing of this walk-through.
+
+---
 
 #### R12.2.3 Amylase bayesian skyline analysis
 
