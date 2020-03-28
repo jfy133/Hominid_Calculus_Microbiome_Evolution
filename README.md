@@ -3187,7 +3187,9 @@ assignments (see figure below).
 
 ---
 
-![Comparison of p-values of Mann-Whitney-U test from true data and 100 random group assignments](05-images/Figure_R63_abpStrepRatio_MWU_Randomisation/Streptococcus_superreference_abpratios_mwu_100randomshuffle_comparison.png)
+<p align="center">
+  <img src="05-images/Figure_R63_abpStrepRatio_MWU_Randomisation/Streptococcus_superreference_abpratios_mwu_100randomshuffle_comparison.png" width="50%" height = "50%">
+</p>
 
 **Figure R63 | Comparison of Mann-Whitney-U _p_-value of _Homo_ and non-_Homo_ abp to _Streptococcus_ super-reference reads against a distribution of randomised sample group assignments** Red line indicates result of test with 'true' group assignments. Dotted and dashed lines represent alphas of 0.05 and 0.01 respectively. Violin distribution represents _p_-values of 100 shuffles of group assignments of samples (i.e. whether a sample is from _Homo_ and non-_Hpmo_ groups), with 25%, 50%, and 75% quantiles. The true results fall well outside distribution of _p_-values from shuffled assignments, which in principle reflects 'random noise'. 
 
