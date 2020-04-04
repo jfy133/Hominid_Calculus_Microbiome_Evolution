@@ -298,6 +298,8 @@ result_mwu_abpB <- wilcox.test(data = data_reduced$`abpB-like`, `Ratio of abp-as
 ## combined
 
 result_mwu_abp <- bind_rows(result_mwu_abpA, result_mwu_abpB)
+
+result_mwu_abp
 ```
 
 These are relatively well supported results, as a Mann-whitney U test interally

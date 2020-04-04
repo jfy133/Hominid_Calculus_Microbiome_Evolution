@@ -45,7 +45,6 @@ proceeding.
   - [R9.1 Principal Coordinate Analysis](#r91-principal-coordinate-analysis)
   - [R9.2 PERMANOVA](#r92-permanova)
   - [R9.3 Hierarchical Clustering Heatmaps](#r93-hierarchical-clustering-heatmaps)
-  - [R9.3.2 Indicator Analysis](#r932-indicator-analysis)
   - [R9.4 Clustering by Diet](#r94-clustering-by-diet)
 - [R10 Core Microbiome Analysis](#r10-core-microbiome-analysis)
   - [R10.1 Core Microbiome Calculation](#r101-core-microbiome-calculation)
@@ -2081,7 +2080,7 @@ Comparing the zero replacement methods showed no difference between clustering.
 There were only cosmetic tree topology changes with clade rotation, i.e. no
 structural changes. The output is saved as in the same directory at above.
 
-### R9.3.2 Indicator Analysis
+#### R9.3.2 Indicator Analysis
 
 To confirm that the species corresponding to the grouping observed in the
 hierarchical clustering, we ran Indicator Analysis to find species that are

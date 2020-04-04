@@ -22,7 +22,7 @@ db <- "nt" ## nt or refseq
 minsupp_multiplier <- 7 ## multiplier against 0.01 minsupport or tail removal
 fraction_individuals <- 0.5 ## fraction individuals in population to contain taxon for 'core'
 fraction_populations <- 0.66 ## fraction populations in genus to contain taxon for 'core'
-drop_single <- T ## whether to drop populations with only single individuals
+drop_single <- F ## whether to drop populations with only single individuals
 script <- F
 save_upsetr <- F
 ###########################################
@@ -94,7 +94,7 @@ library(scales) ## for colour
 library(amap) ## alternative for correlation distance matrix
 library(patchwork)
 
-metadata <- read_tsv("../02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv") %>%
+metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20200219.tsv") %>%
  rename(Individual = `#SampleID`)
 
 

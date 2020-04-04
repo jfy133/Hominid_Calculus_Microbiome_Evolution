@@ -26,14 +26,14 @@ data_raw <- Sys.glob("../04-analysis/screening/presenceabsence_intersection.back
   list.files("08a-*", full.names = T) %>% 
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
-         Database = map(file_name, ~str_split(.x, "_")[[1]][7] %>% str_replace("maltdb", "") %>% as.character) %>% unlist,
-         Min_Supp = map(file_name, ~str_split(.x, "_")[[1]][8]) %>% unlist,
-         Inds_Frac = map(file_name, ~str_split(.x, "_")[[1]][9] %>% str_replace("fracinds", "") %>% as.numeric) %>% unlist,
-         Pops_Frac = map(file_name, ~str_split(.x, "_")[[1]][10] %>% str_replace("fracpops", "") %>% as.numeric) %>% unlist,
-         Single_Pops_Dropped = map(file_name, ~str_split(.x, "_")[[1]][11] %>% str_replace("singleindpopsdropped", "") %>% as.logical) %>% unlist,
-         Grouping = map(file_name, ~str_split(.x, "_")[[1]][12]) %>% unlist,
-         Level = map(file_name, ~str_split(.x, "_")[[1]][13]) %>% unlist,
-         Date = map(file_name, ~str_split(.x, "_")[[1]][14]) %>% unlist %>% str_replace(".tsv", "")) %>%
+         Database = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(8) %>% head(n = 1) %>% as.character) %>% unlist,
+         Min_Supp = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(7) %>% head(n = 1)) %>% unlist,
+         Inds_Frac = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(6) %>% head(n = 1) %>% str_replace("fracinds", "") %>% as.numeric) %>% unlist,
+         Pops_Frac = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(5) %>% head(n = 1) %>% str_replace("fracpops", "") %>% as.numeric) %>% unlist,
+         Single_Pops_Dropped = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(4) %>% head(n = 1) %>% str_replace("singleindpopsdropped", "") %>% as.logical) %>% unlist,
+         Grouping = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(3) %>% head(n = 1)) %>% unlist,
+         Level = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(2) %>% head(n = 1)) %>% unlist,
+         Date = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(1) %>% head(n = 1)) %>% unlist %>% str_replace(".tsv", "")) %>%
   select(-file_name) %>%
   filter(Date == "20190902",
          !Min_Supp %in% c(0.08, 0.09) ) %>%
@@ -43,14 +43,14 @@ data_raw <- Sys.glob("../04-analysis/screening/presenceabsence_intersection.back
   list.files("08b-*", full.names = T) %>% 
   enframe(name = NULL, value = "file_name") %>%
   mutate(file_contents = map(file_name, ~suppressMessages(read_tsv(.x))),
-         Database = map(file_name, ~str_split(.x, "_")[[1]][7] %>% str_replace("maltdb", "") %>% as.character) %>% unlist,
-         Min_Supp = map(file_name, ~str_split(.x, "_")[[1]][8]) %>% unlist,
-         Inds_Frac = map(file_name, ~str_split(.x, "_")[[1]][9] %>% str_replace("fracinds", "") %>% as.numeric) %>% unlist,
-         Pops_Frac = map(file_name, ~str_split(.x, "_")[[1]][10] %>% str_replace("fracpops", "") %>% as.numeric) %>% unlist,
-         Single_Pops_Dropped = map(file_name, ~str_split(.x, "_")[[1]][11] %>% str_replace("singleindpopsdropped", "") %>% as.logical) %>% unlist,
-         Grouping = map(file_name, ~str_split(.x, "_")[[1]][12]) %>% unlist,
-         Level = map(file_name, ~str_split(.x, "_")[[1]][13]) %>% unlist,
-         Date = map(file_name, ~str_split(.x, "_")[[1]][14]) %>% unlist %>% str_replace(".tsv", "")) %>%
+         Database = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(8) %>% head(n = 1) %>% as.character) %>% unlist,
+         Min_Supp = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(7) %>% head(n = 1)) %>% unlist,
+         Inds_Frac = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(6) %>% head(n = 1) %>% str_replace("fracinds", "") %>% as.numeric) %>% unlist,
+         Pops_Frac = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(5) %>% head(n = 1) %>% str_replace("fracpops", "") %>% as.numeric) %>% unlist,
+         Single_Pops_Dropped = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(4) %>% head(n = 1) %>% str_replace("singleindpopsdropped", "") %>% as.logical) %>% unlist,
+         Grouping = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(3) %>% head(n = 1)) %>% unlist,
+         Level = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(2) %>% head(n = 1)) %>% unlist,
+         Date = map(file_name, ~str_split(.x, "_") %>% unlist() %>% tail(1) %>% head(n = 1)) %>% unlist %>% str_replace(".tsv", "")) %>%
   select(-file_name) %>%
   filter(Date == "20190902") %>%
   unnest() %>%
