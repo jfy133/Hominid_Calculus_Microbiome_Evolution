@@ -1,5 +1,7 @@
 # Anthropoid Calculus Microbiome Evolution
 
+[![DOI](https://zenodo.org/badge/218484229.svg)](https://zenodo.org/badge/latestdoi/218484229)
+
 Additional code, analysis and results to extend the supplementary information
 of Fellows Yates, J.A. _et al._ (2020) XXXX. Please read section R1 before
 proceeding.
