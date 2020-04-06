@@ -3260,7 +3260,7 @@ reference sequence:
 ```bash
 bwa aln -n 0.01 -l 32 <reference_abp_sequence> <SAMPLENAME>.fastq > <SAMPLENAME>.abp_reference_seqence.sai
 
-bwa samse /AP018338_abpA <SAMPLENAME>.abp_reference_seqence.sai <SAMPLENAME> > <SAMPLENAME>.abp_reference_seqence.sam
+bwa samse <reference_abp_sequence> <SAMPLENAME>.abp_reference_seqence.sai <SAMPLENAME> > <SAMPLENAME>.abp_reference_seqence.sam
 ```
 
 Finally files were converted to bam format, mapped reads selected out,
@@ -3291,15 +3291,58 @@ for f in *rmdup.bam; do
 done
 ```
 
-All alignments were visually inspected with IGV, and consensus sequences from
-mapping against the *Streptococcus gordonii* str. Challis (NC_009785) reference
-*abpA* and *abpB* sequences were exported from IGV if they covered at least 40%
-of the reference at least 1X. To do this, on the alignment track we
-right-clicked to bring up a menu and select 'Copy consensus sequence'.
-All consensus sequences were then pasted into a text file in fasta format that
-included the NC_009785 reference sequence, and this was used as an alignment
-file. The consensus sequence fasta file was uploaded to Geneious v 8.0.5 and
-exported in a nexus file format.
+We performed additional mapping using looser parameters to see if we picked up
+additional reads mapping to either *apbA* or *abpB* that were missed with our
+standard mapping parameters. This way we were able to make sure we were not
+missing variation in the genes due to evolutionary changes, particularly in the
+non-*Homo* groups. We counted the number of reads that mapped to each reference
+sequence in each sample, and compared it to the number that mapped using
+standard paremeters. We found that there were no more than 2 additional reads
+mapped per reference sequence per sample, and in no cases did this bring
+coverage to >40%. 
+
+```bash
+bwa aln -n 5 -l 1000 <reference_abp_sequence> <SAMPLENAME>.fastq > <SAMPLENAME>.abp_reference_seqence.sai
+
+bwa samse <reference_abp_sequence> <SAMPLENAME>.abp_reference_seqence.sai <SAMPLENAME> > <SAMPLENAME>.abp_reference_seqence.sam
+
+# convert sam to bam
+for f in *.sam; do
+  samtools view -bS $f | samtools sort - $(basename $f .sam).bam
+done
+
+# select only mapped reads
+for f in *.bam; do
+  samtools view -b -F4 $f > $(basename $f .bam).mapped.bam
+done
+
+# remove duplicates from mapped reads
+for f in *mapped.bam; do
+  samtools rmdup -s $f $(basename $f .bam)_rmdup.bam 2>&1 >/dev/null  | cut -d' ' -f 6 > $(basename $f .bam)_dup.txt # collects read IDs of the duplicate reads
+  samtools index $(basename $f .bam)_rmdup.bam
+done
+
+# index the mapped, dupliate-removed bam files
+for f in *rmdup.bam; do
+  samtools index $f $(basename $f .bam).bai
+done
+
+# count the # of mapped, non-duplicate reads
+for f in *rmdup.bam; do
+samtools view $f | wc -l
+done
+```
+
+
+All alignments from mapping with the standard parameters (-n 0.01 -l 32) were
+visually inspected with IGV, and consensus sequences from mapping against the
+*Streptococcus gordonii* str. Challis (NC_009785) reference *abpA* and *abpB*
+sequences were exported from IGV if they covered at least 40% of the reference
+at least 1X. To do this, on the alignment track we right-clicked to bring up a
+menu and select 'Copy consensus sequence'. All consensus sequences were then
+pasted into a text file in fasta format that included the NC_009785 reference
+sequence, and this was used as an alignment file. The consensus sequence fasta
+file was uploaded to Geneious v 8.0.5 and exported in a nexus file format.
 
 The consensus sequence nexus file was uploaded into BEAUTi, for Bayesian
 skyline analysis with BEAST2 v 2.4.7., and dates were added, either as estimated
