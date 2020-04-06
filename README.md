@@ -3608,7 +3608,8 @@ a brief overview with figures can be seen here.
 
 We used pathway abundance data to perform PCAs, which were plotted to visualize
 the relationships between samples and controls, as well as within and between
-samples.
+samples. The samples that plotted with controls except plaque were removed as
+outliers with poor preservation (File R37).
 
 ---
 
