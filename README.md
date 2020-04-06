@@ -3608,7 +3608,7 @@ a brief overview with figures can be seen here.
 
 We used pathway abundance data to perform PCAs, which were plotted to visualize
 the relationships between samples and controls, as well as within and between
-samples. The samples that plotted with controls except plaque were removed as
+samples. The samples that plotted with controls, except plaque, were removed as
 outliers with poor preservation (File R37).
 
 ---
@@ -3630,7 +3630,8 @@ orthologs, and KEGG carbohydrate orthologs between sample groups were explored.
 
 We used KEGG ortholog abundance data to perform PCAs, which were plotted to
 visualize the relationships between samples and controls, as well as within and
-between samples.
+between samples. The samples that plotted with controls, except plaque, were 
+removed as outliers with poor preservation (File R37).
 
 ---
 
@@ -3640,7 +3641,8 @@ between samples.
 ---
 
 Biplots were used to visualize the KEGG orthologs with strongest loadings in PC1
-and PC2, to understand what drives separation of sample groups.
+and PC2, to understand what drives separation of sample groups. The table with
+these loadings is File R38.
 
 ---
 
@@ -3854,7 +3856,8 @@ explored.
 
 We used protein abundance data to perform PCAs, which were plotted to
 visualize the relationships between samples and controls, as well as within and
-between samples.
+between samples. The samples that plotted with controls, except plaque, were 
+removed as outliers with poor preservation (File R37).
 
 ---
 
@@ -3864,7 +3867,8 @@ between samples.
 ---
 
 Biplots were used to visualize the protein with strongest loadings in PC1
-and PC2, to understand what drove separation of sample groups.
+and PC2, to understand what drove separation of sample groups. The table with
+these loadings is File R38. 
 
 ---
 
