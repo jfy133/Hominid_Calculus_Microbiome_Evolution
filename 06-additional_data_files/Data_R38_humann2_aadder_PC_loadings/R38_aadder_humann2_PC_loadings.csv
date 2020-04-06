@@ -1,0 +1,161 @@
+Database,Sample set,PC direction loadings,ID,Description
+KEGG,All samples,PC1 negative,K03205,type IV secretion system protein VirD4 [EC:7.4.2.8]
+KEGG,All samples,PC1 negative,K16926,energy-coupling factor transport system substrate-specific component
+KEGG,All samples,PC1 negative,K02005,HlyD family secretion protein
+KEGG,All samples,PC1 negative,K02117,V/A-type H+/Na+-transporting ATPase subunit A [EC:7.1.2.2 7.2.2.1]
+KEGG,All samples,PC1 negative,K07133,uncharacterized protein
+KEGG,All samples,PC1 negative,K16785,energy-coupling factor transport system permease protein
+KEGG,All samples,PC1 negative,K02034,peptide/nickel transport system permease protein
+KEGG,All samples,PC1 negative,K07052,uncharacterized protein
+KEGG,All samples,PC1 negative,K01999,branched-chain amino acid transport system substrate-binding protein
+KEGG,All samples,PC1 negative,K06147,"ATP-binding cassette, subfamily B, bacterial"
+KEGG,All samples,PC1 positive,K01903,succinyl-CoA synthetase beta subunit [EC:6.2.1.5]
+KEGG,All samples,PC1 positive,K01092,myo-inositol-1(or 4)-monophosphatase [EC:3.1.3.25]
+KEGG,All samples,PC1 positive,K01902,succinyl-CoA synthetase alpha subunit [EC:6.2.1.5]
+KEGG,All samples,PC1 positive,K01961,"acetyl-CoA carboxylase, biotin carboxylase subunit [EC:6.4.1.2 6.3.4.14]"
+KEGG,All samples,PC1 positive,K00526,ribonucleoside-diphosphate reductase beta chain [EC:1.17.4.1]
+KEGG,All samples,PC1 positive,K01696,tryptophan synthase beta chain [EC:4.2.1.20]
+KEGG,All samples,PC1 positive,K07173,S-ribosylhomocysteine lyase [EC:4.4.1.21]
+KEGG,All samples,PC1 positive,K00674,"2,3,4,5-tetrahydropyridine-2,6-dicarboxylate N-succinyltransferase [EC:2.3.1.117]"
+KEGG,All samples,PC1 positive,K00658,2-oxoglutarate dehydrogenase E2 component (dihydrolipoamide succinyltransferase) [EC:2.3.1.61]
+KEGG,All samples,PC1 positive,K01657,anthranilate synthase component I [EC:4.1.3.27]
+KEGG,All samples,PC2 negative,K07729,putative transcriptional regulator
+KEGG,All samples,PC2 negative,K03574,8-oxo-dGTP diphosphatase [EC:3.6.1.55]
+KEGG,All samples,PC2 negative,K15634,probable phosphoglycerate mutase [EC:5.4.2.12]
+KEGG,All samples,PC2 negative,K01104,protein-tyrosine phosphatase [EC:3.1.3.48]
+KEGG,All samples,PC2 negative,K07052,uncharacterized protein
+KEGG,All samples,PC2 negative,K03402,transcriptional regulator of arginine metabolism
+KEGG,All samples,PC2 negative,K02027,multiple sugar transport system substrate-binding protein
+KEGG,All samples,PC2 negative,K01589,5-(carboxyamino)imidazole ribonucleotide synthase [EC:6.3.4.18]
+KEGG,All samples,PC2 negative,K02440,glycerol uptake facilitator protein
+KEGG,All samples,PC2 negative,K01990,ABC-2 type transport system ATP-binding protein
+KEGG,All samples,PC2 positive,K03169,DNA topoisomerase III [EC:5.6.2.1]
+KEGG,All samples,PC2 positive,K03569,rod shape-determining protein MreB and related proteins
+KEGG,All samples,PC2 positive,K00027,malate dehydrogenase (oxaloacetate-decarboxylating) [EC:1.1.1.38]
+KEGG,All samples,PC2 positive,K02012,iron(III) transport system substrate-binding protein
+KEGG,All samples,PC2 positive,K03043,DNA-directed RNA polymerase subunit beta [EC:2.7.7.6]
+KEGG,All samples,PC2 positive,K00794,"6,7-dimethyl-8-ribityllumazine synthase [EC:2.5.1.78]"
+KEGG,All samples,PC2 positive,K01610,phosphoenolpyruvate carboxykinase (ATP) [EC:4.1.1.49]
+KEGG,All samples,PC2 positive,K01507,inorganic pyrophosphatase [EC:3.6.1.1]
+KEGG,All samples,PC2 positive,K01759,lactoylglutathione lyase [EC:4.4.1.5]
+KEGG,All samples,PC2 positive,K03205,type IV secretion system protein VirD4 [EC:7.4.2.8]
+KEGG,Present-day humans removed,PC1 negative,K03205,type IV secretion system protein VirD4 [EC:7.4.2.8]
+KEGG,Present-day humans removed,PC1 negative,K16926,energy-coupling factor transport system substrate-specific component
+KEGG,Present-day humans removed,PC1 negative,K02005,HlyD family secretion protein
+KEGG,Present-day humans removed,PC1 negative,K02117,V/A-type H+/Na+-transporting ATPase subunit A [EC:7.1.2.2 7.2.2.1]
+KEGG,Present-day humans removed,PC1 negative,K16785,energy-coupling factor transport system permease protein
+KEGG,Present-day humans removed,PC1 negative,K07133,uncharacterized protein
+KEGG,Present-day humans removed,PC1 negative,K07481,"transposase, IS5 family"
+KEGG,Present-day humans removed,PC1 negative,K01999,branched-chain amino acid transport system substrate-binding protein
+KEGG,Present-day humans removed,PC1 negative,K02034,peptide/nickel transport system permease protein
+KEGG,Present-day humans removed,PC1 negative,K07052,uncharacterized protein
+KEGG,Present-day humans removed,PC1 positive,K01903,succinyl-CoA synthetase beta subunit [EC:6.2.1.5]
+KEGG,Present-day humans removed,PC1 positive,K01902,succinyl-CoA synthetase alpha subunit [EC:6.2.1.5]
+KEGG,Present-day humans removed,PC1 positive,K01961,"acetyl-CoA carboxylase, biotin carboxylase subunit [EC:6.4.1.2 6.3.4.14]"
+KEGG,Present-day humans removed,PC1 positive,K01696,tryptophan synthase beta chain [EC:4.2.1.20]
+KEGG,Present-day humans removed,PC1 positive,K00674,"2,3,4,5-tetrahydropyridine-2,6-dicarboxylate N-succinyltransferase [EC:2.3.1.117]"
+KEGG,Present-day humans removed,PC1 positive,K07173,S-ribosylhomocysteine lyase [EC:4.4.1.21]
+KEGG,Present-day humans removed,PC1 positive,K00658,2-oxoglutarate dehydrogenase E2 component (dihydrolipoamide succinyltransferase) [EC:2.3.1.61]
+KEGG,Present-day humans removed,PC1 positive,K00526,ribonucleoside-diphosphate reductase beta chain [EC:1.17.4.1]
+KEGG,Present-day humans removed,PC1 positive,K01657,anthranilate synthase component I [EC:4.1.3.27]
+KEGG,Present-day humans removed,PC1 positive,K01687,dihydroxy-acid dehydratase [EC:4.2.1.9]
+KEGG,Present-day humans removed,PC2 negative,K03169,DNA topoisomerase III [EC:5.6.2.1]
+KEGG,Present-day humans removed,PC2 negative,K01955,carbamoyl-phosphate synthase large subunit [EC:6.3.5.5]
+KEGG,Present-day humans removed,PC2 negative,K03569,rod shape-determining protein MreB and related proteins
+KEGG,Present-day humans removed,PC2 negative,K00027,malate dehydrogenase (oxaloacetate-decarboxylating) [EC:1.1.1.38]
+KEGG,Present-day humans removed,PC2 negative,K03043,DNA-directed RNA polymerase subunit beta [EC:2.7.7.6] (rpoB)
+KEGG,Present-day humans removed,PC2 negative,K02012,iron(III) transport system substrate-binding protein
+KEGG,Present-day humans removed,PC2 negative,K03046,DNA-directed RNA polymerase subunit beta' [EC:2.7.7.6] (rpoC)
+KEGG,Present-day humans removed,PC2 negative,K01610,phosphoenolpyruvate carboxykinase (ATP) [EC:4.1.1.49]
+KEGG,Present-day humans removed,PC2 negative,K01759,lactoylglutathione lyase [EC:4.4.1.5]
+KEGG,Present-day humans removed,PC2 negative,K00615,transketolase [EC:2.2.1.1]
+KEGG,Present-day humans removed,PC2 positive,K03574,8-oxo-dGTP diphosphatase [EC:3.6.1.55]
+KEGG,Present-day humans removed,PC2 positive,K15634,probable phosphoglycerate mutase [EC:5.4.2.12]
+KEGG,Present-day humans removed,PC2 positive,K02027,multiple sugar transport system substrate-binding protein
+KEGG,Present-day humans removed,PC2 positive,K01104,protein-tyrosine phosphatase [EC:3.1.3.48]
+KEGG,Present-day humans removed,PC2 positive,K07052,uncharacterized protein
+KEGG,Present-day humans removed,PC2 positive,K03402,transcriptional regulator of arginine metabolism
+KEGG,Present-day humans removed,PC2 positive,K02026,multiple sugar transport system permease protein
+KEGG,Present-day humans removed,PC2 positive,K02440,glycerol uptake facilitator protein
+KEGG,Present-day humans removed,PC2 positive,K01496,phosphoribosyl-AMP cyclohydrolase [EC:3.5.4.19]
+KEGG,Present-day humans removed,PC2 positive,K01990,ABC-2 type transport system ATP-binding protein
+SEED,All samples,PC1 negative,-1,Sulfite reductase [NADPH] flavoprotein alpha-component (EC 1.8.1.2)
+SEED,All samples,PC1 negative,-2,Outer membrane receptor for ferric coprogen and ferric-rhodotorulic acid
+SEED,All samples,PC1 negative,-3,Exodeoxyribonuclease V gamma chain (EC 3.1.11.5)
+SEED,All samples,PC1 negative,-4,Glutathione biosynthesis bifunctional protein gshF (EC 6.3.2.2)(EC 6.3.2.3)
+SEED,All samples,PC1 negative,-5,Maltodextrin phosphorylase (EC 2.4.1.1)
+SEED,All samples,PC1 negative,-6,Sulfite reductase [NADPH] hemoprotein beta-component (EC 1.8.1.2)
+SEED,All samples,PC1 negative,-7,Oligopeptidase A (EC 3.4.24.70)
+SEED,All samples,PC1 negative,-8,Serine endopeptidase ScpC (EC 3.4.21.-)
+SEED,All samples,PC1 negative,-9,Chaperone protein HscA
+SEED,All samples,PC1 negative,-10,Beta-lactamase (EC 3.5.2.6)
+SEED,All samples,PC1 positive,1,Duplicated ATPase component BL0693 of energizing module of predicted ECF transporter
+SEED,All samples,PC1 positive,2,Pyruvate-flavodoxin oxidoreductase (EC 1.2.7.-)
+SEED,All samples,PC1 positive,3,Pyrophosphate-energized proton pump (EC 3.6.1.1)
+SEED,All samples,PC1 positive,4,Transport ATP-binding protein CydC
+SEED,All samples,PC1 positive,5,"Multi antimicrobial extrusion protein (Na(+)/drug antiporter), MATE family of MDR efflux pumps"
+SEED,All samples,PC1 positive,6,DNA topoisomerase III (EC 5.99.1.2)
+SEED,All samples,PC1 positive,7,Putative mobilization protein BF0133
+SEED,All samples,PC1 positive,8,Conjugative transposon protein TraG
+SEED,All samples,PC1 positive,9,Pyrophosphate-dependent fructose 6-phosphate-1-kinase (EC 2.7.1.90)
+SEED,All samples,PC1 positive,10,"Pyruvate,phosphate dikinase (EC 2.7.9.1)"
+SEED,All samples,PC2 negative,-1,"Pyruvate-utilizing enzyme, similar to phosphoenolpyruvate synthase"
+SEED,All samples,PC2 negative,-2,Serine endopeptidase ScpC (EC 3.4.21.-)
+SEED,All samples,PC2 negative,-3,Pullulanase (EC 3.2.1.41)
+SEED,All samples,PC2 negative,-4,Choline binding protein A
+SEED,All samples,PC2 negative,-5,Sialidase (EC 3.2.1.18)
+SEED,All samples,PC2 negative,-6,"FtsK/SpoIIIE family protein, putative EssC component of Type VII secretion system"
+SEED,All samples,PC2 negative,-7,"ATP-dependent nuclease, subunit B"
+SEED,All samples,PC2 negative,-8,Beta-hexosaminidase (EC 3.2.1.52)
+SEED,All samples,PC2 negative,-9,Alpha-galactosidase (EC 3.2.1.22)
+SEED,All samples,PC2 negative,-10,"Alpha-1,2-mannosidase"
+SEED,All samples,PC2 positive,1,Acriflavin resistance protein
+SEED,All samples,PC2 positive,2,"Ribonucleotide reductase of class Ia (aerobic), alpha subunit (EC 1.17.4.1)"
+SEED,All samples,PC2 positive,3,Glutathione-regulated potassium-efflux system ATP-binding protein
+SEED,All samples,PC2 positive,4,Exodeoxyribonuclease V gamma chain (EC 3.1.11.5)
+SEED,All samples,PC2 positive,5,"3-oxoacyl-[acyl-carrier-protein] synthase, KASI (EC 2.3.1.41)"
+SEED,All samples,PC2 positive,6,Na(+)-translocating NADH-quinone reductase subunit F (EC 1.6.5.-)
+SEED,All samples,PC2 positive,7,"GTP pyrophosphokinase (EC 2.7.6.5), (p)ppGpp synthetase II"
+SEED,All samples,PC2 positive,8,ATP-dependent DNA helicase Rep
+SEED,All samples,PC2 positive,9,"Ribonucleotide reductase of class Ia (aerobic), beta subunit (EC 1.17.4.1)"
+SEED,All samples,PC2 positive,10,Catalase (EC 1.11.1.6)
+SEED,Present-day humans removed,PC1 negative,-1,Sulfite reductase [NADPH] flavoprotein alpha-component (EC 1.8.1.2)
+SEED,Present-day humans removed,PC1 negative,-2,Exodeoxyribonuclease V gamma chain (EC 3.1.11.5)
+SEED,Present-day humans removed,PC1 negative,-3,Outer membrane receptor for ferric coprogen and ferric-rhodotorulic acid
+SEED,Present-day humans removed,PC1 negative,-4,Glutathione biosynthesis bifunctional protein gshF (EC 6.3.2.2)(EC 6.3.2.3)
+SEED,Present-day humans removed,PC1 negative,-5,Maltodextrin phosphorylase (EC 2.4.1.1)
+SEED,Present-day humans removed,PC1 negative,-6,Sulfite reductase [NADPH] hemoprotein beta-component (EC 1.8.1.2)
+SEED,Present-day humans removed,PC1 negative,-7,Oligopeptidase A (EC 3.4.24.70)
+SEED,Present-day humans removed,PC1 negative,-8,Chaperone protein HscA
+SEED,Present-day humans removed,PC1 negative,-9,Dihydrolipoamide dehydrogenase of pyruvate dehydrogenase complex (EC 1.8.1.4)
+SEED,Present-day humans removed,PC1 negative,-10,Exodeoxyribonuclease V beta chain (EC 3.1.11.5)
+SEED,Present-day humans removed,PC1 positive,1,Duplicated ATPase component BL0693 of energizing module of predicted ECF transporter
+SEED,Present-day humans removed,PC1 positive,2,Putative mobilization protein BF0133
+SEED,Present-day humans removed,PC1 positive,3,Conjugative transposon protein TraG
+SEED,Present-day humans removed,PC1 positive,4,Pyruvate-flavodoxin oxidoreductase (EC 1.2.7.-)
+SEED,Present-day humans removed,PC1 positive,5,Pyrophosphate-energized proton pump (EC 3.6.1.1)
+SEED,Present-day humans removed,PC1 positive,6,DNA topoisomerase III (EC 5.99.1.2)
+SEED,Present-day humans removed,PC1 positive,7,Transport ATP-binding protein CydC
+SEED,Present-day humans removed,PC1 positive,8,"Multi antimicrobial extrusion protein (Na(+)/drug antiporter), MATE family of MDR efflux pumps"
+SEED,Present-day humans removed,PC1 positive,9,V-type ATP synthase subunit A (EC 3.6.3.14)
+SEED,Present-day humans removed,PC1 positive,10,V-type ATP synthase subunit B (EC 3.6.3.14)
+SEED,Present-day humans removed,PC2 negative,-1,Putative mobilization protein BF0133
+SEED,Present-day humans removed,PC2 negative,-2,Conjugative transposon protein TraG
+SEED,Present-day humans removed,PC2 negative,-3,Na(+)-translocating NADH-quinone reductase subunit F (EC 1.6.5.-)
+SEED,Present-day humans removed,PC2 negative,-4,Acriflavin resistance protein
+SEED,Present-day humans removed,PC2 negative,-5,"Ribonucleotide reductase of class Ia (aerobic), alpha subunit (EC 1.17.4.1)"
+SEED,Present-day humans removed,PC2 negative,-6,"Ferric iron ABC transporter, permease protein"
+SEED,Present-day humans removed,PC2 negative,-7,"GTP pyrophosphokinase (EC 2.7.6.5), (p)ppGpp synthetase II"
+SEED,Present-day humans removed,PC2 negative,-8,"3-oxoacyl-[acyl-carrier-protein] synthase, KASI (EC 2.3.1.41)"
+SEED,Present-day humans removed,PC2 negative,-9,Phosphoenolpyruvate carboxykinase [ATP] (EC 4.1.1.49)
+SEED,Present-day humans removed,PC2 negative,-10,Lipid-A-disaccharide synthase (EC 2.4.1.182)
+SEED,Present-day humans removed,PC2 positive,1,"Pyruvate-utilizing enzyme, similar to phosphoenolpyruvate synthase"
+SEED,Present-day humans removed,PC2 positive,2,Serine endopeptidase ScpC (EC 3.4.21.-)
+SEED,Present-day humans removed,PC2 positive,3,Pullulanase (EC 3.2.1.41)
+SEED,Present-day humans removed,PC2 positive,4,Choline binding protein A
+SEED,Present-day humans removed,PC2 positive,5,Sialidase (EC 3.2.1.18)
+SEED,Present-day humans removed,PC2 positive,6,"FtsK/SpoIIIE family protein, putative EssC component of Type VII secretion system"
+SEED,Present-day humans removed,PC2 positive,7,Glutathione biosynthesis bifunctional protein gshF (EC 6.3.2.2)(EC 6.3.2.3)
+SEED,Present-day humans removed,PC2 positive,8,"ATP-dependent nuclease, subunit B"
+SEED,Present-day humans removed,PC2 positive,9,Maltodextrin phosphorylase (EC 2.4.1.1)
+SEED,Present-day humans removed,PC2 positive,10,Alpha-galactosidase (EC 3.2.1.22)
