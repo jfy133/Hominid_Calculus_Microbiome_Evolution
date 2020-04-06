@@ -3748,7 +3748,7 @@ with MALT (fasta files) and AADDER (gff files).
 ### R12.5 MALT RefSeq
 
 We then ran MALT but instead of immediately producing RMA6 files, we
-generatex SAM files. This was performed by running the following:
+generated SAM files. This was performed by running the following:
 
 ```bash
 02-scripts.backup/008-malt-genbank-refseq_bacarchhomo_gcs_20181122_4step_85pc_supp_0.01 \
