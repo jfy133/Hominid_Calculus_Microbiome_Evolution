@@ -1734,12 +1734,18 @@ observed core microbiome ([see below](#r10-core-microbiome-analysis)), we
 [ran MaltExtract](#r102-core-microbiome-maltextract) on all output of MALT,
 with the core microbiome as input list.
 
-We then developed [MEx-IPA](https://github.com/jfy133/MEx-IPA) to rapidly visualise ancient DNA characteristics across all samples and core taxa.
+We then developed [MEx-IPA](https://github.com/jfy133/MEx-IPA) to rapidly
+visualise ancient DNA characteristics across all samples and core taxa.
 
-The results files for this analysis are are stored in the MEx-IPA GitHub
-repository. Example reports for the two oldest Neanderthals (PES001 and GDN001),
-can be seen below in Figure R16, where for multiple known oral species, both
-cases display indicative characteristics of true endogenous DNA.
+The results files for this analysis can be seen in
+`04-analysis/screening/maltExtract/output`.
+
+> :warning: the text files in this directory are gzipped and must be
+decompressed before loading into MEx-IPA!
+
+Example reports for the two oldest Neanderthals (PES001 and GDN001), can be
+seen below in Figure R16, where for multiple known oral species, both cases
+display indicative characteristics of true endogenous DNA.
 
 ---
 
