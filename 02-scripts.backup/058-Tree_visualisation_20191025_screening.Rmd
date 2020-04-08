@@ -148,7 +148,12 @@ parse_files <- function(in_glob, pattern){
       tree_metadata + 
     geom_tippoint(aes(shape = Env, colour = Host_Common, size = Number_of_Positions), stroke = 1) +
     geom_tiplab(aes(colour = Host_Common, label = label), hjust = -0.3, size = 2.5) + 
-    geom_label2(aes(subset = !isTip, label = label), size = 2, label.padding = unit(0.1, "lines"), alpha = 0.7) +
+    geom_label2(aes(subset = !isTip, label = label), 
+                size = 2, 
+                label.padding = unit(0.1, "lines"), 
+                alpha = 0.7, 
+                hjust = 1.2, 
+                vjust = 1.2) +
     scale_shape_manual(values = my_shapes) +
     scale_colour_manual(values = common_colours) +
     ggtitle(label = gsub("_", " ", taxon_name), 
@@ -163,6 +168,7 @@ parse_files <- function(in_glob, pattern){
     
     final_tree <- final_tree +
       xlim(0, final_tree$data$x %>% max * 1.2)
+
     
     ggsave(paste0(taxon_name, "-", 
                   mapping_strategy, "-",
@@ -193,7 +199,7 @@ parse_files <- function(in_glob, pattern){
 Load trees
 
 ```{r, message=F, warning=F}
-analysis_dirs <- Sys.glob("../04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanalyzer/output/*/")
+analysis_dirs <- Sys.glob("../04-analysis/screening/EMN_Neanderthal_phylogeny_check/multivcfanalyzer/output/*")
 
 trees <- parse_files(analysis_dirs, "*.nwk") %>%
   mutate(file_contents = map(path, read.tree)) %>%
@@ -306,7 +312,7 @@ my_colours <- c("#1f78b4",
                  "#33a02c", 
                  "#33a02c", 
                  "#e31a1c", 
-                 "#ff7f00", 
+                 "#f9c06f", 
                  "#ff7f00", 
                  "#ff7f00", 
                  "#ff7f00", 
@@ -399,7 +405,7 @@ names(my_shapes) <- c("Howler_Monkey",
            "EnvironmentalControl")
 
 common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
-          `Homo (Neanderthal)` = "#ff7f00", 
+          `Homo (Neanderthal)` = "#f9c06f", 
           `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
           LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
           Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
@@ -479,7 +485,7 @@ bootstraps = "blub")
 ```
 Run trees
 
-```{r}
+```{r fig.height=5, fig.width=3.5}
 pmap(list(raw_tree = trees$file_contents, 
           taxon_name = trees$taxon,
           mapping_strategy = trees$mapping_strategy,
@@ -493,6 +499,13 @@ pmap(list(raw_tree = trees$file_contents,
           ), 
      plot_my_tree)
 ```
+
+Combine
+
+```{r}
+patchwork()
+```
+
 
 ## Bootstrap Comparison
 
