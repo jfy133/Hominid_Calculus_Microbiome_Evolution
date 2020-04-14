@@ -1738,10 +1738,24 @@ We then developed [MEx-IPA](https://github.com/jfy133/MEx-IPA) to rapidly
 visualise ancient DNA characteristics across all samples and core taxa.
 
 The results files for this analysis can be seen in
-`04-analysis/screening/maltExtract/output`.
+`04-analysis/screening/maltExtract/output/AnthropoidsHominidaeHoiminini_core_20190509`.
 
 > :warning: the text files in this directory are gzipped and must be
 decompressed before loading into MEx-IPA!
+
+If you do not wish to clone this whole repository (which is very large),
+you can use the following suggestions from
+[stackoverflow](https://stackoverflow.com/a/18194523/11502856). However, in
+case that link doesn't work - the most stable method is to use subversion
+(`svn`).
+
+```bash
+svn checkout https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/trunk/04-analysis/screening/maltExtract/output/AnthropoidsHominidaeHoiminini_core_20190509
+find -name '*gz' -type f -exec gunzip {} \;
+```
+
+Then copy and paste `<path>/<to>/AnthropoidsHominidaeHoiminini_core_20190509` 
+into MEx-IPA to find this.
 
 Example reports for the two oldest Neanderthals (PES001 and GDN001), can be
 seen below in Figure R16, where for multiple known oral species, both cases
