@@ -1122,7 +1122,7 @@ statistics.
 
 ![Sequencing QC New Calculus Screening Dataset](05-images/Figure_R01_SAB_SequencingQC_screening/SupFigX_SequencingQCSummaries_NewCalculusOnly_Screening_AncientModern_20200220.png)
 
-**Figure R1 | Sequencing metric distributions of the screening dataset of ancient and modern calculus samples newly sequenced during this study.** Each point represents a single indiviudal (i.e. all samples, libraries and re-sequencing runs combined). **a** Raw sequencing read counts (prior to adapter removal and merging). **b** Pre-processed read counts after adapter removal and read merging. **c** Proportion of human DNA. **d** Count of non-human reads used for downstream analysis (pre-processed reads with human sequences removed).
+**Figure R1 | Sequencing metric distributions of the screening dataset of ancient and modern calculus samples newly sequenced during this study.** Each point represents a single individual (i.e. all samples, libraries and re-sequencing runs combined). **a** Raw sequencing read counts (prior to adapter removal and merging). **b** Pre-processed read counts after adapter removal and read merging. **c** Proportion of human DNA. **d** Count of non-human reads used for downstream analysis (pre-processed reads with human sequences removed).
 
 ![Sequencing QC New Calculus Production Dataset](05-images/Figure_R02_SAC_SequencingQC_deep/SupFigX_SequencingQCSummaries_NewCalculusOnly_Production_Ancient_20200220.png)
 
@@ -1782,7 +1782,7 @@ The collated results for the whole screening dataset are stored in the file
 ### R8.5.1 decontam
 
 In addition to identifying well preserved samples, we can also remove possibly
-contaminating species from our samples that are derived from the
+contaminating OTUs from our sample's OTU tables that are derived from the
 laboratory environment, we can use the R package `decontam`. The idea here
 is to use this to reduce the number of noisy taxa in the downstream
 compositional analysis, e.g. false positive clustering due to laboratory batch
@@ -1796,10 +1796,15 @@ laboratory derived taxa appear more abundant in controls versus true samples.
 main metadata file
 `02-scripts.backup/02-microbiome_calculus-deep_evolution-individualscontrolssources_metadata.tsv`.
 
-We then ran `decontam` following the `decontam` tutorial vignette on CRAN as described here `02-scripts.backup/015-decontam_contamination_detection_analysis.Rmd`.
+We then ran `decontam` following the `decontam` tutorial vignette on CRAN as
+described here `02-scripts.backup/015-decontam_contamination_detection_analysis.Rmd`.
 
 The final list of contaminants for all methods and databases can be seen in
-`06-additional_data_files` under Data R19 and `04-analysis/screening/decontam.backup`, with a summary below in Table R4.
+`06-additional_data_files` under Data R19 and `04-analysis/screening/decontam.backup`,
+with a summary below in Table R4.
+
+This list of OTUs was subsequently removed from OTU tables in all downstream
+analyses when indicated.
 
 ---
 
@@ -2302,7 +2307,7 @@ combinations.  Instead, we summarised the number of taxa in each host via an
 
 ![Core microbiome Upset plots at genus and species level for Nt and RefSeq databases](05-images/Figure_R28_SFC_CoreMicrobiome_UpSetPlots/FigureSXX-CoreMicrobiome_UpSetR_combined.png)
 
-**Figure R28 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a 'core' microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host.
+**Figure R28 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a 'core' microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host. Note the the difference between this figure and Figure 2 of the main manuscript is the retention here of _Mycobacterium_, which was excluded post-hoc (and thus excluded from Figure 2), and from subsequent the downstream core microbiome analysis, given that section R10.1.4 shows it is a pervasive likely contaminant.
 
 ---
 

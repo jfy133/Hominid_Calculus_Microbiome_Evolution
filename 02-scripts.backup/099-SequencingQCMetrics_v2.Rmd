@@ -1,5 +1,5 @@
 ---
-title: "Deep Evolutoin - Sequencing Results and Human Content Assessment v2"
+title: "Deep Evolution - Sequencing Results and Human Content Assessment v2"
 output: html_notebook
 ---
 
