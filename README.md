@@ -3121,16 +3121,20 @@ under `00-documentation.backup/25-streptococcus_cladegroup_amylasegroup_database
 
 Using the MALT species level OTU tables from the screening dataset, we
 visualised as stacked bar plots the proportion of _Streptococcus_ alignments
-deriving from each group. We can also applied the same concept to the production
+deriving from each group (Figure R64). We can also applied the same concept to the production
 dataset - but using the _Streptococcus_ super-reference as the reference
-database, as in the notebook
+database (Figure R37), as in the notebook
 `02-scripts.backup/033-streptoccocus_investigation_v2_20190826.Rmd`.
 
 ---
 
+![Distribution of reads across streptococci species for screening dataset mapping to NCBI nt database with MALT](05-images/Figure_R64_RawFig5_MALTAmylaseStrepDistribution/01-streptococcusinvestigation_stackedbar_nt_0.04_hostgenus_percentagegroupoverallstrepreads_cladeconsensus_20190827.png)
+
+**Figure R64 | Distribution of screening dataset assignments to each _Streptococcus_ group when mapping to a the NCBI nt database with MALT, normalised by the total number of MALT assignments to all Streptococci** Stacked bar plot of proportion of alignments to different Streptococcus groups show differences between host genera. Proportion is calculated over all streptococci reads as identified using MALT to the NCBI nt database (at species level after low abundance removal of taxa with ≤ 0.04% of all alignments). One Gorilla was removed, as it had no signal of Streptococcus. Individuals ordered by population/time period, except Homo individuals resembling Pan. Amylase-binding activity has been observed among members of the Sanguinis, Mitis and Salivarius groups.
+
 ![Distribution of reads across streptococci species for production dataset mapping to super-reference](05-images/Figure_R37_SED_StreptococcusGroupDistributionSuperreference/01-streptococcusinvestigation_stackedbar_superreference_none_hostgenus_percentagegroupoverallstrepreads_cladeconsensus_20190920.png)
 
-**Figure R37 | Distribution of production dataset reads to each Streptococcus group when mapping to a Streptococcus super-reference, normalised by the total number of super-reference aligned reads.** As with the screening dataset, _Homo_ are dominated by streptococci groups displaying amylase binding protein activity (sangiuinis, mitis and salivarius). See section 6. Microbial phylogenetics for details on super-reference construction and mapping. Streptococcus groups are ordered by amylase activity as reported by Haase 2017 BMC Microbiol - in which members within the sanguinis, mitis and salivarius groups showed amylase activity.
+**Figure R37 | Distribution of production dataset reads to each Streptococcus group when mapping to a Streptococcus super-reference, normalised by the total number of _Streptococcus_ aligned reads.** As with the screening dataset, _Homo_ are dominated by streptococci groups displaying amylase binding protein activity (sangiuinis, mitis and salivarius). See section 6. Microbial phylogenetics for details on super-reference construction and mapping. Streptococcus groups are ordered by amylase activity as reported by Haase 2017 BMC Microbiol - in which members within the sanguinis, mitis and salivarius groups showed amylase activity.
 
 ---
 
@@ -3203,21 +3207,26 @@ bedtools intersect \
 The resulting files were then loaded into to assess the ratio of all
 _Streptococcus_ reads to amylase binding protein-like reads as in
 `02-scripts.backup/051-streptococcus_superreference_to_amylase_comparison.Rmd`.
+The distributions can be seen in Figure R65.
 
 We observed that calculated ratios were much higher in _Homo_ (with
 Neanderthals falling within the range of humans for abpB) than other primates.
-See the main publication for the implications of this. This was also 
+See the main publication for the implications of this. This was also
 statistically confirmed with Mann-Whitney U tests (see R notebook), which were
 also compared to a distribution of p-values of 100 random shuffle of group
-assignments (see figure below).
+assignments (see Figure R63 below).
 
 ---
+
+![Ratios of production dataset abp* like reads over all Streptococcus super-reference reads](05-images/Figure_R65_RawFig5_SuperReferenceabpAabpB_mapping/Streptococcus_superreference_amylaseReadsOverAllReads_plot.png)
+
+**Figure R65 | Ratios of reads aligning to amylase-binding-protein annotated sequences versus a ‘super-reference’ of  166 Streptococcus assemblies show higher values in Homo than non-human primates.** Distributions based on a deep-sequenced subset of samples and four present-day humans. Note the ratio on the Y axes of abpA and abpB are scaled differently due to the greater number of abpB-like sequences in the super-reference and therefore more reads are likely to be retrieved.
 
 <p align="center">
   <img src="05-images/Figure_R63_abpStrepRatio_MWU_Randomisation/Streptococcus_superreference_abpratios_mwu_100randomshuffle_comparison.png" width="50%" height = "50%">
 </p>
 
-**Figure R63 | Comparison of Mann-Whitney-U _p_-value of _Homo_ and non-_Homo_ abp to _Streptococcus_ super-reference reads against a distribution of randomised sample group assignments** Red line indicates result of test with 'true' group assignments. Dotted and dashed lines represent alphas of 0.05 and 0.01 respectively. Violin distribution represents _p_-values of 100 shuffles of group assignments of samples (i.e. whether a sample is from _Homo_ and non-_Hpmo_ groups), with 25%, 50%, and 75% quantiles. The true results fall well outside distribution of _p_-values from shuffled assignments, which in principle reflects 'random noise'. 
+**Figure R63 | Comparison of Mann-Whitney-U _p_-value of _Homo_ and non-_Homo_ abp to _Streptococcus_ super-reference reads against a distribution of randomised sample group assignments** Red line indicates result of test with 'true' group assignments. Dotted and dashed lines represent alphas of 0.05 and 0.01 respectively. Violin distribution represents _p_-values of 100 shuffles of group assignments of samples (i.e. whether a sample is from _Homo_ and non-_Hpmo_ groups), with 25%, 50%, and 75% quantiles. The true results fall well outside distribution of _p_-values from shuffled assignments, which in principle reflects 'random noise'.
 
 > Note: the figure ID is out of order due to missing upload during initial writing of this walk-through.
 
