@@ -32,7 +32,7 @@ knitr::opts_knit$set(root.dir = normalizePath("."))
 Read in the data and metadata tables
 ```{r read_tables}
 # read in the full AADDER table and change the first column title so it doesn't start with #
-fullset.aadder <- fread("../04-analysis/screening/aadder/tables/AADDER_refseq_seed_85pc_supp0.01_20190513-ex_seedPath_to_count_summarised.txt")
+fullset.aadder <- fread("../04-analysis/screening/aadder/tables/AADDER_refseq_seed_85pc_supp0.01_20190513-ex_seedPath_to_count_summarised.txt.gz")
 fullset.aadder <- dplyr::rename(fullset.aadder, Category = `#Datasets`)
 
 # Fix the column headers
@@ -46,7 +46,7 @@ decontam_freq_in.aadder <- fullset.aadder %>%
   spread(Category, Counts)
 
 # read in the metadata
-fullmetadata <- read_tsv("./00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
+fullmetadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20190523.tsv")
 fullmetadata <- rename(fullmetadata, SampleID = `#SampleID`)
 
 filtermetadata <- fullmetadata %>%

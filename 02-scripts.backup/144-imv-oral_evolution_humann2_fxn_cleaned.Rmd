@@ -936,7 +936,7 @@ assigned to *Streptococcus*, so we looked at all and did not select out the
 
 Read in the genefamilies data file, clean up the headers, remove the blanks and controls. 
 ```{r KOrthologs_genefamilies}
-gene_families.humann2 <- fread("../04-analysis/screening/humann2/tables/humann2_genefamilies_ko_20190408.tsv")
+gene_families.humann2 <- fread("../04-analysis/screening/humann2/tables/humann2_genefamilies_ko_20190408.tsv.gz")
 
 # Fix the column headers
 names(gene_families.humann2)[1]<-"Pathways"
@@ -967,9 +967,11 @@ gene_families.humann2_filtered <- gene_families.humann2 %>%
 
 How many reads were assigned and how many were not assigned in each sample, and does the average % of assigned reads differ by host genus?
 ```{r KO_unassigned}
+# The table created by this first part is saved as an RData object that can be loaded instead to save time
+
 # read in the table that doesn't have the KOs collected together, so we can get the counts of assigned and unassigned reads for each sample
 # This takes a very long time to load
-gene_families.humann2.uniref <- fread("grep -v '|' /../04-analysis/screening/humann2/tables/humann2_genefamilies_20190408.tsv")
+gene_families.humann2.uniref <- fread("grep -v '|' /Users/velsko/projects1/microbiome_calculus/evolution/04-analysis/screening/humann2/tables/humann2_pathabundance_20190408_nospace.tsv")
 
 # Fix the column headers
 names(gene_families.humann2.uniref)[1]<-"Pathways"
@@ -987,6 +989,11 @@ colnames(gene_families.humann2.uniref) <- gsub(".A0101.SG1.2","", colnames(gene_
 colnames(gene_families.humann2.uniref) <- gsub(".A0101","", colnames(gene_families.humann2.uniref))
 colnames(gene_families.humann2.uniref) <- gsub(".A0102","", colnames(gene_families.humann2.uniref))
 colnames(gene_families.humann2.uniref) <- gsub(".B0101","", colnames(gene_families.humann2.uniref))
+
+# save(gene_families.humann2.uniref, file = "../04-analysis/screening/humann2/tables/gene_families.humann2.uniref.RData")
+# 
+# # load the table as an RData object
+# load("../04-analysis/screening/humann2/tables/gene_families.humann2.uniref.RData")
 
 # Now remove the outliers and remaining extraction/library blank controls
 # these are defined early on in the main script
@@ -5041,7 +5048,7 @@ individual_centroids.list_plot.glycans
 
 ```{r pca_ko_lipids}
 # Lipids
-#kegg_lipids_kos <- fread("../04-analysis/screening/humann2/tables/kegg_lipids.tsv")
+kegg_lipids_kos <- fread("../04-analysis/screening/humann2/tables/kegg_lipids.tsv")
 
 # list out the unique KOs to pull from the full genefamilies table
 unique_KOs_lipids <- distinct(kegg_lipids_kos, KOrtholog)
@@ -5178,7 +5185,7 @@ individual_centroids.list_plot.lipids
 
 ```{r pca_ko_membrane}
 # Membrane transport
-#kegg_membrane_kos <- fread("../04-analysis/screening/humann2/tables/kegg_membrane_transport.tsv")
+kegg_membrane_kos <- fread("../04-analysis/screening/humann2/tables/kegg_membrane_transport.tsv")
 
 # list out the unique KOs to pull from the full genefamilies table
 unique_KOs_membrane <- distinct(kegg_membrane_kos, KOrtholog)
@@ -5307,7 +5314,7 @@ individual_centroids.list_plot.membrane
 
 ```{r pca_ko_motility}
 # Motility
-#kegg_motility_kos <- fread("../04-analysis/screening/humann2/tables/kegg_motility.tsv")
+kegg_motility_kos <- fread("../04-analysis/screening/humann2/tables/kegg_motility.tsv")
 
 # list out the unique KOs to pull from the full genefamilies table
 unique_KOs_motility <- distinct(kegg_motility_kos, KOrtholog)
@@ -5436,7 +5443,7 @@ individual_centroids.list_plot.motility
 
 ```{r pca_ko_nucleotide}
 # Nucleotides
-#kegg_nucleotides_kos <- fread("../04-analysis/screening/humann2/tables/kegg_nucleotides.tsv")
+kegg_nucleotides_kos <- fread("../04-analysis/screening/humann2/tables/kegg_nucleotides.tsv")
 
 # list out the unique KOs to pull from the full genefamilies table
 unique_KOs_nucleotide <- distinct(kegg_nucleotides_kos, KOrtholog)
@@ -5565,7 +5572,7 @@ individual_centroids.list_plot.nucleotide
 
 ```{r pca_ko_replication}
 # Replication and DNA repair
-#kegg_replic_kos <- fread("../04-analysis/screening/humann2/tables/kegg_replication_repair.tsv")
+kegg_replic_kos <- fread("../04-analysis/screening/humann2/tables/kegg_replication_repair.tsv")
 
 # list out the unique KOs to pull from the full genefamilies table
 unique_KOs_replic <- distinct(kegg_replic_kos, KOrtholog)
