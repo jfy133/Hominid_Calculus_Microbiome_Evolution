@@ -915,9 +915,9 @@ pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2 <- ggplot(decontam.outrem.ca
 
 pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2
 
-# ggsave("../pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2.pdf", plot = pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2, device = "pdf",
-#   scale = 1, width = 7, height = 5, units = c("in"),
-#   dpi = 300)
+ggsave("../pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2.pdf", plot = pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2, device = "pdf",
+  scale = 1, width = 7, height = 5, units = c("in"),
+  dpi = 300)
 
 pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2 <- ggplot(decontam.outrem.calc.aminoacid.aadder_L4.varmet, 
                                             aes(PC1, PC2, colour = Host_Genus, shape = Host_Genus)) +
@@ -1079,9 +1079,9 @@ pca_decontam.outrem.calc.carb.aadder_L4_pc1pc2 <- ggplot(decontam.outrem.calc.ca
 
 pca_decontam.outrem.calc.carb.aadder_L4_pc1pc2
 
-# ggsave("../pca_decontam.outrem.calc.carb.aadder_L4_pc1pc2.pdf", plot = pca_decontam.outrem.calc.carb.aadder_L4_pc1pc2, device = "pdf",
-#   scale = 1, width = 7, height = 5, units = c("in"),
-#   dpi = 300)
+ggsave("../pca_decontam.outrem.calc.carb.aadder_L4_pc1pc2.pdf", plot = pca_decontam.outrem.calc.carb.aadder_L4_pc1pc2, device = "pdf",
+  scale = 1, width = 7, height = 5, units = c("in"),
+  dpi = 300)
 
 pca_decontam.outrem.calc.carb.aadder_L4_pc1pc2 <- ggplot(decontam.outrem.calc.carb.aadder_L4.varmet, 
                                             aes(PC1, PC2, colour = Host_Genus, shape = Host_Genus)) +
@@ -1699,9 +1699,9 @@ pca_decontam.outrem.calc.fattyacids.aadder_L4_pc1pc2 <- ggplot(decontam.outrem.c
 
 pca_decontam.outrem.calc.fattyacids.aadder_L4_pc1pc2
 
-# ggsave("../pca_decontam.outrem.calc.fattyacids.aadder_L4_pc1pc2.pdf", plot = pca_decontam.outrem.calc.fattyacids.aadder_L4_pc1pc2, device = "pdf",
-#   scale = 1, width = 7, height = 5, units = c("in"),
-#   dpi = 300)
+ggsave("../pca_decontam.outrem.calc.fattyacids.aadder_L4_pc1pc2.pdf", plot = pca_decontam.outrem.calc.fattyacids.aadder_L4_pc1pc2, device = "pdf",
+  scale = 1, width = 7, height = 5, units = c("in"),
+  dpi = 300)
 
 pca_decontam.outrem.calc.fattyacids.aadder_L4_pc1pc2 <- ggplot(decontam.outrem.calc.fattyacids.aadder_L4.varmet, 
                                             aes(PC1, PC2, colour = Host_Genus, shape = Host_Genus)) +
