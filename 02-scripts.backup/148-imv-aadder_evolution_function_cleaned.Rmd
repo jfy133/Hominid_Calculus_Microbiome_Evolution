@@ -246,7 +246,7 @@ names(env_shapes) <- c("Howler_Monkey",
                        "EnvironmentalControl")
 
 common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
-                    `Homo (Neanderthal)` = "#ff7f00", 
+                    `Homo (Neanderthal)` = "#fdbf6f", 
                     `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
                     LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
                     Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
@@ -915,9 +915,9 @@ pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2 <- ggplot(decontam.outrem.ca
 
 pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2
 
-ggsave("../pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2.pdf", plot = pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2, device = "pdf",
-  scale = 1, width = 7, height = 5, units = c("in"),
-  dpi = 300)
+# ggsave("../pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2.pdf", plot = pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2, device = "pdf",
+#   scale = 1, width = 7, height = 5, units = c("in"),
+#   dpi = 300)
 
 pca_decontam.outrem.calc.aminoacid.aadder_L4_pc1pc2 <- ggplot(decontam.outrem.calc.aminoacid.aadder_L4.varmet, 
                                             aes(PC1, PC2, colour = Host_Genus, shape = Host_Genus)) +
@@ -2432,8 +2432,8 @@ pc1_neg <- pca_loadings_df %>%
 corr_lam <- decontam.outrem.calc.aadder_L4.pca$sdev[c("PC1", "PC2")] * sqrt(nrow(decontam.outrem.calc.aadder_L4.pca_df))
 
 # make Host Genus a factor for plotting
-decontam.outrem.calc.aadder_L4.pca_df$Host_Genus <- factor(decontam.outrem.calc.aadder_L4.pca_df$Host_Genus, 
-                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo", "Plaque"))
+decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common <- factor(decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common, 
+                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Plaque"))
 
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC1 
@@ -2441,8 +2441,8 @@ pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc1bi <- decontam.outrem.calc.aadder_L
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc1_pws,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -2455,8 +2455,8 @@ pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc1bi <- decontam.outrem.calc.aadder_L
                arrow = arrow(length = unit(0.03, "npc"))) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
-  scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
+  scale_shape_manual(values = c(8, 0, 6, 2, 1)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(legend.position = "top")
 
@@ -2470,8 +2470,8 @@ pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc1bi_label <- decontam.outrem.calc.aa
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc1_pws,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -2490,8 +2490,8 @@ pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc1bi_label <- decontam.outrem.calc.aa
                    size = 1.5, colour = "grey20", force = 4) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
-  scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
+  scale_shape_manual(values = c(8, 0, 6, 2, 1)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(text = element_text(size = 14)) +
   theme(legend.position = "top")
@@ -2544,8 +2544,8 @@ pc2_neg <- pca_loadings_df %>%
 corr_lam <- decontam.outrem.calc.aadder_L4.pca$sdev[c("PC1", "PC2")] * sqrt(nrow(decontam.outrem.calc.aadder_L4.pca_df))
 
 # make Host Genus a factor for plotting
-decontam.outrem.calc.aadder_L4.pca_df$Host_Genus <- factor(decontam.outrem.calc.aadder_L4.pca_df$Host_Genus, 
-                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo", "Plaque"))
+decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common <- factor(decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common, 
+                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Plaque"))
 
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC1 
@@ -2553,8 +2553,8 @@ pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc2bi <- decontam.outrem.calc.aadder_L
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc2_pws,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -2567,8 +2567,8 @@ pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc2bi <- decontam.outrem.calc.aadder_L
                arrow = arrow(length = unit(0.03, "npc"))) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
-  scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
+  scale_shape_manual(values = c(8, 0, 6, 2, 1)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(legend.position = "top")
 
@@ -2582,8 +2582,8 @@ pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc2bi_label <- decontam.outrem.calc.aa
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc2_pws,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -2602,8 +2602,8 @@ pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc2bi_label <- decontam.outrem.calc.aa
                    size = 2, colour = "grey20") +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
-  scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
+  scale_shape_manual(values = c(8, 0, 6, 2, 1)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(legend.position = "top")
 
@@ -2687,8 +2687,8 @@ pc1_neg_nomod <- pca_loadings_df %>%
 corr_lam <- decontam.outrem.calc.aadder_L4_nomodern.pca$sdev[c("PC1", "PC2")] * sqrt(nrow(decontam.outrem.calc.aadder_L4_nomodern.pca_df))
 
 # make Host Genus a factor for plotting
-decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Genus <- factor(decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Genus, 
-                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo", "Plaque"))
+decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common <- factor(decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common, 
+                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Plaque"))
 
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC1 
@@ -2696,8 +2696,8 @@ pca_decontam.outrem.calc.aadder_L4_nomodern_pc1pc2_pc1bi <- decontam.outrem.calc
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   scale_y_reverse() +
   geom_segment(data = pc1_pws_nomod,
                aes(xend = PC1, yend = PC2),
@@ -2711,7 +2711,7 @@ pca_decontam.outrem.calc.aadder_L4_nomodern_pc1pc2_pc1bi <- decontam.outrem.calc
                arrow = arrow(length = unit(0.03, "npc"))) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
   scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(legend.position = "top")
@@ -2726,9 +2726,9 @@ pca_decontam.outrem.calc.aadder_L4_nomodern_pc1pc2_pc1bi_label <- decontam.outre
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
   scale_y_reverse() +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc1_pws_nomod,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -2747,7 +2747,7 @@ pca_decontam.outrem.calc.aadder_L4_nomodern_pc1pc2_pc1bi_label <- decontam.outre
                    size = 1.5, colour = "grey20", force = 4) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
   scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(legend.position = "top")
@@ -2833,8 +2833,8 @@ pc2_neg_nomod <- pca_loadings_df %>%
 corr_lam <- decontam.outrem.calc.aadder_L4_nomodern.pca$sdev[c("PC1", "PC2")] * sqrt(nrow(decontam.outrem.calc.aadder_L4_nomodern.pca_df))
 
 # make Host Genus a factor for plotting
-decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Genus <- factor(decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Genus, 
-                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo", "Plaque"))
+decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common <- factor(decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common, 
+                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Plaque"))
 
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC1 
@@ -2842,9 +2842,9 @@ pca_decontam.outrem.calc.aadder_L4_nomodern_pc1pc2_pc2bi <- decontam.outrem.calc
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
   scale_y_reverse() +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc2_pws_nomod,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "grey50",
@@ -2857,7 +2857,7 @@ pca_decontam.outrem.calc.aadder_L4_nomodern_pc1pc2_pc2bi <- decontam.outrem.calc
                arrow = arrow(length = unit(0.03, "npc"))) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
   scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(legend.position = "top")
@@ -2872,9 +2872,9 @@ pca_decontam.outrem.calc.aadder_L4_nomodern_pc1pc2_pc2bi_label <- decontam.outre
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
   scale_y_reverse() +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc2_pws_nomod,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "grey50",
@@ -2893,7 +2893,7 @@ pca_decontam.outrem.calc.aadder_L4_nomodern_pc1pc2_pc2bi_label <- decontam.outre
                    size = 1.5, colour = "grey20", force = 4) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
   scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(legend.position = "top")

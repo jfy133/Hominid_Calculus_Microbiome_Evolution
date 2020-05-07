@@ -204,7 +204,7 @@ names(env_shapes) <- c("Howler_Monkey",
                        "EnvironmentalControl")
 
 common_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c", 
-                    `Homo (Neanderthal)` = "#ff7f00", 
+                    `Homo (Neanderthal)` = "#fdbf6f", 
                     `Homo (Modern Human)` = "#ff7f00", ExtractionControl = "#d9d9d9", 
                     LibraryControl = "#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
                     Skin = "#d9d9d9", Sediment = "#d9d9d9", EnvironmentalControl = "#d9d9d9")
@@ -966,15 +966,31 @@ gene_families.humann2_filtered <- gene_families.humann2 %>%
 ```
 
 How many reads were assigned and how many were not assigned in each sample, and does the average % of assigned reads differ by host genus?
+```{bash, eval = F}
+# this table is huge so we need to remove the species-level assignments so it doesn't time out opening for filtering in RStudio on our laptop
+zcat /Users/velsko/projects1/microbiome_calculus/evolution/04-analysis/screening/humann2/tables/humann2_genefamilies_20190408.tsv.gz | grep -v "|" > /Users/velsko/projects1/microbiome_calculus/evolution/04-analysis/screening/humann2/tables/humann2_genefamilies_20190408_nospecies.tsv # 1.1GB
+gzip /Users/velsko/projects1/microbiome_calculus/evolution/04-analysis/screening/humann2/tables/humann2_genefamilies_20190408_nospecies.tsv # 105MB
+
+```
+
+
 ```{r KO_unassigned}
 # The table created by this first part is saved as an RData object that can be loaded instead to save time
 
 # read in the table that doesn't have the KOs collected together, so we can get the counts of assigned and unassigned reads for each sample
-# This takes a very long time to load
-gene_families.humann2.uniref <- fread("grep -v '|' /Users/velsko/projects1/microbiome_calculus/evolution/04-analysis/screening/humann2/tables/humann2_pathabundance_20190408_nospace.tsv")
+# This takes a very long time to load and now times out
+# gene_families.humann2.uniref <- fread("grep -v '|' /Users/velsko/projects1/microbiome_calculus/evolution/04-analysis/screening/humann2/tables/humann2_genefamilies_20190408.tsv.gz")
+
+# this is the table created in the bash section just above
+gene_families.humann2.uniref <- fread("../04-analysis/screening/humann2/tables/humann2_genefamilies_20190408_nospecies.tsv.gz", sep = "\t")
+
+# /Users/velsko/Dropbox (Personal)/MPI-SHH/evolution_fxn/final_github_evolution/Anthropoid_Calculus_Microbiome_Evolution
+
 
 # Fix the column headers
-names(gene_families.humann2.uniref)[1]<-"Pathways"
+# names(gene_families.humann2.uniref)[1]<-"Pathways"
+gene_families.humann2.uniref <- gene_families.humann2.uniref %>%
+  rename(GeneFamily = `# Gene Family`)
 
 colnames(gene_families.humann2.uniref) <- gsub("_S.*_L.*_R1_.*.fastq.merged.prefixed.hg19unmapped_Abundance-CPM","", colnames(gene_families.humann2.uniref))
 colnames(gene_families.humann2.uniref) <- gsub("_S.*_L.*_R1_.*.fastq.merged_Abundance-CPM","", colnames(gene_families.humann2.uniref))
@@ -990,7 +1006,7 @@ colnames(gene_families.humann2.uniref) <- gsub(".A0101","", colnames(gene_famili
 colnames(gene_families.humann2.uniref) <- gsub(".A0102","", colnames(gene_families.humann2.uniref))
 colnames(gene_families.humann2.uniref) <- gsub(".B0101","", colnames(gene_families.humann2.uniref))
 
-# save(gene_families.humann2.uniref, file = "../04-analysis/screening/humann2/tables/gene_families.humann2.uniref.RData")
+# save(gene_families.humann2.uniref, file = "../04-analysis/screening/humann2/tables/gene_families.humann2.uniref.RData") # this file is 167MB, so still way too big for github
 # 
 # # load the table as an RData object
 # load("../04-analysis/screening/humann2/tables/gene_families.humann2.uniref.RData")
@@ -1007,9 +1023,9 @@ gene_families.humann2.uniref_filtered <- gene_families.humann2.uniref %>%
 
 # select out only the UNMAPPED and total reads rows
 read_assignments.humann2.uniref <- gene_families.humann2.uniref_filtered %>%
-  dplyr::filter(str_detect(Pathways, "UNMAPPED|Total_reads")) %>%
+  dplyr::filter(str_detect(GeneFamily, "UNMAPPED|Total_reads")) %>%
   gather("individual_id","CPM", 2:ncol(.)) %>%
-  spread(Pathways, CPM, 2:ncol(.)) %>%
+  spread(GeneFamily, CPM, 2:ncol(.)) %>%
   mutate(Total_assigned_reads = 1000000-UNMAPPED) %>%
   inner_join(., fullmetadata) %>%
   select(individual_id,Host_Genus,Host_Common,Host_General,Total_assigned_reads, UNMAPPED) %>%
@@ -1665,9 +1681,9 @@ pc2_neg <- pca_loadings_df %>%
 # ggfortify::autoplot
 corr_lam <- H2KO.pca$sdev[c("PC1", "PC2")] * sqrt(nrow(H2KO.pca_df))
 
-# make Host Genus a factor for plotting
-H2KO.pca_df$Host_Genus <- factor(H2KO.pca_df$Host_Genus, 
-                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo", "Plaque"))
+# make Host Common a factor for plotting
+H2KO.pca_df$Host_Common <- factor(H2KO.pca_df$Host_Common, 
+                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Plaque"))
 
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC1 
@@ -1675,8 +1691,8 @@ pca_H2KO_pc1pc2_outrem_all_nopq_pc1bi <- H2KO.pca_df %>%
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc1_pws,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -1689,7 +1705,7 @@ pca_H2KO_pc1pc2_outrem_all_nopq_pc1bi <- H2KO.pca_df %>%
                arrow = arrow(length = unit(0.03, "npc"))) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
   scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
   theme_minimal() + theme(text = element_text(size = 14))
 
@@ -1703,8 +1719,8 @@ pca_H2KO_pc1pc2_outrem_all_nopq_pc1bi_label <- H2KO.pca_df %>%
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc1_pws,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -1723,7 +1739,7 @@ pca_H2KO_pc1pc2_outrem_all_nopq_pc1bi_label <- H2KO.pca_df %>%
                    size = 1.5, colour = "grey20", force = 4) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
   scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(text = element_text(size = 14))
@@ -1740,8 +1756,8 @@ pca_H2KO_pc1pc2_outrem_all_nopq_pc2bi <- H2KO.pca_df %>%
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc2_pws,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -1754,7 +1770,7 @@ pca_H2KO_pc1pc2_outrem_all_nopq_pc2bi <- H2KO.pca_df %>%
                arrow = arrow(length = unit(0.03, "npc"))) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
   scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
   theme_minimal() + theme(text = element_text(size = 14))
 
@@ -1768,8 +1784,8 @@ pca_H2KO_pc1pc2_outrem_all_nopq_pc2bi_label <- H2KO.pca_df %>%
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc2_pws,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -1788,7 +1804,7 @@ pca_H2KO_pc1pc2_outrem_all_nopq_pc2bi_label <- H2KO.pca_df %>%
                    size = 1.5, colour = "grey20", force = 4) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
   scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(text = element_text(size = 14))
@@ -1842,8 +1858,8 @@ pc2_neg_nomod <- pca_loadings_df %>%
 corr_lam <- H2KO_nomod.pca$sdev[c("PC1", "PC2")] * sqrt(nrow(H2KO_nomod.pca_df))
 
 # make Host Genus a factor for plotting
-H2KO_nomod.pca_df$Host_Genus <- factor(H2KO_nomod.pca_df$Host_Genus, 
-                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo", "Plaque"))
+H2KO.pca_df$Host_Common <- factor(H2KO.pca_df$Host_Common, 
+                                 levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Plaque"))
 
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC1 
@@ -1851,8 +1867,8 @@ pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi <- H2KO_nomod.pca_df %>%
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc1_pws_nomod,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -1865,23 +1881,23 @@ pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi <- H2KO_nomod.pca_df %>%
                arrow = arrow(length = unit(0.03, "npc"))) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
-  scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
+  scale_shape_manual(values = c(8, 0, 6, 2, 1)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   scale_y_reverse()
 
 pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi
 
-# ggsave("../pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi.pdf", plot = pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi, device = "pdf",
-#        scale = 1, width = 7, height = 5, units = c("in"),
-#        dpi = 300)
+ggsave("../pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi.pdf", plot = pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi, device = "pdf",
+       scale = 1, width = 7, height = 5, units = c("in"),
+       dpi = 300)
 
 pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi_label <- H2KO_nomod.pca_df %>%
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc1_pws_nomod,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -1900,17 +1916,17 @@ pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi_label <- H2KO_nomod.pca_df %>%
                    size = 1.5, colour = "grey20", force = 4) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
-  scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
+  scale_shape_manual(values = c(8, 0, 6, 2, 1)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(text = element_text(size = 14)) +
   scale_y_reverse()
 
 pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi_label
 
-# ggsave("../pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi_label.pdf", plot = pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi_label, device = "pdf",
-#        scale = 1, width = 7, height = 5, units = c("in"),
-#        dpi = 300)
+ggsave("../pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi_label.pdf", plot = pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc1bi_label, device = "pdf",
+       scale = 1, width = 7, height = 5, units = c("in"),
+       dpi = 300)
 
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC2
@@ -1918,8 +1934,8 @@ pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi <- H2KO_nomod.pca_df %>%
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc2_pws_nomod,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -1932,23 +1948,23 @@ pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi <- H2KO_nomod.pca_df %>%
                arrow = arrow(length = unit(0.03, "npc"))) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
-  scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
+  scale_shape_manual(values = c(8, 0, 6, 2, 1)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   scale_y_reverse()
 
 pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi
 
-# ggsave("../pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi.pdf", plot = pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi, device = "pdf",
-#        scale = 1, width = 7, height = 5, units = c("in"),
-#        dpi = 300)
+ggsave("../pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi.pdf", plot = pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi, device = "pdf",
+       scale = 1, width = 7, height = 5, units = c("in"),
+       dpi = 300)
 
 pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi_label <- H2KO_nomod.pca_df %>%
   mutate(PC1 = PC1 / corr_lam[1],
          PC2 = PC2 / corr_lam[2]) %>%
   ggplot(.,
-         aes(x = PC1, y = PC2, colour = Host_Genus)) +
-  geom_point(size = 2, aes(colour = Host_Genus, shape = Host_Genus)) +
+         aes(x = PC1, y = PC2, colour = Host_Common)) +
+  geom_point(size = 2, aes(colour = Host_Common, shape = Host_Common)) +
   geom_segment(data = pc2_pws_nomod,
                aes(xend = PC1, yend = PC2),
                x = 0, y = 0, colour = "black",
@@ -1967,17 +1983,17 @@ pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi_label <- H2KO_nomod.pca_df %>%
                    size = 1.5, colour = "grey20", force = 4) +
 labs(x = paste("PC1 -", pca_expl_vars[1]),
        y = paste("PC2 -", pca_expl_vars[2])) +
-  scale_colour_manual(values = genus_colours[c(1, 2, 3, 4, 4)]) +
-  scale_shape_manual(values = c(8, 0, 1, 2, 6)) +
+  scale_colour_manual(values = common_colours[c(1, 2, 3, 4, 5)]) +
+  scale_shape_manual(values = c(8, 0, 6, 2, 1)) +
   theme_minimal() + theme(text = element_text(size = 14)) +
   theme(text = element_text(size = 14)) +
   scale_y_reverse()
 
 pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi_label
 
-# ggsave("../pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi_label.pdf", plot = pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi_label, device = "pdf",
-#        scale = 1, width = 7, height = 5, units = c("in"),
-#        dpi = 300)
+ggsave("../pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi_label.pdf", plot = pca_H2KO_pc1pc2_outrem_all_nopq_nomod_pc2bi_label, device = "pdf",
+       scale = 1, width = 7, height = 5, units = c("in"),
+       dpi = 300)
 
 ```
 
