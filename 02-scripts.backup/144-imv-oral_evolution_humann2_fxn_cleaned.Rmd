@@ -220,6 +220,10 @@ genus_colours <- c(Alouatta = "#1f78b4", Gorilla = "#6a3d9a", Pan = "#33a02c",
                    LibraryBlank ="#d9d9d9", Plaque = "#d9d9d9", Gut = "#d9d9d9", 
                    Skin = "#d9d9d9", Sediment = "#d9d9d9", Control = "#d9d9d9")
 
+genus_shapes <- c(Alouatta = 8, Gorilla = 0, Pan = 1,Homo = 6,
+                  ExtractionBlank = 3, LibraryBlank = 13, Plaque = 9, 
+                   Gut = 7, Skin = 14, Sediment = 10, Control = 12)
+
 general_colors <- c(Howler = "#1f78b4", Gorilla = "#6a3d9a", Chimp = "#33a02c", 
                     Neanderthal = "#ff7f00", PreagriculturalHuman = "#ff7f00",
                     PreantibioticHuman = "#ff7f00", ModernDayHuman = "#ff7f00", ExtractionControl = "#d9d9d9", 
@@ -4537,6 +4541,32 @@ individual_centroids.list_plot.aminoacids <- ggplot(individual_centroids.list, a
 individual_centroids.list_plot.aminoacids
 ```
 
+```{r adonis_amino_acids}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_aminoacids.euc <- vegdist(h2_KO_aminoacids.pca$X, method = "euclidean", na.rm = T)
+h2_KO_aminoacids.euc.pcoa <- ape::pcoa(h2_KO_aminoacids.euc)
+
+h2_KO_aminoacids.euc.pcoavectors <- as.data.frame(h2_KO_aminoacids.euc.pcoa$vectors)
+h2_KO_aminoacids.euc.pcoavectors <- h2_KO_aminoacids.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_aminoacids.euc.vecmet <- inner_join(h2_KO_aminoacids.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_aminoacids.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_aminoacids.euc ~ Host_Genus, h2_KO_aminoacids.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 ```{r pca_ko_carbs}
 # Carbohydrates
 kegg_carb_kos <- fread("../04-analysis/screening/humann2/tables/kegg_carbohydrates.tsv")
@@ -4674,6 +4704,32 @@ individual_centroids.list_plot.carbs <- ggplot(individual_centroids.list, aes(x=
 individual_centroids.list_plot.carbs
 ```
 
+```{r adonis_carbs}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_carbs.euc <- vegdist(h2_KO_carbs.pca$X, method = "euclidean", na.rm = T)
+h2_KO_carbs.euc.pcoa <- ape::pcoa(h2_KO_carbs.euc)
+
+h2_KO_carbs.euc.pcoavectors <- as.data.frame(h2_KO_carbs.euc.pcoa$vectors)
+h2_KO_carbs.euc.pcoavectors <- h2_KO_carbs.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_carbs.euc.vecmet <- inner_join(h2_KO_carbs.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_carbs.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_carbs.euc ~ Host_Genus, h2_KO_carbs.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 ```{r pca_ko_cofvit}
 # Cofactors and vitamins
 kegg_cofvit_kos <- fread("../04-analysis/screening/humann2/tables/kegg_cofactors_vitamins.tsv")
@@ -4801,6 +4857,32 @@ individual_centroids.list_plot.cofvit <- ggplot(individual_centroids.list, aes(x
   ggtitle("Cofactors and vitamins pathway orthologs")
 
 individual_centroids.list_plot.cofvit
+```
+
+```{r adonis_cofvit}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_cofvit.euc <- vegdist(h2_KO_cofvit.pca$X, method = "euclidean", na.rm = T)
+h2_KO_cofvit.euc.pcoa <- ape::pcoa(h2_KO_cofvit.euc)
+
+h2_KO_cofvit.euc.pcoavectors <- as.data.frame(h2_KO_cofvit.euc.pcoa$vectors)
+h2_KO_cofvit.euc.pcoavectors <- h2_KO_cofvit.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_cofvit.euc.vecmet <- inner_join(h2_KO_cofvit.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_cofvit.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_cofvit.euc ~ Host_Genus, h2_KO_cofvit.euc.vecmet, permutations = 999, by = "margin")
+
 ```
 
 ```{r pca_ko_energy}
@@ -4933,6 +5015,32 @@ individual_centroids.list_plot.energy <- ggplot(individual_centroids.list, aes(x
 individual_centroids.list_plot.energy
 ```
 
+```{r adonis_energy}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_energy.euc <- vegdist(h2_KO_energy.pca$X, method = "euclidean", na.rm = T)
+h2_KO_energy.euc.pcoa <- ape::pcoa(h2_KO_energy.euc)
+
+h2_KO_energy.euc.pcoavectors <- as.data.frame(h2_KO_energy.euc.pcoa$vectors)
+h2_KO_energy.euc.pcoavectors <- h2_KO_energy.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_energy.euc.vecmet <- inner_join(h2_KO_energy.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_energy.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_energy.euc ~ Host_Genus, h2_KO_energy.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 ```{r pca_ko_glycans}
 # Glycans
 kegg_glycans_kos <- fread("../04-analysis/screening/humann2/tables/kegg_glycans.tsv")
@@ -5060,6 +5168,32 @@ individual_centroids.list_plot.glycans <- ggplot(individual_centroids.list, aes(
   ggtitle("Carbohydrate pathway orthologs")
 
 individual_centroids.list_plot.glycans
+```
+
+```{r adonis_glycans}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_glycans.euc <- vegdist(h2_KO_glycans.pca$X, method = "euclidean", na.rm = T)
+h2_KO_glycans.euc.pcoa <- ape::pcoa(h2_KO_glycans.euc)
+
+h2_KO_glycans.euc.pcoavectors <- as.data.frame(h2_KO_glycans.euc.pcoa$vectors)
+h2_KO_glycans.euc.pcoavectors <- h2_KO_glycans.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_glycans.euc.vecmet <- inner_join(h2_KO_glycans.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_glycans.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_glycans.euc ~ Host_Genus, h2_KO_glycans.euc.vecmet, permutations = 999, by = "margin")
+
 ```
 
 ```{r pca_ko_lipids}
@@ -5199,6 +5333,32 @@ individual_centroids.list_plot.lipids <- ggplot(individual_centroids.list, aes(x
 individual_centroids.list_plot.lipids
 ```
 
+```{r adonis_lipids}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_lipids.euc <- vegdist(h2_KO_lipids.pca$X, method = "euclidean", na.rm = T)
+h2_KO_lipids.euc.pcoa <- ape::pcoa(h2_KO_lipids.euc)
+
+h2_KO_lipids.euc.pcoavectors <- as.data.frame(h2_KO_lipids.euc.pcoa$vectors)
+h2_KO_lipids.euc.pcoavectors <- h2_KO_lipids.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_lipids.euc.vecmet <- inner_join(h2_KO_lipids.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_lipids.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_lipids.euc ~ Host_Genus, h2_KO_lipids.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 ```{r pca_ko_membrane}
 # Membrane transport
 kegg_membrane_kos <- fread("../04-analysis/screening/humann2/tables/kegg_membrane_transport.tsv")
@@ -5326,6 +5486,32 @@ individual_centroids.list_plot.membrane <- ggplot(individual_centroids.list, aes
   ggtitle("Membrane pathway orthologs")
 
 individual_centroids.list_plot.membrane
+```
+
+```{r adonis_membrane}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_membrane.euc <- vegdist(h2_KO_membrane.pca$X, method = "euclidean", na.rm = T)
+h2_KO_membrane.euc.pcoa <- ape::pcoa(h2_KO_membrane.euc)
+
+h2_KO_membrane.euc.pcoavectors <- as.data.frame(h2_KO_membrane.euc.pcoa$vectors)
+h2_KO_membrane.euc.pcoavectors <- h2_KO_membrane.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_membrane.euc.vecmet <- inner_join(h2_KO_membrane.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_membrane.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_membrane.euc ~ Host_Genus, h2_KO_membrane.euc.vecmet, permutations = 999, by = "margin")
+
 ```
 
 ```{r pca_ko_motility}
@@ -5457,6 +5643,32 @@ individual_centroids.list_plot.motility <- ggplot(individual_centroids.list, aes
 individual_centroids.list_plot.motility
 ```
 
+```{r adonis_motility}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_motility.euc <- vegdist(h2_KO_motility.pca$X, method = "euclidean", na.rm = T)
+h2_KO_motility.euc.pcoa <- ape::pcoa(h2_KO_motility.euc)
+
+h2_KO_motility.euc.pcoavectors <- as.data.frame(h2_KO_motility.euc.pcoa$vectors)
+h2_KO_motility.euc.pcoavectors <- h2_KO_motility.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_motility.euc.vecmet <- inner_join(h2_KO_motility.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_motility.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_motility.euc ~ Host_Genus, h2_KO_motility.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 ```{r pca_ko_nucleotide}
 # Nucleotides
 kegg_nucleotides_kos <- fread("../04-analysis/screening/humann2/tables/kegg_nucleotides.tsv")
@@ -5586,6 +5798,32 @@ individual_centroids.list_plot.nucleotide <- ggplot(individual_centroids.list, a
 individual_centroids.list_plot.nucleotide
 ```
 
+```{r adonis_nucleotide}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_nucleotide.euc <- vegdist(h2_KO_nucleotide.pca$X, method = "euclidean", na.rm = T)
+h2_KO_nucleotide.euc.pcoa <- ape::pcoa(h2_KO_nucleotide.euc)
+
+h2_KO_nucleotide.euc.pcoavectors <- as.data.frame(h2_KO_nucleotide.euc.pcoa$vectors)
+h2_KO_nucleotide.euc.pcoavectors <- h2_KO_nucleotide.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_nucleotide.euc.vecmet <- inner_join(h2_KO_nucleotide.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_nucleotide.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_nucleotide.euc ~ Host_Genus, h2_KO_nucleotide.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 ```{r pca_ko_replication}
 # Replication and DNA repair
 kegg_replic_kos <- fread("../04-analysis/screening/humann2/tables/kegg_replication_repair.tsv")
@@ -5713,4 +5951,30 @@ individual_centroids.list_plot.replication <- ggplot(individual_centroids.list, 
   ggtitle("Replication & DNA repair pathway orthologs")
 
 individual_centroids.list_plot.replication
+```
+
+```{r adonis_replication}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+h2_KO_replic.euc <- vegdist(h2_KO_replic.pca$X, method = "euclidean", na.rm = T)
+h2_KO_replic.euc.pcoa <- ape::pcoa(h2_KO_replic.euc)
+
+h2_KO_replic.euc.pcoavectors <- as.data.frame(h2_KO_replic.euc.pcoa$vectors)
+h2_KO_replic.euc.pcoavectors <- h2_KO_replic.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+h2_KO_replic.euc.vecmet <- inner_join(h2_KO_replic.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+h2_KO_replic.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(h2_KO_replic.euc ~ Host_Genus, h2_KO_replic.euc.vecmet, permutations = 999, by = "margin")
+
 ```

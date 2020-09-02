@@ -1006,6 +1006,32 @@ individual_centroids.list_plot.aminoacids <- ggplot(individual_centroids.list, a
 individual_centroids.list_plot.aminoacids
 ```
 
+```{r adonis_amino_acids}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.aminoacid.aadder_L4.euc <- vegdist(decontam.outrem.calc.aminoacid.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.aminoacid.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.aminoacid.aadder_L4.euc)
+
+decontam.outrem.calc.aminoacid.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.aminoacid.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.aminoacid.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.aminoacid.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.aminoacid.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.aminoacid.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.aminoacid.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.aminoacid.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.aminoacid.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 Now L4 *Carbohydrate* category enzymes calculus samples decontaminated and
 filtered for only >0.05% abundance and remove outliers. Use the table generated
 here to select out just the Carbohydrate category enzymes for the next step.
@@ -1169,6 +1195,31 @@ individual_centroids.list_plot.carbs
 
 ```
 
+```{r adonis_carbs}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.carb.aadder_L4.euc <- vegdist(decontam.outrem.calc.carb.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.carb.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.carb.aadder_L4.euc)
+
+decontam.outrem.calc.carb.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.carb.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.carb.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.carb.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.carb.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.carb.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.carb.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.carb.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.carb.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
+```
 
 Now L4 *Cofactors and Vitamins* category enzymes calculus samples decontaminated
 and filtered for only >0.05% abundance and remove outliers. Use the table
@@ -1319,6 +1370,32 @@ individual_centroids.list_plot.cofvits <- ggplot(individual_centroids.list, aes(
   ggtitle("SEED - Cofactors and Vitamins")
 
 individual_centroids.list_plot.cofvits
+```
+
+```{r adonis_cofactors_vitamins}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.cofvit.aadder_L4.euc <- vegdist(decontam.outrem.calc.cofvit.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.cofvit.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.cofvit.aadder_L4.euc)
+
+decontam.outrem.calc.cofvit.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.cofvit.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.cofvit.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.cofvit.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.cofvit.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.cofvit.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.cofvit.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.cofvit.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.cofvit.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
 ```
 
 *Won't run*
@@ -1625,6 +1702,32 @@ individual_centroids.list_plot.cellwalls
 ```
 
 
+```{r adonis_cellwall}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.cellwall.aadder_L4.euc <- vegdist(decontam.outrem.calc.cellwall.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.cellwall.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.cellwall.aadder_L4.euc)
+
+decontam.outrem.calc.cellwall.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.cellwall.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.cellwall.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.cellwall.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.cellwall.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.cellwall.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.cellwall.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.cellwall.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.cellwall.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 Now L4 *Fatty Acids, Lipids, and Isoprenoids* category enzymes calculus samples
 decontaminated and filtered for only >0.05% abundance and remove outliers. Use
 the table generated here to select out just the Carbohydrate category enzymes
@@ -1788,6 +1891,31 @@ individual_centroids.list_plot.fattyacids <- ggplot(individual_centroids.list, a
 individual_centroids.list_plot.fattyacids
 ```
 
+```{r adonis_FAs}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.fattyacids.aadder_L4.euc <- vegdist(decontam.outrem.calc.fattyacids.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.fattyacids.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.fattyacids.aadder_L4.euc)
+
+decontam.outrem.calc.fattyacids.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.fattyacids.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.fattyacids.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.fattyacids.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.fattyacids.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.fattyacids.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.fattyacids.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.fattyacids.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.fattyacids.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
+```
 
 Now L4 *Membrane Transport* category enzymes calculus samples decontaminated and
 filtered for only >0.05% abundance and remove outliers. Use the table generated
@@ -1939,6 +2067,31 @@ individual_centroids.list_plot.membrane <- ggplot(individual_centroids.list, aes
 individual_centroids.list_plot.membrane
 ```
 
+```{r adonis_membrane}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.membrane.aadder_L4.euc <- vegdist(decontam.outrem.calc.membrane.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.membrane.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.membrane.aadder_L4.euc)
+
+decontam.outrem.calc.membrane.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.membrane.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.membrane.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.membrane.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.membrane.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.membrane.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.membrane.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.membrane.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.membrane.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
+```
 
 Now L4 *Motility* category enzymes calculus samples decontaminated and filtered
 for only >0.05% abundance and remove outliers. Use the table generated here to
@@ -2085,7 +2238,32 @@ individual_centroids.list_plot.motility <- ggplot(individual_centroids.list, aes
 
 individual_centroids.list_plot.motility
 ```
+There isn't enough variation in the motility-related genes to run this
+```{r adonis_motility, eval = F}
 
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.motility.aadder_L4.euc <- vegdist(decontam.outrem.calc.motility.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.motility.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.motility.aadder_L4.euc)
+
+decontam.outrem.calc.motility.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.motility.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.motility.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.motility.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.motility.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.motility.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.motility.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.motility.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.motility.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
+```
 
 Now L4 *Nucleotides and Nucleosides, Nucleotide sugars* category enzymes
 calculus samples decontaminated and filtered for only >0.05% abundance and
@@ -2240,6 +2418,32 @@ individual_centroids.list_plot.nucleotide
 ```
 
 
+```{r adonis_nucleotides}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.nucleotide.aadder_L4.euc <- vegdist(decontam.outrem.calc.nucleotide.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.nucleotide.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.nucleotide.aadder_L4.euc)
+
+decontam.outrem.calc.nucleotide.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.nucleotide.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.nucleotide.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.nucleotide.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.nucleotide.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.nucleotide.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.nucleotide.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.nucleotide.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.nucleotide.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 Now L4 *Cell Division Cell Cycle, DNA Repair* category enzymes calculus samples
 decontaminated and filtered for only >0.05% abundance and remove outliers. Use
 the table generated here to select out just the Carbohydrate category enzymes
@@ -2391,6 +2595,32 @@ individual_centroids.list_plot.replication <- ggplot(individual_centroids.list, 
 individual_centroids.list_plot.replication
 ```
 
+```{r adonis_replication}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+decontam.outrem.calc.replication.aadder_L4.euc <- vegdist(decontam.outrem.calc.replication.aadder_L4.pca$X, method = "euclidean", na.rm = T)
+decontam.outrem.calc.replication.aadder_L4.euc.pcoa <- ape::pcoa(decontam.outrem.calc.replication.aadder_L4.euc)
+
+decontam.outrem.calc.replication.aadder_L4.euc.pcoavectors <- as.data.frame(decontam.outrem.calc.replication.aadder_L4.euc.pcoa$vectors)
+decontam.outrem.calc.replication.aadder_L4.euc.pcoavectors <- decontam.outrem.calc.replication.aadder_L4.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+decontam.outrem.calc.replication.aadder_L4.euc.vecmet <- inner_join(decontam.outrem.calc.replication.aadder_L4.euc.pcoavectors, fullmetadata %>% select(SampleID, Host_Genus), by = "SampleID")
+
+decontam.outrem.calc.replication.aadder_L4.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(decontam.outrem.calc.replication.aadder_L4.euc ~ Host_Genus, decontam.outrem.calc.replication.aadder_L4.euc.vecmet, permutations = 999, by = "margin")
+
+```
+
 ## Bi-plots of L4 PCAs
 
 Make bi-plots for PC1 on the L4 decontam, outrem pca
@@ -2432,9 +2662,8 @@ pc1_neg <- pca_loadings_df %>%
 corr_lam <- decontam.outrem.calc.aadder_L4.pca$sdev[c("PC1", "PC2")] * sqrt(nrow(decontam.outrem.calc.aadder_L4.pca_df))
 
 # make Host Genus a factor for plotting
-decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common <- factor(decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common, 
+decontam.outrem.calc.aadder_L4.pca_df$Host_Common <- factor(decontam.outrem.calc.aadder_L4.pca_df$Host_Common, 
                                  levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Plaque"))
-
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC1 
 pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc1bi <- decontam.outrem.calc.aadder_L4.pca_df %>%
@@ -2544,9 +2773,8 @@ pc2_neg <- pca_loadings_df %>%
 corr_lam <- decontam.outrem.calc.aadder_L4.pca$sdev[c("PC1", "PC2")] * sqrt(nrow(decontam.outrem.calc.aadder_L4.pca_df))
 
 # make Host Genus a factor for plotting
-decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common <- factor(decontam.outrem.calc.aadder_L4_nomodern.pca_df$Host_Common, 
+decontam.outrem.calc.aadder_L4.pca_df$Host_Common <- factor(decontam.outrem.calc.aadder_L4.pca_df$Host_Common, 
                                  levels = c("Alouatta", "Gorilla", "Pan", "Homo (Neanderthal)", "Homo (Modern Human)", "Plaque"))
-
 
 # Plot the top 10 negative and positive paths that are strongest loading in PC1 
 pca_decontam.outrem.calc.aadder_L4_pc1pc2_pc2bi <- decontam.outrem.calc.aadder_L4.pca_df %>%
