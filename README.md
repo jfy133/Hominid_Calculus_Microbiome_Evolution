@@ -108,7 +108,7 @@ proceeding.
 
 <!-- /MarkdownTOC -->
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R1 Introduction
 
@@ -212,7 +212,7 @@ README.md             ## This walkthrough
 > begins with `../0{1,2,4}`. If it does not, let us know and we will fix
 > this accordingly.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R2 Resources
 
@@ -227,7 +227,7 @@ however these are directly related to our system. As far as we can, we have
 removed SLURM commands and/or MPI-SHH specific paths or parameters, but you
 should always check this for each command and script.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R2.1 Software
 
@@ -264,7 +264,7 @@ Geneious                | R8                      | [https://www.geneious.com/](
 IGV                     | 2.4                     | [https://software.broadinstitute.org/software/igv/](https://software.broadinstitute.org/software/igv/)
 Inkscape                | 0.92                    | [www.inkscape.org](www.inkscape.org)
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R2.2 R Packages
 
@@ -353,7 +353,7 @@ Here we used R version 3.6.1
 |      XML       | 3.98-1.20  |                                     [http://www.omegahat.net/RSXML](http://www.omegahat.net/RSXML)                                      |
 | zCompositions  |  1.3.2-1   |      Not provided |
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R2.3 Sequence Databases
 
@@ -368,7 +368,7 @@ UniRef           | uniref90_ec_filtered_diamond | Oct. 2018     | [https://bitbu
 
 > :warning: SILVA FASTA was modified after downloading replacing Us with Cs
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R2.4 Single Reference Genomes
 
@@ -398,7 +398,7 @@ _Treponema socranskii subsp. paredies_        | ATCC 35535  | 2018-05-31     | S
 
 > :warning: The reference files are not provided here due to their large size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R3 Software Paths
 
@@ -416,15 +416,15 @@ however you will need to check each path correctly.
 For direct commands (i.e. not used in a script), the path will either
 be defined in the command block or assumed already in your `$PATH`.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R4 Database and Genome Indexing
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R4.1 MALT Databases
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R4.1.1 nt
 
@@ -432,31 +432,31 @@ The MALT nt databases was downloaded and generated as follows.
 
 ```bash
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## MALT indexed NT database
 mkdir -p 01-data/databases/malt/raw 01-data/databases/malt/indexed
 cd 01-data/databases/malt/raw
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### Download nucleotide database fasta and md5sum file into a database directory
 wget ftp://ftp-trace.ncbi.nih.gov/blast/db/FASTA/nt.gz .
 wget ftp://ftp-trace.ncbi.nih.gov/blast/db/FASTA/nt.gz.md5 .
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### Generate the md5sum of the downloaded file, and comapre with contents of
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### the NCBI .md5 version
 md5sum nt.gz
 cat nt.gz.md5
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### Download into a different directory the accession to taxonomy mapping file
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### as provided on the MEGAN6 website, and unzip
 mkdir 01-data/databases/malt/acc2bin
@@ -474,7 +474,7 @@ malt-build \
 
 > :warning: The database files are not provided here due to their large size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R4.1.2 Custom RefSeq
 
@@ -484,7 +484,7 @@ R notebook  here: `02-scripts.backup/099-refseq_genomes_bacteria_archaea_homo_co
 A corresponding list of genomes selected for use in this database can be seen
 in in `06-additional_data_files` under Data R10.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R4.2 AADDER Database
 
@@ -495,7 +495,7 @@ calls the `adder-build` command as provided in the MEGAN install directory's
 `tools` folder. Note we have to change the `MEGAN.vmoptions` to have a large
 enough memory allocation in the MEAN install directory.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R4.3 BWA Indexing
 
@@ -521,7 +521,7 @@ O=SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.dict
 
 > :warning: The indexing files are not provided here due to their large size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R4.4 UniRef Database
 
@@ -534,7 +534,7 @@ humann2_databases --download uniref uniref90_ec_filtered_diamond 01-data/databas
 
 > :warning: The database files are not provided here due to their large size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R4.5 Database analysis profile
 
@@ -543,15 +543,15 @@ For the scripts using `analysis_profile` file, ensure to update the paths in
 corresponding location.
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## MALT DB Directory containing all database files
 MALTDB=<PATH_TO>/malt/databases/indexed/index038/full-nt_2017-10
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## SILVA DB directory containing the converted U to T FASTA file and associated bwa indexed files
 SILVADB=<PATH_TO>01/databases/silva/release_128_DNA/
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## GreenGenes DB directory, as provided in QIIME
 GREENGENESDB=<PATH_TO>/tools/qiime-environment/1.9.1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus
@@ -559,7 +559,7 @@ GREENGENESDB=<PATH_TO>/tools/qiime-environment/1.9.1/lib/python2.7/site-packages
 HG19REF=<PATH_TO>/Reference_Genomes/Human/HG19/hg19_complete.fasta
 ```
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R5 Data Acquisition
 
@@ -574,7 +574,7 @@ The same information but for controls can be seen in Data R03.
 > :warning: FASTQ files are not provided here due to their large size. Please see
 ENA under accession ID: PRJEB34569
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R5.1 Additional Individuals
 
@@ -606,10 +606,10 @@ rename s/download/2NoAdapt_ELSIDRON1L7_lTACTG_rCTCGA_R1R2_Collapsed_Truncated.fa
 
 cat *fastq.gz > ElSidron1_S0_L000_R1_000.fastq.merged.fq.gz
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## If no concatenation required
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # mv 2NoAdapt_CHIMP_150519_lACGTG_rATTGA_R1R2_Collapsed.fastq.gz Chimp.150519_S0_L000_R1_000.fastq.merged.fq.gz
 
@@ -623,7 +623,7 @@ The just renamed files were then symlinked into the folder above.
 > :warning: FASTQ files are not provided here due to their large size. Please see
 corresponding locations described above
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R5.2 Comparative Sources
 
@@ -728,7 +728,7 @@ The final merged individual fastq files were moved to individual directories in
 > :warning: FASTQ files are not provided here due to their large size. Please see
 corresponding locations described above
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R6 Data Preprocessing
 
@@ -752,11 +752,11 @@ The output of both methods of preprocessing was stored in `03-preprocessing/scre
 
 Procedure is described in more detail in the next sections.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R6.1 Preprocessing
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R6.1.1 Script Version
 
@@ -777,7 +777,7 @@ An example of the loop using with 'premerged' script is as follow (remove the
 `_premerged` section of the script name to run for 'raw' FASTQs)
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Cycle through INDIR corresponding to each type of data (paired/single, hiseq/nextseq, pre-merged etc.)
 INDIR=03-preprocessing/screening/human_filtering/input/hiseq_single
@@ -795,7 +795,7 @@ for LIBDIR in "$INDIR"/*/; do
 done
 ```
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R6.1.2 EAGER Version
 
@@ -858,7 +858,7 @@ To run clean-on on single libraries:
 ```bash
 cd 03-preprocessing/screening/human_filtering/output
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Clean up
 SAMPLE=LIB007.A0124
@@ -937,11 +937,11 @@ done
 
 > :warning: The per-sample EAGER output files are not provided here due to their large size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R6.2 Post-Processing
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R6.2.1 EAGER preprocessing dataset BAM to FASTQ Conversion
 
@@ -958,7 +958,7 @@ done
 
 > :warning: The unmapped-read FASTQ files are not provided here due to their large size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R6.2.2 Statistics
 
@@ -974,7 +974,7 @@ cd 03-preprocessing/screening/human_filtering
 
 "$SCRIPTS"/005-statistics_human_filtering.sh output/
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Copy to documentation folder
 mv human_filtering_statistics_"$(date +"%Y%m%d")".csv ..
@@ -992,7 +992,7 @@ For the deep sequenced data, the EAGER table was used for report statistics (see
 below forfurther information), and can be seen in `06-additional_data_files` 
 under Data R08.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R6.2.3 Library Merging
 
@@ -1030,7 +1030,7 @@ we did not consider possible differences in sampling tooth source of the
 calculus, and therefore pooled accordingly either at sampling or 
 _in silico_ here.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ##### Libraries not requiring merging
 
@@ -1040,14 +1040,14 @@ we quickly imported all files for all individuals as symlinks
 ```bash
 cd 03-preprocessing/screening/library_merging
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Make directory
 for DIR in ../../screening/human_filtering/output/*/; do
   mkdir "$(echo $DIR | rev | cut -d/ -f2 | rev)/"
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Make symlink of FastQ into new directory above.
 for DIR in ../../screening/human_filtering/output/*/; do
@@ -1055,7 +1055,7 @@ for DIR in ../../screening/human_filtering/output/*/; do
 done
 ```
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ##### Libraries requiring merging
 
@@ -1150,7 +1150,7 @@ summarised across multiple libraries using the R notebook
 
 Visualisation of summary statistics can also be seen [below](#r64-preprocessing-results-summary).
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R6.3 Poly-G Trimming Assessment
 
@@ -1236,7 +1236,7 @@ Visualisation of summary poly-G trimming statistics can also be seen [below](#r6
 > :warning: The EAGER run output files are not provided here due to their large
 > size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R6.4 Preprocessing Results Summary
 
@@ -1263,11 +1263,11 @@ The general metadata file for all main individual-level pre-processing
 statistics can be seen in `06-additional_data_files` under Data R04. This file
 is typically used as input for all downstream analyses, when required.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R7 Metagenomic Screening
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R7.1 MALT
 
@@ -1276,7 +1276,7 @@ controls and comparative samples is to perform taxonomic binning and
 classification. This allows us to rapidly identify what species are present in
 each library.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R7.1.1 MALT Running
 
@@ -1309,7 +1309,7 @@ database, see [below](#r124-aadder-analysis)
 
 > :warning: The RMA6 files are not provided here due to their large size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R7.1.2 MALT Summary Statistics
 
@@ -1350,11 +1350,11 @@ column of our the final main screening metadata file
 Summary statistics on the number of reads assigned per individual to the
 MALT and RefSeq databases can be seen [below](#r73-assigned-reads-summaries-and-database-comparison)
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R7.2 MEGAN
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R7.2.1 MEGAN Running
 
@@ -1385,7 +1385,7 @@ the corresponding `.megan`, `.nwk`  and OTU tables at various taxonomic
 levels (as exported by MEGAN) for both Nt and [RefSeq](#r125-malt-refSeq)
 databases can be seen in `06-additional_data_files` under Data R11.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R7.2.2 Additional Raw OTU Tables
 
@@ -1398,7 +1398,7 @@ were generated by the Notebook
 as `.tsv` files in the `04-analysis/screening/megan.backup`
 directory as well `06-additional_data_files` under Data R11.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R7.2.3 Prokaryotic vs. Eukaryotic MALT content Comparison
 
@@ -1411,7 +1411,7 @@ be seen in `02-scripts.backup/099-cumulativedecay_vs_sourcetracker.Rmd`.
 Visualisation of this analysis can be seen
 [below](#r73-assigned-reads-summaries-and-database-comparison)
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R7.3 Assigned Reads Summaries and Database Comparison
 
@@ -1455,7 +1455,7 @@ for further discussion of these observations.
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R8 Preservation Screening
 
@@ -1467,7 +1467,7 @@ complications in downstream analysis. Identifying well-preserved samples
 containing a sufficient fraction of the original microbiome is critical, but
 equally so is assessing that their DNA is not derived from modern contamination.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R8.1 Cumulative Percent Decay Plots
 
@@ -1562,7 +1562,7 @@ samples passed the calculated threshold in the tables below.
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R8.2 Source Estimation
 
@@ -1571,7 +1571,7 @@ established approach, Sourcetracker analysis. However this typically uses an OTU
 table of 16S rRNA reads to estimate the proportion of OTUs derived from the
 sources that are also in your sample.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R8.2.1 16S Extraction
 
@@ -1611,12 +1611,12 @@ SCRIPTS=02-scripts.backup/02-scripts.backup
 
 cd 02-scripts.backup/03-preprocessing/screening
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Generate stats
 "$SCRIPTS"/011-16s_extraction_statistics.sh silva_16s_reads/
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Copy into documentation folder
 mv silva_16s_reads/16s_extraction_statistics_"$(date +"%Y%m%d")".csv .
@@ -1645,7 +1645,7 @@ figures below.
 Summary statistic visualisation of mapping can be seen under
 `02-scripts.backup/099-16sResults.Rmd`
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R8.2.2 16S Clustering
 
@@ -1740,7 +1740,7 @@ cd "$OUTDIR"
 biom summarize-table -i "$OUTDIR"/otu_picking/otu_table.biom >> \
 "$OUTDIR"/otu_picking/otu_table_summary.txt
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Check with:
 head "$OUTDIR"/otu_picking/otu_table_summary.txt -n 20
@@ -1768,7 +1768,7 @@ filter_samples_from_otu_table.py \
 biom summarize-table -i "$INDIR"/otu_table_1000OTUsfiltered.biom >> \
 "$INDIR"/otu_table_1000OTUsfiltered_summary.txt
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Check with:
 head "$INDIR"/otu_table_1000OTUsfiltered_summary.txt -n 20
@@ -1784,7 +1784,7 @@ To filter to Genus (L6) level we then did
 cd 04-analysis/screening/qiime/output/otu_picking
 INDIR=04-analysis/screening/qiime/output/otu_picking
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## For Genus
 summarize_taxa.py \
@@ -1793,7 +1793,7 @@ summarize_taxa.py \
 -a \
 -L 6
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Fix crappy taxon ID that breaks loading into R when running Sourcetracker :+1: due to hanging quote
 sed s#\'Solanum#Solanum#g otu_table_1000OTUsfiltered_L6.txt > otu_table_1000OTUsfiltered_L6_cleaned.tsv
@@ -1819,7 +1819,7 @@ Sourcetracker.
 Summary statistic visualisation of clustering was generated via the Rmarkdown
 notebook `02-scripts.backup/099-16sResults.Rmd`.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R8.2.3 Sourcetracker
 
@@ -1839,7 +1839,7 @@ needed to ensure there was an 'Env' and a 'SourceSink' column.
 To then to run Sourcetracker we ran the following command:
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## change to new directory for output directories
 INDIR=04-analysis/screening/qiime/output/otu_picking
@@ -1874,7 +1874,7 @@ For plotting of these - with comparison to the cumulative percent decay plots,
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R8.3 Ratio of Eukaryotic to Prokaryotic Alignments
 
@@ -1900,11 +1900,11 @@ of the results, please refer to the main publication.
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R8.4 Damage Patterns
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R8.4.1 MEx-IPA
 
@@ -1948,7 +1948,7 @@ display indicative characteristics of true endogenous DNA.
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R8.4.2 DamageProfiler
 
@@ -1972,11 +1972,11 @@ oral taxa.
 The collated results for the whole screening dataset are stored in the file
 `00-documentation.backup/14-damageprofiler_screening_3p_5p_summaries_20191113.csv`.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R8.5 Laboratory Contaminants
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R8.5.1 decontam
 
@@ -2020,7 +2020,7 @@ analyses when indicated.
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R8.5.2 Contaminant Impact Check
 
@@ -2044,7 +2044,7 @@ is shown in figure R18.
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R9 Compositional Analysis
 
@@ -2054,7 +2054,7 @@ our different host groups. We wanted to identify taxonomic similarities and
 differences between each of the groups to help reconstruct the evolutionary
 (co-)history of the microbiomes and their hosts.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R9.1 Principal Coordinate Analysis
 
@@ -2159,7 +2159,7 @@ we observed little difference (Figure R19).
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R9.2 PERMANOVA
 
@@ -2234,7 +2234,7 @@ Overall we found that despite some overlap (as seen in the PCoA analysis, the
 calculus microbiomes of each host genus could be considered statistically
 distinct.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R9.3 Hierarchical Clustering Heatmaps
 
@@ -2265,7 +2265,7 @@ most robust overall bootstrap support in the deepest nodes (i.e. the ones we
 are most interested in this study - splits between host genus level clades)
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Additional min. support filtering, no genus filtering
 Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt species noSources noControls out withinvariation none pseudo 4 5
@@ -2290,7 +2290,7 @@ The final figures for both databases can be seen collated in
  aerobic taxa,  whereas _Pan_ had lower diversity but consisted primarily of
  anaerobic and late colonising taxa.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R9.3.1 Zero replacement validation
 
@@ -2306,7 +2306,7 @@ Comparing the zero replacement methods showed no difference between clustering.
 There were only cosmetic tree topology changes with clade rotation, i.e. no
 structural changes. The output is saved as in the same directory at above.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R9.3.2 Indicator Analysis
 
@@ -2319,7 +2319,7 @@ The results can be seen can be seen in `06-additional_data_files` under Data
 R21 or in `04-analysis/screening/indicspecies.backup`, with discussion in
 the main publication.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R9.4 Clustering by Diet
 
@@ -2353,15 +2353,15 @@ Much more balanced and controlled sampling is required to address this question
 to recover whether diet indeed effects the taxonomic compositional of oral
 microbiomes.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R10 Core Microbiome Analysis
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R10.1 Core Microbiome Calculation
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R10.1.1 Core Microbiome Procedure
 
@@ -2394,7 +2394,7 @@ preservational and biological variability, while having enough
 individuals/populations for corroboration that a taxon could be considered
 'core'.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R10.1.2 Min. Support Testing
 
@@ -2444,7 +2444,7 @@ genus' combination.
 The raw data for the min. support permutation comparison can be seen under
 `06-additional_data_files` in Data R23.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R10.1.3 Single Population Testing
 
@@ -2461,13 +2461,13 @@ and permutating whether any populations with a single individual were dropped
 or not.
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Final being minSupport of X, 0.5 inds of population, and 66 pops of genus,
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## min. support 0.7 for genus and 0.4 for species, and testing whether dropping
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## single individual populations makes a difference.
 
@@ -2501,7 +2501,7 @@ Discussion of these results can be seen in the main publication. In general,
 only minor differences were observed suggesting the Gorilla core was generally
 robust.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R10.1.4 Investigation into Mycobacterium as Core Genus
 
@@ -2526,7 +2526,7 @@ this was likely derived from taphonomic causes.
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R10.1.5 Core Microbiome Intersection Between Hosts
 
@@ -2563,7 +2563,7 @@ in this study. These taxa span all layers of the known biofilm structure in
 modern human calculus, suggesting a highly conserved structural core across
 deep time. See main publication for further discussion.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R10.2 Core Microbiome MaltExtract
 
@@ -2596,7 +2596,7 @@ MaltExtract \
 See [above](#r841-mex-ipa) for the raw MaltExtract results - as this data has
 been uploaded to the Github repository for MEx-IPA.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R11 Genome Reconstruction and Phylogenetics
 
@@ -2616,7 +2616,7 @@ predicted effect would be reads from off-target genomes would be attracted to
 the original related strains/species and thus would not be present on the
 reference of interest itself.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R11.1 Production dataset sequencing depth calculations
 
@@ -2706,7 +2706,7 @@ functional analysis analysis.
 > Additional samples were also included if previously deep sequenced for
 > other contexts
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R11.2 Super-reference construction
 
@@ -2760,7 +2760,7 @@ FASTAs were indexed as [above](#r43-bwa-indexing)
 
 > :warning: Reference files and indices are not included due to large size
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R11.3 Super-reference alignment and species selection
 
@@ -2819,11 +2819,11 @@ Output results for this statistics can also be see under
 `04-analysis/deep/eager/superreference_mapping/output` or collated in
 `06-additional_data_files` under Data R28.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R11.4 Comparative single reference mapping
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R11.4.1 Reference selection methods
 
@@ -2851,7 +2851,7 @@ We did this via both 'visual inspection' of plots, and tried an
 'automated' approach by selecting which taxon was top of the highest number of
 the 5 metrics used (see notebook for both procedures).
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R11.4.1 Reference selection comparison and final selection
 
@@ -2943,7 +2943,7 @@ genome can be seen in `06-additional_data_files` under Data R30.
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R11.5 Performance of super-reference vs. single genome mapping
 
@@ -3053,7 +3053,7 @@ species of interest).
 Aggregation of this threshold parameter observation across all mappings can be
 seen in `04-analysis/deep/competitive_mapping.backup/multiallelic_snps/`.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R11.6 Variant calling and single-allelic position assessment
 
@@ -3089,7 +3089,7 @@ The final snpAlignment and snpStatistics files can be seen in `04-analysis/deep/
 > :warning: The remaining MultiVCFAnalyzer results are not provided here due to
 > large size.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R11.7 Phylogenies
 
@@ -3107,7 +3107,7 @@ e.g.
 
 ```bash
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Initial Single Genomes
 for i in 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/*/snpAlignment.fasta.gz; do
@@ -3116,7 +3116,7 @@ for i in 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_
   echo ""
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # 'cause Howlers are weird with P. gingivalis
 Rscript 02-scripts.backup/042-generate_NJ_tree.R 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/Porphyromonas_gingivalis_ATCC_33277/snpAlignment.fasta.gz 2000 JC69 100 OME003
@@ -3170,7 +3170,7 @@ clustered together, but the relationships between these clades did not match
 the phylogenetic relationships between the hosts. See main publication for
 further discussion on the interpretation of the trees topologies.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R11.8 Pre- and Post-14k BP Observation Verification
 
@@ -3178,7 +3178,7 @@ In the trees generated above, we also observed that single deep sequenced
 pre-14ky BP individual (Red Lady/EMN001) _always_ clustered with Neanderthals,
 whereas post-14ky BP individuals mostly fell with modern day humans.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R11.8.1 Production dataset overlapping positions analysis
 
@@ -3218,7 +3218,7 @@ Overall we observed Neanderthals did not have any more or less SNP positions
 than other human combinations, suggesting clustering is not due to conserved
 or reconstruction of the wrong species genome used in the SNP alignment.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R11.8.2 Screening datasets phylogenies
 
@@ -3303,7 +3303,7 @@ In general we saw, albeit at lower resolution, similar patterns where the
 pre-14ky individuals still fell with the Neanderthal individuals, while the
 post-14k individuals fell with other ancient and/or modern humans.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## R12 Functional Analysis
 
@@ -3314,7 +3314,7 @@ considered 'pathogenic' red complex taxa (but is increasingly being shown to
 be either opportunistic commensals or having many commensal relatives) over
 the evolution of Anthropoids.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R12.1 Virulence Factors
 
@@ -3361,11 +3361,11 @@ within most individuals of the deep sequenced dataset, whereas there was
 more variation in in _P. gingivalis_, with the Mfa family of fimbrae genes
 seemingly missing in _Alouatta_ and _Pan_.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R12.2 Amylase
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R12.2.1 Streptococcus Distribution
 
@@ -3407,7 +3407,7 @@ shown to display amylase-binding activity compared to other host genera
 (although also with a greater level of overall streptococci reads aligning to
 untested taxa in the non-_Homo_ hosts)
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R12.2.2 Amylase binding protein genes abundance
 
@@ -3429,7 +3429,7 @@ super-reference with the tool panX, using the Genbank files for each
 reference.
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Run panX analysis
 pan-genome-analysis/panX.py \
@@ -3464,7 +3464,7 @@ ran bedtools to recover statistics on the coverage of each annotated gene
 entry.
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Extract reads from abpA and abpB-like regions
 bedtools intersect \
@@ -3501,7 +3501,7 @@ assignments (see Figure R63 below).
 
 ---
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R12.2.3 Amylase bayesian skyline analysis
 
@@ -3522,7 +3522,7 @@ and then all screening samples were searched against both databases using
 blast command line tools:
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## ran once with <abp_database> for abpA and again with <abp_database> for abpB
 gzip -dcf <SAMPLENAME>.fastq.gz | blastn -db <abp_database> -query - -out $(basename <SAMPLENAME> .fasta.gz).out -num_descriptions 20 -num_alignments 20 -num_threads 12
@@ -3576,21 +3576,21 @@ duplicate-removed mapped-only read file was indexed with the following
 procedure:
 
 ```bash
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # convert sam to bam
 for f in *.sam; do
   samtools view -bS $f | samtools sort - $(basename $f .sam).bam
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # select only mapped reads
 for f in *.bam; do
   samtools view -b -F4 $f > $(basename $f .bam).mapped.bam
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # remove duplicates from mapped reads
 for f in *mapped.bam; do
@@ -3598,7 +3598,7 @@ for f in *mapped.bam; do
   samtools index $(basename $f .bam)_rmdup.bam
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # index the mapped, dupliate-removed bam files
 for f in *rmdup.bam; do
@@ -3621,21 +3621,21 @@ bwa aln -n 5 -l 1000 <reference_abp_sequence> <SAMPLENAME>.fastq > <SAMPLENAME>.
 
 bwa samse <reference_abp_sequence> <SAMPLENAME>.abp_reference_seqence.sai <SAMPLENAME> > <SAMPLENAME>.abp_reference_seqence.sam
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # convert sam to bam
 for f in *.sam; do
   samtools view -bS $f | samtools sort - $(basename $f .sam).bam
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # select only mapped reads
 for f in *.bam; do
   samtools view -b -F4 $f > $(basename $f .bam).mapped.bam
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # remove duplicates from mapped reads
 for f in *mapped.bam; do
@@ -3643,14 +3643,14 @@ for f in *mapped.bam; do
   samtools index $(basename $f .bam)_rmdup.bam
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # index the mapped, dupliate-removed bam files
 for f in *rmdup.bam; do
   samtools index $f $(basename $f .bam).bai
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # count the # of mapped, non-duplicate reads
 for f in *rmdup.bam; do
@@ -3695,7 +3695,7 @@ analysis can be seen in `06-additional_data_files` under Data R36.
 Due to low and uneven sample sizes, we were unable to draw confident
 conclusions from these results.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R12.3 HUMANn2
 
@@ -3711,7 +3711,7 @@ contribute to and providing a metabolic pathway profile. We assessed both the
 metabolic pathway profile and the gene content profile of our samples generated
 by HUMAnN2, as detailed below.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R12.3.1 MetaPhlAn2
 
@@ -3737,7 +3737,7 @@ for LIBFILE in "$INDIR"/*/*.fq.gz; do
   fi
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## if re-running with different parameters, here changing fastq to bowtie2out
 
@@ -3758,7 +3758,7 @@ for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
   fi
 done
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Re-running to get estimated read counts with rel_ab to rel_ab_w_read_stats
 
@@ -3780,7 +3780,7 @@ for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
 done
 
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Re-running to get actual rad counts with rel_ab to rel_ab_w_read_stats
 
@@ -3808,7 +3808,7 @@ then did the following.
 ```bash
 cd 04-analysis/screening/metaphlan2/output
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Note, remove metaphlan2.py script in the variable here as using util scripts
 METAPHLAN2=biobakery-metaphlan2-7898bf1/
@@ -3865,7 +3865,7 @@ b) ancient samples with large amounts of 'unknown' environmental contamination.
 Interestingly, the level of reads identified in Plaque samples was much more
 high and consistent than all other groups.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 #### R12.3.2 Running HUMANn2
 
@@ -3916,7 +3916,7 @@ done
 rm */*_genefamilies.tsv
 rm */*_pathabundance.tsv
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 # -s to search subdirectories of current directory to look for the files
 humann2_join_tables --input . --output humann2_genefamilies.tsv --file_name genefamilies_cpm -s
@@ -4075,7 +4075,7 @@ and Lipid metabolic pathways independently.
 
 See the main publication for interpretation of the functional patterns
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R12.4 AADDER Analysis
 
@@ -4090,7 +4090,7 @@ can be seen in `06-additional_data_files` under Data R10.
 We ran this against the custom RefSeq genomes we built above both
 with MALT (fasta files) and AADDER (gff files).
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R12.5 MALT RefSeq
 
@@ -4126,7 +4126,7 @@ The corresponding `.megan`, `.nwk`  and OTU tables at various taxonomic
 levels (as exported by MEGAN) can be seen in `06-additional_data_files` under
 Data R11.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R12.6 Running AADDER
 
@@ -4308,7 +4308,7 @@ and Fatty acid metabolic pathways independently.
 
 See main publication for discussion of these results.
 
-> To jump back to table of contents press [:top:](#table-of-contents)
+> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### R12.7 Overlap between HUMAnN2 and AADDER
 
