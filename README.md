@@ -251,7 +251,7 @@ QIIME                   | 1.9.1                   | Caporaso et al. 2010 Nat. Me
 Sourcetracker           | 1.0.1                   | Knights et al. 2011 Nat. Methods.
 conda                   | 4.7.0                   | [https://conda.io/projects/conda/en/latest/](https://conda.io/projects/conda/en/latest/)
 pigz                    | 2.3                     | [https://zlib.net/pigz/](https://zlib.net/pigz/)
-R                       | 3.4.4                   | [https://www.R-project.org/](https://www.R-project.org/)
+R                       | >=3.5                   | [https://www.R-project.org/](https://www.R-project.org/)
 MaltExtract             | 1.5                     | Hübler et al. 2019 Genome Biology
 MultiVCFAnalyzer        | 0.87                    | Bos et al. 2014 Nature
 bedtools                | 2.25.0                  | Quinlan et al. 2010 Bioinformatics
