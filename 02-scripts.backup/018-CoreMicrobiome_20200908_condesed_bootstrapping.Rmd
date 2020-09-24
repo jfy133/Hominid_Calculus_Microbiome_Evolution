@@ -1,0 +1,643 @@
+---
+title: "Core Microbiome Estimation - Condensed with Bootstrapping"
+output: html_notebook
+editor_options: 
+chunk_output_type: inline
+---
+  
+# Preparation
+  
+## For script conversion
+  
+  As this notebook became more and more parameterised, I decided to make it
+easy to convert into a script. But for the script, we also need to define
+input arguments for the options in chunk 1.
+
+The options in this chunk are our default selection. 
+
+```{r purl=FALSE}
+## Name options CHANGE HERE
+## CHANGE OPTIONS HERE!! #####################
+db <- "nt" ## nt or refseq
+minsupp_multiplier <- 4 ## multiplier against 0.01 minsupport or tail removal
+fraction_individuals <- 0.5 ## fraction individuals in population to contain taxon for 'core'
+fraction_populations <- 0.66 ## fraction populations in genus to contain taxon for 'core'
+drop_single <- F ## whether to drop populations with only single individuals
+script <- F
+save_upsetr <- F
+###########################################
+
+minsupp_threshold <- 0.01 * minsupp_multiplier
+
+```
+
+Reasons for these settings:
+  
+  * Min support is quite strict 
+* to ensure only taxon with good read abundance selected and remove spurious hits
+* Only half of an individuals in a population needs to have a taxon to be considered core
+* We need to consider that different individuals will have different biofilm grow stages, and this accounts for this
+* 2/3s of the populations of a host genus needs to have a taxon as core to be a host genus taxon
+* This allows us to be sure it is found across a reasonable number of populations that is unlikely to be related from local contamination.
+* For Gorillas and Chimps this means it has to be found across at least differnt 2 populations at minimum
+* For humans this means 4/6 of the populations which means it either has to be in both ancient/modern samples or _all_ ancient populations that passed preservation thresholds.
+
+Patterns we saw on each threshold for why the above
+* Increasing Min. Support to 0.05 meant highly likely environmental contaminants ( _Pseudomonas_ ) were not considered as core (often dropped out suggesting low level contamination of suprious hits)
+* Increasing minimum number of individuals from 0.5 to 0.6 saw very different number of changes in number of genera, and saw Mycobacterium being lost from the 'control' core, despite being a likely environmental contaminant. 0.8 saw quite a few clear oral genera being lost (e.g. _Porphyromonas_) 
+* Changing the fraction of populations per host genus saw changing from 0.5 - 0.66 single genus loss of 'Tessaracoccus' as anthropoid core (but most isolates from that genus is from activated sludge), increasing to 0.75 saw a loss of a lot of clear highly abundant oral taxa (e.g. Capnocytophaga, Ottowia, Prevotella, Filifactor etc.)
+
+Script settings.
+
+```{r, eval = F}
+
+args = commandArgs(trailingOnly = TRUE)
+
+if (length(args) == 0 | args[1] == "" | args[1] == "-h" | args[1] == "--help") {
+  cat("Usage: 018-CoreMicrobiome_20XXXXXX_script.R <db> <minsupp_multiplier> <fraction_individuals> <fraction_populations> <drop_single> \n")
+  cat("db: nt, refseq in quotes!\n")
+  cat("minsupp_multiplier: an integer to multiple 0.01% by \n")
+  cat("fraction_individuals: e.g. 0.8 for 80% \n")
+  cat("fraction_populations: e.g. 0.66 for 66% \n")
+  cat("drop_single: T or F to drop populations with single individuals")
+  cat("save_upsetr: T or F to save upsetR plot? At some point the package broke and doesn't work with ggsave and pdf devices do wierd stuff. Option to not print but still generate all other otutput")
+  stop()
+} else if (length(args) == 6) {
+  db <- args[1]
+  minsupp_multiplier <- as.numeric(args[2])
+  fraction_individuals <- as.numeric(args[3])
+  fraction_populations = as.numeric(args[4])
+  drop_single = args[5]
+  save_upsetr = args[6]
+  script <- T
+}
+
+print(args)
+
+minsupp_threshold <- 0.01 * minsupp_multiplier
+```
+
+
+## Data Loading
+
+Load data. Note: removed all MetaPhlan2 as no 'bad sample' removal method.
+
+```{r}
+cat("loading data\n")
+
+library(tidyverse)
+library(VennDiagram)
+library(UpSetR)
+library(vegan) ## for some non base distance metrics
+library(viridis) ## for colour 
+library(scales) ## for colour
+library(amap) ## alternative for correlation distance matrix
+library(patchwork)
+
+metadata <- read_tsv("../00-documentation.backup/02-calculus_microbiome-deep_evolution-individualscontrolssources_metadata_20200219.tsv") %>%
+  rename(Individual = `#SampleID`)
+
+
+## Bad Samples
+if (db == "nt") {
+  
+  data_out_sampfil <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_nt_fractionOralThreshold_50_20190509.tsv")
+  
+  bad_samples <- data_out_sampfil %>% 
+    filter(!withinfluctuationvariation_pass) %>%
+    filter(!grepl("ARS|SRR|ERR|LIB|EXB", sample)) %>%
+    pull(sample)
+} else if (db == "refseq") {
+  
+  data_out_sampfil <- read_tsv("../04-analysis/screening/cumulative_decay.backup/cumulativeproportiondecay_burninwithinfluctuationSDvariation_refseq_fractionOralThreshold_65_20190701.tsv")
+  
+  bad_samples <- data_out_sampfil %>% 
+    filter(!withinfluctuationvariation_pass) %>%
+    filter(!grepl("ARS|SRR|ERR|LIB|EXB", sample)) %>%
+    pull(sample)
+}
+
+## Contaminants
+if (db == "nt") {
+  contaminants_species <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_species_combined_0.99_190411.tsv")
+  contaminants_genus <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_nt_genus_combined_0.99_190411.tsv")
+} else if (db == "refseq") {
+  contaminants_species <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_species_combined_0.99_190411.tsv")
+  contaminants_genus <- read_tsv("../04-analysis/screening/decontam.backup/decontam_taxa_to_remove_megan_refseq_genus_combined_0.99_190411.tsv")
+}
+
+## Load OTU tables
+
+if (db == "nt") {
+  raw_malt_genus <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_genus_prokaryotes_summarised_nt.txt")
+  
+  ## At Species Level
+  raw_malt_species <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190401-ex_absolute_species_prokaryotes_summarised_nt.txt")
+  
+  
+} else if (db == "refseq") {
+  raw_malt_genus <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_genus_prokaryotes_summarised_refseq.txt")
+  
+  ## At Species Level
+  raw_malt_species <- read_tsv("../04-analysis/screening/megan.backup/Evolution-Comparison_MEGAN_20190410-ex_absolute_species_prokaryotes_summarised_refseq.txt")
+  
+}
+
+## Set foundation minsupport columns
+if (db == "nt") {
+  minsupp_malt <- "Min_Support_Reads_Threshold_MALT"
+} else if (db == "refseq") {
+  minsupp_malt <- "Min_Support_Reads_Threshold_MALT_refseq"
+}
+
+
+```
+
+## Data Clean-Up
+
+Clean up to remove column name cruft, and convert to long format.
+
+```{r}
+cat("cleaning data\n")
+
+## Cleaner function
+data_cleaner_new <- function(x, meta_dat, supp_col, ms_mltpr) {
+  supp_col <- enquo(supp_col)
+  ms_mltpr <- enquo(ms_mltpr)
+  
+  colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.combined.fq.prefixed.extractunmapped.bam", "", colnames(x))
+  colnames(x) <- gsub("_S.*_L.*_R1_.*.fastq.merged.prefixed.hg19unmapped", "", colnames(x))
+  colnames(x) <- gsub("_S0_L001_R1_001.fastq.extractunmapped.bam", "", colnames(x))
+  colnames(x)[1] <- "Taxon"
+  x <- x %>%
+    gather(Individual, Value, 2:ncol(x)) %>%
+    mutate(Value = as.numeric(Value)) %>%
+    left_join(select(meta_dat, Individual, one_of(c(!! supp_col)), Age)) %>%
+    rename(Orig_Threshold = !! supp_col) %>%
+    mutate(Multiplier = as.numeric(!! ms_mltpr)) %>%
+    mutate(Threshold = Orig_Threshold * Multiplier) %>%
+    mutate(Threshold = as.numeric(Threshold)) %>%
+    mutate(Filter_Passed = if_else(Value == 0,
+                                   1,
+                                   if_else(Value >= Threshold, 1, 0)
+    )) %>%
+    filter(Filter_Passed == 1) %>% # ,
+    # Age != "ModernDay") %>%
+    select(Taxon, Individual, Value)
+  return(x)
+}
+
+## Add extra information and clean up the OTU table
+clean_malt_genus <- data_cleaner_new(
+  raw_malt_genus, metadata,
+  minsupp_malt, minsupp_multiplier
+) %>%
+  mutate(Software = "MALT", Tax_Level = "genus")
+
+clean_malt_species <- data_cleaner_new(
+  raw_malt_species, metadata,
+  minsupp_malt, minsupp_multiplier
+) %>%
+  mutate(Software = "MALT", Tax_Level = "species")
+
+full_data <- bind_rows(
+  clean_malt_genus, clean_malt_species
+)
+
+
+## Extra formatting mMetadata
+metadata$Env <- factor(metadata$Env, levels = c(
+  "Howler_Monkey",
+  "Gorilla_1",
+  "Gorilla_2",
+  "Gorilla_3",
+  "Chimp_1",
+  "Chimp_2",
+  "Chimp_3",
+  "Chimp_4",
+  "Neanderthal",
+  "PreagriculturalHuman_1",
+  "PreagriculturalHuman_2",
+  "PreantibioticHuman_1",
+  "PreantibioticHuman_2",
+  "ModernDayHuman_1",
+  "ModernDayHuman_2",
+  "ExtractionControl",
+  "LibraryControl",
+  "ruralGut",
+  "sediment",
+  "skin",
+  "subPlaque",
+  "supPlaque",
+  "urbanGut",
+  "EnvironmentalControl"
+))
+
+
+metadata$Host_General <- factor(metadata$Host_General, levels = c(
+  "Howler",
+  "Gorilla",
+  "Chimp",
+  "Neanderthal",
+  "PreagriculturalHuman",
+  "PreantibioticHuman",
+  "ModernDayHuman",
+  "ExtractionControl",
+  "LibraryControl",
+  "ruralGut",
+  "sediment",
+  "skin",
+  "subPlaque",
+  "supPlaque",
+  "urbanGut",
+  "EnvironmentalControl"
+))
+
+metadata$Host_Common <- factor(metadata$Host_Common, levels = c(
+  "Alouatta",
+  "Gorilla",
+  "Pan",
+  "Homo (Neanderthal)",
+  "Homo (Modern Human)",
+  "ExtractionControl",
+  "LibraryControl",
+  "Plaque",
+  "Gut",
+  "Skin",
+  "EnvironmentalControl",
+  "Sediment"
+))
+
+metadata$Host_Genus <- factor(metadata$Host_Genus, levels = c(
+  "Alouatta",
+  "Gorilla",
+  "Pan",
+  "Homo",
+  "Control",
+  NA
+))
+
+```
+
+
+## Data Processing
+
+Now we can do a presence/absence conversion. For the moment we can assume any
+value that isn't 0 counts.
+
+```{r}
+ cat("processing data\n")
+
+full_data <- full_data %>% mutate(Presence = if_else(Value > 0, 1, 0))
+```
+
+Next we need to add our metadata, so we can ask if a particular taxa is
+present in all individuals of a particular host group. We can also remove
+the controls and sources.
+
+If we want to remove particular samples, we can also do this at this step.
+
+```{r}
+full_data_meta <- left_join(full_data, 
+              metadata %>% 
+               select(Individual, 
+                   Env, 
+                   Host_Genus, 
+                   Host_Common, 
+                   SourceSink, 
+                   Sample_or_Control,
+                   Individual_Seq_Depth)) %>% 
+ filter(#Sample_or_Control == "Sample", 
+     SourceSink == "sink")
+
+## Remove bad samples
+full_data_meta <- full_data_meta %>% 
+  filter(!Individual %in% bad_samples)
+
+## Drop populations with only single individuals
+envs_to_drop <- c()
+
+if (drop_single) {
+  envs_to_drop <- full_data_meta %>% 
+    select(Individual, Env) %>% 
+    distinct() %>% 
+    group_by(Env) %>% 
+    summarise(Individuals_N = n()) %>% 
+    filter(Individuals_N <= 1) %>%
+    pull(Env)
+  
+  full_data_meta <- full_data_meta %>% 
+    filter(!Env %in% as.vector(envs_to_drop))
+}
+
+```
+
+## Prepare Bootstrapping
+
+### Functions
+
+#### Core 'Pipeline'
+
+1. Assign presence/absence values [not function]
+2. Add metadata [not function]
+3. Calculate population-level threshold passing
+4. Calculate host-genus level population threshold passing
+5. Prepare venn format
+6. Generate upset-like combinations
+
+#### Framework
+
+This can then be put in a loop of loops?
+
+1. Microbial taxonomic level
+  - Filter table each level, and pass to bootstrapping
+  - Save output in list with tax_level/database combination
+2. Bootstrapping replicates
+  - Subsample filtered table from loop 1, perform calculation and save
+  in list (with replicate ID!)
+
+#### Output
+
+1. For each list, summarise the number of times a species is in a different host-genus combination 
+
+#### Pipeline Functions
+
+```{r}
+
+bootstrap_inds <- function(x){
+  ind_list <- x %>% pull(Individual) %>% unique()
+  subsampled_list <- ind_list[!grepl(sample(ind_list, 1), ind_list)]
+  
+  x %>% filter(Individual %in% subsampled_list)
+}
+
+  
+summarise_inds_passing <- function(x) {
+  x %>%
+    select(Individual, Host_Genus) %>%
+    distinct() %>%
+    group_by(Host_Genus) %>%
+    summarise(No_Individuals = n()) %>%
+    mutate(Passing_Proportion = No_Individuals * fraction_individuals)
+}
+
+calculate_pop_fraction <- function(x) {
+  ## Number individuals a taxa is in per population
+  summary_data <- x %>%
+    filter(Presence == 1) %>%
+    group_by(Software, Tax_Level, Env, Host_Common, Host_Genus, Taxon) %>%
+    summarise(No_Individuals_Present = n())
+
+  ## Number of individuals in each population overall
+  summary_meta <- x %>%
+    select(Individual, Env, Host_Genus) %>%
+    distinct() %>%
+    group_by(Env) %>%
+    summarise(No_Individuals_Pop = n())
+
+  summary_data <- left_join(summary_data, summary_meta)
+
+  ## Proportion of individuals in each population a taxa is present
+  summary_data %>%
+    mutate(Presence_Proportion_Per_Pop = round(No_Individuals_Present / No_Individuals_Pop * 100, digits = 1))
+}
+
+filter_pop_fraction <- function(x, frac_ind) {
+  x %>%
+    filter(Presence_Proportion_Per_Pop >= (frac_ind * 100))
+}
+
+
+summarise_group_inds <- function(x) {
+  x %>%
+    select(Env, Host_Genus) %>%
+    distinct() %>%
+    group_by(Host_Genus) %>%
+    summarise(No_Pops_Group = n())
+}
+
+calculate_group_fraction <- function(filt_pop_data, genus_inds) {
+  filt_pop_data %>%
+    filter(Presence_Proportion_Per_Pop >= (fraction_individuals * 100)) %>%
+    group_by(Taxon, Software, Tax_Level, Host_Genus) %>%
+    summarise(No_Pops_Present = n()) %>%
+    left_join(genus_inds) %>%
+    mutate(Proportion_Pop_Groups_Presence = round(No_Pops_Present / No_Pops_Group * 100, digits = 1))
+}
+
+filter_group_fraction <- function(x, frac_pops) {
+  filter(x, Proportion_Pop_Groups_Presence >= frac_pops * 100)
+}
+
+filter_contaminant <- function(x){
+ x %>% 
+   filter(!Taxon %in% pull(contaminants_genus)) %>% 
+   filter(!Taxon %in% pull(contaminants_species)) 
+}
+
+## Note, hardcoded to genus. Could generalise it by providing metadata
+## column to filter, but then NSE (ew) - see example for pop in non-bootstrapped
+## notebook.
+venn_prep_hostgenus <- function(dat) {
+ venn_data <- list(
+  Alouatta = dat %>%
+   filter(Host_Genus == "Alouatta") %>%
+   pull(Taxon),
+  Gorilla = dat %>% 
+   filter(Host_Genus == "Gorilla") %>% 
+   pull(Taxon),
+  Pan = dat %>% 
+   filter(Host_Genus == "Pan") %>% 
+   pull(Taxon),
+  Homo = dat %>% 
+   filter(Host_Genus == "Homo") %>% 
+   pull(Taxon),
+  Control = dat %>% 
+   filter(Host_Genus == "Control") %>% 
+   pull(Taxon)
+ )
+ return(venn_data)
+}
+
+overlap_groups <- function(listInput, sort = TRUE) {
+  
+ listInputmat  <- fromList(listInput) == 1
+ 
+ listInputunique <- unique(listInputmat)
+ grouplist <- list()
+ 
+ for (i in 1:nrow(listInputunique)) {
+  currentRow <- listInputunique[i,]
+  myelements <- which(apply(listInputmat,1,function(x) all(x == currentRow)))
+  attr(myelements, "groups") <- currentRow
+  grouplist[[paste(colnames(listInputunique)[currentRow], collapse = ":")]] <- myelements
+  myelements
+ }
+ 
+ if (sort) {
+  grouplist <- grouplist[order(sapply(grouplist, 
+                                      function(x) length(x)), decreasing = TRUE)]
+ }
+ attr(grouplist, "elements") <- unique(unlist(listInput))
+
+ core_per_groups <- c()
+ 
+ for (i in names(grouplist)) {
+  tmp_list <- list()
+  tmp_list[1] <- list(attributes(grouplist)$elements[grouplist[[i]]])
+  names(tmp_list) <- paste(i)
+  core_per_groups <- append(core_per_groups, tmp_list[1])
+ }
+ 
+ as_tibble(stack(core_per_groups)) %>%
+  select(ind, values) %>%
+  rename(Combination = ind, Taxon = values)
+
+}
+
+```
+
+
+Test
+
+```{r, eval = F}
+## would be subsampling full_data_meta for bootstrapping, I think?
+test <- full_data_meta %>% filter(Tax_Level == "genus")
+
+bootstrap_inds(test)
+
+## Pipeline to be applied on each replicate
+summarise_inds_passing(test) ## Just report no. for each host genera taxa passing threshold?
+test_popraw <- calculate_pop_fraction(test) ## Gives stats for each microbial taxa how many individuals per population it's in
+test_popfilt <- filter_pop_fraction(test_popraw, 0.5) ## Filters to only taxa present in X% individs in pop
+test_popsumm <- summarise_group_inds(test)
+test_genusraw <- calculate_group_fraction(test_popfilt, test_popsumm)
+test_genusfilt <- filter_group_fraction(test_genusraw, 0.66)
+test_genusfiltcontam <- filter_contaminant(test_genusfilt)
+test_genusvenn <- venn_prep_hostgenus(test_genusfiltcontam)
+test_finalresult <- overlap_groups(test_genusvenn)
+
+```
+
+## Run Bootstrapping
+
+Bootstrap it! This case for genus level at NT
+
+```{r, message=F, warning=F}
+
+run_bootstrapping <- function(x, no_boots) {
+  bootstrapped_result <- list()
+
+  #no_boostraps<- full_data_meta$Individual %>% unique %>% length()
+
+    for(i in 1:no_boots) {
+    
+      ## would be subsampling full_data_meta for bootstrapping, I think?
+    bs_data <- x %>% bootstrap_inds()
+    
+    ## Pipeline to be applied on each replicate
+    summarise_inds_passing(bs_data) ## Just report no. for each host genera taxa passing threshold?
+    popraw <- calculate_pop_fraction(bs_data) ## Gives stats for each microbial taxa how many individuals per population it's in
+    popfilt <- filter_pop_fraction(popraw, 0.5) ## Filters to only taxa present in X% individs in pop
+    popsumm <- summarise_group_inds(bs_data)
+    genusraw <- calculate_group_fraction(popfilt, popsumm)
+    genusfilt <- filter_group_fraction(genusraw, 0.66)
+    genusfiltcontam <- filter_contaminant(genusfilt)
+    genusvenn <- venn_prep_hostgenus(genusfiltcontam)
+    finalresult <- overlap_groups(genusvenn) %>% mutate(Replicate = i)
+    
+    bootstrapped_result[[paste0("rep_", i, collapse = "")]] <- finalresult
+  }
+  
+  return(bootstrapped_result)
+}
+
+
+```
+
+
+Summarise!
+
+```{r, message=F, warning=F}
+summarise_bootstrapping <- function(x, n_boots) {
+  ## Overall results
+  all_bsvalues <- bind_rows(x) %>%
+    group_by(Combination, Taxon) %>%
+    summarise(n = n(), Bootstrap_Result = (n / n_boots) * 100)
+
+  ## Top Hit Results and clean names
+  top_bsvalues_only <- all_bsvalues %>%
+    group_by(Taxon) %>%
+    filter(Bootstrap_Result == max(Bootstrap_Result)) %>%
+    mutate(Taxon = gsub(" ", "_", Taxon))
+  
+  results <- list(all_bsvalues = all_bsvalues, top_bsvalues_only = top_bsvalues_only)
+  
+  return(results)
+}
+
+
+```
+
+Run the two datasets
+
+```{r, message=F, warning=F}
+
+n_bootstraps = 1000
+
+genus_results <- full_data_meta %>% filter(Tax_Level == "genus") %>% run_bootstrapping(., n_bootstraps) %>% summarise_bootstrapping(., length(.))
+species_results <- full_data_meta %>% filter(Tax_Level == "species") %>% run_bootstrapping(., n_bootstraps) %>% summarise_bootstrapping(., length(.))
+
+```
+
+
+Compare with original results
+
+
+```{r}
+## Original results
+if (db == "nt") {
+  original_genus_result <- read_tsv("../06-additional_data_files/Data_R22_S22A_CoreMicrobiome/coremicrobiome_presenceabsence_upsettable_allsoftware_maltdbnt_0.07_fracinds0.5_fracpops0.66_singleindpopsdroppedF_hostgenus_genus_20190902.tsv")
+  original_species_result <- read_tsv("../06-additional_data_files/Data_R22_S22A_CoreMicrobiome/coremicrobiome_presenceabsence_upsettable_allsoftware_maltdbnt_0.04_fracinds0.5_fracpops0.66_singleindpopsdroppedF_hostgenus_species_20190902.tsv")
+} else if (db == "refseq") {
+  original_species_result <- read_tsv("../06-additional_data_files/Data_R22_S22A_CoreMicrobiome/coremicrobiome_presenceabsence_upsettable_allsoftware_maltdbrefseq_0.04_fracinds0.5_fracpops0.66_singleindpopsdroppedF_hostgenus_species_20190902.tsv")
+  original_genus_result <- read_tsv("../06-additional_data_files/Data_R22_S22A_CoreMicrobiome/coremicrobiome_presenceabsence_upsettable_allsoftware_maltdbrefseq_0.07_fracinds0.5_fracpops0.66_singleindpopsdroppedF_hostgenus_genus_20190902.tsv")
+}
+
+```
+
+Merge bootstrap values with original and save the results
+
+```{r}
+final_genus <- left_join(original_genus_result, genus_results$top_bsvalues_only) %>%
+  write_tsv(., path = paste("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_bootstrapped_",
+    db,
+    "_", minsupp_threshold,
+    "_fracinds",
+    fraction_individuals,
+    "_fracpops",
+    fraction_populations,
+    "_singleindpopsdropped",
+    drop_single,
+    "bootstraps",
+    n_bootstraps,
+    "_hostgenus_genus_", format(Sys.Date(), "%Y%m%d"), ".tsv",
+    sep = ""
+  ))
+
+final_species <- left_join(original_species_result, species_results$top_bsvalues_only) %>%
+  write_tsv(., path = paste("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_bootstrapped_",
+    db,
+    "_", minsupp_threshold,
+    "_fracinds",
+    fraction_individuals,
+    "_fracpops",
+    fraction_populations,
+    "_singleindpopsdropped",
+    drop_single,
+    "bootstraps",
+    n_bootstraps,
+    "_hostgenus_species_", format(Sys.Date(), "%Y%m%d"), ".tsv",
+    sep = ""
+  ))
+```
