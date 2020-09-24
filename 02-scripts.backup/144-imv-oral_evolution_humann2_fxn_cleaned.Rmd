@@ -1587,6 +1587,31 @@ pca_H2KO_pc1pc2_outrem_all_nopq
 
 ```
 
+```{r adonis_KOs_outrem_outcont_outpq}
+
+# Euclidean distance, uses the clr-transformed matrix from the mixOmics PCA above
+H2KO.euc <- vegdist(H2KO.pca$X, method = "euclidean", na.rm = T)
+H2KO.euc.pcoa <- ape::pcoa(H2KO.euc)
+
+H2KO.euc.pcoavectors <- as.data.frame(H2KO.euc.pcoa$vectors)
+H2KO.euc.pcoavectors <- H2KO.euc.pcoavectors %>%
+  rownames_to_column("SampleID")
+
+H2KO.euc.vecmet <- inner_join(H2KO.euc.pcoavectors, selectmetadata %>% rename(SampleID = individual_id) %>% select(SampleID, Host_Genus), by = "SampleID")
+
+H2KO.euc.vecmet %>%
+  ggplot(., aes(Axis.1, Axis.2, colour = Host_Genus, shape = Host_Genus)) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = genus_colours) +
+  scale_shape_manual(values = genus_shapes) +
+  stat_ellipse(aes(colour = Host_Genus, group = Host_Genus)) +
+  theme_minimal(base_size = 7) +
+  ggtitle("Host_Genus")
+
+# test for difference between different metadata categories 
+adonis2(H2KO.euc ~ Host_Genus, H2KO.euc.vecmet, permutations = 999, by = "margin")
+
+```
 
 We need to do this again without modern human samples to make sure they aren't
 responsible for biasing the differenes between *Homo* and *Pan/Gorilla/Alouatta*.
