@@ -1,0 +1,146 @@
+---
+title: "Bootstrapping Evaluation"
+output: html_notebook
+---
+
+We now want to evaluate the robusticity of our main core microbiome calculations
+against the bootstrapped versions.
+
+```{r}
+library(tidyverse)
+```
+
+Now we need to load the corresponding tables of interest. We will only
+analyse the `nt` version as this is our main analysis table.
+
+```{r}
+bs_genus_wcontrols <- read_tsv("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_pergroup_bootstrapped_complete_nt_0.07_fracinds0.5_fracpops0.66_singleindpopsdroppedFALSE_includecontrolsTRUE_bootstraps1000_hostgenus_genus_20200924.tsv", col_types = cols()) %>% mutate(Level = "genus", Controls = T)
+bs_genus_nocontrols <- read_tsv("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_pergroup_bootstrapped_complete_nt_0.07_fracinds0.5_fracpops0.66_singleindpopsdroppedFALSE_includecontrolsFALSE_bootstraps1000_hostgenus_genus_20200924.tsv", col_types = cols()) %>% mutate(Level = "genus", Controls = F)
+
+bs_species_wcontrols <- read_tsv("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_pergroup_bootstrapped_complete_nt_0.04_fracinds0.5_fracpops0.66_singleindpopsdroppedFALSE_includecontrolsTRUE_bootstraps1000_hostgenus_species_20200924.tsv", col_types = cols()) %>% mutate(Level = "species", Controls = T)
+bs_species_nocontrols <- read_tsv("../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_pergroup_bootstrapped_complete_nt_0.04_fracinds0.5_fracpops0.66_singleindpopsdroppedFALSE_includecontrolsFALSE_bootstraps1000_hostgenus_species_20200924.tsv", col_types = cols()) %>% mutate(Level = "species", Controls = F)
+
+bs_all_wcontrols <- bind_rows(bs_genus_wcontrols, bs_species_wcontrols) %>% mutate(Taxon = gsub(" ", "_", Taxon))
+bs_all_nocontrols <- bind_rows(bs_genus_nocontrols, bs_species_nocontrols) %>% mutate(Taxon = gsub(" ", "_", Taxon))
+```
+
+We also want to upload the originally calculated core microbiome(s).
+
+```{r}
+org_genus <- read_tsv("../04-analysis/screening/presenceabsence_intersection.backup/08a-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdbnt_0.07_fracinds0.5_fracpops0.66_singleindpopsdroppedF_hostgenus_genus_20190902.tsv", col_types = cols()) %>% mutate(Level = "genus")
+org_species <- read_tsv("../04-analysis/screening/presenceabsence_intersection.backup/08b-coremicrobiome_presenceabsence_upsettable_allsoftware_maltdbnt_0.04_fracinds0.5_fracpops0.66_singleindpopsdroppedF_hostgenus_species_20190902.tsv", col_types = cols()) %>% mutate(Level = "species")
+
+org_all <- bind_rows(org_genus, org_species) %>% select(Combination, Taxon)
+```
+
+In the main figure/analysis, we are further interested in the following combinations
+
+```{r}
+anthropoid <- c("Actinomyces", "Campylobacter", "Capnocytophaga",
+"Corynebacterium", "Fusobacterium", "Ottowia", "Prevotella",
+"Pseudopropionibacterium", "Selenomonas", "Streptococcus")
+
+hominid <- c("Fretibacterium", "Olsenella", "Tannerella")
+
+hominin <- c("Desulfomicrobium", "Mogibacterium", "Parvimonas", "Porphyromonas",
+"Treponema")
+
+homo <- c("Treponema")
+
+
+other <- c("Aggregatibacter", "Anaerolineaceae_bacterium_oral_taxon_439",
+"Eikenella", "Filifactor_alocis", "Gemella_sp._oral_taxon_928", "Leptotrichia", 
+"Neisseria", "Veillonella")
+
+## Ordering
+
+comb_order <- c("Alouatta:Gorilla:Pan:Homo", "Gorilla:Pan:Homo", "Pan:Homo",  "Homo", "Alouatta:Gorilla:Homo", "Alouatta:Pan:Homo" ,"Alouatta:Homo")
+```
+
+## Filtering
+
+To filter to tables of the original microbial taxa of interest
+
+```{r}
+bs_all_wcontrols_filt <- left_join(org_all, bs_all_wcontrols) %>% filter(Taxon %in% c(anthropoid, hominid, hominin, homo, other))
+bs_all_nocontrols_filt <- left_join(org_all, bs_all_nocontrols) %>% filter(Taxon %in% c(anthropoid, hominid, hominin, homo, other))
+
+```
+
+
+And then to get the highest scoring combination (out of the bootstrap replicates).
+
+```{r, fig.width=12, fig.height=8}
+bs_all_wcontrols_filt_max <- bs_all_wcontrols_filt %>% group_by(Taxon) %>% filter(Bootstrap_Result == max(Bootstrap_Result)) %>% select(Combination, Taxon, Bootstrap_Result) %>% mutate(Controls = T)
+bs_all_nocontrols_filt_max <- bs_all_nocontrols_filt %>% group_by(Taxon) %>% filter(Bootstrap_Result == max(Bootstrap_Result)) %>% select(Combination, Taxon, Bootstrap_Result) %>% mutate(Controls = F)
+
+comparison <- bind_rows(bs_all_wcontrols_filt_max, bs_all_nocontrols_filt_max) %>% mutate(Combination = factor(Combination, levels = rev(comb_order))) %>% arrange(Combination, rev(Bootstrap_Result))
+
+comparison <- comparison %>% mutate(Taxon = factor(Taxon, levels = comparison$Taxon %>% unique))
+
+ggplot(comparison, aes(Taxon, Bootstrap_Result, fill = Controls, group = Controls)) + geom_bar(stat = "identity", position = "dodge") + coord_flip() + theme_minimal() + facet_wrap(~Combination, scales = "free_y")
+
+```
+
+My interpretation is that generally that the differences in including/removing 
+controls isn't so big other than for the really diverse genera (_Streptococcus_, 
+_Actinomyces_), which could be generally explained by during bootstrapping more
+skin contaminated controls get in that particular replicate. Controls are
+the largest group (35) which may also explain why these 're-assignments' happen
+more often.
+
+However when looking at the actual boostrap values e.g. for the 
+without-controls dataset; while the 'Anthropoid' combination is relatively 
+robust, when we go down to small combinations, percentage bootstraps become more 
+very low (e.g. Tannerella). This maybe because this derived from low
+prevalence within all host genera (e.g. signals only become strong enough
+in that combination depending on how many 'mature calculus' individuals are
+picked up in that replicate; with the assumption the red complex taxa appear
+to have stronger signals in more mature calculus).
+
+We can maybe look at this by seeing how many alternative combinations each
+taxon has assigned.
+
+For example for with controls
+
+```{r}
+bs_all_wcontrols_combdiv <- bs_all_wcontrols %>% group_by(Taxon) %>% summarise(n = n(), paste0(Combination, collapse = "|")) %>% mutate(Controls = T)
+bs_all_nocontrols_combdiv <- bs_all_nocontrols %>% group_by(Taxon) %>% summarise(n = n(), paste0(Combination, collapse = "|")) %>% mutate(Controls = F)
+
+bs_all_both_combdiv <- bind_rows(bs_all_wcontrols_combdiv, bs_all_nocontrols_combdiv)
+
+## Join with main bootstrap data
+
+comparison <- left_join(comparison, bs_all_both_combdiv)
+
+write_tsv(comparison, path = "../04-analysis/screening/presenceabsence_intersection.backup/99-coremicrobiome_presenceabsence_pergroup_bootstrapped_complete_nt_speciesgenus_withwithoutcontrols_comparison.tsv")
+```
+
+How does the diversity of the number of possible combinations found during
+bootstrap compare to the bootstrap values themsleves?
+
+```{r}
+ggplot(comparison, aes(Bootstrap_Result, n, colour = Controls)) +
+  geom_point() +
+  theme_minimal() +
+  ylim(0, 25) +
+  xlim(0, 100)
+
+```
+
+We can see a very slight trend that the lower the bootstrap value, the higher
+the number of combinations occur.
+
+However lets see how this corresponds to our bar plot of bootstrap value of
+the taxa of interest.
+
+```{r, fig.width=12, fig.height=8}
+ggplot(comparison, aes(Taxon, Bootstrap_Result, fill = Controls, group = Controls, label = n)) +
+  geom_bar(stat = "identity", position = "dodge") + 
+  geom_text(position = position_dodge(width = 1), size = 2) +
+  coord_flip() + 
+  theme_minimal() + 
+  facet_wrap(~Combination, scales = "free_y")
+
+```
+

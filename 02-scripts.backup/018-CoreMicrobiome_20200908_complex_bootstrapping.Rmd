@@ -19,12 +19,14 @@ The options in this chunk are our default selection.
 ## Name options CHANGE HERE
 ## CHANGE OPTIONS HERE!! #####################
 db <- "refseq" ## nt or refseq
-minsupp_multiplier <- 7 ## multiplier against 0.01 minsupport or tail removal
+minsupp_multiplier <- 4 ## multiplier against 0.01 minsupport or tail removal
 fraction_individuals <- 0.5 ## fraction individuals in population to contain taxon for 'core'
 fraction_populations <- 0.66 ## fraction populations in genus to contain taxon for 'core'
 drop_single <- F ## whether to drop populations with only single individuals
 script <- F
 save_upsetr <- F
+controls <- T
+n_bootstraps = 1000
 ###########################################
 
 minsupp_threshold <- 0.01 * minsupp_multiplier
@@ -206,7 +208,7 @@ full_data <- bind_rows(
 )
 
 
-## Extra formatting mMetadata
+## Extra formatting Metadata
 metadata$Env <- factor(metadata$Env, levels = c(
   "Howler_Monkey",
   "Gorilla_1",
@@ -314,6 +316,11 @@ full_data_meta <- left_join(full_data,
 ## Remove bad samples
 full_data_meta <- full_data_meta %>% 
   filter(!Individual %in% bad_samples)
+
+## Remove controls
+if ( !controls ) {
+  full_data_meta <- full_data_meta %>% filter(Sample_or_Control == "Sample")
+} 
 
 ## Drop populations with only single individuals
 envs_to_drop <- c()
@@ -610,8 +617,6 @@ Run the two datasets
 
 ```{r, message=F, warning=F}
 
-n_bootstraps = 100
-
 genus_results <- full_data_meta %>% filter(Tax_Level == "genus") %>% run_bootstrapping(., n_bootstraps)
 genus_results_summarised <- genus_results %>% summarise_bootstrapping(., length(.))
 species_results <- full_data_meta %>% filter(Tax_Level == "species") %>% run_bootstrapping(., n_bootstraps)
@@ -649,7 +654,9 @@ final_genus <- genus_results_summarised$all_bsvalues %>%
     fraction_populations,
     "_singleindpopsdropped",
     drop_single,
-    "bootstraps",
+    "_includecontrols",
+    controls,
+    "_bootstraps",
     n_bootstraps,
     "_hostgenus_genus_", format(Sys.Date(), "%Y%m%d"), ".tsv",
     sep = ""
@@ -665,7 +672,9 @@ final_species <- species_results_summarised$all_bsvalues %>%
     fraction_populations,
     "_singleindpopsdropped",
     drop_single,
-    "bootstraps",
+    "_includecontrols",
+    controls,
+    "_bootstraps",
     n_bootstraps,
     "_hostgenus_species_", format(Sys.Date(), "%Y%m%d"), ".tsv",
     sep = ""
@@ -683,7 +692,9 @@ final_genus <- left_join(original_genus_result, genus_results_summarised$all_bsv
     fraction_populations,
     "_singleindpopsdropped",
     drop_single,
-    "bootstraps",
+    "_includecontrols",
+    controls,
+    "_bootstraps",
     n_bootstraps,
     "_hostgenus_genus_", format(Sys.Date(), "%Y%m%d"), ".tsv",
     sep = ""
@@ -699,7 +710,9 @@ final_species <- left_join(original_species_result, species_results_summarised$a
     fraction_populations,
     "_singleindpopsdropped",
     drop_single,
-    "bootstraps",
+    "_includecontrols",
+    controls,
+    "_bootstraps",
     n_bootstraps,
     "_hostgenus_species_", format(Sys.Date(), "%Y%m%d"), ".tsv",
     sep = ""

@@ -18,7 +18,7 @@ The options in this chunk are our default selection.
 ```{r purl=FALSE}
 ## Name options CHANGE HERE
 ## CHANGE OPTIONS HERE!! #####################
-db <- "nt" ## nt or refseq
+db <- "refseq" ## nt or refseq
 minsupp_multiplier <- 7 ## multiplier against 0.01 minsupport or tail removal
 fraction_individuals <- 0.5 ## fraction individuals in population to contain taxon for 'core'
 fraction_populations <- 0.66 ## fraction populations in genus to contain taxon for 'core'

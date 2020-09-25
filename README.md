@@ -76,8 +76,9 @@ proceeding.
       - [R10.1.1 Core Microbiome Procedure](#r1011-core-microbiome-procedure)
       - [R10.1.2 Min. Support Testing](#r1012-min-support-testing)
       - [R10.1.3 Single Population Testing](#r1013-single-population-testing)
-      - [R10.1.4 Investigation into Mycobacterium as Core Genus](#r1014-investigation-into-mycobacterium-as-core-genus)
-      - [R10.1.5 Core Microbiome Intersection Between Hosts](#r1015-core-microbiome-intersection-between-hosts)
+      - [R10.1.4 Bootstrapping of Core Microbiome Calculations](#r1014-bootstrapping-of-core-microbiome-calculations)
+      - [R10.1.5 Investigation into Mycobacterium as Core Genus](#r1015-investigation-into-mycobacterium-as-core-genus)
+      - [R10.1.6 Core Microbiome Intersection Between Hosts](#r1016-core-microbiome-intersection-between-hosts)
     - [R10.2 Core Microbiome MaltExtract](#r102-core-microbiome-maltextract)
   - [R11 Genome Reconstruction and Phylogenetics](#r11-genome-reconstruction-and-phylogenetics)
     - [R11.1 Production dataset sequencing depth calculations](#r111-production-dataset-sequencing-depth-calculations)
@@ -2503,7 +2504,115 @@ robust.
 
 > [To jump back to table of contents press :top:](#table-of-contents)
 
-#### R10.1.4 Investigation into Mycobacterium as Core Genus
+#### R10.1.4 Bootstrapping of Core Microbiome Calculations
+
+To assess the robusticity of our overall core microbiome calculations, we
+additionally performed subsampling and bootstrapping analysis of each host
+genera. By subsampling and randomly selecting the individuals of each host
+genera, we aimed to see how often a given microbial taxon was considered
+'core' to a given host-genus combination.
+
+The code can be seen under 
+`02-scripts/018-CoreMicrobiome_20200908_complex_bootstrapping.Rmd`.
+
+We ran the notebook for each database and microbial taxa level (at the
+corresponding min. support filters), both with and without controls. We observed
+that for the main 'anthropoid' core taxa, in most cases lower bootstrap values
+occured due to re-assignment with the 'anthropoid+control' combination. We reasoned
+we could perform the bootstrapping without blanks given the low-biomass nature
+of them making picking up oral taxa (a common contaminant) is likely as the number
+of taxa are already low. i.e. tail filters (such as min. support) would not remove
+these oral axa even if the number of reads of reads a very low to negliable, as
+the min. support tail applies on a per-sample basis - in other words, the
+behaviour of the min. support filter has less an effect in removing contaminants
+on controls compared to samples. As we wished to check robusticity of the core
+taxa of actual samples, it was OK to exclude these in this particular
+bootstrapping test. We therefore re-ran the core microbiome calculations with
+1000 subsampling replicates (with replacement), both including and excluding controls.
+
+The outcome of these bootstrapping results can be seen in
+`04-analysis/screening/presenceabsence_intersection/99-coremicrobiome_presenceabsence_pergroup_bootstrapped_complete_*`,
+with combinations of which database was used (nt or refseq), which microbial
+taxonomic level used (species or genus, with corresponding minsupport values).
+Two files are created for each one with all possible combinations encountred for
+each taxon (`_complete_`), and another with just the most commonly found
+combination (`_tophits_`).
+
+A comparison between the nt bootstrapping runs with and without controls being
+included can be seen in
+`04-analysis/screening/presenceabsence_intersection/99-coremicrobiome_presenceabsence_pergroup_bootstrapped_complete_nt_speciesgenus_withwithoutcontrols_comparison.tsv`.
+A condensed version of this comparison can be seen in Table R8.
+
+**Table R8 | Comparison of core micrbiome bootstrappig results when including and excluding controls** Bootstrapping was performed on all host groups (and controls), with 1000 replicates. Bold indicate values equal to or exceeding 75%. Note genus level taxa have min. support values of 0.07 whereas species level taxa have a min. support value of 0.04.
+
+| Combination               | Taxon                                    | FALSE     | TRUE     |
+|---------------------------|------------------------------------------|:---------:|:--------:|
+| Alouatta:Gorilla:Homo     | Eikenella                                |  **92.7** |     73.7 |
+| Alouatta:Gorilla:Homo     | Neisseria                                |  **87.1** | **90.9** |
+| Alouatta:Gorilla:Homo     | Aggregatibacter                          |  **99.8** | **94.6** |
+| Alouatta:Gorilla:Pan:Homo | Corynebacterium                          |   **100** | **87.4** |
+| Alouatta:Gorilla:Pan:Homo | Prevotella                               |  **91.5** | **80.4** |
+| Alouatta:Gorilla:Pan:Homo | Ottowia                                  |  **95.5** | **90.4** |
+| Alouatta:Gorilla:Pan:Homo | Campylobacter                            |  **99.3** | **98.7** |
+| Alouatta:Gorilla:Pan:Homo | Selenomonas                              |  **92.4** |       70 |
+| Alouatta:Gorilla:Pan:Homo | Capnocytophaga                           |      71.6 | **99.9** |
+| Alouatta:Gorilla:Pan:Homo | Fusobacterium                            |   **100** |   **75** |
+| Alouatta:Gorilla:Pan:Homo | Pseudopropionibacterium                  |   **100** | **92.2** |
+| Alouatta:Gorilla:Pan:Homo | Actinomyces                              |   **100** |     52.3 |
+| Alouatta:Gorilla:Pan:Homo | Streptococcus                            |   **100** |     31.2 |
+| Alouatta:Homo             | Leptotrichia                             |    **84** | **83.2** |
+| Alouatta:Pan:Homo         | Gemella_sp._oral_taxon_928               |  **91.8** | **93.4** |
+| Gorilla:Pan:Homo          | Fretibacterium                           |  **84.5** |     31.4 |
+| Gorilla:Pan:Homo          | Tannerella                               |        34 |     33.5 |
+| Gorilla:Pan:Homo          | Olsenella                                |        35 |     58.6 |
+| Gorilla:Pan:Homo          | Anaerolineaceae_bacterium_oral_taxon_439 |  **76.7** | **84.2** |
+| Homo                      | Veillonella                              |       8.7 |     10.9 |
+| Pan:Homo                  | Parvimonas                               |        24 |     25.7 |
+| Pan:Homo                  | Mogibacterium                            |      68.5 |     68.2 |
+| Pan:Homo                  | Porphyromonas                            |      13.9 |     16.1 |
+| Pan:Homo                  | Treponema                                |      22.8 |     24.1 |
+| Pan:Homo                  | Filifactor_alocis                        |  **76.7** | **77.2** |
+| Pan:Homo                  | Desulfomicrobium                         |   **100** |  **100** |
+
+When considering a bootstrap cut off of 75% and excluding controls, the majority
+of the Anthropoid core taxa can be considered to be found robust when randomly
+subsampling (with replacement), with only Capnocytophaga falling below this at
+71.6. For this particular taxon, alternative combinations that appeared during
+bootstrapping replicates were the following: Alouatta:Gorilla:Homo,
+Alouatta:Homo, Alouatta:Pan:Homo. That there are multiple different combinations
+occuring, rather than a consistent single alternative, this may suggest this
+taxon may still be prevalent in all host genera just has fewer read abundances
+and therefore detection maybe more stochastic depending on each individual's
+biofilm make up. A similar inteperretaion can also be applied to the other lower
+values such as Tannerella, Olsenella, Porphyromonas and Treponema, who  mostly
+display 3 or more alternative combinations rather than a single alternative; all
+of which are different combinations of all the host genera (i.e. not
+consistently with one or two host genera), suggesting common presence across all
+host genera but at a lower prevalence - possibly again due to low read levels.
+Given the three 'red complex' taxa, are mostly known to be more commonly found
+in more mature calculus deposits, the lower bootstrap value may represent an
+artfacet of the maturity of the sampled calculus from these individuals (i.e.
+only when multiple individuals with mature deposits are including in subsampling
+does the core microbiome of that taxa is the taxon assigned to wider
+combinations)
+
+Inclusion of controls sees a reduction in the bootstraps in most cases, at
+varying levels. This is somewhat to be expected due to oral taxa being common
+contaminants in lab reagents, and min. support values (i.e. tail trimming)
+having a less of a effect (i.e. the fewer overall reads sequenced due to the
+low biomass nature of controls meaning fewer true low-level contaminants taxa are
+removed because the overall number of reads is low). Across all the
+well supported bootstrap values. Most anthropoid core microbiome assignments
+are reduced due to being assigned to a control combination.  In particular,
+_Streptococus_ and _Actinomyces_ sees the largest drops, however these are
+highly diverse genera and therefore non-oral species under these genera are
+likely to be present in skin and other modern human contaminants sources. This
+therefore does not indicate these are not authentic oral taxa given other
+lines of evidence at species level as shown in other analysis.
+
+> [To jump back to table of contents press :top:](#table-of-contents)
+
+#### R10.1.5 Investigation into Mycobacterium as Core Genus
 
 In the resulting list of taxa that were a part of the core of each combination
 of host taxa, we observed that _Mycobacterium_  was able to pass our minimum
@@ -2528,7 +2637,7 @@ this was likely derived from taphonomic causes.
 
 > [To jump back to table of contents press :top:](#table-of-contents)
 
-#### R10.1.5 Core Microbiome Intersection Between Hosts
+#### R10.1.6 Core Microbiome Intersection Between Hosts
 
 To assist in the interpretation of results, we wanted to create a visualisation
 to efficiently summarise the number of taxa associated with the core of each
@@ -2544,7 +2653,7 @@ combinations.  Instead, we summarised the number of taxa in each host via an
 
 ![Core microbiome Upset plots at genus and species level for Nt and RefSeq databases](05-images/Figure_R28_SFC_CoreMicrobiome_UpSetPlots/FigureSXX-CoreMicrobiome_UpSetR_combined.png)
 
-**Figure R28 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a 'core' microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host. Note the the difference between this figure and Figure 2 of the main manuscript is the retention here of _Mycobacterium_, which was excluded post-hoc (and thus excluded from Figure 2), and from subsequent the downstream core microbiome analysis, given that section R10.1.4 shows it is a pervasive likely contaminant.
+**Figure R28 | UpSet plot showing the number of taxa shared across each host genus combination for NCBI nt (top) and custom NCBI RefSeq (bottom) and genus (left) and species (right).** Note that for the custom RefSeq database plots, a control group as a 'core' microbiome is displayed as at the corresponding minimum support value. However these taxa remain unique to the control samples only, which does not exist at the same threshold for the nt database. Plots are generated from MALT aligned and MEGAN exported OTU tables to each database; filtered for putative laboratory contaminants, badly preserved samples and a minimum support value for microbial taxa of 0.7 (genus level) and 0.4 (species level). Taxa are considered core to a host genus if taxon is present in 50% of individuals of each population, and >= 66% of the populations to a given host. Note the the difference between this figure and Figure 2 of the main manuscript is the retention here of _Mycobacterium_, which was excluded post-hoc (and thus excluded from Figure 2), and from subsequent the downstream core microbiome analysis, given that section R10.1.5 shows it is a pervasive likely contaminant.
 
 ---
 
@@ -2857,7 +2966,7 @@ the 5 metrics used (see notebook for both procedures).
 
 The selection based on the different metrics performed manually and via
 an automated system was compared in `06-additional_data_files` under
-Data R29. The list below in Table R8 showed high concordance with the visual
+Data R29. The list below in Table R9 showed high concordance with the visual
 inspection, and therefore the visual taxon selection was used only when
 there was not a clear 'winner' from the automated selection (e.g. _Selenomonas_)
 
@@ -2881,12 +2990,12 @@ The final list of selected taxa via visual inspection were as follows
 
 Output from the automated species selection can be seen in
 `04-analysis/deep/competitive_mapping.backup/species_selection`. This is
-also summarised in Table R8, and the majority call under the 'Selected'
+also summarised in Table R9, and the majority call under the 'Selected'
 column.
 
 ---
 
-**Table R8 | Results of ‘automated’ super-reference species selection for downstream phylogenetic analysis.** Production dataset was mapped for each genus with EAGER to a combined reference of all species of the calculus microbiome core genome calculated above. Metrics were number of reads, breadth coverage, depth coverage, competitive mapping score, percentage of species reads over all genus reads. Species were then filtered those that had a number metrics that the species exceeded the genus mean plus standard deviation of the metric was more than 1. In cases of ties, either a named species or more complete genome reconstruction selected. In cases where unnamed species are the top candidate, either the next best taxon with an official name or where the isolation source was ‘oral cavity’ were selected.
+**Table R9 | Results of ‘automated’ super-reference species selection for downstream phylogenetic analysis.** Production dataset was mapped for each genus with EAGER to a combined reference of all species of the calculus microbiome core genome calculated above. Metrics were number of reads, breadth coverage, depth coverage, competitive mapping score, percentage of species reads over all genus reads. Species were then filtered those that had a number metrics that the species exceeded the genus mean plus standard deviation of the metric was more than 1. In cases of ties, either a named species or more complete genome reconstruction selected. In cases where unnamed species are the top candidate, either the next best taxon with an official name or where the isolation source was ‘oral cavity’ were selected.
 
 | Genus                     | Species                                                   | Metrics Passed | Selected |
 |---------------------------|-----------------------------------------------------------|---------------:|----------|

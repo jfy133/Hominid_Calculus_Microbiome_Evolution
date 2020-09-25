@@ -1,0 +1,515 @@
+Combination	Taxon	n	Bootstrap_Result
+Alouatta	[Mannheimia] succiniciproducens	243	24.3
+Alouatta	Acidipropionibacterium acidipropionici	2	0.2
+Alouatta	Actinobacillus pleuropneumoniae	693	69.3
+Alouatta	Actinobacillus succinogenes	243	24.3
+Alouatta	Actinotignum schaalii	280	28.000000000000004
+Alouatta	Aggregatibacter actinomycetemcomitans	3	0.3
+Alouatta	Bibersteinia trehalosi	259	25.900000000000002
+Alouatta	Bifidobacterium dentium	102	10.2
+Alouatta	Campylobacter curvus	999	99.9
+Alouatta	Capnocytophaga gingivalis	3	0.3
+Alouatta	Capnocytophaga leadbetteri	211	21.099999999999998
+Alouatta	Capnocytophaga sp. ChDC OS43	114	11.4
+Alouatta	Capnocytophaga sp. oral taxon 323	77	7.7
+Alouatta	Fusobacterium hwasookii	25	2.5
+Alouatta	Fusobacterium sp. oral taxon 203	670	67
+Alouatta	Gallibacterium anatis	259	25.900000000000002
+Alouatta	Glaesserella parasuis	694	69.39999999999999
+Alouatta	Haemophilus influenzae	162	16.2
+Alouatta	Haemophilus parainfluenzae	274	27.400000000000002
+Alouatta	Haemophilus pittmaniae	241	24.099999999999998
+Alouatta	Histophilus somni	917	91.7
+Alouatta	Kingella kingae	1000	100
+Alouatta	Lactococcus raffinolactis	637	63.7
+Alouatta	Leptotrichia buccalis	29	2.9000000000000004
+Alouatta	Leptotrichia sp. oral taxon 498	646	64.60000000000001
+Alouatta	Leptotrichia sp. oral taxon 847	273	27.3
+Alouatta	Mannheimia haemolytica	694	69.39999999999999
+Alouatta	Mannheimia varigena	909	90.9
+Alouatta	Megasphaera elsdenii	488	48.8
+Alouatta	Myroides odoratimimus	274	27.400000000000002
+Alouatta	Neisseria gonorrhoeae	35	3.5000000000000004
+Alouatta	Neisseria lactamica	94	9.4
+Alouatta	Neisseria sp. 10022	113	11.3
+Alouatta	Neisseria sp. 10023	112	11.200000000000001
+Alouatta	Neisseria sp. KEM232	96	9.6
+Alouatta	Neisseria weaveri	921	92.10000000000001
+Alouatta	Neisseria zoodegmatis	352	35.199999999999996
+Alouatta	Pasteurella dagmatis	259	25.900000000000002
+Alouatta	Pasteurella multocida	243	24.3
+Alouatta	Pasteurellaceae bacterium NI1060	243	24.3
+Alouatta	Prevotella enoeca	2	0.2
+Alouatta	Pseudopedobacter saltans	274	27.400000000000002
+Alouatta	Rothia aeria	11	1.0999999999999999
+Alouatta	Rothia dentocariosa	52	5.2
+Alouatta	Rothia mucilaginosa	27	2.7
+Alouatta	Selenomonas sp. oral taxon 136	646	64.60000000000001
+Alouatta	Selenomonas sp. oral taxon 478	646	64.60000000000001
+Alouatta	Selenomonas sp. oral taxon 920	37	3.6999999999999997
+Alouatta	Streptococcus acidominimus	972	97.2
+Alouatta	Streptococcus agalactiae	193	19.3
+Alouatta	Streptococcus criceti	637	63.7
+Alouatta	Streptococcus dysgalactiae	684	68.4
+Alouatta	Streptococcus equi	2	0.2
+Alouatta	Streptococcus gallolyticus	729	72.89999999999999
+Alouatta	Streptococcus himalayensis	481	48.1
+Alouatta	Streptococcus infantarius	917	91.7
+Alouatta	Streptococcus marmotae	972	97.2
+Alouatta	Streptococcus merionis	769	76.9
+Alouatta	Streptococcus mitis	76	7.6
+Alouatta	Streptococcus mutans	21	2.1
+Alouatta	Streptococcus pantholopis	910	91
+Alouatta	Streptococcus parasanguinis	271	27.1
+Alouatta	Streptococcus parauberis	614	61.4
+Alouatta	Streptococcus pseudopneumoniae	1000	100
+Alouatta	Streptococcus pyogenes	714	71.39999999999999
+Alouatta	Streptococcus salivarius	729	72.89999999999999
+Alouatta	Streptococcus sp. A12	910	91
+Alouatta	Streptococcus sp. I-G2	1000	100
+Alouatta	Streptococcus sp. I-P16	972	97.2
+Alouatta	Streptococcus sp. NPS 308	177	17.7
+Alouatta	Streptococcus sp. oral taxon 064	997	99.7
+Alouatta	Streptococcus sp. oral taxon 431	999	99.9
+Alouatta	Streptococcus sp. VT 162	409	40.9
+Alouatta	Streptococcus suis	111	11.1
+Alouatta	Streptococcus thermophilus	830	83
+Alouatta	Streptococcus troglodytae	34	3.4000000000000004
+Alouatta	Streptococcus uberis	637	63.7
+Alouatta	Tessaracoccus aquimaris	694	69.39999999999999
+Alouatta	Tessaracoccus flavescens	694	69.39999999999999
+Alouatta	Tessaracoccus flavus	694	69.39999999999999
+Alouatta	Tessaracoccus sp. T2.5-30	672	67.2
+Alouatta	Trueperella pyogenes	186	18.6
+Alouatta	Veillonella rodentium	391	39.1
+Pan	[Clostridium] saccharolyticum	65	6.5
+Pan	[Eubacterium] sulci	292	29.2
+Pan	Actinomyces pacaensis	201	20.1
+Pan	Adlercreutzia equolifaciens	1000	100
+Pan	Alistipes shahii	40	4
+Pan	Atopobium parvulum	354	35.4
+Pan	Bacteroides dorei	36	3.5999999999999996
+Pan	Bacteroides fragilis	727	72.7
+Pan	Bacteroides salanitronis	68	6.800000000000001
+Pan	Bacteroides vulgatus	10	1
+Pan	Bifidobacterium dentium	409	40.9
+Pan	Candidatus Methanomethylophilus alvus	1000	100
+Pan	Candidatus Methanoplasma termitum	56	5.6000000000000005
+Pan	Capnocytophaga sp. oral taxon 323	9	0.8999999999999999
+Pan	Cloacibacillus porcorum	122	12.2
+Pan	Clostridioides difficile	914	91.4
+Pan	Coriobacteriaceae bacterium 68-1-3	994	99.4
+Pan	Cryptobacterium curtum	354	35.4
+Pan	Denitrobacterium detoxificans	822	82.19999999999999
+Pan	Desulfobulbus propionicus	527	52.7
+Pan	Desulfovibrio fairfieldensis	18	1.7999999999999998
+Pan	Dialister pneumosintes	970	97
+Pan	Eggerthella lenta	1000	100
+Pan	Eggerthella sp. YY7918	70	7.000000000000001
+Pan	Eubacterium limosum	505	50.5
+Pan	Faecalibacterium prausnitzii	998	99.8
+Pan	Fermentimonas caenicola	651	65.10000000000001
+Pan	Filifactor alocis	13	1.3
+Pan	Flavonifractor plautii	469	46.9
+Pan	Fusobacterium sp. oral taxon 203	20	2
+Pan	Gordonibacter massiliensis	1000	100
+Pan	Gordonibacter pamelaeae	1000	100
+Pan	Gordonibacter urolithinfaciens	1000	100
+Pan	Intestinimonas butyriciproducens	506	50.6
+Pan	Lachnoclostridium phocaeense	63	6.3
+Pan	Lawsonella clevelandensis	1000	100
+Pan	Libanicoccus massiliensis	689	68.89999999999999
+Pan	Megasphaera elsdenii	92	9.2
+Pan	methanogenic archaeon ISO4-H5	1000	100
+Pan	methanogenic archaeon mixed culture ISO4-G1	969	96.89999999999999
+Pan	Murdochiella vaginalis	801	80.10000000000001
+Pan	Odoribacter splanchnicus	73	7.3
+Pan	Olsenella sp. Marseille-P2300	146	14.6
+Pan	Olsenella umbonata	146	14.6
+Pan	Prevotella dentalis	823	82.3
+Pan	Prevotella denticola	779	77.9
+Pan	Prevotella enoeca	218	21.8
+Pan	Prevotella intermedia	1	0.1
+Pan	Pyramidobacter piscolens	862	86.2
+Pan	Selenomonas sp. oral taxon 136	21	2.1
+Pan	Selenomonas sp. oral taxon 920	1	0.1
+Pan	Selenomonas sputigena	2	0.2
+Pan	Slackia heliotrinireducens	912	91.2
+Pan	Staphylococcus nepalensis	126	12.6
+Pan	Thermoplasmatales archaeon BRNA1	1000	100
+Pan	Treponema pedis	874	87.4
+Pan	Treponema putidum	134	13.4
+Pan	Treponema sp. OMZ 838	25	2.5
+Pan	Trueperella pyogenes	290	28.999999999999996
+Alouatta:Gorilla	[Mannheimia] succiniciproducens	757	75.7
+Alouatta:Gorilla	Acidipropionibacterium acidipropionici	536	53.6
+Alouatta:Gorilla	Actinobacillus pleuropneumoniae	307	30.7
+Alouatta:Gorilla	Actinobacillus succinogenes	757	75.7
+Alouatta:Gorilla	Aggregatibacter actinomycetemcomitans	556	55.60000000000001
+Alouatta:Gorilla	Capnocytophaga gingivalis	2	0.2
+Alouatta:Gorilla	Fusobacterium hwasookii	7	0.7000000000000001
+Alouatta:Gorilla	Glaesserella parasuis	305	30.5
+Alouatta:Gorilla	Haemophilus influenzae	486	48.6
+Alouatta:Gorilla	Haemophilus parainfluenzae	119	11.899999999999999
+Alouatta:Gorilla	Haemophilus pittmaniae	752	75.2
+Alouatta:Gorilla	Mannheimia haemolytica	305	30.5
+Alouatta:Gorilla	Neisseria gonorrhoeae	233	23.3
+Alouatta:Gorilla	Neisseria lactamica	781	78.10000000000001
+Alouatta:Gorilla	Neisseria sp. 10022	887	88.7
+Alouatta:Gorilla	Neisseria sp. 10023	883	88.3
+Alouatta:Gorilla	Neisseria sp. KEM232	801	80.10000000000001
+Alouatta:Gorilla	Neisseria zoodegmatis	648	64.8
+Alouatta:Gorilla	Pasteurella multocida	757	75.7
+Alouatta:Gorilla	Pasteurellaceae bacterium NI1060	757	75.7
+Alouatta:Gorilla	Prevotella enoeca	1	0.1
+Alouatta:Gorilla	Rothia aeria	114	11.4
+Alouatta:Gorilla	Rothia dentocariosa	464	46.400000000000006
+Alouatta:Gorilla	Rothia mucilaginosa	971	97.1
+Alouatta:Gorilla	Selenomonas sp. oral taxon 126	52	5.2
+Alouatta:Gorilla	Selenomonas sp. oral taxon 920	76	7.6
+Alouatta:Gorilla	Streptococcus acidominimus	28	2.8000000000000003
+Alouatta:Gorilla	Streptococcus agalactiae	574	57.4
+Alouatta:Gorilla	Streptococcus dysgalactiae	274	27.400000000000002
+Alouatta:Gorilla	Streptococcus equi	5	0.5
+Alouatta:Gorilla	Streptococcus gallolyticus	271	27.1
+Alouatta:Gorilla	Streptococcus himalayensis	519	51.9
+Alouatta:Gorilla	Streptococcus marmotae	28	2.8000000000000003
+Alouatta:Gorilla	Streptococcus merionis	231	23.1
+Alouatta:Gorilla	Streptococcus mitis	107	10.7
+Alouatta:Gorilla	Streptococcus mutans	823	82.3
+Alouatta:Gorilla	Streptococcus pantholopis	90	9
+Alouatta:Gorilla	Streptococcus parasanguinis	727	72.7
+Alouatta:Gorilla	Streptococcus parauberis	23	2.3
+Alouatta:Gorilla	Streptococcus pyogenes	284	28.4
+Alouatta:Gorilla	Streptococcus salivarius	271	27.1
+Alouatta:Gorilla	Streptococcus sp. A12	90	9
+Alouatta:Gorilla	Streptococcus sp. I-P16	28	2.8000000000000003
+Alouatta:Gorilla	Streptococcus suis	862	86.2
+Alouatta:Gorilla	Streptococcus thermophilus	170	17
+Alouatta:Gorilla	Streptococcus troglodytae	856	85.6
+Alouatta:Gorilla	Tessaracoccus aquimaris	306	30.599999999999998
+Alouatta:Gorilla	Tessaracoccus flavescens	306	30.599999999999998
+Alouatta:Gorilla	Tessaracoccus flavus	306	30.599999999999998
+Alouatta:Gorilla	Tessaracoccus sp. T2.5-30	328	32.800000000000004
+Alouatta:Gorilla	Veillonella rodentium	609	60.9
+Alouatta:Gorilla:Pan:Homo	Actinomyces hongkongensis	646	64.60000000000001
+Alouatta:Gorilla:Pan:Homo	Actinomyces meyeri	280	28.000000000000004
+Alouatta:Gorilla:Pan:Homo	Actinomyces naeslundii	941	94.1
+Alouatta:Gorilla:Pan:Homo	Actinomyces oris	941	94.1
+Alouatta:Gorilla:Pan:Homo	Actinomyces radicidentis	1000	100
+Alouatta:Gorilla:Pan:Homo	Actinomyces sp. Chiba101	1000	100
+Alouatta:Gorilla:Pan:Homo	Actinomyces sp. oral taxon 414	609	60.9
+Alouatta:Gorilla:Pan:Homo	Actinomyces succiniciruminis	984	98.4
+Alouatta:Gorilla:Pan:Homo	Campylobacter gracilis	917	91.7
+Alouatta:Gorilla:Pan:Homo	Candidatus Saccharibacteria oral taxon TM7x	59	5.8999999999999995
+Alouatta:Gorilla:Pan:Homo	Eikenella corrodens	221	22.1
+Alouatta:Gorilla:Pan:Homo	Fusobacterium hwasookii	222	22.2
+Alouatta:Gorilla:Pan:Homo	Fusobacterium nucleatum	999	99.9
+Alouatta:Gorilla:Pan:Homo	Olsenella uli	640	64
+Alouatta:Gorilla:Pan:Homo	Ottowia sp. oral taxon 894	740	74
+Alouatta:Gorilla:Pan:Homo	Parvimonas micra	205	20.5
+Alouatta:Gorilla:Pan:Homo	Porphyromonas gingivalis	411	41.099999999999994
+Alouatta:Gorilla:Pan:Homo	Prevotella intermedia	775	77.5
+Alouatta:Gorilla:Pan:Homo	Propionibacterium freudenreichii	190	19
+Alouatta:Gorilla:Pan:Homo	Pseudopropionibacterium propionicum	611	61.1
+Alouatta:Gorilla:Pan:Homo	Rothia aeria	35	3.5000000000000004
+Alouatta:Gorilla:Pan:Homo	Rothia dentocariosa	11	1.0999999999999999
+Alouatta:Gorilla:Pan:Homo	Selenomonas sp. oral taxon 126	448	44.800000000000004
+Alouatta:Gorilla:Pan:Homo	Selenomonas sp. oral taxon 920	44	4.3999999999999995
+Alouatta:Gorilla:Pan:Homo	Streptococcus anginosus	973	97.3
+Alouatta:Gorilla:Pan:Homo	Streptococcus constellatus	622	62.2
+Alouatta:Gorilla:Pan:Homo	Streptococcus equi	102	10.2
+Alouatta:Gorilla:Pan:Homo	Streptococcus intermedius	972	97.2
+Alouatta:Gorilla:Pan:Homo	Tannerella forsythia	495	49.5
+Alouatta:Gorilla:Pan:Homo	Tannerella sp. oral taxon HOT-286	145	14.499999999999998
+Alouatta:Gorilla:Pan:Homo	Treponema sp. OMZ 838	21	2.1
+Alouatta:Gorilla:Pan:Homo	uncultured bacterium	177	17.7
+Alouatta:Gorilla:Homo	Aggregatibacter actinomycetemcomitans	433	43.3
+Alouatta:Gorilla:Homo	Aggregatibacter aphrophilus	926	92.60000000000001
+Alouatta:Gorilla:Homo	Capnocytophaga gingivalis	404	40.400000000000006
+Alouatta:Gorilla:Homo	Capnocytophaga sputigena	54	5.4
+Alouatta:Gorilla:Homo	Eikenella corrodens	774	77.4
+Alouatta:Gorilla:Homo	Fusobacterium hwasookii	38	3.8
+Alouatta:Gorilla:Homo	Haemophilus influenzae	271	27.1
+Alouatta:Gorilla:Homo	Haemophilus parainfluenzae	187	18.7
+Alouatta:Gorilla:Homo	Haemophilus pittmaniae	5	0.5
+Alouatta:Gorilla:Homo	Neisseria elongata	887	88.7
+Alouatta:Gorilla:Homo	Neisseria gonorrhoeae	651	65.10000000000001
+Alouatta:Gorilla:Homo	Neisseria lactamica	106	10.6
+Alouatta:Gorilla:Homo	Neisseria meningitidis	972	97.2
+Alouatta:Gorilla:Homo	Neisseria sicca	762	76.2
+Alouatta:Gorilla:Homo	Neisseria sp. 10023	4	0.4
+Alouatta:Gorilla:Homo	Neisseria sp. KEM232	86	8.6
+Alouatta:Gorilla:Homo	Propionibacterium freudenreichii	1	0.1
+Alouatta:Gorilla:Homo	Rothia aeria	729	72.89999999999999
+Alouatta:Gorilla:Homo	Rothia dentocariosa	364	36.4
+Alouatta:Gorilla:Homo	Selenomonas sp. oral taxon 126	336	33.6
+Alouatta:Gorilla:Homo	Selenomonas sp. oral taxon 920	483	48.3
+Alouatta:Gorilla:Homo	Streptococcus agalactiae	1	0.1
+Alouatta:Gorilla:Homo	Streptococcus cristatus	887	88.7
+Alouatta:Gorilla:Homo	Streptococcus dysgalactiae	1	0.1
+Alouatta:Gorilla:Homo	Streptococcus equi	1	0.1
+Alouatta:Gorilla:Homo	Streptococcus gordonii	885	88.5
+Alouatta:Gorilla:Homo	Streptococcus intermedius	1	0.1
+Alouatta:Gorilla:Homo	Streptococcus mitis	553	55.300000000000004
+Alouatta:Gorilla:Homo	Streptococcus oralis	884	88.4
+Alouatta:Gorilla:Homo	Streptococcus parasanguinis	1	0.1
+Alouatta:Gorilla:Homo	Streptococcus pneumoniae	887	88.7
+Alouatta:Gorilla:Homo	Streptococcus sanguinis	880	88
+Alouatta:Gorilla:Homo	Streptococcus suis	5	0.5
+Pan:Homo	[Eubacterium] minutum	896	89.60000000000001
+Pan:Homo	[Eubacterium] sulci	644	64.4
+Pan:Homo	Anaerolineaceae bacterium oral taxon 439	179	17.9
+Pan:Homo	Candidatus Saccharibacteria oral taxon TM7x	571	57.099999999999994
+Pan:Homo	Capnocytophaga sp. oral taxon 323	24	2.4
+Pan:Homo	Clostridioides difficile	77	7.7
+Pan:Homo	Coriobacteriaceae bacterium 68-1-3	6	0.6
+Pan:Homo	Desulfobulbus propionicus	440	44
+Pan:Homo	Desulfomicrobium orale	936	93.60000000000001
+Pan:Homo	Filifactor alocis	772	77.2
+Pan:Homo	Fretibacterium fastidiosum	129	12.9
+Pan:Homo	Mogibacterium pumilum	682	68.2
+Pan:Homo	Murdochiella vaginalis	183	18.3
+Pan:Homo	Olsenella sp. oral taxon 807	126	12.6
+Pan:Homo	Olsenella uli	2	0.2
+Pan:Homo	Parvimonas micra	240	24
+Pan:Homo	Porphyromonas gingivalis	139	13.900000000000002
+Pan:Homo	Prevotella intermedia	12	1.2
+Pan:Homo	Selenomonas sp. oral taxon 920	2	0.2
+Pan:Homo	Selenomonas sputigena	57	5.7
+Pan:Homo	Tannerella forsythia	43	4.3
+Pan:Homo	Tannerella sp. oral taxon HOT-286	270	27
+Pan:Homo	Treponema denticola	648	64.8
+Pan:Homo	Treponema putidum	772	77.2
+Pan:Homo	Treponema sp. OMZ 838	636	63.6
+Alouatta:Homo	Aggregatibacter actinomycetemcomitans	1	0.1
+Alouatta:Homo	Aggregatibacter aphrophilus	27	2.7
+Alouatta:Homo	Campylobacter curvus	1	0.1
+Alouatta:Homo	Capnocytophaga gingivalis	591	59.099999999999994
+Alouatta:Homo	Capnocytophaga leadbetteri	435	43.5
+Alouatta:Homo	Capnocytophaga sp. ChDC OS43	886	88.6
+Alouatta:Homo	Capnocytophaga sp. oral taxon 323	180	18
+Alouatta:Homo	Capnocytophaga sputigena	946	94.6
+Alouatta:Homo	Eikenella corrodens	4	0.4
+Alouatta:Homo	Fusobacterium hwasookii	68	6.800000000000001
+Alouatta:Homo	Fusobacterium sp. oral taxon 203	11	1.0999999999999999
+Alouatta:Homo	Haemophilus influenzae	81	8.1
+Alouatta:Homo	Haemophilus parainfluenzae	419	41.9
+Alouatta:Homo	Haemophilus pittmaniae	2	0.2
+Alouatta:Homo	Leptotrichia buccalis	892	89.2
+Alouatta:Homo	Leptotrichia sp. oral taxon 212	1000	100
+Alouatta:Homo	Neisseria elongata	113	11.3
+Alouatta:Homo	Neisseria gonorrhoeae	77	7.7
+Alouatta:Homo	Neisseria lactamica	19	1.9
+Alouatta:Homo	Neisseria meningitidis	4	0.4
+Alouatta:Homo	Neisseria sicca	99	9.9
+Alouatta:Homo	Neisseria sp. KEM232	17	1.7000000000000002
+Alouatta:Homo	Rothia aeria	99	9.9
+Alouatta:Homo	Rothia dentocariosa	54	5.4
+Alouatta:Homo	Selenomonas sp. oral taxon 126	1	0.1
+Alouatta:Homo	Selenomonas sp. oral taxon 920	252	25.2
+Alouatta:Homo	Streptococcus cristatus	113	11.3
+Alouatta:Homo	Streptococcus equi	1	0.1
+Alouatta:Homo	Streptococcus gordonii	113	11.3
+Alouatta:Homo	Streptococcus mitis	264	26.400000000000002
+Alouatta:Homo	Streptococcus oralis	116	11.600000000000001
+Alouatta:Homo	Streptococcus parasanguinis	1	0.1
+Alouatta:Homo	Streptococcus pneumoniae	113	11.3
+Alouatta:Homo	Streptococcus pyogenes	1	0.1
+Alouatta:Homo	Streptococcus sanguinis	113	11.3
+Alouatta:Homo	Streptococcus sp. NPS 308	823	82.3
+Alouatta:Homo	Streptococcus sp. oral taxon 064	2	0.2
+Alouatta:Homo	Streptococcus sp. oral taxon 431	1	0.1
+Alouatta:Homo	Streptococcus sp. VT 162	591	59.099999999999994
+Alouatta:Homo	Treponema sp. OMZ 838	3	0.3
+Gorilla:Pan:Homo	[Eubacterium] minutum	60	6
+Gorilla:Pan:Homo	[Eubacterium] sulci	39	3.9
+Gorilla:Pan:Homo	Actinomyces hongkongensis	354	35.4
+Gorilla:Pan:Homo	Actinomyces meyeri	720	72
+Gorilla:Pan:Homo	Anaerolineaceae bacterium oral taxon 439	586	58.599999999999994
+Gorilla:Pan:Homo	Campylobacter gracilis	79	7.9
+Gorilla:Pan:Homo	Candidatus Saccharibacteria oral taxon TM7x	156	15.6
+Gorilla:Pan:Homo	Desulfobulbus propionicus	11	1.0999999999999999
+Gorilla:Pan:Homo	Desulfomicrobium orale	64	6.4
+Gorilla:Pan:Homo	Filifactor alocis	215	21.5
+Gorilla:Pan:Homo	Fretibacterium fastidiosum	704	70.39999999999999
+Gorilla:Pan:Homo	Mogibacterium pumilum	318	31.8
+Gorilla:Pan:Homo	Olsenella sp. oral taxon 807	682	68.2
+Gorilla:Pan:Homo	Olsenella uli	352	35.199999999999996
+Gorilla:Pan:Homo	Parvimonas micra	114	11.4
+Gorilla:Pan:Homo	Porphyromonas gingivalis	214	21.4
+Gorilla:Pan:Homo	Prevotella intermedia	62	6.2
+Gorilla:Pan:Homo	Selenomonas sp. oral taxon 126	34	3.4000000000000004
+Gorilla:Pan:Homo	Tannerella forsythia	283	28.299999999999997
+Gorilla:Pan:Homo	Tannerella sp. oral taxon HOT-286	84	8.4
+Gorilla:Pan:Homo	Treponema denticola	352	35.199999999999996
+Gorilla:Pan:Homo	Treponema putidum	78	7.8
+Gorilla:Pan:Homo	Treponema sp. OMZ 838	38	3.8
+Alouatta:Gorilla:Pan	Acidipropionibacterium acidipropionici	460	46
+Alouatta:Gorilla:Pan	Fusobacterium hwasookii	61	6.1
+Alouatta:Gorilla:Pan	Olsenella sp. Marseille-P2300	366	36.6
+Alouatta:Gorilla:Pan	Olsenella umbonata	366	36.6
+Alouatta:Gorilla:Pan	Prevotella enoeca	267	26.700000000000003
+Alouatta:Gorilla:Pan	Prevotella intermedia	34	3.4000000000000004
+Alouatta:Gorilla:Pan	Propionibacterium freudenreichii	809	80.9
+Alouatta:Gorilla:Pan	Rothia aeria	7	0.7000000000000001
+Alouatta:Gorilla:Pan	Rothia dentocariosa	29	2.9000000000000004
+Alouatta:Gorilla:Pan	Selenomonas sp. oral taxon 126	84	8.4
+Alouatta:Gorilla:Pan	Selenomonas sp. oral taxon 920	7	0.7000000000000001
+Alouatta:Gorilla:Pan	Streptococcus agalactiae	175	17.5
+Alouatta:Gorilla:Pan	Streptococcus constellatus	38	3.8
+Alouatta:Gorilla:Pan	Streptococcus dysgalactiae	6	0.6
+Alouatta:Gorilla:Pan	Streptococcus equi	644	64.4
+Alouatta:Gorilla:Pan	Streptococcus mutans	149	14.899999999999999
+Alouatta:Gorilla:Pan	Streptococcus troglodytae	102	10.2
+Alouatta:Gorilla:Pan	Treponema sp. OMZ 838	1	0.1
+Gorilla	Acidaminococcus fermentans	35	3.5000000000000004
+Gorilla	Arthrobacter sp. YC-RL1	394	39.4
+Gorilla	Corynebacterium glyciniphilum	174	17.4
+Gorilla	Cutibacterium avidum	205	20.5
+Gorilla	Enterococcus faecalis	390	39
+Gorilla	Glaesserella parasuis	1	0.1
+Gorilla	Haemophilus parainfluenzae	1	0.1
+Gorilla	Libanicoccus massiliensis	1	0.1
+Gorilla	Mannheimia haemolytica	1	0.1
+Gorilla	Methanobrevibacter smithii	17	1.7000000000000002
+Gorilla	Oxalobacter formigenes	34	3.4000000000000004
+Gorilla	Selenomonas sp. oral taxon 126	3	0.3
+Gorilla	Selenomonas sp. oral taxon 920	5	0.5
+Gorilla	Staphylococcus nepalensis	28	2.8000000000000003
+Gorilla	Staphylococcus saprophyticus	796	79.60000000000001
+Gorilla	Staphylococcus xylosus	726	72.6
+Gorilla	Streptococcus parauberis	12	1.2
+Gorilla	Veillonella atypica	281	28.1
+Gorilla	Veillonella parvula	13	1.3
+Gorilla:Pan	[Eubacterium] sulci	25	2.5
+Gorilla:Pan	Desulfobulbus propionicus	20	2
+Gorilla:Pan	Libanicoccus massiliensis	309	30.9
+Gorilla:Pan	Olsenella sp. Marseille-P2300	208	20.8
+Gorilla:Pan	Olsenella umbonata	208	20.8
+Gorilla:Pan	Prevotella dentalis	177	17.7
+Gorilla:Pan	Prevotella enoeca	135	13.5
+Gorilla:Pan	Prevotella intermedia	4	0.4
+Gorilla:Pan	Selenomonas sp. oral taxon 126	7	0.7000000000000001
+Gorilla:Pan	Selenomonas sp. oral taxon 920	1	0.1
+Gorilla:Pan	Slackia heliotrinireducens	88	8.799999999999999
+Gorilla:Pan	Staphylococcus nepalensis	2	0.2
+Gorilla:Pan	Treponema putidum	16	1.6
+Gorilla:Pan	Treponema sp. OMZ 838	5	0.5
+Homo	Actinomyces pacaensis	2	0.2
+Homo	Campylobacter concisus	107	10.7
+Homo	Capnocytophaga leadbetteri	217	21.7
+Homo	Capnocytophaga ochracea	895	89.5
+Homo	Capnocytophaga sp. oral taxon 323	475	47.5
+Homo	Desulfobulbus propionicus	2	0.2
+Homo	Fusobacterium sp. oral taxon 203	1	0.1
+Homo	Leptotrichia buccalis	76	7.6
+Homo	Methanobrevibacter millerae	311	31.1
+Homo	Methanobrevibacter smithii	474	47.4
+Homo	Methanobrevibacter sp. YE315	548	54.800000000000004
+Homo	Murdochiella vaginalis	2	0.2
+Homo	Selenomonas sp. oral taxon 920	22	2.1999999999999997
+Homo	Selenomonas sputigena	922	92.2
+Homo	Treponema sp. OMZ 838	15	1.5
+Homo	Veillonella parvula	690	69
+Alouatta:Pan	Acidipropionibacterium acidipropionici	2	0.2
+Alouatta:Pan	Atopobium parvulum	646	64.60000000000001
+Alouatta:Pan	Bifidobacterium dentium	178	17.8
+Alouatta:Pan	Capnocytophaga sp. oral taxon 323	5	0.5
+Alouatta:Pan	Cryptobacterium curtum	646	64.60000000000001
+Alouatta:Pan	Fusobacterium hwasookii	142	14.2
+Alouatta:Pan	Fusobacterium sp. oral taxon 203	236	23.599999999999998
+Alouatta:Pan	Gemella sp. oral taxon 928	66	6.6000000000000005
+Alouatta:Pan	Megasphaera elsdenii	158	15.8
+Alouatta:Pan	Olsenella sp. Marseille-P2300	280	28.000000000000004
+Alouatta:Pan	Olsenella umbonata	280	28.000000000000004
+Alouatta:Pan	Prevotella enoeca	376	37.6
+Alouatta:Pan	Prevotella intermedia	4	0.4
+Alouatta:Pan	Rothia aeria	1	0.1
+Alouatta:Pan	Rothia dentocariosa	3	0.3
+Alouatta:Pan	Selenomonas sp. oral taxon 136	275	27.500000000000004
+Alouatta:Pan	Selenomonas sp. oral taxon 920	1	0.1
+Alouatta:Pan	Streptococcus agalactiae	57	5.7
+Alouatta:Pan	Streptococcus constellatus	9	0.8999999999999999
+Alouatta:Pan	Streptococcus dysgalactiae	34	3.4000000000000004
+Alouatta:Pan	Streptococcus equi	211	21.099999999999998
+Alouatta:Pan	Streptococcus mutans	7	0.7000000000000001
+Alouatta:Pan	Streptococcus troglodytae	8	0.8
+Alouatta:Pan	Treponema sp. OMZ 838	12	1.2
+Alouatta:Pan	Trueperella pyogenes	94	9.4
+Alouatta:Pan:Homo	Campylobacter gracilis	4	0.4
+Alouatta:Pan:Homo	Candidatus Saccharibacteria oral taxon TM7x	214	21.4
+Alouatta:Pan:Homo	Capnocytophaga sp. oral taxon 323	11	1.0999999999999999
+Alouatta:Pan:Homo	Fusobacterium hwasookii	437	43.7
+Alouatta:Pan:Homo	Fusobacterium sp. oral taxon 203	4	0.4
+Alouatta:Pan:Homo	Gemella sp. oral taxon 928	934	93.4
+Alouatta:Pan:Homo	Olsenella uli	6	0.6
+Alouatta:Pan:Homo	Ottowia sp. oral taxon 894	24	2.4
+Alouatta:Pan:Homo	Parvimonas micra	441	44.1
+Alouatta:Pan:Homo	Porphyromonas gingivalis	235	23.5
+Alouatta:Pan:Homo	Prevotella intermedia	108	10.8
+Alouatta:Pan:Homo	Rothia aeria	1	0.1
+Alouatta:Pan:Homo	Rothia dentocariosa	1	0.1
+Alouatta:Pan:Homo	Selenomonas sp. oral taxon 920	21	2.1
+Alouatta:Pan:Homo	Streptococcus anginosus	27	2.7
+Alouatta:Pan:Homo	Streptococcus constellatus	331	33.1
+Alouatta:Pan:Homo	Streptococcus equi	34	3.4000000000000004
+Alouatta:Pan:Homo	Streptococcus intermedius	27	2.7
+Alouatta:Pan:Homo	Tannerella forsythia	104	10.4
+Alouatta:Pan:Homo	Tannerella sp. oral taxon HOT-286	501	50.1
+Alouatta:Pan:Homo	Treponema sp. OMZ 838	243	24.3
+Gorilla:Homo	Methanobrevibacter smithii	11	1.0999999999999999
+Gorilla:Homo	Selenomonas sp. oral taxon 126	35	3.5000000000000004
+Gorilla:Homo	Selenomonas sp. oral taxon 920	45	4.5
+Gorilla:Homo	Veillonella parvula	268	26.8
+Alouatta:Gorilla:Pan:Homo:Control	Actinomyces naeslundii	59	5.8999999999999995
+Alouatta:Gorilla:Pan:Homo:Control	Actinomyces oris	59	5.8999999999999995
+Alouatta:Gorilla:Pan:Homo:Control	Actinomyces sp. oral taxon 414	391	39.1
+Alouatta:Gorilla:Pan:Homo:Control	Actinomyces succiniciruminis	16	1.6
+Alouatta:Gorilla:Pan:Homo:Control	Eikenella corrodens	1	0.1
+Alouatta:Gorilla:Pan:Homo:Control	Fusobacterium nucleatum	1	0.1
+Alouatta:Gorilla:Pan:Homo:Control	Ottowia sp. oral taxon 894	229	22.900000000000002
+Alouatta:Gorilla:Pan:Homo:Control	Pseudopropionibacterium propionicum	389	38.9
+Alouatta:Gorilla:Pan:Homo:Control	Rothia dentocariosa	1	0.1
+Alouatta:Gorilla:Pan:Homo:Control	Tannerella forsythia	43	4.3
+Alouatta:Gorilla:Pan:Homo:Control	uncultured bacterium	823	82.3
+Control	Cytophaga hutchinsonii	5	0.5
+Control	Methylotenera versatilis	100	10
+Control	Ruminococcus sp. SR1/5	1	0.1
+Pan:Homo:Control	[Eubacterium] minutum	39	3.9
+Pan:Homo:Control	Anaerolineaceae bacterium oral taxon 439	48	4.8
+Pan:Homo:Control	Fretibacterium fastidiosum	21	2.1
+Pan:Homo:Control	Olsenella sp. oral taxon 807	24	2.4
+Pan:Homo:Control	Tannerella forsythia	3	0.3
+Gorilla:Pan:Homo:Control	[Eubacterium] minutum	5	0.5
+Gorilla:Pan:Homo:Control	Anaerolineaceae bacterium oral taxon 439	187	18.7
+Gorilla:Pan:Homo:Control	Fretibacterium fastidiosum	146	14.6
+Gorilla:Pan:Homo:Control	Olsenella sp. oral taxon 807	168	16.8
+Gorilla:Pan:Homo:Control	Porphyromonas gingivalis	1	0.1
+Gorilla:Pan:Homo:Control	Tannerella forsythia	25	2.5
+Alouatta:Gorilla:Homo:Control	Aggregatibacter actinomycetemcomitans	4	0.4
+Alouatta:Gorilla:Homo:Control	Aggregatibacter aphrophilus	47	4.7
+Alouatta:Gorilla:Homo:Control	Neisseria gonorrhoeae	2	0.2
+Alouatta:Gorilla:Homo:Control	Neisseria meningitidis	24	2.4
+Alouatta:Gorilla:Homo:Control	Neisseria sicca	125	12.5
+Alouatta:Gorilla:Homo:Control	Rothia aeria	2	0.2
+Alouatta:Gorilla:Homo:Control	Rothia dentocariosa	4	0.4
+Alouatta:Gorilla:Homo:Control	Streptococcus gordonii	2	0.2
+Alouatta:Gorilla:Homo:Control	Streptococcus sanguinis	7	0.7000000000000001
+Alouatta:Gorilla:Control	Aggregatibacter actinomycetemcomitans	3	0.3
+Alouatta:Gorilla:Control	Neisseria gonorrhoeae	1	0.1
+Alouatta:Gorilla:Control	Rothia dentocariosa	13	1.3
+Alouatta:Gorilla:Control	Rothia mucilaginosa	2	0.2
+Alouatta:Gorilla:Control	Streptococcus suis	20	2
+Alouatta:Homo:Control	Neisseria gonorrhoeae	1	0.1
+Alouatta:Homo:Control	Neisseria sicca	14	1.4000000000000001
+Alouatta:Homo:Control	Rothia aeria	1	0.1
+Alouatta:Pan:Homo:Control	Ottowia sp. oral taxon 894	7	0.7000000000000001
+Alouatta:Pan:Homo:Control	Tannerella forsythia	4	0.4
+Alouatta:Control	Neisseria sp. 10023	1	0.1
+Alouatta:Control	Rothia dentocariosa	3	0.3
+Alouatta:Control	Streptococcus dysgalactiae	1	0.1
+Alouatta:Control	Streptococcus pyogenes	1	0.1
+Alouatta:Control	Streptococcus suis	2	0.2
+Alouatta:Gorilla:Pan:Control	Rothia dentocariosa	1	0.1
+Pan:Control	Faecalibacterium prausnitzii	2	0.2
