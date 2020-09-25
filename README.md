@@ -989,8 +989,8 @@ are no human reads after de-duplication. I just manually filled these in with NA
 The summarised results from this preprocessing can be seen in
 `06-additional_data_files` under Data R06
 
-For the deep sequenced data, the EAGER table was used for report statistics (see 
-below forfurther information), and can be seen in `06-additional_data_files` 
+For the deep sequenced data, the EAGER table was used for report statistics (see
+below forfurther information), and can be seen in `06-additional_data_files`
 under Data R08.
 
 > [To jump back to table of contents press :top:](#table-of-contents)
@@ -1025,10 +1025,10 @@ ECO002.C0101
 ```
 
 The two examples represent distinct individuals (but different libraries of a
-single sample in the case of different `.A` characters or multiple sequencing 
+single sample in the case of different `.A` characters or multiple sequencing
 of the same library in the case of the date string `.170817`). In this study
-we did not consider possible differences in sampling tooth source of the 
-calculus, and therefore pooled accordingly either at sampling or 
+we did not consider possible differences in sampling tooth source of the
+calculus, and therefore pooled accordingly either at sampling or
 _in silico_ here.
 
 > [To jump back to table of contents press :top:](#table-of-contents)
@@ -1097,7 +1097,7 @@ WAL001.A0101/*.fq.gz
 ```
 
 These extras were then merged into a single FASTQ file for each individual using
-`cat`, and placed in an independent file in the output directories with the 
+`cat`, and placed in an independent file in the output directories with the
 following commands
 
 ```bash
@@ -1226,7 +1226,7 @@ the output of which was stored in `04-analysis/screening/eager` under the
   
 To run each EAGER run in parallel, we again used
 `02-scripts.backup/02-scripts.backup/021-eager_microbiota_slurm_array.sh` after
-updating the path in the `find` command in the script to point to the 
+updating the path in the `find` command in the script to point to the
 corresponding EAGER XML directory.
 
 The resulting human mapping data after poly-G removal can be seen in
@@ -1367,8 +1367,8 @@ generate the OTU table, we opened the MALT RMA6 files in MEGAN with absolute
 counts, and ignored all unassigned reads.
 
 To un-collapse the tree we pressed the following in the tool-bar:
-Tree > Rank > <Taxonomic level>, the then select species
-nodes with: Select > Rank > <Taxonomic level>.
+Tree > Rank > \<Taxonomic level\>, the then select species
+nodes with: Select > Rank > \<Taxonomic level\>.
 
 Then, File > Export > Text (CSV) format, selected taxonName_to-count, summarised
 and tab as a separator.
@@ -1376,7 +1376,7 @@ and tab as a separator.
 For a 'microbial-only' OTU table (excluding prokaryotes and synthetic DNA
 sequences), we un-collapsed the tree by firstly selecting
 'collapse non-prokaryotes' under the 'Tree' menu, and then Select > Rank >
-<taxonomic level> to select only Bacteria and Archaea. We also exported
+\<taxonomic level\> to select only Bacteria and Archaea. We also exported
 the a tree based on the same data with the option: File > Export > Tree,
 and saved in Newick format. This was also done for each prokaryote taxonomic
 level.
@@ -1479,7 +1479,7 @@ To get a rapid idea of the level of identifiable oral taxa in each individual, I
 came up with a simple visualisation to show how abundant the (hpoefully
 endogenous) oral signal in the samples are. It is based on the decay of the
 fraction of oral taxa identified when looking from most to least abundant taxa
-within a sample. The concept is further described in the main publication 
+within a sample. The concept is further described in the main publication
 supplement, but a schematic on how to interpret them can be seen here:
 
 ---
@@ -1934,7 +1934,7 @@ svn checkout https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/
 find -name '*gz' -type f -exec gunzip {} \;
 ```
 
-Then copy and paste `<path>/<to>/AnthropoidsHominidaeHoiminini_core_20190509` 
+Then copy and paste `<path>/<to>/AnthropoidsHominidaeHoiminini_core_20190509`
 into MEx-IPA to find this.
 
 Example reports for the two oldest Neanderthals (PES001 and GDN001), can be
@@ -2512,7 +2512,7 @@ genera. By subsampling and randomly selecting the individuals of each host
 genera, we aimed to see how often a given microbial taxon was considered
 'core' to a given host-genus combination.
 
-The code can be seen under 
+The code can be seen under
 `02-scripts/018-CoreMicrobiome_20200908_complex_bootstrapping.Rmd`.
 
 We ran the notebook for each database and microbial taxa level (at the
@@ -3723,7 +3723,7 @@ non-*Homo* groups. We counted the number of reads that mapped to each reference
 sequence in each sample, and compared it to the number that mapped using
 standard paremeters. We found that there were no more than 2 additional reads
 mapped per reference sequence per sample, and in no cases did this bring
-coverage to >40%. 
+coverage to >40%.
 
 ```bash
 bwa aln -n 5 -l 1000 <reference_abp_sequence> <SAMPLENAME>.fastq > <SAMPLENAME>.abp_reference_seqence.sai
@@ -3766,7 +3766,6 @@ for f in *rmdup.bam; do
 samtools view $f | wc -l
 done
 ```
-
 
 All alignments from mapping with the standard parameters (-n 0.01 -l 32) were
 visually inspected with IGV, and consensus sequences from mapping against the
@@ -4080,7 +4079,7 @@ orthologs, and KEGG carbohydrate orthologs between sample groups were explored.
 
 We used KEGG ortholog abundance data to perform PCAs, which were plotted to
 visualize the relationships between samples and controls, as well as within and
-between samples. The samples that plotted with controls, except plaque, were 
+between samples. The samples that plotted with controls, except plaque, were
 removed as outliers with poor preservation (File R37).
 
 ---
@@ -4286,10 +4285,10 @@ MEGAN as a tsv (and stored in `04-analysis/screening/aadder/tables/`).
 
 We manually added an additional 6 columns with a text editor Find and Replace
 function: Host_Genus, Protein, PC1 code, PC2 code, PC1nomodcode, and
-PC2nomodcode. The PC<number>code columns indicate the order of proteins from
+PC2nomodcode. The PC\<number\>code columns indicate the order of proteins from
 strongest loading (1) to lowest loading (10) of the top 10 strongest loadings
 in PC1 and PC2, for positive values and negative values. The
-PC<number>nomodcode columns indicate the same loading order, but for the PCAs
+PC\<number\>nomodcode columns indicate the same loading order, but for the PCAs
 that excluded modern *Homo* samples. For example, pc1n3 is the protein with
 the 3rd strongest negative loading in PC1, and pc1p3 is the protein with the
 3rd strongest positive loading in PC1. These codes were used to make the
@@ -4312,7 +4311,7 @@ explored.
 
 We used protein abundance data to perform PCAs, which were plotted to
 visualize the relationships between samples and controls, as well as within and
-between samples. The samples that plotted with controls, except plaque, were 
+between samples. The samples that plotted with controls, except plaque, were
 removed as outliers with poor preservation (File R37).
 
 ---
@@ -4324,7 +4323,7 @@ removed as outliers with poor preservation (File R37).
 
 Biplots were used to visualize the protein with strongest loadings in PC1
 and PC2, to understand what drove separation of sample groups. The table with
-these loadings is File R38. 
+these loadings is File R38.
 
 ---
 
