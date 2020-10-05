@@ -2543,7 +2543,7 @@ included can be seen in
 `04-analysis/screening/presenceabsence_intersection/99-coremicrobiome_presenceabsence_pergroup_bootstrapped_complete_nt_speciesgenus_withwithoutcontrols_comparison.tsv`.
 A condensed version of this comparison can be seen in Table R8.
 
-**Table R8 | Comparison of core micrbiome bootstrappig results when including and excluding controls** Bootstrapping was performed on all host groups (and controls), with 1000 replicates. Bold indicate values equal to or exceeding 75%. Note genus level taxa have min. support values of 0.07 whereas species level taxa have a min. support value of 0.04.
+**Table R8 | Comparison of core micrbiome bootstrappig results when including and excluding controls** Bootstrapping was performed on all host groups (and controls), with 1000 replicates. FALSE/TRUE column headers refer to exclusion or inclusion of controls respectively. Bold indicate values equal to or exceeding 75%. Note genus level taxa have min. support values of 0.07 whereas species level taxa have a min. support value of 0.04.
 
 | Combination               | Taxon                                    | FALSE     | TRUE     |
 |---------------------------|------------------------------------------|:---------:|:--------:|
