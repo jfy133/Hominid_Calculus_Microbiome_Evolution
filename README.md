@@ -1,16 +1,16 @@
-# Anthropoid Calculus Microbiome Evolution
+# Evolution of the Hominid Calculus Microbiome
 
 [![DOI](https://zenodo.org/badge/218484229.svg)](https://zenodo.org/badge/latestdoi/218484229)
 
-Additional code, analysis and results to extend the supplementary information
+Additional code, analyses and results to extend the supplementary information
 of Fellows Yates, J.A. _et al._ (2020) XXXX. Please read section R1 before
 proceeding.
 
 ## Table of Contents
 
-<!-- MarkdownTOC levels=1,2,3 autolink="true" -->
+<!-- MarkdownTOC levels=2,3 autolink="true" -->
 
-- [Anthropoid Calculus Microbiome Evolution](#anthropoid-calculus-microbiome-evolution)
+- [Evolution of the Hominid Calculus Microbiome](#evolution-of-the-hominid-calculus-microbiome)
   - [Table of Contents](#table-of-contents)
   - [R1 Introduction](#r1-introduction)
   - [R2 Resources](#r2-resources)
@@ -205,7 +205,7 @@ README.md             ## This walkthrough
 > Important: The code in this repository was written over multiple 'learning'
 > years by non-bioinformaticians. Quality will vary and may not be immediately
 > re-runable or readable - if you encounter any issues please leave
-> an [issue](https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/issues)
+> an [issue](https://github.com/jfy133/Hominid_Calculus_Microbiome_Evolution/issues)
 > and we will endeavour to clarify.
 >
 > We have tried to auto-replace all file paths to make it relative to this
@@ -1930,7 +1930,7 @@ case that link doesn't work - the most stable method is to use subversion
 (`svn`).
 
 ```bash
-svn checkout https://github.com/jfy133/Anthropoid_Calculus_Microbiome_Evolution/trunk/04-analysis/screening/maltExtract/output/AnthropoidsHominidaeHoiminini_core_20190509
+svn checkout https://github.com/jfy133/Hominid_Calculus_Microbiome_Evolution/trunk/04-analysis/screening/maltExtract/output/AnthropoidsHominidaeHoiminini_core_20190509
 find -name '*gz' -type f -exec gunzip {} \;
 ```
 
@@ -2517,7 +2517,7 @@ The code can be seen under
 
 We ran the notebook for each database and microbial taxa level (at the
 corresponding min. support filters), both with and without controls. We observed
-that for the main 'anthropoid' core taxa, in most cases lower bootstrap values
+that for the main 'anthropoid' core taxa (the term here used for Hominids and _Alouatta), in most cases lower bootstrap values
 occured due to re-assignment with the 'anthropoid+control' combination. We reasoned
 we could perform the bootstrapping without blanks given the low-biomass nature
 of them making picking up oral taxa (a common contaminant) is likely as the number
@@ -2575,7 +2575,7 @@ A condensed version of this comparison can be seen in Table R8.
 | Pan:Homo                  | Desulfomicrobium                         |   **100** |  **100** |
 
 When considering a bootstrap cut off of 75% and excluding controls, the majority
-of the Anthropoid core taxa can be considered to be found robust when randomly
+of the Hominid and _Alouatta_ core taxa can be considered to be found robust when randomly
 subsampling (with replacement), with only Capnocytophaga falling below this at
 71.6. For this particular taxon, alternative combinations that appeared during
 bootstrapping replicates were the following: Alouatta:Gorilla:Homo,
@@ -2602,7 +2602,7 @@ contaminants in lab reagents, and min. support values (i.e. tail trimming)
 having a less of a effect (i.e. the fewer overall reads sequenced due to the
 low biomass nature of controls meaning fewer true low-level contaminants taxa are
 removed because the overall number of reads is low). Across all the
-well supported bootstrap values. Most anthropoid core microbiome assignments
+well supported bootstrap values. Most hominid/_Alouatta_ core microbiome assignments
 are reduced due to being assigned to a control combination.  In particular,
 _Streptococus_ and _Actinomyces_ sees the largest drops, however these are
 highly diverse genera and therefore non-oral species under these genera are
@@ -2681,7 +2681,7 @@ assignments in the calculus samples - we also ran MaltExtract on a subset of
 the core taxa to check for damage patterns and short fragment lengths
 characteristic of ancient DNA.
 
-We took the species level 'core' of the Anthropoids, Hominids and Homininis
+We took the species level 'core' of the Hominids/Alouatta, Hominids and Homininis
 based on the MALT nt database (as estimated above - i.e. with a min. support
 value of 0.04, requiring a taxon being in 50% of each population having a taxon
 to be core to the population, 66% of the populations to be core to the
@@ -2820,11 +2820,11 @@ functional analysis analysis.
 ### R11.2 Super-reference construction
 
 Now with the deep sequenced subset of individuals, we then decided to select
-taxa of the Anthropoid core microbiome we calculated
+taxa of the Hominid/Alouatta core microbiome we calculated
 [above](#r1015-core-microbiome-intersection-between-hosts). We made the
 assumption these taxa would be more likely to yield enough mappings
 across all host genera in this study  sufficient for phylogenetic analysis
-across the Anthropoid evolutionary history.
+across the Hominid evolutionary history.
 
 To assess whether we could reduce the number of multi-allelic positions caused
 by cross-mapping, we first generated a super-reference for each genus,
@@ -3048,7 +3048,7 @@ genome can be seen in `06-additional_data_files` under Data R30.
 
 ![Mapping statistics of mapping to single representative genomes per genus of core microbiome](05-images/Figure_R29_SGC_SingleGenomeFoldCoverageSummary/FigureSX_meanfoldcoverage_clusterfactor_distributions_allcalculussamples_noblanks.png)
 
-**Figure R29 | Comparison mapping statistics of deep sequenced calculus microbiomes to single species representatives of core calculus microbiome genera.** Despite deep sequencing, mean fold coverage remains low - albeit with low cluster factor suggesting deeper sequencing will result in higher coverages. **a** Distributions of mean fold coverage. **b** Distributions of cluster factor. Mappings are production dataset calculus data, mapped to a single representative reference genomes of core anthropoid calculus microbiome. Post-deduplication mean fold coverage and cluster factors values are as reported by EAGER results table.
+**Figure R29 | Comparison mapping statistics of deep sequenced calculus microbiomes to single species representatives of core calculus microbiome genera.** Despite deep sequencing, mean fold coverage remains low - albeit with low cluster factor suggesting deeper sequencing will result in higher coverages. **a** Distributions of mean fold coverage. **b** Distributions of cluster factor. Mappings are production dataset calculus data, mapped to a single representative reference genomes of core hominid/_Alouatta_ calculus microbiome. Post-deduplication mean fold coverage and cluster factors values are as reported by EAGER results table.
 
 ---
 
@@ -3128,7 +3128,7 @@ below in Figure R62.
 
 ![Comparison of multi-allelic SNPs between super-reference and single-genome mapping](05-images/Figure_R62_ZolfoPlots/multiallelicsnprate_singlevssuperreferencegenome_transformnone_20200125.png)
 
-**Figure R62 | Comparison of the number of multi-allelic single nucleotide variants (SNPs) identified when using a single representative genome mapping strategy versus a multi-reference genome (super-reference) mapping approach.** Analysis was performed on selected abundant and prevalent species representatives of core anthropoid genera, using the production dataset. Multi-allelic SNPs are sites called with more than the expected 1 allele (given haploid bacteria) – indicating cross mapping from other strains or related species. To reduce the occurrence of these and improve phylogenetic power, mapping to multiple species of a genera (vs. the single representative) to attract away mis-mapping reads was attempted. Arrows indicate direction of change in the percentage of multi-allelic sites between single genome (grey circle outline) and super-reference (black circle outline) mapping strategies. The expected reduction in the percentage of multi-allelic SNPs (from right to left on the x-axis) between the two strategies is not observed to consistently occur and with minor effect. Furthermore, in most cases when a reduction occurs, these samples have already very few SNPs (size circles) usable for phylogenetic analysis.  Statistics are summarized from the ‘SNP statistics’ file from the output of MultiVCFAnalyzer with a ‘homozygous’ threshold of 0.9, a ‘heterozygous’ threshold of 0.1, and a minimum coverage threshold of 2.
+**Figure R62 | Comparison of the number of multi-allelic single nucleotide variants (SNPs) identified when using a single representative genome mapping strategy versus a multi-reference genome (super-reference) mapping approach.** Analysis was performed on selected abundant and prevalent species representatives of core Hominid/_Alouatta_ genera, using the production dataset. Multi-allelic SNPs are sites called with more than the expected 1 allele (given haploid bacteria) – indicating cross mapping from other strains or related species. To reduce the occurrence of these and improve phylogenetic power, mapping to multiple species of a genera (vs. the single representative) to attract away mis-mapping reads was attempted. Arrows indicate direction of change in the percentage of multi-allelic sites between single genome (grey circle outline) and super-reference (black circle outline) mapping strategies. The expected reduction in the percentage of multi-allelic SNPs (from right to left on the x-axis) between the two strategies is not observed to consistently occur and with minor effect. Furthermore, in most cases when a reduction occurs, these samples have already very few SNPs (size circles) usable for phylogenetic analysis.  Statistics are summarized from the ‘SNP statistics’ file from the output of MultiVCFAnalyzer with a ‘homozygous’ threshold of 0.9, a ‘heterozygous’ threshold of 0.1, and a minimum coverage threshold of 2.
 
 > Note: the figure ID is out of order due to missing upload during initial writing of this walk-through.
 
@@ -3421,7 +3421,7 @@ genus we wanted to explore overall _functional_ differences, and also more to
 see if we could traces changes virulence factors of what is typically
 considered 'pathogenic' red complex taxa (but is increasingly being shown to
 be either opportunistic commensals or having many commensal relatives) over
-the evolution of Anthropoids.
+the evolution of Hominids.
 
 > [To jump back to table of contents press :top:](#table-of-contents)
 
