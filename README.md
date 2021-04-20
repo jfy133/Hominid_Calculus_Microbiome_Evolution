@@ -433,32 +433,20 @@ The MALT nt databases was downloaded and generated as follows.
 
 ```bash
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## MALT indexed NT database
 mkdir -p 01-data/databases/malt/raw 01-data/databases/malt/indexed
 cd 01-data/databases/malt/raw
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ### Download nucleotide database fasta and md5sum file into a database directory
 wget ftp://ftp-trace.ncbi.nih.gov/blast/db/FASTA/nt.gz .
 wget ftp://ftp-trace.ncbi.nih.gov/blast/db/FASTA/nt.gz.md5 .
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ### Generate the md5sum of the downloaded file, and comapre with contents of
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ### the NCBI .md5 version
 md5sum nt.gz
 cat nt.gz.md5
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ### Download into a different directory the accession to taxonomy mapping file
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ### as provided on the MEGAN6 website, and unzip
 mkdir 01-data/databases/malt/acc2bin
 cd !$
@@ -544,15 +532,11 @@ For the scripts using `analysis_profile` file, ensure to update the paths in
 corresponding location.
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## MALT DB Directory containing all database files
 MALTDB=<PATH_TO>/malt/databases/indexed/index038/full-nt_2017-10
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## SILVA DB directory containing the converted U to T FASTA file and associated bwa indexed files
 SILVADB=<PATH_TO>01/databases/silva/release_128_DNA/
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## GreenGenes DB directory, as provided in QIIME
 GREENGENESDB=<PATH_TO>/tools/qiime-environment/1.9.1/lib/python2.7/site-packages/qiime_default_reference/gg_13_8_otus
@@ -607,11 +591,7 @@ rename s/download/2NoAdapt_ELSIDRON1L7_lTACTG_rCTCGA_R1R2_Collapsed_Truncated.fa
 
 cat *fastq.gz > ElSidron1_S0_L000_R1_000.fastq.merged.fq.gz
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## If no concatenation required
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 # mv 2NoAdapt_CHIMP_150519_lACGTG_rATTGA_R1R2_Collapsed.fastq.gz Chimp.150519_S0_L000_R1_000.fastq.merged.fq.gz
 
 ```
@@ -778,8 +758,6 @@ An example of the loop using with 'premerged' script is as follow (remove the
 `_premerged` section of the script name to run for 'raw' FASTQs)
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Cycle through INDIR corresponding to each type of data (paired/single, hiseq/nextseq, pre-merged etc.)
 INDIR=03-preprocessing/screening/human_filtering/input/hiseq_single
 OUTDIR=03-preprocessing/screening/human_filtering/output
@@ -858,8 +836,6 @@ To run clean-on on single libraries:
 
 ```bash
 cd 03-preprocessing/screening/human_filtering/output
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Clean up
 SAMPLE=LIB007.A0124
@@ -975,8 +951,6 @@ cd 03-preprocessing/screening/human_filtering
 
 "$SCRIPTS"/005-statistics_human_filtering.sh output/
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Copy to documentation folder
 mv human_filtering_statistics_"$(date +"%Y%m%d")".csv ..
 cp ../human_filtering_statistics_"$(date +"%Y%m%d")".csv ../../../00-documentation.backup/03-human_filtering_statistics_"$(date +"%Y%m%d")".csv
@@ -1041,14 +1015,10 @@ we quickly imported all files for all individuals as symlinks
 ```bash
 cd 03-preprocessing/screening/library_merging
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Make directory
 for DIR in ../../screening/human_filtering/output/*/; do
   mkdir "$(echo $DIR | rev | cut -d/ -f2 | rev)/"
 done
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Make symlink of FastQ into new directory above.
 for DIR in ../../screening/human_filtering/output/*/; do
@@ -1612,12 +1582,9 @@ SCRIPTS=02-scripts.backup/02-scripts.backup
 
 cd 02-scripts.backup/03-preprocessing/screening
 
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Generate stats
 "$SCRIPTS"/011-16s_extraction_statistics.sh silva_16s_reads/
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Copy into documentation folder
 mv silva_16s_reads/16s_extraction_statistics_"$(date +"%Y%m%d")".csv .
@@ -1741,8 +1708,6 @@ cd "$OUTDIR"
 biom summarize-table -i "$OUTDIR"/otu_picking/otu_table.biom >> \
 "$OUTDIR"/otu_picking/otu_table_summary.txt
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Check with:
 head "$OUTDIR"/otu_picking/otu_table_summary.txt -n 20
 ```
@@ -1769,11 +1734,9 @@ filter_samples_from_otu_table.py \
 biom summarize-table -i "$INDIR"/otu_table_1000OTUsfiltered.biom >> \
 "$INDIR"/otu_table_1000OTUsfiltered_summary.txt
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Check with:
 head "$INDIR"/otu_table_1000OTUsfiltered_summary.txt -n 20
- ```
+```
 
 We also only wanted to look at genus level assignments, given species specific
 IDs could be unreliable due to damage and different mixtures of strain in
@@ -1785,16 +1748,12 @@ To filter to Genus (L6) level we then did
 cd 04-analysis/screening/qiime/output/otu_picking
 INDIR=04-analysis/screening/qiime/output/otu_picking
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## For Genus
 summarize_taxa.py \
 -i "$INDIR"/otu_table_1000OTUsfiltered.biom \
 -o "$INDIR" \
 -a \
 -L 6
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Fix crappy taxon ID that breaks loading into R when running Sourcetracker :+1: due to hanging quote
 sed s#\'Solanum#Solanum#g otu_table_1000OTUsfiltered_L6.txt > otu_table_1000OTUsfiltered_L6_cleaned.tsv
@@ -1840,8 +1799,6 @@ needed to ensure there was an 'Env' and a 'SourceSink' column.
 To then to run Sourcetracker we ran the following command:
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## change to new directory for output directories
 INDIR=04-analysis/screening/qiime/output/otu_picking
 OUTDIR=04-analysis/screening/sourcetracker.backup/
@@ -2266,8 +2223,6 @@ most robust overall bootstrap support in the deepest nodes (i.e. the ones we
 are most interested in this study - splits between host genus level clades)
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Additional min. support filtering, no genus filtering
 Rscript 02-scripts.backup/045-Compositional_Heatmaps_20190806_script.Rmd nt species noSources noControls out withinvariation none pseudo 4 5
 ```
@@ -2462,14 +2417,8 @@ and permutating whether any populations with a single individual were dropped
 or not.
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Final being minSupport of X, 0.5 inds of population, and 66 pops of genus,
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## min. support 0.7 for genus and 0.4 for species, and testing whether dropping
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## single individual populations makes a difference.
 
 for i in 4 7; do
@@ -3215,17 +3164,12 @@ filtering of which is included in `02-scripts.backup/042-generate_NJ_tree.R`.
 e.g.
 
 ```bash
-
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Initial Single Genomes
 for i in 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/*/snpAlignment.fasta.gz; do
   echo "$i"
   Rscript 02-scripts.backup/042-generate_NJ_tree.R "$i" 1000 JC69 100 none
   echo ""
 done
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 # 'cause Howlers are weird with P. gingivalis
 Rscript 02-scripts.backup/042-generate_NJ_tree.R 04-analysis/deep/multivcfanalyzer/initial_single_genome/output/initial_single_genome_2X_0.7_0.7/Porphyromonas_gingivalis_ATCC_33277/snpAlignment.fasta.gz 2000 JC69 100 OME003
@@ -3538,8 +3482,6 @@ super-reference with the tool panX, using the Genbank files for each
 reference.
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Run panX analysis
 pan-genome-analysis/panX.py \
 -fn <GENBANK_FILE_DIR> \
@@ -3573,8 +3515,6 @@ ran bedtools to recover statistics on the coverage of each annotated gene
 entry.
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## Extract reads from abpA and abpB-like regions
 bedtools intersect \
 -c \
@@ -3631,8 +3571,6 @@ and then all screening samples were searched against both databases using
 blast command line tools:
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## ran once with <abp_database> for abpA and again with <abp_database> for abpB
 gzip -dcf <SAMPLENAME>.fastq.gz | blastn -db <abp_database> -query - -out $(basename <SAMPLENAME> .fasta.gz).out -num_descriptions 20 -num_alignments 20 -num_threads 12
 ```
@@ -3685,29 +3623,22 @@ duplicate-removed mapped-only read file was indexed with the following
 procedure:
 
 ```bash
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 # convert sam to bam
 for f in *.sam; do
   samtools view -bS $f | samtools sort - $(basename $f .sam).bam
 done
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 # select only mapped reads
 for f in *.bam; do
   samtools view -b -F4 $f > $(basename $f .bam).mapped.bam
 done
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 # remove duplicates from mapped reads
 for f in *mapped.bam; do
   samtools rmdup -s $f $(basename $f .bam)_rmdup.bam 2>&1 >/dev/null  | cut -d' ' -f 6 > $(basename $f .bam)_dup.txt # collects read IDs of the duplicate reads
   samtools index $(basename $f .bam)_rmdup.bam
 done
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 # index the mapped, dupliate-removed bam files
 for f in *rmdup.bam; do
@@ -3730,21 +3661,15 @@ bwa aln -n 5 -l 1000 <reference_abp_sequence> <SAMPLENAME>.fastq > <SAMPLENAME>.
 
 bwa samse <reference_abp_sequence> <SAMPLENAME>.abp_reference_seqence.sai <SAMPLENAME> > <SAMPLENAME>.abp_reference_seqence.sam
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 # convert sam to bam
 for f in *.sam; do
   samtools view -bS $f | samtools sort - $(basename $f .sam).bam
 done
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 # select only mapped reads
 for f in *.bam; do
   samtools view -b -F4 $f > $(basename $f .bam).mapped.bam
 done
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 # remove duplicates from mapped reads
 for f in *mapped.bam; do
@@ -3752,14 +3677,10 @@ for f in *mapped.bam; do
   samtools index $(basename $f .bam)_rmdup.bam
 done
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 # index the mapped, dupliate-removed bam files
 for f in *rmdup.bam; do
   samtools index $f $(basename $f .bam).bai
 done
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 # count the # of mapped, non-duplicate reads
 for f in *rmdup.bam; do
@@ -3845,8 +3766,6 @@ for LIBFILE in "$INDIR"/*/*.fq.gz; do
   fi
 done
 
-> [To jump back to table of contents press :top:](#table-of-contents)
-
 ## if re-running with different parameters, here changing fastq to bowtie2out
 
 INDIR=04-analysis/screening/metaphlan2/input
@@ -3865,8 +3784,6 @@ for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
     -t rel_ab
   fi
 done
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Re-running to get estimated read counts with rel_ab to rel_ab_w_read_stats
 
@@ -3887,8 +3804,6 @@ for LIBFILE in "$INDIR"/*/*bowtie2out.txt; do
   fi
 done
 
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Re-running to get actual rad counts with rel_ab to rel_ab_w_read_stats
 
@@ -3915,8 +3830,6 @@ then did the following.
 
 ```bash
 cd 04-analysis/screening/metaphlan2/output
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 ## Note, remove metaphlan2.py script in the variable here as using util scripts
 METAPHLAN2=biobakery-metaphlan2-7898bf1/
@@ -4023,8 +3936,6 @@ done
 
 rm */*_genefamilies.tsv
 rm */*_pathabundance.tsv
-
-> [To jump back to table of contents press :top:](#table-of-contents)
 
 # -s to search subdirectories of current directory to look for the files
 humann2_join_tables --input . --output humann2_genefamilies.tsv --file_name genefamilies_cpm -s
