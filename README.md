@@ -3,8 +3,11 @@
 [![DOI](https://zenodo.org/badge/218484229.svg)](https://zenodo.org/badge/latestdoi/218484229)
 
 Additional code, analyses and results to extend the supplementary information
-of Fellows Yates, J.A. _et al._ (2021) XXXX. Please read section R1 before
-proceeding.
+of:
+
+> Fellows Yates, J. A. et al. (2021) ‘The evolution and changing ecology of the African hominid oral microbiome’, Proceedings of the National Academy of Sciences of the United States of America, 118(20), p. e2021655118. doi: [10.1073/pnas.2021655118](http://dx.doi.org/10.1073/pnas.2021655118). 
+
+Please read section R1 before proceeding.
 
 ## Table of Contents
 
