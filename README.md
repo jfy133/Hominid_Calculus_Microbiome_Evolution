@@ -117,7 +117,7 @@ Please read section R1 before proceeding.
 ## R1 Introduction
 
 This README acts as **walkthrough** guidance of the order of analyses for
-Fellows Yates, J.A. _et al._ (2020) XXXX. It acts as a **practical methods**
+Fellows Yates, J.A. _et al._ (2021). It acts as a **practical methods**
 supplement as well as for displaying additional **figures** only. Justification
 and discussion of figures and results are sparsely described, and the main
 publication should be referred to for scientific interpretation and context.
